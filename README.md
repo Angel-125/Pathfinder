@@ -1,9 +1,22 @@
 # Pathfinder
-A KSP mod that paves the way for more permanent bases
+Art Assets, including .mu, .mbm, and .dds files are copyright 2014-2016 by Michael Billard, All Rights Reserved.
 
-Source code copyrighgt 2015, by Michael Billard (Angel-125)
-License: CC BY-NC-SA 4.0
-License URL: https://creativecommons.org/licenses/by-nc-sa/4.0/
-Wild Blue Industries is trademarked by Michael Billard and may be used for non-commercial purposes. All other rights reserved.
+Wild Blue Industries is trademarked by Michael Billard. All Rights Reserved.
+Note that Wild Blue Industries is a ficticious entity 
+created for entertainment purposes. It is in no way meant to represent a real entity.
+Any similarity to a real entity is purely coincidental.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Source code copyright 2014-2016 by Michael Billard (Angel-125)
+
+    This source code is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
