@@ -8,6 +8,27 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.27 
+This release brings Pathfinder closer to its 1.0 release. It introduces the new Local Operations Manager, a screen that lets you control the functionality of all vessels within physics range. It also makes some tweaks to the life support systems, and offers a new way to process resources in order to fix an issue where you could produce RareMetals and ExoticMinerals in biomes/asteroids that didn't have RareMetals and ExoticMinerals. This new method also gives a way to squeeze more resources out of asteroids, and provides a key component to the future making of Konkrete.
+
+Local Operations Manager
+- Added the Local Operations Manager (LOM) to the Pathfinder window. You can access it in the Flight app toolbar (the covered wagon icon). With the LOM, you can control the operations of various parts on every vessel within physics range. You can control the functionality of: configurations, converters, lights, cooling towers, drills (including stock drills), and more!
+
+Life Support
+- Dirt is no longer a requirement for the greenhouse. Instead, it depends upon your life support mod: TAC-LS, Snacks, Kerbalism (100 Fertilizer); USI-LS (100 Mulch)
+- Removed Cultivator since Dirt is no longer required.
+- For TAC-LS, moved the Carbon Extractor from the Ponderosa to the Pigpen.
+
+Resources
+- Added the Slag resource and associated storage template.
+- Added the Konkrete resource and associated storage template.
+
+Geology Lab
+- The Prospector can now process Ore into resources found in the current biome. Most of what it produces is Slag.
+
+Homestead
+- The Rockhound can now process Rock and/or Ore into resources found in the designated asteroid attached to the vessel. Most of what it produces is Slag.
+
 0.9.26
 - Recompiled for KSP 1.1.3
 
@@ -977,13 +998,24 @@ Icons by icons8: https://icons8.com/license/
 Eve: Order Zero graphic courtesy of Kuzztler and used with permission.
 
 ---LICENSE---
+Art Assets, including .mu, .mbm, and .dds files are copyright 2014-2016 by Michael Billard, All Rights Reserved.
 
-Source code copyrighgt 2015, by Michael Billard (Angel-125)
-License: CC BY-NC-SA 4.0
-License URL: https://creativecommons.org/licenses/by-nc-sa/4.0/
-Wild Blue Industries is trademarked by Michael Billard and may be used for non-commercial purposes. All other rights reserved.
+Wild Blue Industries is trademarked by Michael Billard. All Rights Reserved.
 Note that Wild Blue Industries is a ficticious entity 
 created for entertainment purposes. It is in no way meant to represent a real entity.
 Any similarity to a real entity is purely coincidental.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Source code copyright 2014-2016 by Michael Billard (Angel-125)
+
+    This source code is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
