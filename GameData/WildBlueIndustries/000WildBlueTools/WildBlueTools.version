@@ -1,0 +1,23 @@
+{
+    "NAME":"WildBlueTools",
+    "URL":"https://raw.githubusercontent.com/Angel-125/WildBlueTools/master/GameData/WildBlueIndustries/000WildBlueTools/WildBlueTools.version",
+    "DOWNLOAD":"https://github.com/Angel-125/WildBlueTools/releases",
+    "GITHUB":
+    {
+        "USERNAME":"Angel-125",
+        "REPOSITORY":"WildBlueTools",
+        "ALLOW_PRE_RELEASE":false,
+    },
+    "VERSION":
+    {
+	"MAJOR":1,
+	"MINOR":3,
+	"PATCH":1
+    },
+    "KSP_VERSION":
+    {
+        "MAJOR":1,
+        "MINOR":1,
+        "PATCH":2
+    },
+}

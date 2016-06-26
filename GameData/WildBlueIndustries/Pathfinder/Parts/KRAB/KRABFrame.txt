@@ -1,0 +1,156 @@
+PART
+{
+	// this is a sample config file, for determining a good file format for defining part parameters
+	// comment line - ignored by cfg parser
+	// empty lines, or lines without a '=' sign are also ignored
+	// all other lines are split at the '=' sign, and the left operand is used to know what parameter we are setting
+	// diferent parameters require data in different formats (see docs), and each module has it's own parameters (again, see docs)
+	// each assignment must be in a single line. Lines without assignments will be ignored. (You CAN turn on word wrap, though)
+	// each keyword here relates to an existing variable in the assigned module. If the keyword isn't found, it is ignored.
+	// conversely, if a keyword is left unassigned (as in not in the file), it will be initialized with it's default value
+	// This is done automatically, so any public variable defined in the loaded module can be accessed this way (provided it's value can be parsed)
+
+
+	// --- general parameters ---
+	name = WBI_KRABFrame
+	module = Part
+	author = Michael Billard (Angel-125)
+
+	// --- asset parameters ---
+	rescaleFactor = 1
+
+	MODEL
+	{
+		model = WildBlueIndustries/Pathfinder/Assets/KRABFrame
+	}
+
+
+	// --- node definitions ---
+	// definition format is Position X, Position Y, Position Z, Up X, Up Y, Up Z
+	node_stack_top = 0.0, 0.1, 0.0, 0.0, 1.0, 0.0, 2
+	node_stack_bottom = 0.0, -0.11, 0.0, 0.0, -1.0, 0.0, 2
+
+	NODE
+	{
+		name = LegOne
+		transform = legOne
+	}
+	NODE
+	{
+		name = LegTwo
+		transform = legTwo
+	}
+	NODE
+	{
+		name = LegThree
+		transform = legThree
+	}
+	NODE
+	{
+		name = LegFour
+		transform = legFour
+	}
+
+
+	// --- editor parameters ---
+	TechRequired = advConstruction
+	entryCost = 9000
+	cost = 5200
+	category = Utility
+	subcategory = 0
+	title = K.R.A.B. Chassis
+	manufacturer = Wild Blue Industries
+	description = The Kargo Relocating Autonomous Bot (KRAB) is designed to carry your 2.5m diameter modules to a desired location. Paired with the deployable "KRAB Leg" rover wheel, the KRAB can cross a variety of different terrain. Its monopropellant power unit can keep the rover going for awhile as well.
+
+	// attachment rules: stack, srfAttach, allowStack, allowSrfAttach, allowCollision
+	attachRules = 1,0,1,1,1
+
+	// --- standard part parameters ---
+	mass = .45
+	dragModelType = default
+	maximum_drag = 0.25
+	minimum_drag = 0.25
+	angularDrag = .5
+	crashTolerance = 55
+	breakingForce = 280
+	breakingTorque = 280
+	maxTemp = 2000
+	CrewCapacity = 0
+	vesselType = Rover
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = MPU
+		StartActionName = Start MPU
+		StopActionName = Stop MPU
+		FillAmount = 0.99		 
+		AutoShutdown = true
+		GeneratesHeat = false
+		TemperatureModifier = 60
+		UseSpecializationBonus = true
+		SpecialistEfficiencyFactor = 0.1
+		Specialty = Engineer
+		EfficiencyBonus = 1.0
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = MonoPropellant
+			Ratio = 0.01
+			FlowMode = ALL_VESSEL
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 0.75
+			DumpExcess = false
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleCommand
+		minimumCrew = 0
+		RESOURCE
+		{
+			name = ElectricCharge
+			rate = 0.02777778
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleReactionWheel
+		PitchTorque = 10.0
+		YawTorque = 10.0
+		RollTorque = 10.0
+		RESOURCE
+		{
+			name = ElectricCharge
+			rate = 0.5
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleSAS
+		SASServiceLevel = 2
+	}
+
+	RESOURCE
+	{
+		name = MonoPropellant
+		amount = 30
+		maxAmount = 30
+		isTweakable = false
+	}
+
+	RESOURCE
+	{
+		name = ElectricCharge
+		amount = 400
+		maxAmount = 400
+		isTweakable = false
+	}
+}
