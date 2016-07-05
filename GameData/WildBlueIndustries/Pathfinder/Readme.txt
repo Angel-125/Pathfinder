@@ -8,6 +8,29 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.28
+The Doc and Spyglass finally get their IVAs! Just two more to go...
+
+New Parts
+- Added the Buffalo ISRU, built from the stock mini ISRU. It has several configurations to choose from.
+- Added the Flex Fuel Power Pack. The Power Pack is a 2U Buffalo chassis unit that has solar panels and also a generator that can burn Ore, MonoPropellant, or LiquidFuel & Oxidizer. Power output varies depending upon the configuration.
+
+IVAs
+- Added IVA to the Doc Science Lab.
+- Added IVA to the Spyglass.
+
+Tundra & Wagon Parts
+- The Tundra 200 and 400, as well as the Wagon, can now become a resource distributor or consumer. As a distributor, the storage part shares its resources. As a consumer, it fills its resources from the distribution system until full.
+
+Hacienda
+- Added an industrial greenhouse template to the Hacienda, because pandas chew through a lot of bamboo.
+
+Contracts
+- Added a first stab at contracts for the Ponderosa, Casa, Hacienda, Conestoga, Chuckwagon, and Doc.
+
+Bug Fixes
+- Fixed an issue where converters weren't benefiting from research projects in the geology lab.
+
 0.9.27 
 This release brings Pathfinder closer to its 1.0 release. It introduces the new Local Operations Manager, a screen that lets you control the functionality of all vessels within physics range. It also makes some tweaks to the life support systems, and offers a new way to process resources in order to fix an issue where you could produce RareMetals and ExoticMinerals in biomes/asteroids that didn't have RareMetals and ExoticMinerals. This new method also gives a way to squeeze more resources out of asteroids, and provides a key component to the future making of Konkrete.
 

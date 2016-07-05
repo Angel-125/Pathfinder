@@ -38,6 +38,9 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="KIS">
+      <HintPath>..\..\..\..\..\KSPDev\GameData\KIS\Plugins\KIS.dll</HintPath>
+    </Reference>
     <Reference Include="KSPAssets">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\KSPAssets.dll</HintPath>
     </Reference>
@@ -98,8 +101,8 @@
     <Compile Include="Industry\WBIBuckboardGenerator.cs" />
     <Compile Include="Utility\WBIResourceDistributor.cs" />
     <Compile Include="Parts\WBIConestoga.cs" />
-    <Compile Include="WBIPartPrinter.cs" />
     <Compile Include="Parts\WBISpyglassOpsView.cs" />
+    <Compile Include="Utility\WBIStorageDistributor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">

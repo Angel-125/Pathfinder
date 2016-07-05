@@ -32,6 +32,12 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.3.0
+
+New Parts
+- Added the Buffalo ISRU. It has several configurations to choose from.
+- Added the Flex Fuel Power Pack. The Power Pack is a 2U Buffalo chassis unit that has solar panels and also a generator that can burn Ore, MonoPropellant, or LiquidFuel & Oxidizer. Power output varies depending upon the configuration.
+
 0.2.16
 - Updated to KSP 1.1.3
 

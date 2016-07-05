@@ -32,6 +32,9 @@ namespace WildBlueIndustries
         float efficiency = -1f;
         List<ModuleResourceConverter> converters;
         HarvestTypes harvestID;
+        WBIResourceSwitcher switcher;
+        string originalEfficiencyType;
+        int originalHarvestType;
 
         public override void OnStart(StartState state)
         {
@@ -50,6 +53,26 @@ namespace WildBlueIndustries
             }
 
             converters = this.part.FindModulesImplementing<ModuleResourceConverter>();
+
+            originalEfficiencyType = efficiencyType;
+            originalHarvestType = harvestType;
+
+            switcher = this.part.FindModuleImplementing<WBIResourceSwitcher>();
+            if (switcher != null)
+                switcher.onModuleRedecorated += new ModuleRedecoratedEvent(switcher_onModuleRedecorated);
+        }
+
+        void switcher_onModuleRedecorated(ConfigNode templateNode)
+        {
+            if (templateNode.HasValue("efficiencyType"))
+                efficiencyType = templateNode.GetValue("efficiencyType");
+            else
+                efficiencyType = originalEfficiencyType;
+
+            if (templateNode.HasValue("harvestType"))
+                harvestID = (HarvestTypes)int.Parse(templateNode.GetValue("harvestType"));
+            else
+                harvestID = (HarvestTypes)originalHarvestType;
         }
 
         public override void OnUpdate()

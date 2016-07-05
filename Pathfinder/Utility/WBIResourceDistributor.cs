@@ -30,7 +30,7 @@ namespace WildBlueIndustries
             return "Distributes resources to nearby vessels. Lock individual resources to prevent distribution, or disable the distributor to exclude the part.";
         }
 
-        public void GetResourcesToDistribute(List<PartResource> sharedResources, List<PartResource> requiredResources)
+        public virtual void GetResourcesToDistribute(List<PartResource> sharedResources, List<PartResource> requiredResources)
         {
             List<string> requiredResourceNames = new List<string>();
             List<BaseConverter> converters = null;
@@ -68,7 +68,7 @@ namespace WildBlueIndustries
             }
         }
 
-        public double FillRequiredResource(string resourceName, double grandTotal)
+        public virtual double FillRequiredResource(string resourceName, double grandTotal)
         {
             double amountRemaining = 0f;
             PartResource resource;
@@ -101,7 +101,7 @@ namespace WildBlueIndustries
             return amountRemaining;
         }
 
-        public void TakeShare(string resourceName, double sharePercent)
+        public virtual void TakeShare(string resourceName, double sharePercent)
         {
             //Make sure we have the resource in question
             if (string.IsNullOrEmpty(resourceName))
@@ -121,13 +121,13 @@ namespace WildBlueIndustries
             return this.part.partInfo.title;
         }
 
-        public void SetContextGUIVisible(bool isVisible)
+        public virtual void SetContextGUIVisible(bool isVisible)
         {
             Fields["distributeResources"].guiActive = false;
             Fields["distributeResources"].guiActiveEditor = false;
         }
 
-        public void DrawOpsWindow(string buttonLabel)
+        public virtual void DrawOpsWindow(string buttonLabel)
         {
             GUILayout.BeginVertical();
 
