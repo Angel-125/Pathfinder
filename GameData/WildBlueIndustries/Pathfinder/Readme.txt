@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.29
+- Updated WBT
+
 0.9.28
 The Doc and Spyglass finally get their IVAs! Just two more to go...
 

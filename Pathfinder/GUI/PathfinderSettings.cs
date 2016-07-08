@@ -182,6 +182,9 @@ namespace WildBlueIndustries
             WBIBreakableResourceConverter.repairsRequireResources = repairsRequireResources;
             GeoSurveyCamera.terrainCanBreak = partsCanBreak;
             WBIBreakableResourceConverter.canBreak = partsCanBreak;
+            WBIResourceConverter.repairsRequireResources = repairsRequireResources;
+            WBIResourceConverter.partsCanBreak = partsCanBreak;
+            WBIResourceConverter.requireSkillCheck = requireSkillCheck;
         }
 
         public override void SetVisible(bool newValue)
@@ -285,6 +288,9 @@ namespace WildBlueIndustries
             GeoSurveyCamera.terrainCanBreak = partsCanBreak;
             WBIBreakableResourceConverter.canBreak = partsCanBreak;
             WBIDistributionManager.secondsPerCycle = secondsBetweenDistribution;
+            WBIResourceConverter.repairsRequireResources = repairsRequireResources;
+            WBIResourceConverter.partsCanBreak = partsCanBreak;
+            WBIResourceConverter.requireSkillCheck = requireSkillCheck;
 
             if (string.IsNullOrEmpty(drillTechNode))
                 drillTechNode = kDefaultDrillTechNode;
