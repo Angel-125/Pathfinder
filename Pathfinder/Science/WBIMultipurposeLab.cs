@@ -50,10 +50,7 @@ namespace WildBlueIndustries
                 return;
             anim = this.part.FindModelAnimators(animationName)[0];
 
-            if (string.IsNullOrEmpty(opsViewTitle) == false)
-                opsManagerView.WindowTitle = opsViewTitle;
-            else
-                opsManagerView.WindowTitle = kDocOpsView;
+            opsManagerView.WindowTitle = this.part.partInfo.title + " Operations";
         }
 
         public override void OnUpdate()

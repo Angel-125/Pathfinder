@@ -6,6 +6,15 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.3.6
+- Minor bug fixes
+
+1.3.5
+- Fixed an issue where lab experimetns would be completed before even being started.
+
+1.3.4
+- Fixed an issue where the "Bonus Science" tab would break the operations manager in the VAB/SPH.
+
 1.3.3 Science Overhaul
 
 - Experiment Manifest and transfer screens now list the part they're associated with.

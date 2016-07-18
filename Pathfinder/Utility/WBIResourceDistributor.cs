@@ -21,6 +21,9 @@ namespace WildBlueIndustries
     [KSPModule("Resource Distributor")]
     public class WBIResourceDistributor : PartModule, IOpsView
     {
+        [KSPField()]
+        public string resourceBlacklist = string.Empty;
+
         [KSPField(guiName = "Distributor", isPersistant = true, guiActiveEditor = true, guiActive = true)]
         [UI_Toggle(enabledText = "On", disabledText = "Off")]
         public bool distributeResources;
@@ -34,6 +37,13 @@ namespace WildBlueIndustries
         {
             List<string> requiredResourceNames = new List<string>();
             List<BaseConverter> converters = null;
+            int index, totalCount, totalRequired, reqIndex;
+            BaseConverter converter;
+            PartResource resource;
+            ResourceRatio ratio;
+
+            //Log info
+            Debug.Log(this.part.partInfo.title + " is gathering resources to distribute.");
 
             //Clear the lists passed in.
             sharedResources.Clear();
@@ -41,30 +51,62 @@ namespace WildBlueIndustries
 
             //If the part does not particupate in resource distribution then we're done.
             if (distributeResources == false)
+            {
+                Debug.Log("This part is not participating in resource distribution");
                 return;
+            }
 
             //Find all the required resources (if any)
             converters = this.part.FindModulesImplementing<BaseConverter>();
-            foreach (BaseConverter converter in converters)
+            totalCount = converters.Count;
+            for (index = 0; index < totalCount; index++)
             {
-                foreach (ResourceRatio ratio in converter.reqList)
+                converter = converters[index];
+                totalRequired = converter.reqList.Count;
+                for (reqIndex = 0; reqIndex < totalRequired; reqIndex++)
+                {
+                    //Get the resource
+                    ratio = converter.reqList[reqIndex];
+                    
+                    //Add the required resource to the list.
                     requiredResourceNames.Add(ratio.ResourceName);
+                    Debug.Log("Added " + ratio.ResourceName + " to required resouce names list");
+                }
             }
 
             //Now go through our resource list and divide them up between the two lists
-            foreach (PartResource resource in this.part.Resources)
+            totalCount = this.part.Resources.Count;
+            for (index = 0; index < totalCount; index++)
             {
-                //If the resource is locked then move to the next resource.
-                if (resource.isTweakable == false)
+                resource = this.part.Resources[index];
+
+                //See if the resource is on the ignore list
+                if (resourceBlacklist.Contains(resource.resourceName))
+                {
+                    Debug.Log("Skipping " + resource.resourceName + ", it is blacklisted.");
                     continue;
+                }
 
                 //Add to the appropriate list
-                if (requiredResourceNames.Contains(resource.name) == false)
+                if (requiredResourceNames.Contains(resource.resourceName) == false)
+                {
+                    //If the resource is locked then move to the next resource.
+                    if (resource.flowState == false)
+                    {
+                        Debug.Log("Skipping " + resource.resourceName + ", it is locked.");
+                        continue;
+                    }
+
+                    Debug.Log("Added " + resource.resourceName + " to shared resources");
                     sharedResources.Add(resource);
+                }
 
                 //Only add resource to required resource list if it's not full.
                 else if (resource.amount < resource.maxAmount)
+                {
+                    Debug.Log("Added " + resource.resourceName + " to required resources");
                     requiredResources.Add(resource);
+                }
             }
         }
 

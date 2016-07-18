@@ -58,8 +58,7 @@ namespace WildBlueIndustries
                     exWorkshop = mod;
             }
 
-            if (string.IsNullOrEmpty(opsViewTitle) == false)
-                opsManagerView.WindowTitle = opsViewTitle;
+            opsManagerView.WindowTitle = this.part.partInfo.title + " Operations";
         }
 
         public override void OnUpdate()

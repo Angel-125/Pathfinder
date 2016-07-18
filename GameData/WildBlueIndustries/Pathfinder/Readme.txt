@@ -8,6 +8,13 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.30
+- Fixed attachment node issues with the Switchback 2
+- Resource distribution will now correctly ignore resources that are locked or that are required by various converters. All resources in a part will be distributed if the distributor is active and the resource isn't required by a converter, and the resource is unlocked.
+- Adjusted empty mass of the Hacienda to bring it in line with the other inflatable modules.
+- Fixed an issue where the geology lab GUI wasn't showing up.
+- Operations Managers now show the correct part name.
+
 0.9.29
 - Updated WBT
 

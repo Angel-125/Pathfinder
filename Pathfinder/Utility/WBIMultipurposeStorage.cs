@@ -53,6 +53,7 @@ namespace WildBlueIndustries
             anim = this.part.FindModelAnimators(animationName)[0];
 
             prevTemplateName = CurrentTemplateName;
+            opsManagerView.WindowTitle = this.part.partInfo.title + " Operations";
         }
 
         public override void OnUpdate()

@@ -32,6 +32,12 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.3.2
+- Recompiled to latest WBT
+
+0.3.1
+- Update to WBT
+
 0.3.0
 
 New Parts
