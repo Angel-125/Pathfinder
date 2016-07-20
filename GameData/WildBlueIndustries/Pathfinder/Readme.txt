@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.31
+- Removed deprecated Switchback that is no longer deprecated. This was likely causing the duplicate Switchback issues seen in the tech tree.
+
 0.9.30
 - Fixed attachment node issues with the Switchback 2
 - Resource distribution will now correctly ignore resources that are locked or that are required by various converters. All resources in a part will be distributed if the distributor is active and the resource isn't required by a converter, and the resource is unlocked.
