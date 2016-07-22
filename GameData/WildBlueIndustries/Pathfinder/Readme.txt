@@ -8,6 +8,20 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.32
+
+Conestoga
+- Added lights all around the part.
+- Adjusted consumption rate of the MPU to be in line with stock fuel cells and MOLE's MPUs.
+
+Stockyards
+- If you have MOLE installed, the Stockyard 250 and 375 won't be available (existing craft won't break, you just won't be able to build new ones with Stockyards); use the ones in MOLE instead. NOTE: You'll neeed Extraplanetary Launchpads installed to see the parts.
+
+Bug Fixes
+- Fixed the Konkrete and Slag templates so that they'll be named properly and store the correct resources.
+- Fixed storage issues for the Cryo Fuel templates.
+- Fixed an issue where the Spyglass spotlight animation didn't rotate properly upon reloading the scene.
+
 0.9.31
 - Removed deprecated Switchback that is no longer deprecated. This was likely causing the duplicate Switchback issues seen in the tech tree.
 

@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.3.3
+- Moved OmniWheel's tech tree node to Space Exploration.
+
 0.3.2
 - Recompiled to latest WBT
 
