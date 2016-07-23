@@ -50,7 +50,10 @@ namespace WildBlueIndustries
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
-            anim = this.part.FindModelAnimators(animationName)[0];
+            Animation[] animators = this.part.FindModelAnimators(animationName);
+
+            if (animators != null)
+                anim = animators[0];
 
             prevTemplateName = CurrentTemplateName;
             opsManagerView.WindowTitle = this.part.partInfo.title + " Operations";

@@ -34,10 +34,6 @@ namespace WildBlueIndustries
         [KSPField(isPersistant = true)]
         public int distributionMode;
 
-//        [KSPField(guiName = "Distribution", isPersistant = true, guiActiveEditor = true, guiActive = true)]
-//        [UI_Toggle(enabledText = "On", disabledText = "Off")]
-//        public bool distributeResources;
-
         public EDistributionModes distribution;
 
         [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Mode")]
@@ -57,6 +53,13 @@ namespace WildBlueIndustries
                     distribution = EDistributionModes.DistributionModeOff;
                     break;
             }
+            distributionMode = (int)distribution;
+            setDistributionModeGUI();
+        }
+
+        public void SetDistributionMode(EDistributionModes mode)
+        {
+            distribution = mode;
             distributionMode = (int)distribution;
             setDistributionModeGUI();
         }
@@ -226,6 +229,12 @@ namespace WildBlueIndustries
             this.part.Resources[resourceName].amount = this.part.Resources[resourceName].maxAmount * sharePercent;
         }
 
+        public void SetGUIVisible(bool isVisible)
+        {
+            Events["ToggleDistributionMode"].guiActive = false;
+            Events["ToggleDistributionMode"].guiActiveEditor = false;
+        }
+
         #region IOpsView
         public string GetPartTitle()
         {
@@ -234,8 +243,7 @@ namespace WildBlueIndustries
 
         public virtual void SetContextGUIVisible(bool isVisible)
         {
-            Events["ToggleDistributionMode"].guiActive = false;
-            Events["ToggleDistributionMode"].guiActiveEditor = false;
+            SetGUIVisible(isVisible);
         }
 
         public virtual void DrawOpsWindow(string buttonLabel)

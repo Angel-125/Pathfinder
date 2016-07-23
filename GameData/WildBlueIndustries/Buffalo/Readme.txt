@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.4.0
+- Flex Fuel Power Pack can now run on LiquidFuel & IntakeAir. It produces as much ElectricCharge as LiquidFuel/Oxidizer. Thanks for the suggestion, Geschosskopf! :)
+
 0.3.4
 - Updated the resource distribution on the Wagon parts.
 

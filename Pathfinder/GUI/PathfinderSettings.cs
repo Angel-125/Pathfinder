@@ -159,8 +159,11 @@ namespace WildBlueIndustries
             if (GUILayout.Button("Distribute Resources"))
                 WBIDistributionManager.Instance.DistributeResources();
 
-            if (GUILayout.Button("Active Vessel: Opt-In"))
+            if (GUILayout.Button("Active Vessel: Opt-In (Distributor)"))
                 WBIDistributionManager.Instance.OptInActiveVessel();
+
+            if (GUILayout.Button("Active Vessel: Opt-In (Consumer)"))
+                WBIDistributionManager.Instance.OptInConsumerActiveVessel();
 
             if (GUILayout.Button("Active Vessel: Opt-Out"))
                 WBIDistributionManager.Instance.OptOutActiveVessel();
@@ -178,10 +181,7 @@ namespace WildBlueIndustries
             WBIAffordableSwitcher.checkForSkill = requireSkillCheck;
             WBITemplateConverter.payForReconfigure = payToRemodel;
             WBITemplateConverter.checkForSkill = requireSkillCheck;
-            GeoSurveyCamera.repairsRequireResources = repairsRequireResources;
             WBIBreakableResourceConverter.repairsRequireResources = repairsRequireResources;
-            GeoSurveyCamera.terrainCanBreak = partsCanBreak;
-            WBIBreakableResourceConverter.canBreak = partsCanBreak;
             WBIResourceConverter.repairsRequireResources = repairsRequireResources;
             WBIResourceConverter.partsCanBreak = partsCanBreak;
             WBIResourceConverter.requireSkillCheck = requireSkillCheck;
@@ -249,7 +249,7 @@ namespace WildBlueIndustries
                 if (string.IsNullOrEmpty(value) == false)
                     partsCanBreak = bool.Parse(value);
                 else
-                    partsCanBreak = GeoSurveyCamera.terrainCanBreak;
+                    partsCanBreak = WBIResourceConverter.partsCanBreak;
 
                 drillTechNode = nodeSettings.GetValue("drillTechNode");
 
@@ -276,7 +276,7 @@ namespace WildBlueIndustries
                 payToRemodel = WBIAffordableSwitcher.payForReconfigure;
                 requireSkillCheck = WBIAffordableSwitcher.checkForSkill;
                 repairsRequireResources = GeoSurveyCamera.repairsRequireResources;
-                partsCanBreak = GeoSurveyCamera.terrainCanBreak;
+                partsCanBreak = WBIResourceConverter.partsCanBreak;
                 drillTechNode = kDefaultDrillTechNode;
             }
 
@@ -284,9 +284,6 @@ namespace WildBlueIndustries
             WBIAffordableSwitcher.checkForSkill = requireSkillCheck;
             WBITemplateConverter.payForReconfigure = payToRemodel;
             WBITemplateConverter.checkForSkill = requireSkillCheck;
-            GeoSurveyCamera.repairsRequireResources = repairsRequireResources;
-            GeoSurveyCamera.terrainCanBreak = partsCanBreak;
-            WBIBreakableResourceConverter.canBreak = partsCanBreak;
             WBIDistributionManager.secondsPerCycle = secondsBetweenDistribution;
             WBIResourceConverter.repairsRequireResources = repairsRequireResources;
             WBIResourceConverter.partsCanBreak = partsCanBreak;

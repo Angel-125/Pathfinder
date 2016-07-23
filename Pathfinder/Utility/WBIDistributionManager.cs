@@ -60,21 +60,49 @@ namespace WildBlueIndustries
         public void OptInActiveVessel()
         {
             List<WBIResourceDistributor> distributors = null;
+            WBIResourceDistributor distributor;
+            int totalCount;
 
             distributors = FlightGlobals.ActiveVessel.FindPartModulesImplementing<WBIResourceDistributor>();
+            totalCount = distributors.Count;
 
-            foreach (WBIResourceDistributor distributor in distributors)
-                distributor.distribution = EDistributionModes.DistributionModeDistributor;
+            for (int index = 0; index < totalCount; index++)
+            {
+                distributor = distributors[index];
+                distributor.SetDistributionMode(EDistributionModes.DistributionModeDistributor);
+            }
+        }
+
+        public void OptInConsumerActiveVessel()
+        {
+            List<WBIResourceDistributor> distributors = null;
+            WBIResourceDistributor distributor;
+            int totalCount;
+
+            distributors = FlightGlobals.ActiveVessel.FindPartModulesImplementing<WBIResourceDistributor>();
+            totalCount = distributors.Count;
+
+            for (int index = 0; index < totalCount; index++)
+            {
+                distributor = distributors[index];
+                distributor.SetDistributionMode(EDistributionModes.DistributionModeConsumer);
+            }
         }
 
         public void OptOutActiveVessel()
         {
             List<WBIResourceDistributor> distributors = null;
+            WBIResourceDistributor distributor;
+            int totalCount;
 
             distributors = FlightGlobals.ActiveVessel.FindPartModulesImplementing<WBIResourceDistributor>();
+            totalCount = distributors.Count;
 
-            foreach (WBIResourceDistributor distributor in distributors)
-                distributor.distribution = EDistributionModes.DistributionModeOff;
+            for (int index = 0; index < totalCount; index++)
+            {
+                distributor = distributors[index];
+                distributor.SetDistributionMode(EDistributionModes.DistributionModeOff);
+            }
         }
 
         public void DistributeResources()
@@ -88,10 +116,18 @@ namespace WildBlueIndustries
             double amountRemaining;
             double grandCapacity;
             double sharePercent;
+            Vessel vessel;
+            int totalVessels, totalDistributors, vesselIndex, distributorIndex;
+            WBIResourceDistributor distributor;
+            string[] tallyKeys;
+            int totalTallyKeys, keyIndex;
+            string resourceName;
 
             //Get the list of all the vessels within physics range (they're loaded)
-            foreach (Vessel vessel in FlightGlobals.Vessels)
+            totalVessels = FlightGlobals.Vessels.Count;
+            for (vesselIndex = 0; vesselIndex < totalVessels; vesselIndex++)
             {
+                vessel = FlightGlobals.Vessels[vesselIndex];
                 if (vessel.loaded)
                 {
                     if (vessel.situation != Vessel.Situations.PRELAUNCH && vessel.situation != Vessel.Situations.LANDED && vessel.situation != Vessel.Situations.SPLASHED)
@@ -101,9 +137,11 @@ namespace WildBlueIndustries
                     }
 
                     distributors = vessel.FindPartModulesImplementing<WBIResourceDistributor>();
+                    totalDistributors = distributors.Count;
 
-                    foreach (WBIResourceDistributor distributor in distributors)
+                    for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
                     {
+                        distributor = distributors[distributorIndex];
                         //If the distributor is actively participating then tally its resources.
                         if (distributor.distribution != EDistributionModes.DistributionModeOff)
                             tallyResources(distributor);
@@ -114,8 +152,11 @@ namespace WildBlueIndustries
             //Now go through each resource in the dictionary of shared resources.
             //Take the grand total and distribute it amongst the dictionary of required resources (if an entry exists) first.
             //Take whatever is left and divide it amongst the shared distributors.
-            foreach (string resourceName in sharedResourceTally.Keys)
+            tallyKeys = sharedResourceTally.Keys.ToArray<string>();
+            totalTallyKeys = tallyKeys.Length;
+            for (keyIndex = 0; keyIndex < totalTallyKeys; keyIndex++)
             {
+                resourceName = tallyKeys[keyIndex];
                 amountRemaining = sharedResourceTally[resourceName].grandTotal;
                 grandCapacity = sharedResourceTally[resourceName].grandCapacity;
 
@@ -127,8 +168,10 @@ namespace WildBlueIndustries
                 if (requiredResourceTally.ContainsKey(resourceName))
                 {
                     talliedResource = requiredResourceTally[resourceName];
-                    foreach (WBIResourceDistributor distributor in talliedResource.distributors)
+                    totalDistributors = talliedResource.distributors.Count;
+                    for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
                     {
+                        distributor = talliedResource.distributors[distributorIndex];
                         amountRemaining = distributor.FillRequiredResource(resourceName, amountRemaining);
                         if (amountRemaining < 0.001f)
                             break;
@@ -142,8 +185,12 @@ namespace WildBlueIndustries
                 //Now distribute the leftovers to the shared distributors
                 sharePercent = amountRemaining / grandCapacity;
                 talliedResource = sharedResourceTally[resourceName];
-                foreach (WBIResourceDistributor distibutor in talliedResource.distributors)
-                    distibutor.TakeShare(resourceName, sharePercent);
+                totalDistributors = talliedResource.distributors.Count;
+                for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
+                {
+                    distributor = talliedResource.distributors[distributorIndex];
+                    distributor.TakeShare(resourceName, sharePercent);
+                }
             }
 
             //Cleanup
@@ -157,13 +204,18 @@ namespace WildBlueIndustries
             List<PartResource> sharedResources = new List<PartResource>();
             List<PartResource> requiredResources = new List<PartResource>();
             TalliedResource talliedResource;
+            PartResource resource;
+            int totalCount;
 
             //Get the list of shared and required resources
             distributor.GetResourcesToDistribute(sharedResources, requiredResources);
 
             //For each required resource, add the distributor to the required resources map.
-            foreach (PartResource resource in requiredResources)
+            totalCount = requiredResources.Count;
+            for (int index = 0; index < totalCount; index++)
             {
+                resource = requiredResources[index];
+
                 //Add the resource to the dictionary if needed.
                 if (requiredResourceTally.ContainsKey(resource.resourceName) == false)
                 {
@@ -177,8 +229,11 @@ namespace WildBlueIndustries
             }
 
             //Now add all non-required resources
-            foreach (PartResource resource in sharedResources)
+            totalCount = sharedResources.Count;
+            for (int index = 0; index < totalCount; index++)
             {
+                resource = sharedResources[index];
+
                 //Add the resource to the dictionary if needed.
                 if (sharedResourceTally.ContainsKey(resource.resourceName) == false)
                 {

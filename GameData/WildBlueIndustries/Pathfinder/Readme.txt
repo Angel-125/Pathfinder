@@ -8,6 +8,22 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.34
+
+Flex Fuel Power Pack
+- Flex Fuel Power Pack can now run on LiquidFuel & IntakeAir. It produces as much ElectricCharge as LiquidFuel/Oxidizer. Thanks for the suggestion, Geschosskopf! :)
+- Added exhaust effects.
+
+Buffalo Crew Cabin
+- Added a node on the top to help facilitate mounting the Flex Fuel Power Pack.
+
+M1-A1
+- you can now decouple the OmniWheel when it is surface attached as well as when node mounted.
+
+Rendering Performance
+- Improved performance and reduced memory footprint for resource distribution.
+- Improved rendering performancs of the Operations Manager.
+
 0.9.33
 
 Heat Generation
