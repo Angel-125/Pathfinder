@@ -102,7 +102,6 @@
     <Compile Include="Utility\WBIResourceDistributor.cs" />
     <Compile Include="Parts\WBIConestoga.cs" />
     <Compile Include="Parts\WBISpyglassOpsView.cs" />
-    <Compile Include="Utility\WBIStorageDistributor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">

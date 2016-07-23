@@ -64,7 +64,7 @@ namespace WildBlueIndustries
             distributors = FlightGlobals.ActiveVessel.FindPartModulesImplementing<WBIResourceDistributor>();
 
             foreach (WBIResourceDistributor distributor in distributors)
-                distributor.distributeResources = true;
+                distributor.distribution = EDistributionModes.DistributionModeDistributor;
         }
 
         public void OptOutActiveVessel()
@@ -74,7 +74,7 @@ namespace WildBlueIndustries
             distributors = FlightGlobals.ActiveVessel.FindPartModulesImplementing<WBIResourceDistributor>();
 
             foreach (WBIResourceDistributor distributor in distributors)
-                distributor.distributeResources = false;
+                distributor.distribution = EDistributionModes.DistributionModeOff;
         }
 
         public void DistributeResources()
@@ -94,12 +94,18 @@ namespace WildBlueIndustries
             {
                 if (vessel.loaded)
                 {
+                    if (vessel.situation != Vessel.Situations.PRELAUNCH && vessel.situation != Vessel.Situations.LANDED && vessel.situation != Vessel.Situations.SPLASHED)
+                    {
+                        Debug.Log("Skipping vessel due to situation: " + vessel.situation);
+                        continue;
+                    }
+
                     distributors = vessel.FindPartModulesImplementing<WBIResourceDistributor>();
 
                     foreach (WBIResourceDistributor distributor in distributors)
                     {
                         //If the distributor is actively participating then tally its resources.
-                        if (distributor.distributeResources)
+                        if (distributor.distribution != EDistributionModes.DistributionModeOff)
                             tallyResources(distributor);
                     }
                 }
@@ -129,9 +135,9 @@ namespace WildBlueIndustries
                     }
                 }
 
-                //If we have nothing left over then we're done.
+                //If we have nothing left over then we're not done, we need to clean out the distributors.
                 if (amountRemaining < 0.001f)
-                    break;
+                    amountRemaining = 0f;
 
                 //Now distribute the leftovers to the shared distributors
                 sharePercent = amountRemaining / grandCapacity;

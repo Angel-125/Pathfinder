@@ -18,16 +18,75 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
+    public enum EDistributionModes
+    {
+        DistributionModeOff,
+        DistributionModeDistributor,
+        DistributionModeConsumer
+    }
+
     [KSPModule("Resource Distributor")]
     public class WBIResourceDistributor : PartModule, IOpsView
     {
         [KSPField()]
         public string resourceBlacklist = string.Empty;
 
-        [KSPField(guiName = "Distributor", isPersistant = true, guiActiveEditor = true, guiActive = true)]
-        [UI_Toggle(enabledText = "On", disabledText = "Off")]
-        public bool distributeResources;
+        [KSPField(isPersistant = true)]
+        public int distributionMode;
 
+//        [KSPField(guiName = "Distribution", isPersistant = true, guiActiveEditor = true, guiActive = true)]
+//        [UI_Toggle(enabledText = "On", disabledText = "Off")]
+//        public bool distributeResources;
+
+        public EDistributionModes distribution;
+
+        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Mode")]
+        public void ToggleDistributionMode()
+        {
+            switch (distribution)
+            {
+                case EDistributionModes.DistributionModeOff:
+                    distribution = EDistributionModes.DistributionModeDistributor;
+                    break;
+
+                case EDistributionModes.DistributionModeDistributor:
+                    distribution = EDistributionModes.DistributionModeConsumer;
+                    break;
+
+                case EDistributionModes.DistributionModeConsumer:
+                    distribution = EDistributionModes.DistributionModeOff;
+                    break;
+            }
+            distributionMode = (int)distribution;
+            setDistributionModeGUI();
+        }
+
+        protected void setDistributionModeGUI()
+        {
+            switch (distribution)
+            {
+                case EDistributionModes.DistributionModeDistributor:
+                    Events["ToggleDistributionMode"].guiName = "Dist. Mode: Distributor";
+                    break;
+
+                case EDistributionModes.DistributionModeConsumer:
+                    Events["ToggleDistributionMode"].guiName = "Dist. Mode: Consumer";
+                    break;
+
+                case EDistributionModes.DistributionModeOff:
+                default:
+                    Events["ToggleDistributionMode"].guiName = "Distribution Off";
+                    break;
+            }
+        }
+
+        public override void OnStart(StartState state)
+        {
+            base.OnStart(state);
+            distribution = (EDistributionModes)distributionMode;
+            setDistributionModeGUI();
+        }
+        
         public override string GetInfo()
         {
             return "Distributes resources to nearby vessels. Lock individual resources to prevent distribution, or disable the distributor to exclude the part.";
@@ -44,13 +103,14 @@ namespace WildBlueIndustries
 
             //Log info
             Debug.Log(this.part.partInfo.title + " is gathering resources to distribute.");
+            Debug.Log("Current Mode: " + distribution);
 
             //Clear the lists passed in.
             sharedResources.Clear();
             requiredResources.Clear();
 
             //If the part does not particupate in resource distribution then we're done.
-            if (distributeResources == false)
+            if (distribution == EDistributionModes.DistributionModeOff)
             {
                 Debug.Log("This part is not participating in resource distribution");
                 return;
@@ -97,8 +157,19 @@ namespace WildBlueIndustries
                         continue;
                     }
 
-                    Debug.Log("Added " + resource.resourceName + " to shared resources");
-                    sharedResources.Add(resource);
+                    //Share the resource if we're a distributor
+                    if (distribution == EDistributionModes.DistributionModeDistributor)
+                    {
+                        Debug.Log("Added " + resource.resourceName + " to shared resources");
+                        sharedResources.Add(resource);
+                    }
+
+                    //Part is a consumer. Only add resource to required resource list if it's not full.
+                    else if (resource.amount < resource.maxAmount)
+                    {
+                        Debug.Log("Added " + resource.resourceName + " to required resources");
+                        requiredResources.Add(resource);
+                    }
                 }
 
                 //Only add resource to required resource list if it's not full.
@@ -150,8 +221,6 @@ namespace WildBlueIndustries
                 return;
             if (this.part.Resources.Contains(resourceName) == false)
                 return;
-            if (sharePercent == 0f)
-                return;
 
             //Set our share amount
             this.part.Resources[resourceName].amount = this.part.Resources[resourceName].maxAmount * sharePercent;
@@ -165,8 +234,8 @@ namespace WildBlueIndustries
 
         public virtual void SetContextGUIVisible(bool isVisible)
         {
-            Fields["distributeResources"].guiActive = false;
-            Fields["distributeResources"].guiActiveEditor = false;
+            Events["ToggleDistributionMode"].guiActive = false;
+            Events["ToggleDistributionMode"].guiActiveEditor = false;
         }
 
         public virtual void DrawOpsWindow(string buttonLabel)
@@ -174,7 +243,8 @@ namespace WildBlueIndustries
             GUILayout.BeginVertical();
 
             GUILayout.BeginScrollView(new Vector2(), new GUIStyle(GUI.skin.textArea), new GUILayoutOption[] { GUILayout.Height(480) });
-            distributeResources = GUILayout.Toggle(distributeResources, "Enable resource distribution");
+            if (GUILayout.Button(Events["ToggleDistributionMode"].guiName))
+                ToggleDistributionMode();
             GUILayout.EndScrollView();
 
             GUILayout.EndVertical();

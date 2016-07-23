@@ -8,6 +8,19 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.33
+
+Heat Generation
+- To help prevent barbequing kerbals and bases, the Claimjumper's and Gold Digger's heat generation has been disabled for the time being until the problem can be sorted out. It appears to be an issue between KSP's FlightIntegrator and ModuleCoreHeat. Not much I can do about that... Currently Pathfinder's other converters don't generate heat.
+- Added "maxSkinTemp" to all base building parts.
+
+Resource Distribution
+- You can add resources to the new resourceBlacklist and they won't be distributed. Example: ReplacementParts are used by USI-LS to determine module wear, so they go on the blacklist. The blacklist is defined in the part config's MODULE node.
+- You can now set the distribution mode to Distributor, Consumer, or Off.
+  Distributor: The part's resources will be distributed if the resource isn't required by a converter and it is unlocked.
+  Consumer: the part's resources will be filled to capacity if the resource is unlocked.
+- Resource distribution is now restricted to vessels/bases that are landed, splashed, or in prelaunch. Thanks for the suggestion, Geschosskopf! :)
+
 0.9.32
 
 Conestoga
@@ -15,7 +28,7 @@ Conestoga
 - Adjusted consumption rate of the MPU to be in line with stock fuel cells and MOLE's MPUs.
 
 Stockyards
-- If you have MOLE installed, the Stockyard 250 and 375 won't be available (existing craft won't break, you just won't be able to build new ones with Stockyards); use the ones in MOLE instead. NOTE: You'll neeed Extraplanetary Launchpads installed to see the parts.
+- If you have MOLE installed, the Stockyard 250 and 375 won't be available (existing craft won't break, you just won't be able to build new ones with Stockyards); use the ones in MOLE instead.
 
 Bug Fixes
 - Fixed the Konkrete and Slag templates so that they'll be named properly and store the correct resources.
