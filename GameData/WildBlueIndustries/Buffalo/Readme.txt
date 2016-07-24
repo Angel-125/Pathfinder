@@ -32,8 +32,23 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.4.1
+- Reduced fuel consumption of the LiquidFuel & IntakeAir option for the Flex Fuel Power Pack due to its limited use environments.
+
 0.4.0
+Flex Fuel Power Pack
 - Flex Fuel Power Pack can now run on LiquidFuel & IntakeAir. It produces as much ElectricCharge as LiquidFuel/Oxidizer. Thanks for the suggestion, Geschosskopf! :)
+- Added exhaust effects.
+
+Buffalo Crew Cabin
+- Added a node on the top to help facilitate mounting the Flex Fuel Power Pack.
+
+M1-A1
+- you can now decouple the OmniWheel when it is surface attached as well as when node mounted.
+
+Rendering Performance
+- Improved performance and reduced memory footprint for resource distribution.
+- Improved rendering performancs of the Operations Manager.
 
 0.3.4
 - Updated the resource distribution on the Wagon parts.
