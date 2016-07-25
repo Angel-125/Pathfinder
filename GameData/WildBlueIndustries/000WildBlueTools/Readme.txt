@@ -6,6 +6,10 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.3.11
+- Added WBISelfDestruct and WBIOmniDecouple.
+- If fuel tanks are arrayed symmetrically, you'll no longer be able to reconfigure them. It's either that or let the game explode (ie nothing I can do about it except prevent players from changing symmetrical tanks).
+
 1.3.10
 - Fixed an issue where the greenhouse wasn't properly calculating the crop growth time.
 - Fixed an NRE with lights

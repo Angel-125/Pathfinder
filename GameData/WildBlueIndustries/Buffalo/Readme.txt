@@ -32,6 +32,13 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.4.2
+- Fixed an issue with the editor locking up when using the M1-A1 Mountain Goat.
+- The M1-A1 can now self-destruct in addition to decoupling (both when surface attached and node attached).
+- Reduced the ejection force used when the M1-A1 is decoupled.
+- The Buffalo Command Cab window lighting now toggles on/off with the headlights.
+- If fuel tanks are arrayed symmetrically, you'll no longer be able to reconfigure them. It's either that or let the game explode (ie nothing I can do about it except prevent players from changing symmetrical tanks).
+
 0.4.1
 - Reduced fuel consumption of the LiquidFuel & IntakeAir option for the Flex Fuel Power Pack due to its limited use environments.
 
