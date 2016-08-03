@@ -8,6 +8,31 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.36
+
+New Part
+- Added 2U Slim Chassis.
+
+Flex Fuel Power Pack
+- The Flex Fuel Power Pack now uses the standard configurable storage window to select flex fuel types. You still need to go EVA to change it, and it requires an Engineer (unless you turn off the skill requirement).
+- The Flex Fuel Power Pack will have the appropriate fuel resource storage for the selected fuel type.
+
+Spyglass
+- The Spyglass now counts as a cupola in base building contracts. Thanks for the suggestion, lukeduff! :)
+
+Resources
+- Added the Uraninite template. Thansk for the suggestion, lukeduff! :)
+- All Buffalo chassis parts can now participate in Pathfinder's resource distribution.
+- The Outback now uses the standard resource configuration window.
+- You can now change the configration on tanks with symmetrical parts. In the SPH/VAB it will happen automatically when you select a new configuration. After launch, you'll have the option to change symmetrical tanks.
+
+Nukeworks
+- The Nukeworks can serve as a radioactive storage container if you have Near Future Electrical installed. Thanks for the suggestion, lukeduff! :)
+
+Bug Fixes
+- Fixed an issue where the Buffalo asteroid scanner would not display the results window after scanning an asteroid.
+- Fixed an issue where duplicate entries for the commercial science lab were visible in KPBS labs.
+
 0.9.35
 - Fixed an issue with the editor locking up when using the M1-A1 Mountain Goat.
 - The M1-A1 can now self-destruct in addition to decoupling (both when surface attached and node attached).

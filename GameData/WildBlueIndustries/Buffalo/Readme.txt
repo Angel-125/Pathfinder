@@ -32,6 +32,24 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.5
+New Part
+- Added 2U Slim Chassis.
+
+Bug Fixes & Enhancements
+- You can now change the configration on tanks with symmetrical parts. In the SPH/VAB it will happen automatically when you select a new configuration. After launch, you'll have the option to change symmetrical tanks.
+- Fixed an issue where the Buffalo asteroid scanner would not display the results window after scanning an asteroid.
+- Fixed an issue where the JetWing hover GUI would not appear.
+- Fixed an issue where the JetWing would disable RCS on the entire vessel when it had no engine thrust.
+
+Flex Fuel Power Pack
+- The Flex Fuel Power Pack now uses the standard configurable storage window to select flex fuel types. You still need to go EVA to change it, and it requires an Engineer (Pathfinder users can turn off the skill requirement).
+- The Flex Fuel Power Pack will have the appropriate fuel resource storage for the selected fuel type.
+
+Resources
+- All Buffalo chassis parts can now participate in Pathfinder's resource distribution.
+- The Outback now uses the standard resource configuration window.
+
 0.4.2
 - Fixed an issue with the editor locking up when using the M1-A1 Mountain Goat.
 - The M1-A1 can now self-destruct in addition to decoupling (both when surface attached and node attached).
