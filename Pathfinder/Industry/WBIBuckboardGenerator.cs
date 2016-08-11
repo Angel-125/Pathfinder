@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 namespace WildBlueIndustries
 {
     [KSPModule("Buckboard Generator")]
-    public class WBIBuckboardGenerator : WBIBreakableResourceConverter
+    public class WBIBuckboardGenerator : WBIPowerGenerator
     {
         [KSPField]
         public string smokeTransform;

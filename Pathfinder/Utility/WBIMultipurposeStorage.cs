@@ -52,7 +52,7 @@ namespace WildBlueIndustries
             base.OnStart(state);
             Animation[] animators = this.part.FindModelAnimators(animationName);
 
-            if (animators != null)
+            if (animators != null && animators.Length > 0)
                 anim = animators[0];
 
             prevTemplateName = CurrentTemplateName;

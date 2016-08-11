@@ -233,7 +233,7 @@ namespace WildBlueIndustries
             return this.part.partInfo.title;
         }
 
-        public void SetContextGUIVisible(bool isVisible)
+        public virtual void SetContextGUIVisible(bool isVisible)
         {
             SetGuiVisible(isVisible);
         }

@@ -6,6 +6,11 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.4.0
+- Added animation button prop to control external animations from the IVA.
+- The cabin lights button prop can now control external light animations.
+- Fixed an issue where resources required by experiments wouldn't be accumulated.
+
 1.3.13
 - Added template for Uraninite.
 
