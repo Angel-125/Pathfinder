@@ -8,11 +8,14 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+0.9.39
+- You can climb into the Doc Science Lab again.
+- Part mass is now correctly calculated.
+- Updated formula for producing Glykerol.
+
 0.9.38
 - All generators (Buckboards, HotSprings, SolarFlare) now list how much EC they are generating.
 - If a part is participating in resource distribution, and the resource isn't required by a converter or on the blacklist, then you can now individually set a resource to be shared, consumed, or ignored.
-
-0.9.37
 - Added support for USI-LS to Buffalo parts.
 
 0.9.36

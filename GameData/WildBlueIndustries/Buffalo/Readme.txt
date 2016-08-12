@@ -32,10 +32,11 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
-0.6.1
+0.6.2
 - Updated to latest WBT
 
-0.6
+0.6.1
+- Updated to latest WBT
 - Added support for USI-LS to Buffalo parts.
 
 0.5

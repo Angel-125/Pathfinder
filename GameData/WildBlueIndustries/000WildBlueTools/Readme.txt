@@ -6,6 +6,9 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.4.1
+- Part mass is now correctly calculated.
+
 1.4.0
 - Added animation button prop to control external animations from the IVA.
 - The cabin lights button prop can now control external light animations.
