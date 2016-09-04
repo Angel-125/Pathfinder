@@ -105,49 +105,120 @@ namespace WildBlueIndustries
             }
         }
 
+        public double GetDistributedAmount(string resourceName)
+        {
+            double distributedAmount = 0f;
+
+            getDistributors();
+            if (sharedResourceTally.ContainsKey(resourceName) == false)
+            {
+                Debug.Log(resourceName + " does not appear to be a shared resource");
+                sharedResourceTally.Clear();
+                requiredResourceTally.Clear();
+                return 0f;
+            }
+
+            //Get the amount that we have.
+            distributedAmount = sharedResourceTally[resourceName].grandTotal;
+
+            //Cleanup
+            sharedResourceTally.Clear();
+            requiredResourceTally.Clear();
+            return distributedAmount;
+        }
+
+        public double RequestDistributedResource(string resourceName, double amountRequest, bool acceptPartial = true)
+        {
+            double amountRemaining = 0f;
+            double grandCapacity;
+            double amountObtained = 0f;
+            double sharePercent;
+            TalliedResource talliedResource;
+            WBIResourceDistributor distributor;
+            int totalDistributors, distributorIndex;
+
+            distributionInProgress = true;
+            getDistributors();
+            if (sharedResourceTally.ContainsKey(resourceName) == false)
+            {
+                distributionInProgress = false;
+                sharedResourceTally.Clear();
+                requiredResourceTally.Clear();
+                return 0f;
+            }
+
+            //Get the amount remaining and the grand capacity.
+            amountRemaining = sharedResourceTally[resourceName].grandTotal;
+            grandCapacity = sharedResourceTally[resourceName].grandCapacity;
+            if (amountRemaining < 0.001f && grandCapacity < 0.001f)
+            {
+                distributionInProgress = false;
+                sharedResourceTally.Clear();
+                requiredResourceTally.Clear();
+                return 0f;
+            }
+
+            //If we have more than we need then just provide the amount requested and update.
+            if (amountRemaining > amountRequest)
+            {
+                amountObtained = amountRequest;
+                amountRemaining = amountRemaining - amountRequest;
+            }
+
+            //If the caller accepts partial requests then give what we have.
+            else if (acceptPartial)
+            {
+                amountObtained = amountRemaining;
+                amountRemaining = 0;
+            }
+
+            //Caller doesn't accept partial requests, then we're done.
+            else
+            {
+                distributionInProgress = false;
+                sharedResourceTally.Clear();
+                requiredResourceTally.Clear();
+                return 0;
+            }
+
+            //If we have nothing left over then we're not done, we need to clean out the distributors.
+            if (amountRemaining < 0.001f)
+                amountRemaining = 0f;
+
+            //Now distribute the leftovers to the shared distributors
+            sharePercent = amountRemaining / grandCapacity;
+            talliedResource = sharedResourceTally[resourceName];
+            totalDistributors = talliedResource.distributors.Count;
+            for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
+            {
+                distributor = talliedResource.distributors[distributorIndex];
+                distributor.TakeShare(resourceName, sharePercent);
+            }
+
+            //Cleanup
+            sharedResourceTally.Clear();
+            requiredResourceTally.Clear();
+            distributionInProgress = false;
+            return amountObtained;
+        }
+
+
         public void DistributeResources()
         {
             if (distributionInProgress)
                 return;
             distributionInProgress = true;
 
-            List<WBIResourceDistributor> distributors = null;
+            List<WBIResourceDistributor> distributors = getDistributors();
             TalliedResource talliedResource;
             double amountRemaining;
             double grandCapacity;
             double sharePercent;
-            Vessel vessel;
-            int totalVessels, totalDistributors, vesselIndex, distributorIndex;
+            int totalDistributors, distributorIndex;
             WBIResourceDistributor distributor;
             string[] tallyKeys;
             int totalTallyKeys, keyIndex;
             string resourceName;
-
-            //Get the list of all the vessels within physics range (they're loaded)
-            totalVessels = FlightGlobals.Vessels.Count;
-            for (vesselIndex = 0; vesselIndex < totalVessels; vesselIndex++)
-            {
-                vessel = FlightGlobals.Vessels[vesselIndex];
-                if (vessel.loaded)
-                {
-                    if (vessel.situation != Vessel.Situations.PRELAUNCH && vessel.situation != Vessel.Situations.LANDED && vessel.situation != Vessel.Situations.SPLASHED)
-                    {
-                        Debug.Log("Skipping vessel due to situation: " + vessel.situation);
-                        continue;
-                    }
-
-                    distributors = vessel.FindPartModulesImplementing<WBIResourceDistributor>();
-                    totalDistributors = distributors.Count;
-
-                    for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
-                    {
-                        distributor = distributors[distributorIndex];
-                        //If the distributor is actively participating then tally its resources.
-                        if (distributor.isParticipating)
-                            tallyResources(distributor);
-                    }
-                }
-            }
 
             //Now go through each resource in the dictionary of shared resources.
             //Take the grand total and distribute it amongst the dictionary of required resources (if an entry exists) first.
@@ -197,6 +268,42 @@ namespace WildBlueIndustries
             sharedResourceTally.Clear();
             requiredResourceTally.Clear();
             distributionInProgress = false;
+        }
+
+        protected List<WBIResourceDistributor> getDistributors()
+        {
+            List<WBIResourceDistributor> distributors = null;
+            WBIResourceDistributor distributor;
+            Vessel vessel;
+            int totalVessels, totalDistributors, vesselIndex, distributorIndex;
+
+            //Get the list of all the vessels within physics range (they're loaded)
+            totalVessels = FlightGlobals.Vessels.Count;
+            for (vesselIndex = 0; vesselIndex < totalVessels; vesselIndex++)
+            {
+                vessel = FlightGlobals.Vessels[vesselIndex];
+                if (vessel.loaded)
+                {
+                    if (vessel.situation != Vessel.Situations.PRELAUNCH && vessel.situation != Vessel.Situations.LANDED && vessel.situation != Vessel.Situations.SPLASHED)
+                    {
+                        //Debug.Log("Skipping vessel due to situation: " + vessel.situation);
+                        continue;
+                    }
+
+                    distributors = vessel.FindPartModulesImplementing<WBIResourceDistributor>();
+                    totalDistributors = distributors.Count;
+
+                    for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
+                    {
+                        distributor = distributors[distributorIndex];
+                        //If the distributor is actively participating then tally its resources.
+                        if (distributor.isParticipating)
+                            tallyResources(distributor);
+                    }
+                }
+            } 
+            
+            return distributors;
         }
 
         protected void tallyResources(WBIResourceDistributor distributor)

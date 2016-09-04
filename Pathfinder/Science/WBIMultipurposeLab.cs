@@ -20,22 +20,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 namespace WildBlueIndustries
 {
     [KSPModule("Multipurpose Lab")]
-    public class WBIMultipurposeLab : WBIMultiConverter, IModuleInfo
+    public class WBIMultipurposeLab : WBIMultipurposeHab, IModuleInfo
     {
-        private const string kDocOpsView = "Doc Operations";
-
-        [KSPField]
-        public string partToolTip = string.Empty;
-
-        [KSPField]
-        public string partToolTipTitle = string.Empty;
-
-        [KSPField]
-        public string opsViewTitle = string.Empty;
-
-        Animation anim;
-        WBIScienceConverter scienceConverter;
-        private float originalCrewsRequired;
+        protected WBIScienceConverter scienceConverter;
+        protected float originalCrewsRequired;
 
         public override void OnStart(StartState state)
         {
@@ -45,44 +33,6 @@ namespace WildBlueIndustries
             scienceConverter = this.part.FindModuleImplementing<WBIScienceConverter>();
             scienceConverter.SetGuiVisible(false);
             base.OnStart(state);
-
-            if (string.IsNullOrEmpty(animationName))
-                return;
-            anim = this.part.FindModelAnimators(animationName)[0];
-
-            opsManagerView.WindowTitle = this.part.partInfo.title + " Operations";
-        }
-
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            if (anim == null)
-            {
-                checkAndShowToolTip();
-                return;
-            }
-
-            //We're only interested in the act of inflating the module.
-            if (isDeployed == false)
-            {
-                animationStarted = false;
-                return;
-            }
-
-            //If we've completed the animation then we are done.
-            if (animationStarted == false)
-                return;
-
-            //Animation may not be done yet.
-            if (anim.isPlaying)
-                return;
-
-            //At this point we know that the animation was playing but has now stopped.
-            //We also know that the animation was started. Now reset the flag.
-            animationStarted = false;
-
-            checkAndShowToolTip();
         }
 
         public override void RedecorateModule(bool loadTemplateResources = true)
@@ -92,10 +42,17 @@ namespace WildBlueIndustries
 
             if (CurrentTemplate.HasValue("enableMPLModules"))
                 enableMPLModules = bool.Parse(CurrentTemplate.GetValue("enableMPLModules"));
+
             ModuleScienceLab sciLab = this.part.FindModuleImplementing<ModuleScienceLab>();
             if (sciLab != null)
             {
-                if (enableMPLModules)
+                if (HighLogic.LoadedSceneIsEditor)
+                {
+                    sciLab.isEnabled = false;
+                    sciLab.enabled = false;
+                }
+
+                else if (enableMPLModules)
                 {
                     sciLab.isEnabled = true;
                     sciLab.enabled = true;
@@ -107,86 +64,28 @@ namespace WildBlueIndustries
                     sciLab.isEnabled = false;
                     sciLab.enabled = false;
                 }
-
             }
 
             ModuleScienceConverter converter = this.part.FindModuleImplementing<ModuleScienceConverter>();
             if (converter != null)
             {
-                converter.isEnabled = enableMPLModules;
-                converter.enabled = enableMPLModules;
+                if (HighLogic.LoadedSceneIsEditor)
+                {
+                    converter.isEnabled = enableMPLModules;
+                    converter.enabled = enableMPLModules;
+                }
+
+                else
+                {
+                    converter.isEnabled = enableMPLModules;
+                    converter.enabled = enableMPLModules;
+                }
             }
-        }
-
-        public override void UpdateContentsAndGui(string templateName)
-        {
-            base.UpdateContentsAndGui(templateName);
-
-            //Check to see if we've displayed the tooltip for the template.
-            //First, we're only interested in deployed modules.
-            if (isDeployed == false)
-                return;
-
-            //Now check
-            checkAndShowToolTip();
-        }
-
-        protected void checkAndShowToolTip()
-        {
-            //Now we can check to see if the tooltip for the current template has been shown.
-            WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
-            if (scenario.HasShownToolTip(CurrentTemplateName) && scenario.HasShownToolTip(getMyPartName()))
-                return;
-
-            //Tooltip for the current template has never been shown. Show it now.
-            string toolTipTitle = CurrentTemplate.GetValue("toolTipTitle");
-            string toolTip = CurrentTemplate.GetValue("toolTip");
-
-            if (string.IsNullOrEmpty(toolTipTitle))
-                toolTipTitle = partToolTipTitle;
-
-            //Add the very first part's tool tip.
-            if (scenario.HasShownToolTip(getMyPartName()) == false)
-            {
-                toolTip = partToolTip + "\r\n\r\n" + toolTip;
-
-                scenario.SetToolTipShown(getMyPartName());
-            }
-
-            if (string.IsNullOrEmpty(toolTip) == false)
-            {
-                WBIToolTipWindow toolTipWindow = new WBIToolTipWindow(toolTipTitle, toolTip);
-                toolTipWindow.SetVisible(true);
-
-                //Cleanup
-                scenario.SetToolTipShown(CurrentTemplateName);
-            }
-        }
-
-        protected override void hideEditorGUI(PartModule.StartState state)
-        {
-            base.hideEditorGUI(state);
-            Events["ToggleInflation"].guiActiveEditor = false;
         }
 
         public override string GetInfo()
         {
             return "Click the Manage Operations button to change the configuration.";
-        }
-
-        public string GetModuleTitle()
-        {
-            return "Multipurpose Lab";
-        }
-
-        public string GetPrimaryField()
-        {
-            return "Inflated Crew Capacity: " + inflatedCrewCapacity.ToString();
-        }
-
-        public Callback<Rect> GetDrawModulePanelCallback()
-        {
-            return null;
         }
     }
 }

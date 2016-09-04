@@ -29,6 +29,9 @@ namespace WildBlueIndustries
     [KSPModule("Resource Distributor")]
     public class WBIResourceDistributor : PartModule, IOpsView
     {
+        [KSPField]
+        public bool isConsumer;
+
         [KSPField()]
         public string resourceBlacklist = string.Empty;
 
@@ -138,6 +141,12 @@ namespace WildBlueIndustries
             distributionView.part = this.part;
             distributionView.isParticipating = this.isParticipating;
             distributionView.distributionMap = this.distributionMap;
+
+            if (isConsumer)
+            {
+                Events["SetupDistribution"].guiActive = false;
+                Fields["isParticipating"].guiName = "Acquire Resources";
+            }
         }
 
         void switcher_onModuleRedecorated(ConfigNode templateNode)
@@ -172,6 +181,8 @@ namespace WildBlueIndustries
                 resource = this.part.Resources[index];
                 if (resourceBlacklist.Contains(resource.resourceName) == false)
                     distributionMap.Add(resource.resourceName, EDistributionModes.DistributionModeOff);
+                if (isConsumer)
+                    distributionMap[resource.resourceName] = EDistributionModes.DistributionModeConsume;
             }
 
             //Find all the required resources (if any)
@@ -321,8 +332,18 @@ namespace WildBlueIndustries
 
         public virtual void DrawOpsWindow(string buttonLabel)
         {
-            distributionView.DrawView();
-            isParticipating = distributionView.isParticipating;
+            if (!isConsumer)
+            {
+                distributionView.DrawView();
+                isParticipating = distributionView.isParticipating;
+            }
+
+            else
+            {
+                GUILayout.BeginVertical();
+                isParticipating = GUILayout.Toggle(isParticipating, "Acquire resources");
+                GUILayout.EndVertical();
+            }
         }
 
         public List<string> GetButtonLabels()

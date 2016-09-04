@@ -92,7 +92,7 @@ namespace WildBlueIndustries
         public List<string> GetButtonLabels()
         {
             List<string> buttonLabels = new List<string>();
-            buttonLabels.Add("Science Lab");
+            buttonLabels.Add("Mobile Process");
             return buttonLabels;
         }
 

@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.7.0
+- Added standard width 1u and 2u Solar Flatbeds. If you have parts attached to them then they won't generate ElectricCharge. Thanks for the suggestion, DStaal and Bombaatu! :)
+
 0.6.2
 - Updated to latest WBT
 

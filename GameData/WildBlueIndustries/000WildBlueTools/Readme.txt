@@ -6,6 +6,18 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.6.0
+- Experiments can now be created in the field by some labs. To that end, experiments have the option to specify what resources they need and how much. If not specified, then a default value will be used that's equal to the experiment mass times 10 in the default resource, or a minimum amount of the default resource, whichever is greater.
+- Labs have the ability to restrict the experiments they create based upon a list of tags. Hence experiments may list a set of tags as well. If an experiment has no tags that match the tags required by the lab then it won't show up in the list of experiments that it can create.
+- Experiments can now require asteroids with a minimum mass.
+NOTE: Basic and DeepFreeze experiments are now located in WildBlueTools; there is no effect to MOLE users.
+
+1.5.0
+- Bug fixes and new ice cream flavors.
+
+1.4.2
+- Minor fixes to the science system.
+
 1.4.1
 - Part mass is now correctly calculated.
 

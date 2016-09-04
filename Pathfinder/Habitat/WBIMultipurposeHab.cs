@@ -35,9 +35,9 @@ namespace WildBlueIndustries
         [KSPField]
         public string opsViewTitle;
 
-        Animation anim;
-        PartModule impactSeismometer;
-        PartModule exWorkshop;
+        protected Animation anim;
+        protected PartModule impactSeismometer;
+        protected PartModule exWorkshop;
 
         public override void OnStart(StartState state)
         {
@@ -293,10 +293,26 @@ namespace WildBlueIndustries
             }
         }
 
-        protected override bool canAffordReconfigure(string templateName)
+        protected override bool canAffordReconfigure(string templateName, bool deflatedModulesAutoPass = true)
         {
             WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
-            bool canAfford = base.canAffordReconfigure(templateName);
+            bool canAfford = base.canAffordReconfigure(templateName, deflatedModulesAutoPass);
+            string requiredName = templateManager[templateName].GetValue("requiredResource");
+
+            //If the vessel can't afford to reconfigure the module, then maybe the distribution manager can help.
+            if (canAfford == false)
+            {
+                ScreenMessages.PostScreenMessage("Checking distributors...", 10.0f);
+                if (string.IsNullOrEmpty(requiredName))
+                    return true;
+
+                double distributedAmount = WBIDistributionManager.Instance.GetDistributedAmount(requiredName);
+                if (distributedAmount >= reconfigureCost)
+                {
+                    ScreenMessages.PostScreenMessage("Distributors have enough " + requiredName, 10.0f);
+                    return true;
+                }
+            }
 
             //Add first time for redecoration
             if (!canAfford && scenario.HasShownToolTip(kSettingsWindow) == false)
@@ -308,6 +324,26 @@ namespace WildBlueIndustries
             }
 
             return canAfford;
+        }
+
+        protected override bool payPartsCost(int templateIndex)
+        {
+            bool canAffordCost = base.payPartsCost(templateIndex);
+
+            //Maybe the distribution manager can help?
+            if (canAffordCost == false)
+            {
+                double remodelCost = calculateRemodelCost(templateIndex);
+                string resourceName = templateManager[templateIndex].GetValue("requiredResource");
+                if (string.IsNullOrEmpty(resourceName))
+                    return true;
+
+                double amountObtained = WBIDistributionManager.Instance.RequestDistributedResource(resourceName, remodelCost, false);
+                if (amountObtained > 0f)
+                    return true;
+            }
+
+            return canAffordCost;
         }
 
         protected void checkAndShowToolTip()

@@ -8,6 +8,36 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.0.0
+
+This release introduces a couple of new parts and refactors some old ones. It also delivers the Chuckwagon IVA.
+
+New Parts
+- Added standard width 1u and 2u Solar Flatbeds. If you have parts attached to them then they won't generate ElectricCharge. Thanks for the suggestion, DStaal and Bombaatu! :)
+
+Gaslight, Saddle, Patio & Switchback2
+- Adjusted the colliders to help alleviate explosive parts when attaching them to the ground.
+- Due to the way that KAS works, the Saddle and Gaslight now only have one pipe connection. The older versions have been deprecated, so your existing bases will be ok.
+
+Chuckwagon
+- The Chuckwagon finally has its IVA! :)
+
+Inflatable Modules
+- When inflating or reconfiguring modules, you can now pull Equipment from vessels participating in resource distribution. This happens automatically as long as vessels are sharing their Equipment.
+- Due to the way that contracts work, inflatable modules will have a crew capacity listed once again. Please don't flat-pack kerbals. I'm looking at ways to auto-kick kerbals out of deflated modules while in the editor.
+NOTE: You might have to return to the space center and then go back to your new base in order for contracts to recognize the inflated crew capacity.
+
+USI-LS
+- All inflatable modules will now have the capacity to store Supplies.
+- Increased the recycling capability of the Ponderosa template to 90%
+
+Doc Science Lab
+- The Doc Science Lab template now participates in the WBI Experiment System. You can load up to four experiments into the lab and conduct research, either from a suitable experiment container (Mark One Laboratory Extensions has several) or by generating new experiments from their list of required resources. Coming soon in KSP 1.2: you'll also need a connection back to KSC to receive instructions. Experimental results can be transferred into the mobile processing section, and the experiment lab generates bonus science.
+
+Watney
+- Adjusted the Water production for the Rainmaker converters.
+- Added a fuel cell converter to produce ElectricCharge from LiquidFuel and Oxidizer.
+
 0.9.39
 - You can climb into the Doc Science Lab again.
 - Part mass is now correctly calculated.
