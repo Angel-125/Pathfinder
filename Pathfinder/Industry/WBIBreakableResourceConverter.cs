@@ -28,9 +28,6 @@ namespace WildBlueIndustries
         private const string kNeedsRepairs = "Needs repairs";
         private float kMessageDuration = 5.0f;
 
-        public static bool repairsRequireResources = true;
-        public static bool canBreak = true;
-
         [KSPField]
         public string progressLabel = "Progress";
 
@@ -218,7 +215,7 @@ namespace WildBlueIndustries
 
         protected override void onCriticalFailure()
         {
-            if (!canBreak)
+            if (!partsCanBreak)
                 return;
 
             base.onCriticalFailure();
@@ -236,7 +233,7 @@ namespace WildBlueIndustries
             return this.part.partInfo.title;
         }
 
-        public void SetContextGUIVisible(bool isVisible)
+        public virtual void SetContextGUIVisible(bool isVisible)
         {
             SetGuiVisible(isVisible);
         }

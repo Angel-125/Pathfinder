@@ -32,6 +32,65 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.7.0
+- Added standard width 1u and 2u Solar Flatbeds. If you have parts attached to them then they won't generate ElectricCharge. Thanks for the suggestion, DStaal and Bombaatu! :)
+
+0.6.2
+- Updated to latest WBT
+
+0.6.1
+- Updated to latest WBT
+- Added support for USI-LS to Buffalo parts.
+
+0.5
+New Part
+- Added 2U Slim Chassis.
+
+Bug Fixes & Enhancements
+- You can now change the configration on tanks with symmetrical parts. In the SPH/VAB it will happen automatically when you select a new configuration. After launch, you'll have the option to change symmetrical tanks.
+- Fixed an issue where the Buffalo asteroid scanner would not display the results window after scanning an asteroid.
+- Fixed an issue where the JetWing hover GUI would not appear.
+- Fixed an issue where the JetWing would disable RCS on the entire vessel when it had no engine thrust.
+
+Flex Fuel Power Pack
+- The Flex Fuel Power Pack now uses the standard configurable storage window to select flex fuel types. You still need to go EVA to change it, and it requires an Engineer (Pathfinder users can turn off the skill requirement).
+- The Flex Fuel Power Pack will have the appropriate fuel resource storage for the selected fuel type.
+
+Resources
+- All Buffalo chassis parts can now participate in Pathfinder's resource distribution.
+- The Outback now uses the standard resource configuration window.
+
+0.4.2
+- Fixed an issue with the editor locking up when using the M1-A1 Mountain Goat.
+- The M1-A1 can now self-destruct in addition to decoupling (both when surface attached and node attached).
+- Reduced the ejection force used when the M1-A1 is decoupled.
+- The Buffalo Command Cab window lighting now toggles on/off with the headlights.
+- If fuel tanks are arrayed symmetrically, you'll no longer be able to reconfigure them. It's either that or let the game explode (ie nothing I can do about it except prevent players from changing symmetrical tanks).
+
+0.4.1
+- Reduced fuel consumption of the LiquidFuel & IntakeAir option for the Flex Fuel Power Pack due to its limited use environments.
+
+0.4.0
+Flex Fuel Power Pack
+- Flex Fuel Power Pack can now run on LiquidFuel & IntakeAir. It produces as much ElectricCharge as LiquidFuel/Oxidizer. Thanks for the suggestion, Geschosskopf! :)
+- Added exhaust effects.
+
+Buffalo Crew Cabin
+- Added a node on the top to help facilitate mounting the Flex Fuel Power Pack.
+
+M1-A1
+- you can now decouple the OmniWheel when it is surface attached as well as when node mounted.
+
+Rendering Performance
+- Improved performance and reduced memory footprint for resource distribution.
+- Improved rendering performancs of the Operations Manager.
+
+0.3.4
+- Updated the resource distribution on the Wagon parts.
+
+0.3.3
+- Moved OmniWheel's tech tree node to Space Exploration.
+
 0.3.2
 - Recompiled to latest WBT
 

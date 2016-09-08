@@ -6,6 +6,44 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.6.0
+- Experiments can now be created in the field by some labs. To that end, experiments have the option to specify what resources they need and how much. If not specified, then a default value will be used that's equal to the experiment mass times 10 in the default resource, or a minimum amount of the default resource, whichever is greater.
+- Labs have the ability to restrict the experiments they create based upon a list of tags. Hence experiments may list a set of tags as well. If an experiment has no tags that match the tags required by the lab then it won't show up in the list of experiments that it can create.
+- Experiments can now require asteroids with a minimum mass.
+NOTE: Basic and DeepFreeze experiments are now located in WildBlueTools; there is no effect to MOLE users.
+
+1.5.0
+- Bug fixes and new ice cream flavors.
+
+1.4.2
+- Minor fixes to the science system.
+
+1.4.1
+- Part mass is now correctly calculated.
+
+1.4.0
+- Added animation button prop to control external animations from the IVA.
+- The cabin lights button prop can now control external light animations.
+- Fixed an issue where resources required by experiments wouldn't be accumulated.
+
+1.3.13
+- Added template for Uraninite.
+
+1.3.12
+- You can now change the configration on tanks with symmetrical parts. In the SPH/VAB it will happen automatically when you select a new configuration. After launch, you'll have the option to change symmetrical tanks.
+
+1.3.11
+- Added WBISelfDestruct and WBIOmniDecouple.
+- If fuel tanks are arrayed symmetrically, you'll no longer be able to reconfigure them. It's either that or let the game explode (ie nothing I can do about it except prevent players from changing symmetrical tanks).
+
+1.3.10
+- Fixed an issue where the greenhouse wasn't properly calculating the crop growth time.
+- Fixed an NRE with lights
+- Improved rendering performance for the Operations Manager.
+
+1.3.9
+- Fixed an issue with the CryoFuels MM support to avoid duplicate templates.
+
 1.3.8
 - Fixed an issue with crew transfers not working after changing a part's crew capacity during a template switch.
 

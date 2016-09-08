@@ -34,9 +34,6 @@ namespace WildBlueIndustries
         [KSPField(guiActive = true, guiName = "Science Collected")]
         public string scienceCollected;
 
-        public static bool repairsRequireResources = true;
-        public static bool terrainCanBreak = true;
-
         ModuleOrbitalSurveyor orbitalSurveyer;
         ModuleOrbitalScanner orbitalScanner;
         ModuleScienceContainer scienceContainer;
@@ -232,20 +229,6 @@ namespace WildBlueIndustries
         {
             base.onCriticalSuccess();
             status = "Great results";
-        }
-
-        protected override void onCriticalFailure()
-        {
-            if (!terrainCanBreak)
-                return;
-
-            base.onCriticalFailure();
-
-            isBroken = true;
-            StopConverter();
-            SetupGUI();
-
-            status = "Needs repairs";
         }
 
         public void SetupGUI()

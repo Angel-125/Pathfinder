@@ -78,6 +78,13 @@ namespace WildBlueIndustries
         {
             GUILayout.BeginVertical();
 
+            if (HighLogic.LoadedSceneIsEditor)
+            {
+                GUILayout.Label("<color=yellow>Your Mobile Processing Lab is working. However, there's nothing to do in the editor.</color>");
+                GUILayout.EndVertical();
+                return;
+            }
+
             GUILayout.BeginHorizontal();
             drawStatus();
             drawCnCButtons();

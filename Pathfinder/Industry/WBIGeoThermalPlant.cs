@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 namespace WildBlueIndustries
 {
     [KSPModule("Geo Thermal Plant")]
-    public class WBIGeoThermalPlant : WBIBreakableResourceConverter
+    public class WBIGeoThermalPlant : WBIPowerGenerator
     {
         ModuleResourceHarvester harvester;
         WBIDrillSwitcher drillSwitcher;
@@ -72,7 +72,7 @@ namespace WildBlueIndustries
             GUILayout.Label("<color=white>Geothermal Tap</color>");
 
             //Status
-            GUILayout.Label("<color=white>Status: " + harvester.ResourceStatus + "</color>");
+            GUILayout.Label("<color=white>GeoTap Extraction Status: " + harvester.ResourceStatus + "</color>");
 
             //Extraction Monitor
             if (extractionMonitor != null)

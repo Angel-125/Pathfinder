@@ -8,6 +8,121 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.0.0
+
+This release introduces a couple of new parts and refactors some old ones. It also delivers the Chuckwagon IVA.
+
+New Parts
+- Added standard width 1u and 2u Solar Flatbeds. If you have parts attached to them then they won't generate ElectricCharge. Thanks for the suggestion, DStaal and Bombaatu! :)
+
+Gaslight, Saddle, Patio & Switchback2
+- Adjusted the colliders to help alleviate explosive parts when attaching them to the ground.
+- Due to the way that KAS works, the Saddle and Gaslight now only have one pipe connection. The older versions have been deprecated, so your existing bases will be ok.
+
+Chuckwagon
+- The Chuckwagon finally has its IVA! :)
+
+Inflatable Modules
+- When inflating or reconfiguring modules, you can now pull Equipment from vessels participating in resource distribution. This happens automatically as long as vessels are sharing their Equipment.
+- Due to the way that contracts work, inflatable modules will have a crew capacity listed once again. Please don't flat-pack kerbals. I'm looking at ways to auto-kick kerbals out of deflated modules while in the editor.
+NOTE: You might have to return to the space center and then go back to your new base in order for contracts to recognize the inflated crew capacity.
+
+USI-LS
+- All inflatable modules will now have the capacity to store Supplies.
+- Increased the recycling capability of the Ponderosa template to 90%
+
+Doc Science Lab
+- The Doc Science Lab template now participates in the WBI Experiment System. You can load up to four experiments into the lab and conduct research, either from a suitable experiment container (Mark One Laboratory Extensions has several) or by generating new experiments from their list of required resources. Coming soon in KSP 1.2: you'll also need a connection back to KSC to receive instructions. Experimental results can be transferred into the mobile processing section, and the experiment lab generates bonus science.
+
+Watney
+- Adjusted the Water production for the Rainmaker converters.
+- Added a fuel cell converter to produce ElectricCharge from LiquidFuel and Oxidizer.
+
+0.9.39
+- You can climb into the Doc Science Lab again.
+- Part mass is now correctly calculated.
+- Updated formula for producing Glykerol.
+
+0.9.38
+- All generators (Buckboards, HotSprings, SolarFlare) now list how much EC they are generating.
+- If a part is participating in resource distribution, and the resource isn't required by a converter or on the blacklist, then you can now individually set a resource to be shared, consumed, or ignored.
+- Added support for USI-LS to Buffalo parts.
+
+0.9.36
+
+New Part
+- Added 2U Slim Chassis.
+
+Flex Fuel Power Pack
+- The Flex Fuel Power Pack now uses the standard configurable storage window to select flex fuel types. You still need to go EVA to change it, and it requires an Engineer (unless you turn off the skill requirement).
+- The Flex Fuel Power Pack will have the appropriate fuel resource storage for the selected fuel type.
+
+Spyglass
+- The Spyglass now counts as a cupola in base building contracts. Thanks for the suggestion, lukeduff! :)
+
+Resources
+- Added the Uraninite template. Thansk for the suggestion, lukeduff! :)
+- All Buffalo chassis parts can now participate in Pathfinder's resource distribution.
+- The Outback now uses the standard resource configuration window.
+- You can now change the configration on tanks with symmetrical parts. In the SPH/VAB it will happen automatically when you select a new configuration. After launch, you'll have the option to change symmetrical tanks.
+
+Nukeworks
+- The Nukeworks can serve as a radioactive storage container if you have Near Future Electrical installed. Thanks for the suggestion, lukeduff! :)
+
+Bug Fixes
+- Fixed an issue where the Buffalo asteroid scanner would not display the results window after scanning an asteroid.
+- Fixed an issue where duplicate entries for the commercial science lab were visible in KPBS labs.
+
+0.9.35
+- Fixed an issue with the editor locking up when using the M1-A1 Mountain Goat.
+- The M1-A1 can now self-destruct in addition to decoupling (both when surface attached and node attached).
+- Reduced the ejection force used when the M1-A1 is decoupled.
+- The Buffalo Command Cab window lighting now toggles on/off with the headlights.
+- If fuel tanks are arrayed symmetrically, you'll no longer be able to reconfigure them. It's either that or let the game explode (ie nothing I can do about it except prevent players from changing symmetrical tanks).
+
+0.9.34
+
+Flex Fuel Power Pack
+- Flex Fuel Power Pack can now run on LiquidFuel & IntakeAir. It produces as much ElectricCharge as LiquidFuel/Oxidizer. Thanks for the suggestion, Geschosskopf! :)
+- Added exhaust effects.
+
+Buffalo Crew Cabin
+- Added a node on the top to help facilitate mounting the Flex Fuel Power Pack.
+
+M1-A1
+- you can now decouple the OmniWheel when it is surface attached as well as when node mounted.
+
+Rendering Performance
+- Improved performance and reduced memory footprint for resource distribution.
+- Improved rendering performancs of the Operations Manager.
+
+0.9.33
+
+Heat Generation
+- To help prevent barbequing kerbals and bases, the Claimjumper's and Gold Digger's heat generation has been disabled for the time being until the problem can be sorted out. It appears to be an issue between KSP's FlightIntegrator and ModuleCoreHeat. Not much I can do about that... Currently Pathfinder's other converters don't generate heat.
+- Added "maxSkinTemp" to all base building parts.
+
+Resource Distribution
+- You can add resources to the new resourceBlacklist and they won't be distributed. Example: ReplacementParts are used by USI-LS to determine module wear, so they go on the blacklist. The blacklist is defined in the part config's MODULE node.
+- You can now set the distribution mode to Distributor, Consumer, or Off.
+  Distributor: The part's resources will be distributed if the resource isn't required by a converter and it is unlocked.
+  Consumer: the part's resources will be filled to capacity if the resource is unlocked.
+- Resource distribution is now restricted to vessels/bases that are landed, splashed, or in prelaunch. Thanks for the suggestion, Geschosskopf! :)
+
+0.9.32
+
+Conestoga
+- Added lights all around the part.
+- Adjusted consumption rate of the MPU to be in line with stock fuel cells and MOLE's MPUs.
+
+Stockyards
+- If you have MOLE installed, the Stockyard 250 and 375 won't be available (existing craft won't break, you just won't be able to build new ones with Stockyards); use the ones in MOLE instead.
+
+Bug Fixes
+- Fixed the Konkrete and Slag templates so that they'll be named properly and store the correct resources.
+- Fixed storage issues for the Cryo Fuel templates.
+- Fixed an issue where the Spyglass spotlight animation didn't rotate properly upon reloading the scene.
+
 0.9.31
 - Removed deprecated Switchback that is no longer deprecated. This was likely causing the duplicate Switchback issues seen in the tech tree.
 
