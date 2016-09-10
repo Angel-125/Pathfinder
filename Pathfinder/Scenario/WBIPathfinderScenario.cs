@@ -25,12 +25,18 @@ namespace WildBlueIndustries
         public const int kMaxCoreSamples = 8;
         private const string kEfficiencyData = "EfficiencyData";
         private const string kToolTip = "ToolTip";
+        private const string kFieldPromotion = "FieldPromotion";
+        private const string kReputationIndex = "reputationIndex";
+        private const string kLastPromotion = "lastPromotion";
+        private const string kName = "name";
 
         public static WBIPathfinderScenario Instance;
+        public static double daysBetweenPromotions = 90;
 
         public int reputationIndex;
 
         private Dictionary<string, EfficiencyData> efficiencyDataMap = new Dictionary<string, EfficiencyData>();
+        private static Dictionary<string, double> fieldPromotions = new Dictionary<string, double>();
         private static Dictionary<string, ConfigNode> toolTips = new Dictionary<string, ConfigNode>();
 
         public override void OnAwake()
@@ -42,12 +48,18 @@ namespace WildBlueIndustries
         public override void OnLoad(ConfigNode node)
         {
             base.OnLoad(node);
+            ConfigNode[] fieldPromotionNodes = node.GetNodes(kFieldPromotion);
             ConfigNode[] efficiencyNodes = node.GetNodes(kEfficiencyData);
             ConfigNode[] toolTipsShown = node.GetNodes(kToolTip);
-            string value = node.GetValue("reputationIndex");
+            string value = node.GetValue(kReputationIndex);
 
             if (string.IsNullOrEmpty(value) == false)
                 reputationIndex = int.Parse(value);
+
+            foreach (ConfigNode fieldPromotion in fieldPromotionNodes)
+            {
+                fieldPromotions.Add(fieldPromotion.GetValue(kName), double.Parse(fieldPromotion.GetValue(kLastPromotion)));
+            }
 
             foreach (ConfigNode efficiencyNode in efficiencyNodes)
             {
@@ -58,9 +70,9 @@ namespace WildBlueIndustries
 
             foreach (ConfigNode toolTipNode in toolTipsShown)
             {
-                if (toolTipNode.HasValue("name") == false)
+                if (toolTipNode.HasValue(kName) == false)
                     continue;
-                value = toolTipNode.GetValue("name");
+                value = toolTipNode.GetValue(kName);
 
                 if (toolTips.ContainsKey(value))
                     toolTips[value] = toolTipNode;
@@ -72,12 +84,21 @@ namespace WildBlueIndustries
         public override void OnSave(ConfigNode node)
         {
             base.OnSave(node);
-            ConfigNode efficiencyNode;
+            ConfigNode efficiencyNode, promotionNode;
+            string[] keys = fieldPromotions.Keys.ToArray();
 
-            if (node.HasValue("reputationIndex"))
-                node.SetValue("reputationIndex", reputationIndex.ToString());
+            foreach (string key in keys)
+            {
+                promotionNode = new ConfigNode(kFieldPromotion);
+                promotionNode.AddValue(kName, key);
+                promotionNode.AddValue(kLastPromotion, fieldPromotions[key]);
+                node.AddNode(promotionNode);
+            }
+
+            if (node.HasValue(kReputationIndex))
+                node.SetValue(kReputationIndex, reputationIndex.ToString());
             else
-                node.AddValue("reputationIndex", reputationIndex.ToString());
+                node.AddValue(kReputationIndex, reputationIndex.ToString());
 
             foreach (EfficiencyData data in efficiencyDataMap.Values)
             {
@@ -89,6 +110,39 @@ namespace WildBlueIndustries
             node.RemoveNodes(kToolTip);
             foreach (ConfigNode toolTipNode in toolTips.Values)
                 node.AddNode(toolTipNode);
+        }
+
+        public bool KerbalCanBePromoted(string name)
+        {
+            if (fieldPromotions.ContainsKey(name) == false)
+            {
+                fieldPromotions.Add(name, Planetarium.GetUniversalTime());
+                return false;
+            }
+
+            double secondsBetweenPromotions = daysBetweenPromotions * Utils.secondsPerDayKerbin;
+            double elapsedTime;
+
+            elapsedTime = Planetarium.GetUniversalTime() - fieldPromotions[name];
+
+            if (elapsedTime / secondsBetweenPromotions > 1.0f)
+                return true;
+            else
+                return false;
+        }
+
+        public void UpdateLastPromotion(string name)
+        {
+            if (fieldPromotions.ContainsKey(name) == false)
+                fieldPromotions.Add(name, Planetarium.GetUniversalTime());
+            else
+                fieldPromotions[name] = Planetarium.GetUniversalTime();
+        }
+
+        public void RemovePromotionEntry(string name)
+        {
+            if (fieldPromotions.ContainsKey(name))
+                fieldPromotions.Remove(name);
         }
 
         public void SetToolTipShown(string toolTipName)
