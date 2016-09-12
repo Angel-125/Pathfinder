@@ -8,6 +8,34 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.1
+
+Last update before KSP 1.2!
+
+New Parts
+- Added the Telegraph deployable communications dish.
+- Added the Sombrero Solar Array. This dual-axis solar array can point at the sun in two directions.
+- Added the Radial Engine Mount. It is particularly helpful for getting rovers onto the ground.
+
+Greenhouses
+- Growth time is no longer reduced based upon experienced Scientists. Yield is still affected by experience though.
+- Greenhouses now show where they're at in the growth cycle and show up in the Ops Manager.
+
+USI-LS
+- Replaced Water usage with Dirt. Apparently Fertilizer is mostly water.
+- Adjusted the resource consumption amounts to be comparable with stock USI-LS.
+- While Dirt is an extra added resource, it accounts for the possiblility of improved yields.
+- The Pigpen now produces Fertilizer from either Ore, Minerals, or Gypsum.
+NOTE: expect additional changes once KSP 1.2 is available. It sounds like USI-LS is changing.
+
+Other
+- Updated support for CLS.
+- The Sunburn lab won't have the ability to produce Coolant unless you have DSEV installed.
+- Buffed the Doc Science Lab's data capacity to reflect changes in the stock MPL. It is still optimized for ground operations.
+- Added a small nuclear reactor to the Nukeworks for those times when you don't land in a place that has geothermal activity.
+- Fixed some KAS and lighting issues with the Gaslight.
+- Adjusted tech tree positions of various modules; they'll show up roughly in Tier 6.
+ 
 1.0.0
 
 This release introduces a couple of new parts and refactors some old ones. It also delivers the Chuckwagon IVA.

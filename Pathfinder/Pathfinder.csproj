@@ -104,6 +104,7 @@
     <Compile Include="Parts\WBIConestoga.cs" />
     <Compile Include="Parts\WBISpyglassOpsView.cs" />
     <Compile Include="Industry\WBIPowerGenerator.cs" />
+    <Compile Include="WBIFieldPromotion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">
