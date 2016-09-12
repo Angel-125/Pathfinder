@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.8.0
+- Added a Radial Engine Mount. It is particularly helpful for landing rovers onto the ground. You can stack-mount engines and fuel tanks onto the radial mount.
+
 0.7.0
 - Added standard width 1u and 2u Solar Flatbeds. If you have parts attached to them then they won't generate ElectricCharge. Thanks for the suggestion, DStaal and Bombaatu! :)
 
