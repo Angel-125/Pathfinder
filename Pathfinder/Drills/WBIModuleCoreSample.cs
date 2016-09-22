@@ -330,7 +330,7 @@ namespace WildBlueIndustries
             float labBonus = 0f;
             int researcherCount = 1;
 
-            foreach (Vessel vessel in FlightGlobals.Vessels)
+            foreach (Vessel vessel in FlightGlobals.VesselsUnloaded)
             {
                 if (vessel.mainBody != this.part.vessel.mainBody)
                     continue;
@@ -342,12 +342,12 @@ namespace WildBlueIndustries
                 {
                     foreach (ProtoPartModuleSnapshot moduleSnapshot in partSnapshot.modules)
                     {
-                        if (moduleSnapshot.moduleName == "WBIGeologyLab")
+                        if (moduleSnapshot.moduleName == "WBIGeologyLab" && Utils.IsExperienceEnabled())
                         {
                             //Now go through the crew list for the part and find scientists.
                             foreach (ProtoCrewMember crewSnapshot in partSnapshot.protoModuleCrew)
                             {
-                                if (crewSnapshot.experienceTrait.TypeName == analysisSkill)
+                                if (crewSnapshot.HasEffect(analysisSkill))
                                 {
                                     //experience bonus giving is based upon diminishing returns.
                                     labBonus += crewSnapshot.experienceLevel / researcherCount;
@@ -387,20 +387,20 @@ namespace WildBlueIndustries
 
             //If an experienced scientist is taking the core sample, then the scientist's experience will
             //affect the analysis.
-            if (FlightGlobals.ActiveVessel.isEVA)
+            if (FlightGlobals.ActiveVessel.isEVA && Utils.IsExperienceEnabled())
             {
                 Vessel vessel = FlightGlobals.ActiveVessel;
-                Experience.ExperienceTrait experience = vessel.GetVesselCrew()[0].experienceTrait;
+                ProtoCrewMember astronaut = vessel.GetVesselCrew()[0];
 
-                if (experience.TypeName == analysisSkill)
-                    experienceLevel = experience.CrewMemberExperienceLevel();
+                if (astronaut.HasEffect(analysisSkill))
+                    experienceLevel = astronaut.experienceTrait.CrewMemberExperienceLevel();
             }
 
             //Add in the science lab bonus
             experienceLevel += getGeologyLabBonus();
 
             //Seed the random number generator
-            UnityEngine.Random.seed = System.Environment.TickCount;
+            UnityEngine.Random.InitState(System.Environment.TickCount);
 
             //Roll 3d6 to approximate a bell curve, then convert it to a value between 1 and 100.
             analysisRoll = UnityEngine.Random.Range(1, 6);
@@ -498,6 +498,8 @@ namespace WildBlueIndustries
                 data.PlanetName = mapData.PlanetName;
                 data.ResourceName = mapData.ResourceName;
                 data.ResourceType = mapData.ResourceType;
+                data.Distribution = mapData.Distribution;
+                /*
                 data.Distribution = new DistributionData();
                 data.Distribution.Dispersal = mapData.Distribution.Dispersal;
                 data.Distribution.MaxAbundance = mapData.Distribution.MaxAbundance;
@@ -508,6 +510,7 @@ namespace WildBlueIndustries
                 data.Distribution.MinRange = mapData.Distribution.MinRange;
                 data.Distribution.PresenceChance = mapData.Distribution.PresenceChance;
                 data.Distribution.Variance = mapData.Distribution.Variance;
+                 */
 
                 ResourceCache.Instance.BiomeResources.Add(data);
                 resourceDataMap.Add(bodyName + biomeName + resourceName + resourceTypeStr, data);
@@ -525,6 +528,8 @@ namespace WildBlueIndustries
                 data.PlanetName = bodyName;
                 data.ResourceName = mapData.ResourceName;
                 data.ResourceType = mapData.ResourceType;
+                data.Distribution = mapData.Distribution;
+                /*
                 data.Distribution = new DistributionData();
                 data.Distribution.Dispersal = mapData.Distribution.Dispersal;
                 data.Distribution.MaxAbundance = mapData.Distribution.MaxAbundance;
@@ -535,6 +540,7 @@ namespace WildBlueIndustries
                 data.Distribution.MinRange = mapData.Distribution.MinRange;
                 data.Distribution.PresenceChance = mapData.Distribution.PresenceChance;
                 data.Distribution.Variance = mapData.Distribution.Variance;
+                 */
 
                 ResourceCache.Instance.BiomeResources.Add(data);
                 resourceDataMap.Add(bodyName + biomeName + resourceName + resourceTypeStr, data);

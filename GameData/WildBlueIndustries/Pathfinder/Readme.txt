@@ -8,6 +8,56 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.2-PRE
+Updated to KSP 1.2. Expect additional patches as KSP is fixed and mods are updated.
+
+Redecorating & Converters
+- For the modules that used to require Engineers, now any class that has the ConverterSkill qualifies to reconfigure modules. For modules that used to require Scientists, now any class with the ScienceSkill qualifies to reconfigure the modules. Ditto for converters.
+
+Claimjumper
+- The Claimjumper now includes an industrial version of the Geology Lab's Prospector. Simply drill for Ore, and the industrial prospector will sort out all the available resources in the biome. It has a lower Slag output due to its higher quality processing equipment.
+
+Doc Science Lab
+- Fixed collider issues with the Doc Science Lab.
+
+Telegraph
+- The Telegraph can now function as a relay transmitter.
+
+Ponderosa template
+- The Ponderosa can now level up kerbals.
+- The Ponderosa also serves as a probe control point. You need a minimum of two pilots.
+
+Deprecated Parts
+- Deprecated the Stockyards and Homestead. They will be removed when KSP 1.2 is finalized. You have two options if you want these parts. First, the Mark One Laboratory Extensions' Drydocks replace the Stockyards, and MOLE's Bigby Orbital Workshop replaces the Homestead. Second, you could download the Multipurpose Colony Modules for Pathfinder mod extension. In addition to the Stockyards and Homestead, you get an old favorite, the Pioneer Multipurpose Colony Module and Settler Multipurpose Base Unit.
+
+1.1
+
+Last update before KSP 1.2!
+
+New Parts
+- Added the Telegraph deployable communications dish.
+- Added the Sombrero Solar Array. This dual-axis solar array can point at the sun in two directions.
+- Added the Radial Engine Mount. It is particularly helpful for getting rovers onto the ground.
+
+Greenhouses
+- Growth time is no longer reduced based upon experienced Scientists. Yield is still affected by experience though.
+- Greenhouses now show where they're at in the growth cycle and show up in the Ops Manager.
+
+USI-LS
+- Replaced Water usage with Dirt. Apparently Fertilizer is mostly water.
+- Adjusted the resource consumption amounts to be comparable with stock USI-LS.
+- While Dirt is an extra added resource, it accounts for the possiblility of improved yields.
+- The Pigpen now produces Fertilizer from either Ore, Minerals, or Gypsum.
+NOTE: expect additional changes once KSP 1.2 is available. It sounds like USI-LS is changing.
+
+Other
+- Updated support for CLS.
+- The Sunburn lab won't have the ability to produce Coolant unless you have DSEV installed.
+- Buffed the Doc Science Lab's data capacity to reflect changes in the stock MPL. It is still optimized for ground operations.
+- Added a small nuclear reactor to the Nukeworks for those times when you don't land in a place that has geothermal activity.
+- Fixed some KAS and lighting issues with the Gaslight.
+- Adjusted tech tree positions of various modules; they'll show up roughly in Tier 6.
+ 
 1.0.0
 
 This release introduces a couple of new parts and refactors some old ones. It also delivers the Chuckwagon IVA.

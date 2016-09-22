@@ -116,12 +116,12 @@ namespace WildBlueIndustries
             //If required, make sure we have the proper skill
             if (PathfinderSettings.requireSkillCheck)
             {
-                if (FlightGlobals.ActiveVessel.isEVA)
+                if (FlightGlobals.ActiveVessel.isEVA && Utils.IsExperienceEnabled())
                 {
                     Vessel vessel = FlightGlobals.ActiveVessel;
-                    Experience.ExperienceTrait experience = vessel.GetVesselCrew()[0].experienceTrait;
+                    ProtoCrewMember astronaut = vessel.GetVesselCrew()[0];
 
-                    if (experience.TypeName != requiredSkill)
+                    if (astronaut.HasEffect(requiredSkill))
                     {
                         ScreenMessages.PostScreenMessage(string.Format(kInsufficientSkill, requiredSkill), 5.0f, ScreenMessageStyle.UPPER_CENTER);
                         return;

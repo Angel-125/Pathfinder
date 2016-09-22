@@ -76,11 +76,34 @@ namespace WildBlueIndustries
 
         public void DrawOpsWindow()
         {
+            FindPartModules();
+
             GUILayout.BeginVertical();
 
             if (HighLogic.LoadedSceneIsEditor)
             {
                 GUILayout.Label("<color=yellow>Your Mobile Processing Lab is working. However, there's nothing to do in the editor.</color>");
+                GUILayout.EndVertical();
+                return;
+            }
+
+            else if (converter == null)
+            {
+                GUILayout.Label("<color=yellow>Can't seem to find WBIScienceConverter.</color>");
+                GUILayout.EndVertical();
+                return;
+            }
+
+            else if (sciLab == null)
+            {
+                GUILayout.Label("<color=yellow>Can't seem to find ModuleScienceLab.</color>");
+                GUILayout.EndVertical();
+                return;
+            }
+
+            else if (scienceContainer == null)
+            {
+                GUILayout.Label("<color=yellow>Can't seem to find ModuleScienceContainer.</color>");
                 GUILayout.EndVertical();
                 return;
             }

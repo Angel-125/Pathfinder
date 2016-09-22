@@ -6,6 +6,13 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.7.0
+Updated to KSP 1.2. Expect additional patches as KSP is fixed and mods are updated.
+
+1.6.5
+- Growth time is no longer reduced based upon experienced Scientists. Yield is still affected by experience though.
+- Greenhouses now show where they're at in the growth cycle and show up in the Ops Manager.
+
 1.6.0
 - Experiments can now be created in the field by some labs. To that end, experiments have the option to specify what resources they need and how much. If not specified, then a default value will be used that's equal to the experiment mass times 10 in the default resource, or a minimum amount of the default resource, whichever is greater.
 - Labs have the ability to restrict the experiments they create based upon a list of tags. Hence experiments may list a set of tags as well. If an experiment has no tags that match the tags required by the lab then it won't show up in the list of experiments that it can create.

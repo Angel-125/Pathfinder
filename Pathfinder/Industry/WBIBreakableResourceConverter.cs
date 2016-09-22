@@ -153,9 +153,9 @@ namespace WildBlueIndustries
             double totalResources = ResourceHelper.GetTotalResourceAmount(repairResource, this.part.vessel);
 
             //Anybody can repair the scope, but the right skill can reduce the cost by as much as 60%
-            Experience.ExperienceTrait experience = FlightGlobals.ActiveVessel.GetVesselCrew()[0].experienceTrait;
-            if (experience.TypeName == repairSkill)
-                repairUnits = repairUnits * (0.9f - (experience.CrewMemberExperienceLevel() * 0.1f));
+            ProtoCrewMember astronaut = FlightGlobals.ActiveVessel.GetVesselCrew()[0];
+            if (astronaut.HasEffect(repairSkill))
+                repairUnits = repairUnits * (0.9f - (astronaut.experienceTrait.CrewMemberExperienceLevel() * 0.1f));
 
             //Now make sure the kerbal has enough resources to conduct repairs.
             //Get the resource definition

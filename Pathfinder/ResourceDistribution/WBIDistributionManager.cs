@@ -278,28 +278,25 @@ namespace WildBlueIndustries
             int totalVessels, totalDistributors, vesselIndex, distributorIndex;
 
             //Get the list of all the vessels within physics range (they're loaded)
-            totalVessels = FlightGlobals.Vessels.Count;
+            totalVessels = FlightGlobals.VesselsLoaded.Count;
             for (vesselIndex = 0; vesselIndex < totalVessels; vesselIndex++)
             {
-                vessel = FlightGlobals.Vessels[vesselIndex];
-                if (vessel.loaded)
+                vessel = FlightGlobals.VesselsLoaded[vesselIndex];
+                if (vessel.situation != Vessel.Situations.PRELAUNCH && vessel.situation != Vessel.Situations.LANDED && vessel.situation != Vessel.Situations.SPLASHED)
                 {
-                    if (vessel.situation != Vessel.Situations.PRELAUNCH && vessel.situation != Vessel.Situations.LANDED && vessel.situation != Vessel.Situations.SPLASHED)
-                    {
-                        //Debug.Log("Skipping vessel due to situation: " + vessel.situation);
-                        continue;
-                    }
+                    //Debug.Log("Skipping vessel due to situation: " + vessel.situation);
+                    continue;
+                }
 
-                    distributors = vessel.FindPartModulesImplementing<WBIResourceDistributor>();
-                    totalDistributors = distributors.Count;
+                distributors = vessel.FindPartModulesImplementing<WBIResourceDistributor>();
+                totalDistributors = distributors.Count;
 
-                    for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
-                    {
-                        distributor = distributors[distributorIndex];
-                        //If the distributor is actively participating then tally its resources.
-                        if (distributor.isParticipating)
-                            tallyResources(distributor);
-                    }
+                for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
+                {
+                    distributor = distributors[distributorIndex];
+                    //If the distributor is actively participating then tally its resources.
+                    if (distributor.isParticipating)
+                        tallyResources(distributor);
                 }
             } 
             

@@ -112,12 +112,12 @@ namespace WildBlueIndustries
         public void ShowDrillSwitchWindow()
         {
             //Make sure we have an experienced engineer.
-            if (FlightGlobals.ActiveVessel.isEVA)
+            if (FlightGlobals.ActiveVessel.isEVA && Utils.IsExperienceEnabled())
             {
                 Vessel vessel = FlightGlobals.ActiveVessel;
-                Experience.ExperienceTrait experience = vessel.GetVesselCrew()[0].experienceTrait;
+                ProtoCrewMember astronaut = vessel.GetVesselCrew()[0];
 
-                if (experience.TypeName != "Engineer" && PathfinderSettings.requireSkillCheck)
+                if (astronaut.HasEffect(requiredSkill) && PathfinderSettings.requireSkillCheck)
                 {
                     ScreenMessages.PostScreenMessage(kEngineerNeeded, 5.0f, ScreenMessageStyle.UPPER_CENTER);
                     return;

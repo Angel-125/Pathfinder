@@ -59,6 +59,9 @@ namespace WildBlueIndustries
             }
 
             opsManagerView.WindowTitle = this.part.partInfo.title + " Operations";
+
+            if (string.IsNullOrEmpty(resourcesToKeep))
+                resourcesToKeep = "ElectricCharge";
         }
 
         public override void OnUpdate()

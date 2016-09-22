@@ -147,7 +147,7 @@ namespace WildBlueIndustries
 
             foreach (ProtoCrewMember crewMember in this.part.protoModuleCrew)
             {
-                if (crewMember.experienceTrait.TypeName == "Scientist")
+                if (crewMember.HasEffect(ExperienceEffect))
                 {
                     totalSkillPoints += crewMember.experienceTrait.CrewMemberExperienceLevel();
                     totalScientists += 1;
