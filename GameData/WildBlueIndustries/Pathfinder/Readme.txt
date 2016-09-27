@@ -8,6 +8,12 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.2.2
+- The OSE Workshop templates should now recognize KSP's new part categories.
+
+1.2.1
+- Rendering performance improvements for the Spyglass.
+
 1.2-PRE
 Updated to KSP 1.2. Expect additional patches as KSP is fixed and mods are updated.
 

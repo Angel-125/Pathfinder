@@ -80,7 +80,7 @@
     <Compile Include="Scenario\WBIPathfinderScenario.cs" />
     <Compile Include="Drills\WBIDrillManager.cs" />
     <Compile Include="Drills\WBIExtractionMonitor.cs" />
-    <Compile Include="Drills\WBIModuleCoreSample.cs" />
+    <Compile Include="Science\WBIModuleCoreSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenario\WBIEfficiencyMonitor.cs" />
     <Compile Include="TestData.cs" />
