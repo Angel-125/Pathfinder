@@ -32,7 +32,7 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
-0.9 - PRE-RELEASE
+0.9.3
 
 Updated to KSP 1.2. Expect additional patches as KSP is fixed and mods are updated.
 

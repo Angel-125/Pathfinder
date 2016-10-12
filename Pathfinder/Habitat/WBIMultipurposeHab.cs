@@ -267,10 +267,11 @@ namespace WildBlueIndustries
                 {
                     if (float.TryParse(CurrentTemplate.GetValue("drillElectricCharge"), out value))
                     {
-                        foreach (ResourceRatio ratio in harvester.inputList)
+                        ResourceRatio[] inputRatios = harvester.inputList.ToArray();
+                        for (int inputIndex = 0; inputIndex < inputRatios.Length; inputIndex++)
                         {
-                            if (ratio.ResourceName == "ElectricCharge")
-                                ratio.Ratio = value;
+                            if (inputRatios[inputIndex].ResourceName == "ElectricCharge")
+                                inputRatios[inputIndex].Ratio = value;
                         }
                     }
                 }

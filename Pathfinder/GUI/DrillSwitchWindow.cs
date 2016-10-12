@@ -114,7 +114,7 @@ namespace WildBlueIndustries
         protected void reconfigureDrill()
         {
             //If required, make sure we have the proper skill
-            if (PathfinderSettings.requireSkillCheck)
+            if (WBIMainSettings.RequiresSkillCheck)
             {
                 if (FlightGlobals.ActiveVessel.isEVA && Utils.IsExperienceEnabled())
                 {
@@ -130,7 +130,7 @@ namespace WildBlueIndustries
             }
 
             //If needed, pay the cost to reconfigure
-            if (PathfinderSettings.payToRemodel)
+            if (WBIMainSettings.PayToReconfigure)
             {
                 //Make sure we can afford it
                 PartResourceDefinition definition = ResourceHelper.DefinitionForResource(requiredResource);
