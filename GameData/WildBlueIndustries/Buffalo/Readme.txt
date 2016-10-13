@@ -32,6 +32,10 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.9.4
+- Module Manager update
+- Wild Blue Tools update
+
 0.9.3
 
 Updated to KSP 1.2. Expect additional patches as KSP is fixed and mods are updated.

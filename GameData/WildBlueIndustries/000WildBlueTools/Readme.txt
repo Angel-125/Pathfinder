@@ -6,6 +6,9 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.7.3
+- Fixed an issue where the greenhouse would freeze the game on load.
+
 1.7.0
 Updated to KSP 1.2. Expect additional patches as KSP is fixed and mods are updated.
 
