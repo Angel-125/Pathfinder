@@ -8,6 +8,30 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.2.4
+- Updated Snacks support
+- Updated USI-LS support
+- Fix for KPBS greenhouse
+- Added Multipurpose Colony Modules (MCM) to the Extras folder.
+
+1.2.3
+- Moved the Mule to Space Exploration. It also appears in the Payload tab.
+- Moved some Pathfinder game settings to the Wild Blue tab in the Game Difficulty screen.
+- Removed deprecated parts. Reminder: If you want spacedocks, the Mk2 Homestead, and more, download Multipurpose Colony Modules for Pathfinder.
+- The OSE Workshop templates now recognize KSP's new part categories.
+- Rendering performance improvements for the Spyglass.
+- The OSE Workshop templates should now recognize KSP's new part categories.
+- Rendering performance improvements for the Spyglass.
+- For the modules that used to require Engineers, now any class that has the ConverterSkill qualifies to reconfigure modules. For modules that used to require Scientists, now any class with the ScienceSkill qualifies to reconfigure the modules. Ditto for converters.
+- The Claimjumper now includes an industrial version of the Geology Lab's Prospector. Simply drill for Ore, and the industrial prospector will sort out all the available resources in the biome. It has a lower Slag output due to its higher quality processing equipment.
+- Fixed collider issues with the Doc Science Lab.
+- The Telegraph can now function as a relay transmitter.
+- The Ponderosa can now level up kerbals.
+- The Ponderosa also serves as a probe control point. You need a minimum of two pilots.
+
+Removed Parts
+- Removed the Stockyards and Homestead. You have two options if you want these parts. First, the Mark One Laboratory Extensions' Drydocks replace the Stockyards, and MOLE's Bigby Orbital Workshop replaces the Homestead. Second, you could download the Multipurpose Colony Modules for Pathfinder mod extension. In addition to the Stockyards and Homestead, you get an old favorite, the Pioneer Multipurpose Colony Module and Settler Multipurpose Base Unit.
+
 1.1
 
 Last update before KSP 1.2!

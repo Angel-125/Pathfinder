@@ -25,6 +25,8 @@ namespace WildBlueIndustries
         WBIDrillSwitcher drillSwitcher;
         WBIExtractionMonitor extractionMonitor;
         ModuleOverheatDisplay overheatDisplay;
+        WBIProspector prospector;
+        WBIAsteroidProspector asteroidProspector;
 
         public override void OnStart(StartState state)
         {
@@ -44,6 +46,9 @@ namespace WildBlueIndustries
             {
                 extractionMonitor.Fields["extractionRateChange"].guiActive = false;
             }
+
+            prospector = this.part.FindModuleImplementing<WBIProspector>();
+            asteroidProspector = this.part.FindModuleImplementing<WBIAsteroidProspector>();
 
             overheatDisplay = this.part.FindModuleImplementing<ModuleOverheatDisplay>();
         }
@@ -103,12 +108,24 @@ namespace WildBlueIndustries
             if (harvester.IsActivated)
             {
                 if (GUILayout.Button(harvester.StopActionName))
+                {
                     harvester.StopResourceConverter();
+                    if (prospector != null)
+                        prospector.StopResourceConverter();
+                    if (asteroidProspector != null)
+                        asteroidProspector.StopResourceConverter();
+                }
             }
             else
             {
                 if (GUILayout.Button(harvester.StartActionName))
+                {
                     harvester.StartResourceConverter();
+                    if (prospector != null)
+                        prospector.StartResourceConverter();
+                    if (asteroidProspector != null)
+                        asteroidProspector.StartResourceConverter();
+                }
             }
 
             GUILayout.EndScrollView();

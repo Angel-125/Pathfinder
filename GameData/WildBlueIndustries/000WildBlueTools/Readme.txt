@@ -6,6 +6,12 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.7.3
+- Fixed an issue where the greenhouse would freeze the game on load.
+
+1.7.0
+Updated to KSP 1.2. Expect additional patches as KSP is fixed and mods are updated.
+
 1.6.5
 - Growth time is no longer reduced based upon experienced Scientists. Yield is still affected by experience though.
 - Greenhouses now show where they're at in the growth cycle and show up in the Ops Manager.

@@ -36,9 +36,10 @@ namespace WildBlueIndustries
             GameEvents.onVesselGoOffRails.Add(VesselWentOffRails);
             GameEvents.onVesselLoaded.Add(VesselWasLoaded);
             GameEvents.onVesselChange.Add(VesselWasChanged);
-            GameEvents.onPartUnpack.Add(PartUnpacked);
+//            GameEvents.onPartUnpack.Add(PartUnpacked);
         }
 
+        /*
         public void PartUnpacked(Part part)
         {
             if (HighLogic.LoadedSceneIsFlight == false)
@@ -59,6 +60,7 @@ namespace WildBlueIndustries
                 extractionMonitor = null;
             }
         }
+         */
 
         public void VesselWasChanged(Vessel vessel)
         {

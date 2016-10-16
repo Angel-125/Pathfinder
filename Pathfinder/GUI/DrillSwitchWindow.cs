@@ -114,14 +114,14 @@ namespace WildBlueIndustries
         protected void reconfigureDrill()
         {
             //If required, make sure we have the proper skill
-            if (PathfinderSettings.requireSkillCheck)
+            if (WBIMainSettings.RequiresSkillCheck)
             {
-                if (FlightGlobals.ActiveVessel.isEVA)
+                if (FlightGlobals.ActiveVessel.isEVA && Utils.IsExperienceEnabled())
                 {
                     Vessel vessel = FlightGlobals.ActiveVessel;
-                    Experience.ExperienceTrait experience = vessel.GetVesselCrew()[0].experienceTrait;
+                    ProtoCrewMember astronaut = vessel.GetVesselCrew()[0];
 
-                    if (experience.TypeName != requiredSkill)
+                    if (astronaut.HasEffect(requiredSkill))
                     {
                         ScreenMessages.PostScreenMessage(string.Format(kInsufficientSkill, requiredSkill), 5.0f, ScreenMessageStyle.UPPER_CENTER);
                         return;
@@ -130,7 +130,7 @@ namespace WildBlueIndustries
             }
 
             //If needed, pay the cost to reconfigure
-            if (PathfinderSettings.payToRemodel)
+            if (WBIMainSettings.PayToReconfigure)
             {
                 //Make sure we can afford it
                 PartResourceDefinition definition = ResourceHelper.DefinitionForResource(requiredResource);

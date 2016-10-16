@@ -65,7 +65,7 @@ namespace WildBlueIndustries
         PartModule impactSeismometer;
         IScienceDataContainer impactSensor;
         private Vector2 scrollPosResources;
-        List<PResource.Resource> resourceList;
+        List<PlanetaryResource> resourceList;
         string[] experimentTypes = { "Soil", "Metallurgy", "Chemical", "Biome", "Drilling" };
         double[] elapsedTimes = new double[5];
         ModuleScienceContainer scienceContainer;
@@ -230,7 +230,7 @@ namespace WildBlueIndustries
 
         protected bool planetHasTerrainSat()
         {
-            foreach (Vessel vessel in FlightGlobals.Vessels)
+            foreach (Vessel vessel in FlightGlobals.VesselsUnloaded)
             {
                 if (vessel == this.part.vessel)
                     continue;
@@ -258,7 +258,7 @@ namespace WildBlueIndustries
             float bonus = 0f;
 
             foreach (ProtoCrewMember crewMember in this.part.protoModuleCrew)
-                if (crewMember.experienceTrait.TypeName == "Scientist")
+                if (crewMember.HasEffect(ExperienceEffect))
                 {
                     //One point for being a scientist.
                     bonus += 1.0f;
@@ -658,7 +658,7 @@ namespace WildBlueIndustries
         protected bool scientistIsAboard()
         {
             foreach (ProtoCrewMember crewMember in this.part.protoModuleCrew)
-                if (crewMember.experienceTrait.TypeName == "Scientist")
+                if (crewMember.HasEffect(ExperienceEffect))
                     return true;
 
             return false;

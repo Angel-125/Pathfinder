@@ -38,14 +38,8 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="KIS">
-      <HintPath>..\..\..\..\..\KSPDev\GameData\KIS\Plugins\KIS.dll</HintPath>
-    </Reference>
     <Reference Include="KSPAssets">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\KSPAssets.dll</HintPath>
-    </Reference>
-    <Reference Include="KSPUtil">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\KSPUtil.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,18 +53,16 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Vectrosity">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Vectrosity.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\PipelineWindow.cs" />
     <Compile Include="ResourceDistribution\DistributionView.cs" />
     <Compile Include="GUI\DrillSwitchWindow.cs" />
-    <Compile Include="GUI\PathfinderConfig.cs" />
+    <Compile Include="Settings\PathfinderAppButton.cs" />
     <Compile Include="GUI\SciLabOpsWindow.cs" />
     <Compile Include="GUI\WBIDrillOpsView.cs" />
     <Compile Include="Habitat\WBIGreenhouse.cs" />
-    <Compile Include="GUI\PathfinderSettings.cs" />
+    <Compile Include="Settings\PathfinderAppView.cs" />
     <Compile Include="GUI\PlayModesWindow.cs" />
     <Compile Include="Science\WBIBiomeAnalysis.cs" />
     <Compile Include="GUI\TerainUplinkView.cs" />
@@ -89,7 +81,7 @@
     <Compile Include="Scenario\WBIPathfinderScenario.cs" />
     <Compile Include="Drills\WBIDrillManager.cs" />
     <Compile Include="Drills\WBIExtractionMonitor.cs" />
-    <Compile Include="Drills\WBIModuleCoreSample.cs" />
+    <Compile Include="Science\WBIModuleCoreSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenario\WBIEfficiencyMonitor.cs" />
     <Compile Include="TestData.cs" />
@@ -105,6 +97,7 @@
     <Compile Include="Parts\WBISpyglassOpsView.cs" />
     <Compile Include="Industry\WBIPowerGenerator.cs" />
     <Compile Include="WBIFieldPromotion.cs" />
+    <Compile Include="ResourceDistribution\WBIPipeEndpoint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">

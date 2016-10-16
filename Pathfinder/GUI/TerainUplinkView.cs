@@ -89,7 +89,7 @@ namespace WildBlueIndustries
 
             terrainStatuses.Clear();
 
-            foreach (Vessel vessel in FlightGlobals.Vessels)
+            foreach (Vessel vessel in FlightGlobals.VesselsUnloaded)
             {
                 if (vessel.mainBody != this.part.vessel.mainBody)
                     continue;

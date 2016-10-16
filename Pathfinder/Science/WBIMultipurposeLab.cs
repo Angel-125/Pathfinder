@@ -33,6 +33,8 @@ namespace WildBlueIndustries
             scienceConverter = this.part.FindModuleImplementing<WBIScienceConverter>();
             scienceConverter.SetGuiVisible(false);
             base.OnStart(state);
+            if (string.IsNullOrEmpty(resourcesToKeep))
+                resourcesToKeep = "ElectricCharge";
         }
 
         public override void RedecorateModule(bool loadTemplateResources = true)
