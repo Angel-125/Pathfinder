@@ -93,7 +93,7 @@ namespace WildBlueIndustries
             drillSwitchWindow.requiredSkill = requiredSkill;
 
             //Setup GUI
-            Events["ShowDrillSwitchWindow"].guiActiveUnfocused = Utils.HasResearchedNode(PathfinderSettings.drillTechNode);
+            Events["ShowDrillSwitchWindow"].guiActiveUnfocused = Utils.HasResearchedNode(PathfinderAppView.drillTechNode);
 
             //Tooltip
             if (HighLogic.LoadedSceneIsFlight == false)
@@ -117,7 +117,7 @@ namespace WildBlueIndustries
                 Vessel vessel = FlightGlobals.ActiveVessel;
                 ProtoCrewMember astronaut = vessel.GetVesselCrew()[0];
 
-                if (astronaut.HasEffect(requiredSkill) && PathfinderSettings.requireSkillCheck)
+                if (astronaut.HasEffect(requiredSkill) && WBIMainSettings.RequiresSkillCheck)
                 {
                     ScreenMessages.PostScreenMessage(kEngineerNeeded, 5.0f, ScreenMessageStyle.UPPER_CENTER);
                     return;
