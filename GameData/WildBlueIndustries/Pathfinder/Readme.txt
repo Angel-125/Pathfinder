@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.2.7
+- Fixed versioning conflicts
+- Fixed an issue where deflated modules had resources when pulled from a KIS inventory.
+
 1.2.5
 - WBT update
 - Fixed graphics issue with the Doc.

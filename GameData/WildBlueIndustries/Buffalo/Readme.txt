@@ -32,7 +32,11 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
-0.9.5
+0.9.7
+- Fixed versioning conflicts
+- Moved Chassis 1u, Chassis 2u, Chassis Decoupler, Command Cab, and Crew Cab to Space Exploration.
+
+0.9.6
 - WBT update
 
 0.9.4
