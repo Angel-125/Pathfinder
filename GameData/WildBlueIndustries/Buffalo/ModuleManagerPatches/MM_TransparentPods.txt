@@ -1,0 +1,7 @@
+@PART[WBI_BuffaloCab,WBI_CrewCab]:NEEDS[JSIAdvTransparentPods]
+{
+	MODULE   
+	{   
+	    name = JSIAdvTransparentPod   
+	}  
+}

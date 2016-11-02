@@ -32,6 +32,13 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.9.8
+- Updated to KSP 1.2.1
+- You can now radially attach the chassis parts. Thanks for the suggestion, TheReadPanda! :)
+
+KNOWN ISSUES
+- The wheels tend to slide on the ground even when the brakes are on. I'm investigating, wheels in KSP 1.2.1 are really odd.
+
 0.9.7
 - Fixed versioning conflicts
 - Moved Chassis 1u, Chassis 2u, Chassis Decoupler, Command Cab, and Crew Cab to Space Exploration.
