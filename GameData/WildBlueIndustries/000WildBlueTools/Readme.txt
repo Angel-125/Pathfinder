@@ -6,6 +6,14 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.8.5
+
+WBIDockingNodeHelper
+- Added ability to enable/disable angle snap, and the ability to set the snap angle.
+
+Other
+- Cleaned up some logging issues related to missing part modules and textures when supported mods aren't installed.
+
 1.8.4
 - Updated to KSP 1.2.1
 - Minor bug fixes with WBILight

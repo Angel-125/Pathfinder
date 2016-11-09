@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.2.9
+- Cleaned up some logging issues related to missing part modules and textures when supported mods aren't installed.
+
 1.2.8
 - Updated to KSP 1.2.1
 
