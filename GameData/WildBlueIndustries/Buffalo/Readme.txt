@@ -32,6 +32,37 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+1.0.0
+Buffalo has finally hit its 1.0 release! :) The parts introduced in this release complete the rover side of the Buffalo MSEV. There is still more work to do, but Buffalo is in good shape now. :)
+
+New Parts
+- Added the Buffalo Airlock Modle (BAM). It has a rooftop solar panel and it holds a single kerbal.
+- Added the Buffalo Ground Stabilizer. This part has fold-out stabilizer legs to lift the rover off the ground. The Ground Stabilizer has SAS and serves as a docking port as well, letting you leave components on the ground. For this to work successfully, build the body components first, and then add the chassis. Hint: the animation slider lets you adjust the height of the ground stabilizer.
+- Added the Buffalo RCS Module. This quarter-length part has SAS, RCS, some MonoPropellant, a probe core oriented for vertical flight and jump jets. It also has a small chassis spacer that you can add/remove before flight.
+- Added the Mk2 5-way RCS Thruster. It has a built-in monopropellant engine.
+- Added the Buffalo Passenger Cabin. It comes in two sizes: short (1u) and long (2u). Both sizes have rooftop solar panels and ladders.
+- Added the Buffalo Service Bay. This 2u part has room for your various small parts and holds a small amount of ElectricCharge. You can toggle the central equipment rack as well. And it has enough space to carry a pair of Buckboard 1000 containers.
+- Added the Buffalo Cargo Ramp. It fits onto the back of the MSEV and provides a handy ramp to get into the Service Bay.
+- Added the Buffalo Aero Cone. There are several types to choose from.
+- Added Wide versions of the Solar Flatbed.
+- Redesigned the Mineshaft and moved it to the Buffalo mod. It can serve as a docking port and as a KAS port.
+
+Bug Fixes & Enhancements
+- Redesigned the Crew Cab slightly; the ladders are now at the ends of the circular crew ports. 
+IMPORTANT NOTE: You can put a Mineshaft on the circular ports and still perform EVAs.
+- The Crew Cab can become a geo-survey lab even with Pathfinder installed (previously it could become a lab only if Pathfinder wasn't installed).
+- The Crew Cab can become a small geo-survey lab once you unlock Field Science via the stock part upgrade system.
+- The Crew Cab has an experimental science experiment that lets you Take Core Sample. You can repeat this experiment many times in the same biome. HOWEVER, unlike other experiments, you must drive a minimum distance before you can run the experiment again. WANTED: a whole bunch of science results for the WBIGeoScienceExperiment (located in 000WildBlueTools/Resources/BasicExperiments.cfg) for each biome on each planet. It's a lot, but YOU benefit by contributing to the science results! :)
+- Removed deprecated parts.
+- Minor bug fixes.
+- Cleaned up some logging issues related to missing part modules and textures when supported mods aren't installed.
+- Updated the IVAs to make them look better with IVA overlay.
+- JSI Transparent Pods is now fully supported.
+- Increased the size of the Mk1 5-way RCS thuster and make it comparable to the stock RCS thruster.
+- The short and long passenger cabs can recycle Soil into Snacks.
+- The Crew Cab can (slowly) produce Snacks from Ore.
+- The Command Cab and AuxEN now have integrated Kerbal Engineer support.
+
 0.9.8
 - Updated to KSP 1.2.1
 - You can now radially attach the chassis parts. Thanks for the suggestion, TheReadPanda! :)

@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.3.0
+- The Spyglass now serves as a habitation multiplier when USI-LS is installed.
+- Added a bunch of new parts to the Buffalo. Be sure to read the Buffalo readme for details.
+
 1.2.9
 - Cleaned up some logging issues related to missing part modules and textures when supported mods aren't installed.
 

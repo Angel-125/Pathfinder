@@ -6,6 +6,15 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.8.8
+- Bug fixes & enhancements.
+
+1.8.7
+- Disabled angle snap.
+
+1.8.6
+- If the target docking port supports angle snap that you can turn on/off (all WBI docking ports do), and it's turned off, then it will be turned on if the active port's angle snap is turned on.
+
 1.8.5
 
 WBIDockingNodeHelper
