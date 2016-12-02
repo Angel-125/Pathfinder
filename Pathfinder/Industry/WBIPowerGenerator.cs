@@ -85,7 +85,7 @@ namespace WildBlueIndustries
 
         public override void DrawOpsWindow(string buttonLabel)
         {
-            string absentResource = GetMissingResource();
+            string absentResource = GetMissingRequiredResource();
             GUILayout.BeginVertical();
 
             GUILayout.BeginScrollView(new Vector2(0, 0), new GUIStyle(GUI.skin.textArea), GUILayout.Height(170));

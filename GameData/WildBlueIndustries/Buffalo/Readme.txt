@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+1.0.1
+- WBT Update
+
 1.0.0
 Buffalo has finally hit its 1.0 release! :) The parts introduced in this release complete the rover side of the Buffalo MSEV. There is still more work to do, but Buffalo is in good shape now. :)
 

@@ -385,7 +385,7 @@ namespace WildBlueIndustries
         protected override void hideEditorGUI(PartModule.StartState state)
         {
             base.hideEditorGUI(state);
-            Events["ToggleInflation"].guiActiveEditor = false;
+//            Events["ToggleInflation"].guiActiveEditor = false;
         }
 
         public override string GetInfo()
