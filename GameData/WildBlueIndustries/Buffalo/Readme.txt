@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+1.0.2
+- NRE fix for the ground stabilizer.
+
 1.0.1
 - WBT Update
 
