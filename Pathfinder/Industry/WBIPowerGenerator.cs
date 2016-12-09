@@ -94,7 +94,7 @@ namespace WildBlueIndustries
             else
                 GUILayout.Label("<color=white><b>Status: </b>Requires " + absentResource + "</color>");
             GUILayout.Label("<color=white><b>Power Generation: </b>" + powerOutputDisplay + "</color>");
-            GUILayout.Label(string.Format("<color=white><b>" + efficiencyString + ": </b>{0:f2}%</color>", this.Efficiency * 100f));
+            GUILayout.Label(string.Format("<color=white><b>" + efficiencyString + ": </b>{0:f2}%</color>", this.EfficiencyBonus * 100f));
             GUILayout.Label("<color=white><b>Time Until Maintennance: </b>" + getTimeUntilCheck() + "</color>");
             GUILayout.Label("<color=white><b>Failure Probability: </b>" + criticalFail + "%</color>");
             GUILayout.EndScrollView();

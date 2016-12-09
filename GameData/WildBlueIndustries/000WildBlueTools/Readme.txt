@@ -6,6 +6,9 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.8.10
+- KSP 1.2.2 update.
+
 1.8.9
 - Greenhouse fixes.
 

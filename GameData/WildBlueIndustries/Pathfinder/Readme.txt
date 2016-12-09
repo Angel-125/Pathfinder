@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.3.2
+- KSP 1.2.2 update
+
 1.3.1
 - Greenhouse fixes.
 - Templates require MaterialKits instead of Equipment if MKS is installed.
