@@ -10,6 +10,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+2.1.2
+- KSP 1.2.2 update
+
 2.1.1
 - Moved the MCM and the Stage Coach to Space Exploration, and the MBU to Advanced Construction.
 - Adjusted some descriptions and stats.

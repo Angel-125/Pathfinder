@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.3.5
+- WBT update
+- The Doc Science Lab now has a data transfer utility.
+
 1.3.2
 - KSP 1.2.2 update
 
