@@ -1,12 +1,18 @@
 Pathfinder
 
-A KSP mod that blazes the trail for more permanent installations. Geoscience for better resource extraction.
+A KSP mod that blazes the trail for more permanent installations. Space camping and geoscience!
 
 ---INSTALLATION---
 
 Copy the contents of the mod's GameData directory into your KSP's GameData folder.
 
 ---REVISION HISTORY---
+
+1.3.6
+- Minor KerbNet fixes.
+- Added the Oxide Processing Automated Lab (OPAL). Found in the Casa and Ponderosa, this specilized geology lab can convert Ore into Water, Waste, Slag, and Oxygen.
+- Simplified the production chain for TAC-LS to use Waste in place of Fertilizer. Minerals and Fertilizer are no longer required.
+- Simplified the production chain for Snacks; you no longer need Organics, and Fertilizer is made in the Pigpen from Ore and Minerals.
 
 1.3.5
 - WBT update

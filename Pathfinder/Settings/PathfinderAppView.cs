@@ -41,7 +41,7 @@ namespace WildBlueIndustries
 
     public class PathfinderAppView : Window<PathfinderAppView>
     {
-        public const string kDefaultDrillTechNode = "specializedConstruction";
+        public const string kDefaultDrillTechNode = "advConstruction";
 
         public static string drillTechNode;
         public static double secondsBetweenDistribution;

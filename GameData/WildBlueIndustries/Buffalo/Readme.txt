@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+1.0.5
+- Minor KerbNet fixes.
+
 1.0.4
 - WBT update
 
