@@ -1,12 +1,47 @@
 Pathfinder
 
-A KSP mod that blazes the trail for more permanent installations. Geoscience for better resource extraction.
+A KSP mod that blazes the trail for more permanent installations. Space camping and geoscience!
 
 ---INSTALLATION---
 
 Copy the contents of the mod's GameData directory into your KSP's GameData folder.
 
 ---REVISION HISTORY---
+
+1.3.6
+- Minor KerbNet fixes.
+- Added the Oxide Processing Automated Lab (OPAL). Found in the Casa and Ponderosa, this specilized geology lab can convert Ore into Water, Waste, Slag, and Oxygen.
+- Simplified the production chain for TAC-LS to use Waste in place of Fertilizer. Minerals and Fertilizer are no longer required.
+- Simplified the production chain for Snacks; you no longer need Organics, and Fertilizer is made in the Pigpen from Ore and Minerals.
+
+1.3.5
+- WBT update
+- The Doc Science Lab now has a data transfer utility.
+
+1.3.2
+- KSP 1.2.2 update
+
+1.3.1
+- Greenhouse fixes.
+- Templates require MaterialKits instead of Equipment if MKS is installed.
+
+1.3.0
+- The Spyglass now serves as a habitation multiplier when USI-LS is installed.
+- Added a bunch of new parts to the Buffalo. Be sure to read the Buffalo readme for details.
+
+1.2.9
+- Cleaned up some logging issues related to missing part modules and textures when supported mods aren't installed.
+
+1.2.8
+- Updated to KSP 1.2.1
+
+1.2.7
+- Fixed versioning conflicts
+- Fixed an issue where deflated modules had resources when pulled from a KIS inventory.
+
+1.2.5
+- WBT update
+- Fixed graphics issue with the Doc.
 
 1.2.4
 - Updated Snacks support

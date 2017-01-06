@@ -36,31 +36,7 @@ namespace WildBlueIndustries
             GameEvents.onVesselGoOffRails.Add(VesselWentOffRails);
             GameEvents.onVesselLoaded.Add(VesselWasLoaded);
             GameEvents.onVesselChange.Add(VesselWasChanged);
-//            GameEvents.onPartUnpack.Add(PartUnpacked);
         }
-
-        /*
-        public void PartUnpacked(Part part)
-        {
-            if (HighLogic.LoadedSceneIsFlight == false)
-                return;
-
-            WBIExtractionMonitor extractionMonitor = null;
-
-            if (part.FindModuleImplementing<ModuleResourceHarvester>() == null)
-                return;
-
-            //Add an extraction monitor if needed.
-            extractionMonitor = part.FindModuleImplementing<WBIExtractionMonitor>();
-            if (extractionMonitor == null)
-            {
-                extractionMonitor = (WBIExtractionMonitor)part.AddModule("WBIExtractionMonitor");
-                extractionMonitor.OnActive();
-                extractionMonitor.OnStart(PartModule.StartState.Landed);
-                extractionMonitor = null;
-            }
-        }
-         */
 
         public void VesselWasChanged(Vessel vessel)
         {

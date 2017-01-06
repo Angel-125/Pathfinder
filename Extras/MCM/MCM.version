@@ -1,6 +1,6 @@
 {
     "NAME":"MCM",
-    "URL":"https://raw.githubusercontent.com/Angel-125/MCM/master/GameData/WildBlueIndustries/MCM.version",
+    "URL":"https://raw.githubusercontent.com/Angel-125/MCM/master/GameData/WildBlueIndustries/MCM/MCM.version",
     "DOWNLOAD":"https://github.com/Angel-125/MCM/releases",
     "GITHUB":
     {
@@ -12,13 +12,13 @@
     {
 	"MAJOR":2,
 	"MINOR":1,
-	"PATCH":0,
+	"PATCH":2,
 	"BUILD":0
     },
     "KSP_VERSION":
     {
         "MAJOR":1,
         "MINOR":2,
-        "PATCH":0
+        "PATCH":2
     },
 }

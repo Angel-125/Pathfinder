@@ -179,7 +179,7 @@ namespace WildBlueIndustries
             for (index = 0; index < totalCount; index++)
             {
                 resource = this.part.Resources[index];
-                if (resourceBlacklist.Contains(resource.resourceName) == false)
+                if (resourceBlacklist.Contains(resource.resourceName) == false && distributionMap.ContainsKey(resource.resourceName) == false)
                     distributionMap.Add(resource.resourceName, EDistributionModes.DistributionModeOff);
                 if (isConsumer)
                     distributionMap[resource.resourceName] = EDistributionModes.DistributionModeConsume;

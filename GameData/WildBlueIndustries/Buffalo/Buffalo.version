@@ -1,6 +1,6 @@
 {
     "NAME":"Buffalo",
-    "URL":"https://raw.githubusercontent.com/Angel-125/Buffalo/master/GameData/WildBlueIndustries/Buffalo.version",
+    "URL":"https://raw.githubusercontent.com/Angel-125/Buffalo/master/GameData/WildBlueIndustries/Buffalo/Buffalo.version",
     "DOWNLOAD":"https://github.com/Angel-125/Buffalo/releases",
     "GITHUB":
     {
@@ -10,14 +10,14 @@
     },
     "VERSION":
     {
-	"MAJOR":0,
-	"MINOR":9,
-	"PATCH":4
+	"MAJOR":1,
+	"MINOR":0,
+	"PATCH":5
     },
     "KSP_VERSION":
     {
         "MAJOR":1,
         "MINOR":2,
-        "PATCH":0
+        "PATCH":2
     },
 }

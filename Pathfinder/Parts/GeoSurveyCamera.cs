@@ -51,7 +51,6 @@ namespace WildBlueIndustries
             orbitalSurveyer.PerformSurvey();
         }
 
-        [KSPEvent(guiActiveUnfocused = true, externalToEVAOnly = true, unfocusedRange = 3f, guiName = "Perform repairs", guiActiveEditor = false)]
         public override void RepairLab()
         {
             //Do we require resources to fix the scope?
