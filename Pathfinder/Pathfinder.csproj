@@ -55,6 +55,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GoldStrike\GoldStrikeUtils.cs" />
+    <Compile Include="GoldStrike\GoldStrikeChance.cs" />
+    <Compile Include="GoldStrike\GoldStrikeLode.cs" />
+    <Compile Include="GoldStrike\GoldStrikeData.cs" />
     <Compile Include="GUI\PipelineWindow.cs" />
     <Compile Include="ResourceDistribution\DistributionView.cs" />
     <Compile Include="GUI\DrillSwitchWindow.cs" />
@@ -96,8 +100,10 @@
     <Compile Include="Parts\WBIConestoga.cs" />
     <Compile Include="Parts\WBISpyglassOpsView.cs" />
     <Compile Include="Industry\WBIPowerGenerator.cs" />
-    <Compile Include="WBIFieldPromotion.cs" />
     <Compile Include="ResourceDistribution\WBIPipeEndpoint.cs" />
+    <Compile Include="GoldStrike\WBIGoldStrike.cs" />
+    <Compile Include="GoldStrike\GoldStrikeSettings.cs" />
+    <Compile Include="GoldStrike\WBIGoldStrikeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">

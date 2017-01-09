@@ -79,6 +79,7 @@ namespace WildBlueIndustries
         private float analysisTimeRemaining;
         private ScreenMessage analysisStatusMsg;
         private bool invalidateConfirm;
+        private WBIGoldStrike goldStrike;
 
         public override void OnStart(StartState state)
         {
@@ -104,6 +105,9 @@ namespace WildBlueIndustries
                 coreSampleStatus = getSamplesLeft().ToString();
             else
                 coreSampleStatus = kUnknown;
+
+            //GoldStrike
+            goldStrike = this.part.FindModuleImplementing<WBIGoldStrike>();
 
             //Setup the gui
             setupGUI();
@@ -369,6 +373,7 @@ namespace WildBlueIndustries
         {
             CBAttributeMapSO.MapAttribute biome = Utils.GetCurrentBiome(this.part.vessel);
             float experienceLevel = 0f;
+            float experienceModifier = 0f;
             float analysisRoll = 0f;
             string analysisResultMessage;
             float efficiencyModifier = 0f;
@@ -409,9 +414,12 @@ namespace WildBlueIndustries
             analysisRoll *= 5.5556f;
 
             //Now add the experience modifier
-            analysisRoll += experienceLevel * kExperiencePercentModifier;
+            experienceModifier = experienceLevel * kExperiencePercentModifier;
+            analysisRoll += experienceModifier;
 
-            //TODO: Did we strike gold?
+            //Did we strike gold?
+            if (goldStrike != null)
+                goldStrike.CheckGoldStrike();
 
             //Since we're using a bell curve, anything below maxWorsenRoll worsens the biome's extraction rates.
             //Anything above minImprovementRoll improves the biome's extraction rates.

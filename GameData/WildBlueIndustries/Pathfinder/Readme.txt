@@ -8,6 +8,26 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.4.0: Gold Strike
+Want to get rich? This release of Pathfinder introduces Gold Strike, a mini-game where you travel around the local biome and go prospecting for valuable resources. These resources are found wherever you find Ore, even if the local biome or asteroid doesn't have the resource in any abundance. If you find a lode, drill for Ore, and you can convert that Ore into the valuable resource- as long as you remain in the area, and as long as there are units of the resource remaining. Use the Gold Digger, Buffalo's geology lab, and of course the Pathfinder Geology Lab to go prospecting.
+
+Features include:
+- Go prospecting for ExoticMinerals, RareMetals, Karborundrum, and Aurum. If you find something, start drilling for Ore and run the drill's gold strike converter. The converter is available on the Gold Digger, the new Buffalo Drill, the Hacienda's Claimjumper, and the stock drills.
+- Limited chances to find a lode in a given biome that can be reset by paying a Science cost in Career/Science Sandbox mode.
+- If you don't find a lode, then travel a set distance before trying again.
+- Experienced kerbals with the Science Skill (like Scientists) can improve your prospecting chances if they go EVA and run the Gold Digger.
+- Geology labs staffed with those with the Science Skill also contribute to your prospecting chances.
+- Several configurable options found in Pathfinder's new difficulty settings screen.
+- Easily customize the various valuable resources that can be found- just add new GOLDSTRIKE config nodes.
+- New Aurum resource.
+
+New Parts
+- Buffalo Drill: This inline drill is about half as good as the stock radial drill.
+- Buffalo SAS Module: This inline SAS module is as good as the Advanced Inline Stabilizer, and it has a probe core.
+
+Bug Fixes
+- Fixed drilling issues with the Gold Digger. NOTE: You still need someone with the ScienceSkill to improve its efficiency.
+
 1.3.6
 - Minor KerbNet fixes.
 - Added the Oxide Processing Automated Lab (OPAL). Found in the Casa and Ponderosa, this specilized geology lab can convert Ore into Water, Waste, Slag, and Oxygen.

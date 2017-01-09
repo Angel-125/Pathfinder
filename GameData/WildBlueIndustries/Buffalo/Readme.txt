@@ -32,6 +32,14 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+1.1
+New Parts
+- Buffalo Drill: This inline drill is about half as good as the stock radial drill.
+- Buffalo SAS Module: This inline SAS module is as good as the Advanced Inline Stabilizer.
+
+Bug Fixes & Enhancements
+- The Crew Cab can participate in Pathfinder's Gold Strike mini-game.
+
 1.0.5
 - Minor KerbNet fixes.
 
