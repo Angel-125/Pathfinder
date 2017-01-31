@@ -8,6 +8,28 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.5.0 Geoscience
+This release updates the Pathfinder Geology Lab to use the WBI Experiment system originally developed for the Mark One Laboratory Extensions. The old efficiency studies have been replaced with new experiments that generate science reports just like the stock science parts do (HELP WANTED: science results text. Contribute to the results to improve your game!). They will either improve or worsen your production efficiencies just like the original studies did. You can try to improve your production efficiencies in the current biome even when the experiments no longer generate science. Features of the new and improved Pathfinder Geology Lab include:
+- A new resource called CoreSamples. The Pathfinder Geology Lab produces CoreSamples through basic research along with bonus science.
+- Four new science experiments including: Soil Analysis, Metallurgy Analysis, Chemical Analysis, and Extraction Analysis. These are found under the Geoscience button.
+- KerbNet access with Resource, Biome, and Terrain views. This access is provided under the new Biome Analysis button.
+- Unlocking a biome's abundance summary and the TERRAIN uplink are now found under the new Biome Analysis button.
+- Continued support of the Impact mod by tomf: The Pathfinder Geology Lab has a built-in bangometer.
+NOTE: The Geoscience button will be unavailable until you unlock the local biome's abundance summary.
+
+Bug Fixes & Enhancements
+- The Chuckwagon has a new greenhouse option for USI-LS: the Continually Regenerating Agricultural Product greenhouse.
+- Fixed an NRE issue with adding the TERRAIN to a vessel while in the editor.
+- Fixed an NRE issue with the Conestoga lights.
+- Fixed IVA issue with the Buffalo command cab and ASET props.
+- Fixed control issue with the AUXen.
+- You can properly configure a part to be a battery by using the ConverterSkill.
+- Fixed an issue with IVAs spawning in the editor when inflating parts.
+- You can now select the default image for the Plasma Screen in addition to screens in the Screenshots folder.
+- Moved the kPad and plasma screens to the Utility tab.
+- The Watney Chemistry Lab now produce a small amount of LqdDeuterium in addition to LqdHydrogen and Oxygen.
+- Minor MM patches (thanks kerbas-ad-astra! :) )
+
 1.4.0: Gold Strike
 Want to get rich? This release of Pathfinder introduces Gold Strike, a mini-game where you travel around the local biome and go prospecting for valuable resources. These resources are found wherever you find Ore, even if the local biome or asteroid doesn't have the resource in any abundance. If you find a lode, drill for Ore, and you can convert that Ore into the valuable resource- as long as you remain in the area, and as long as there are units of the resource remaining. Use the Gold Digger, Buffalo's geology lab, and of course the Pathfinder Geology Lab to go prospecting.
 

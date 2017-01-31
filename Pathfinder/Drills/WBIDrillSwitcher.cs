@@ -38,6 +38,16 @@ namespace WildBlueIndustries
         protected string[] drillResources;
         protected DrillSwitchWindow drillSwitchWindow = new DrillSwitchWindow();
 
+        [KSPEvent(guiActive = true, guiName = "Reset Drill GUI")]
+        public void ResetDrillGUI()
+        {
+            if (groundDrills != null)
+            {
+                foreach (ModuleResourceHarvester harvester in groundDrills)
+                    harvester.Events["StartResourceConverter"].guiActive = true;
+            }
+        }
+
         public void OnGUI()
         {
             if (drillSwitchWindow.IsVisible())

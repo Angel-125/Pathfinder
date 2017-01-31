@@ -32,6 +32,12 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+1.1.2
+- Fixed IVA issue with the Buffalo command cab and ASET props.
+- Fixed control issue with the AUXen.
+- You can now select the default image for the Plasma Screen in addition to screens in the Screenshots folder.
+- Moved the kPad and plasma screens to the Utility tab.
+
 1.1
 New Parts
 - Buffalo Drill: This inline drill is about half as good as the stock radial drill.

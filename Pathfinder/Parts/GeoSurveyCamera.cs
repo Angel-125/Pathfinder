@@ -232,6 +232,9 @@ namespace WildBlueIndustries
 
         public void SetupGUI()
         {
+            if (HighLogic.LoadedSceneIsFlight == false)
+                return;
+
             bool planetUnlocked = ResourceMap.Instance.IsPlanetScanned(FlightGlobals.currentMainBody.flightGlobalsIndex);
 
             //Is the telescope broken? if so, show the repair scope button

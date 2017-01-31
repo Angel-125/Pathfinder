@@ -62,17 +62,16 @@
     <Compile Include="GUI\PipelineWindow.cs" />
     <Compile Include="ResourceDistribution\DistributionView.cs" />
     <Compile Include="GUI\DrillSwitchWindow.cs" />
+    <Compile Include="Science\WBIBiomeAnalysis.cs" />
     <Compile Include="Settings\PathfinderAppButton.cs" />
     <Compile Include="GUI\SciLabOpsWindow.cs" />
     <Compile Include="GUI\WBIDrillOpsView.cs" />
     <Compile Include="Habitat\WBIGreenhouse.cs" />
     <Compile Include="Settings\PathfinderAppView.cs" />
     <Compile Include="GUI\PlayModesWindow.cs" />
-    <Compile Include="Science\WBIBiomeAnalysis.cs" />
     <Compile Include="GUI\TerainUplinkView.cs" />
     <Compile Include="Drills\WBIDrillSwitcher.cs" />
     <Compile Include="Parts\WBIGaslight.cs" />
-    <Compile Include="Habitat\WBIGeologyLab.cs" />
     <Compile Include="Parts\GeoSurveyCamera.cs" />
     <Compile Include="Parts\WBIMultiKASPipe.cs" />
     <Compile Include="Science\WBIMultipurposeLab.cs" />
@@ -104,6 +103,8 @@
     <Compile Include="GoldStrike\WBIGoldStrike.cs" />
     <Compile Include="GoldStrike\GoldStrikeSettings.cs" />
     <Compile Include="GoldStrike\WBIGoldStrikeConverter.cs" />
+    <Compile Include="Science\WBIPathfinderLab.cs" />
+    <Compile Include="Science\WBIPathfinderResults.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">

@@ -355,8 +355,8 @@ namespace WildBlueIndustries
             Vessel vessel;
             ProtoCrewMember[] crewMembers;
             ProtoCrewMember crewMember;
-            WBIGeologyLab[] pathfinderLabs;
-            WBIGeologyLab pathfinderLab;
+            WBIPathfinderLab[] pathfinderLabs;
+            WBIPathfinderLab pathfinderLab;
             WBIGeoLab[] geoLabs;
             WBIGeoLab geoLab;
             ProtoVessel protoVessel;
@@ -379,7 +379,7 @@ namespace WildBlueIndustries
             {
                 vessel = vessels[index];
 
-                List<WBIGeologyLab> wbiGeologyLabs = vessel.FindPartModulesImplementing<WBIGeologyLab>();
+                List<WBIPathfinderLab> wbiGeologyLabs = vessel.FindPartModulesImplementing<WBIPathfinderLab>();
                 if (wbiGeologyLabs.Count > 0)
                 {
                     pathfinderLabs = wbiGeologyLabs.ToArray();
