@@ -8,6 +8,39 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.6.2
+- WBT Update
+
+1.6.0
+
+New Parts
+- SCP Adapter: Use this to adapt standard crew ports (like the Mineshaft) to 1.25m parts. Thanks for the suggestion, JustJim!
+- AKI Power Strip: If you have the Surface Experiment Package (SEP) by CobaltWolf installed, then you can tack one of these power strips onto the sides of your modules or along the base of the Saddle and gain extra AKI plugs.
+
+WheelJack
+- The top node of the WheelJack now serves as a docking port. Simply bolt the WheelJack to the ground and attach a stock Clamp-O-Tron Jr to the top (in KIS, cycle through the nodes until you select the "top" node). Then, attach a chassis or other part to the docking port, and continue your rover assembly. When finished, do a quicksave and reload, and finally, decouple the Clamp-O-Tron Jr. Thanks for the investigations, Sudragon!
+
+Ponderosa Inflatable Habitat Module
+- Added a probe core for automated vessel control (both Switchbacks already have them).
+
+Pathfinder Geology Lab
+- The Pathfinder Geology lab can now serve as a SEP Central Station. Thanks for the config file, Bombaatu!
+
+Saddle, Gaslight, Telegraph, & Sombrero
+- Added additional attachment nodes to make it easier to attach things like KAS ports and AKI plugs.
+- Adjusted ground attachment nodes to help reduce the chance of parts exploding when bolted to the ground.
+
+KIS Attachment
+- To help with base assembly and correctly orienting inflatable modules, simply press "R" to cycle through the attachment nodes, and find the "KISMount" node. Use "KISMount" when attaching inflatable modules to your base.
+
+Bug Fixes
+- Fixed an issue where CropWorks was using the Snacks version of the CropWorks when USI-LS was installed. Ditto for the Prairie.
+- Updated Buffalo ASET cockpit to use ASET 1.4: https://spacedock.info/mod/1204/ASET%20Props
+- Fixed seating in the Doc Science Lab to prevent kerbals from poking through the seats.
+- Fixed starter craft file so that it loads properly. Thanks bmaltby!
+- Wired up the Switchback and Switchback2 for KerbNet.
+- WBT update
+
 1.5.0 Geoscience
 This release updates the Pathfinder Geology Lab to use the WBI Experiment system originally developed for the Mark One Laboratory Extensions. The old efficiency studies have been replaced with new experiments that generate science reports just like the stock science parts do (HELP WANTED: science results text. Contribute to the results to improve your game!), and they will either improve or worsen your production efficiencies just like the original studies did. You can try to improve your production efficiencies in the current biome even when the experiments no longer generate science. Features of the new and improved Pathfinder Geology Lab include:
 - A new resource called CoreSamples. The Pathfinder Geology Lab produces CoreSamples through basic research along with bonus science.

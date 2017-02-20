@@ -32,6 +32,21 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+1.2.1
+- WBT Update
+
+1.2.0
+New Part
+- SCP Adapter: Use this to adapt standard crew ports (like the Mineshaft) to 1.25m parts. Thanks for the suggestion, JustJim!
+
+WheelJack
+- The top node of the WheelJack now serves as a docking port. Simply bolt the WheelJack to the ground and attach a stock Clamp-O-Tron Jr to the top (in KIS, cycle through the nodes until you select the "top" node). Then, attach a chassis or other part to the docking port, and continue your rover assembly. When finished, do a quicksave and reload, and finally, decouple the Clamp-O-Tron Jr. Thanks for the investigations, Sudragon!
+
+Bug Fixes
+- Updated Buffalo ASET cockpit to use ASET 1.4: https://spacedock.info/mod/1204/ASET%20Props
+- Fixed missing seats in the Buffalo command cab's ASET cockpit.
+- Fixed ModuleManager for Snacks so it'll work properly now.
+
 1.1.2
 - Fixed IVA issue with the Buffalo command cab and ASET props.
 - Fixed control issue with the AUXen.

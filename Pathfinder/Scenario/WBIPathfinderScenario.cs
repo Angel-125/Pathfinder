@@ -46,36 +46,40 @@ namespace WildBlueIndustries
 
         public void SetupLodeIcons()
         {
-            Dictionary<string, Dictionary<string, GoldStrikeLode>> goldStrikeLodes = WBIPathfinderScenario.Instance.goldStrikeLodes;
-            Dictionary<string, GoldStrikeLode>[] lodeMaps = null;
-            Dictionary<string, GoldStrikeLode> lodeMap = null;
-            GoldStrikeLode[] lodes = null;
-            GoldStrikeLode lode = null;
-            Waypoint waypoint = null;
-            string location = string.Empty;
-
-            lodeMaps = goldStrikeLodes.Values.ToArray();
-            for (int index = 0; index < lodeMaps.Length; index++)
+            try
             {
-                lodeMap = lodeMaps[index];
-                lodes = lodeMap.Values.ToArray();
-                for (int lodeIndex = 0; lodeIndex < lodes.Length; lodeIndex++)
-                {
-                    lode = lodes[lodeIndex];
-                    if (string.IsNullOrEmpty(lode.navigationID))
-                        continue;
+                Dictionary<string, Dictionary<string, GoldStrikeLode>> goldStrikeLodes = WBIPathfinderScenario.Instance.goldStrikeLodes;
+                Dictionary<string, GoldStrikeLode>[] lodeMaps = null;
+                Dictionary<string, GoldStrikeLode> lodeMap = null;
+                GoldStrikeLode[] lodes = null;
+                GoldStrikeLode lode = null;
+                Waypoint waypoint = null;
+                string location = string.Empty;
 
-                    waypoint = WaypointManager.FindWaypoint(new Guid(lode.navigationID));
-                    location = string.Format("Lon: {0:f2} Lat: {1:f2}", waypoint.longitude, waypoint.latitude);
-                    if (waypoint != null)
+                lodeMaps = goldStrikeLodes.Values.ToArray();
+                for (int index = 0; index < lodeMaps.Length; index++)
+                {
+                    lodeMap = lodeMaps[index];
+                    lodes = lodeMap.Values.ToArray();
+                    for (int lodeIndex = 0; lodeIndex < lodes.Length; lodeIndex++)
                     {
-                        WaypointManager.RemoveWaypoint(waypoint);
-                        waypoint.id = WBIPathfinderScenario.kLodeIcon;
-                        waypoint.nodeCaption1 = location;
-                        WaypointManager.AddWaypoint(waypoint);
+                        lode = lodes[lodeIndex];
+                        if (string.IsNullOrEmpty(lode.navigationID))
+                            continue;
+
+                        waypoint = WaypointManager.FindWaypoint(new Guid(lode.navigationID));
+                        location = string.Format("Lon: {0:f2} Lat: {1:f2}", waypoint.longitude, waypoint.latitude);
+                        if (waypoint != null)
+                        {
+                            WaypointManager.RemoveWaypoint(waypoint);
+                            waypoint.id = WBIPathfinderScenario.kLodeIcon;
+                            waypoint.nodeCaption1 = location;
+                            WaypointManager.AddWaypoint(waypoint);
+                        }
                     }
                 }
             }
+            catch { }
         }
     }
 

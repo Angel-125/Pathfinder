@@ -6,6 +6,12 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.12.0
+- Bug Fixes
+
+1.11.0
+- Bug Fixes
+
 1.10.0
 New Props
 - Holoscreen: This prop works the same way as the internal plasma screen, but you can toggle the screen on and off.
