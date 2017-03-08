@@ -32,6 +32,10 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+1.2.2
+- Updated the Snacks converters to the latest standards.
+- WBT Update
+
 1.2.1
 - WBT Update
 

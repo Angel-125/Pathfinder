@@ -55,7 +55,7 @@ namespace WildBlueIndustries
         {
             //Do we require resources to fix the scope?
             //If so, make sure the kerbal on EVA has enough resources.
-            if (repairsRequireResources)
+            if (WBIMainSettings.RepairsRequireResources)
             {
                 base.RepairLab();
 
@@ -142,8 +142,7 @@ namespace WildBlueIndustries
         {
             string info = base.GetInfo();
 
-            if (repairsRequireResources)
-                info += kInfoRepairSkill + repairSkill + "\r\n";
+            info += kInfoRepairSkill + repairSkill + "\r\n";
             info += string.Format(kInfoRepairAmount, repairAmount, repairResource);
 
             return info;

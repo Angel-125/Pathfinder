@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pathfinder", "Pathfinder.csproj", "{AD41263E-2A61-4916-9D63-7101EA917811}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WildBlueTools", "..\..\..\WildBlueTools\WildBlueTools.csproj", "{CC0BDF1A-9641-4628-9F0F-3500DDC99534}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSEVUtils", "..\..\..\DSEV\DSEVUtils\DSEVUtils.csproj", "{9A537D7D-39FB-486D-AFB2-16509AB9753D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoleUtils", "..\..\..\MOLE\MoleUtils\MoleUtils.csproj", "{0727F77B-B856-4D7D-8B2C-C1318B1EE46F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD41263E-2A61-4916-9D63-7101EA917811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD41263E-2A61-4916-9D63-7101EA917811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD41263E-2A61-4916-9D63-7101EA917811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD41263E-2A61-4916-9D63-7101EA917811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC0BDF1A-9641-4628-9F0F-3500DDC99534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC0BDF1A-9641-4628-9F0F-3500DDC99534}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC0BDF1A-9641-4628-9F0F-3500DDC99534}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC0BDF1A-9641-4628-9F0F-3500DDC99534}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A537D7D-39FB-486D-AFB2-16509AB9753D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A537D7D-39FB-486D-AFB2-16509AB9753D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A537D7D-39FB-486D-AFB2-16509AB9753D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A537D7D-39FB-486D-AFB2-16509AB9753D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0727F77B-B856-4D7D-8B2C-C1318B1EE46F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0727F77B-B856-4D7D-8B2C-C1318B1EE46F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0727F77B-B856-4D7D-8B2C-C1318B1EE46F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0727F77B-B856-4D7D-8B2C-C1318B1EE46F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

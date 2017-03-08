@@ -83,6 +83,9 @@ namespace WildBlueIndustries
                 this.Events["ToggleOpenCycle"].guiName = "Open Cycle Off";
             else
                 this.Events["ToggleOpenCycle"].guiName = "Open Cycle On";
+
+            if (isDeployed == false && this.part.Resources.Contains("Water"))
+                this.part.Resources["Water"].amount = 0;
         }
 
         public override void OnFixedUpdate()
@@ -143,6 +146,9 @@ namespace WildBlueIndustries
 
             isCooling = isDeployed;
             UpdateStatus();
+
+            if (isDeployed == false && this.part.Resources.Contains("Water"))
+                this.part.Resources["Water"].amount = 0;
         }
 
         #region IOpsView

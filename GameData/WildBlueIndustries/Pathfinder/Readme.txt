@@ -8,6 +8,41 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.7.0 Spring Cleaning
+
+Pathfinder Geology Lab
+- Geology Lab experiments can now be completed as part of a contract.
+- Gold Strike prospecting ability removed from the Pathfinder Geology Lab; you can continue to use the Buffalo's Crew Cab and the Gold Digger drill.
+
+Iron Works
+- Removed RocketParts->Equipment converter; this was in place during the transition from RocketParts to Equipment (necessary because, at the time, I thought RocketParts was a 1-liter resource).
+
+IMPORTANT NOTE: Extralplanetary Launchpads is still fully supported; you can smelt Metal, recycle ScrapMetal, and make new RocketParts in the Iron Works when EL is installed. The Spyglass still serves as a survey station, and all inhabited Pathfinder parts provide some production ability.
+
+Watney
+- Removed Rainmaker (LFO) converter; it's redundant with the Fuel Cell converter, which also uses LiquidFuel and Oxidizer to generate ElectricCharge and Water.
+- Increased LiquidFuel and Oxidizizer inputs on the Fuel Cell, and doubled its ElectricCharge and Water output.
+- The Watney can now burn Ore to produce ElectricCharge, just like Buckboards converted to generators.
+
+Bug Fixes & Enhancements
+- Repairing broken parts now requires Equipment.
+- The OPAL correctly outputs Water instead of using it as input.
+- Increased ElectricCharge output of the Nukeworks' nuclear reactor.
+- Buckboard generators are now using the correct engineering skills for enahanced efficiency and repairs.
+
+Mod Support
+- WBT Update
+- Updated the Snacks converters to the latest standards.
+- Dropped support for MKS; the mod changes too much to keep Pathfinder's MM patch up to date.
+- Removed WBIGreenhouse from the TAC-LS Prairie; now it uses the same ModuleResourceConverter as the TAC-LS C.R.A.P.
+- Removed WBIGreenhouse from the TAC-LS Cropworks; now it uses the same ModuleResourceConverter as the TAC-LS C.R.A.P. (with higher production rates).
+- Removed WBIGreenhouse from the USI-LS Prairie; now it uses the same ModuleResourceConverter as the TAC-LS C.R.A.P.
+- Removed WBIGreenhouse from the USI-LS Cropworks; now it uses the same ModuleResourceConverter as the TAC-LS C.R.A.P. (with higher production rates).
+
+NOTE: The C.R.A.P. greenhouse remains in place for now, but be sure to convert your greenhouses over as it will be removed in a future update.
+
+NOTE: USI-LS is out of date. Since it changes too often, I'm not inclined to update Pathfinder's MM_USILS patch. If you want an up to date version, send me a pull request. :)
+
 1.6.2
 - WBT Update
 
