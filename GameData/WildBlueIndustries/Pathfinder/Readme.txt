@@ -8,6 +8,20 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.7.5 Shipbreakers
+
+Part Scrapping
+
+This release introduces the ability to scrap individual parts- and if you're skill is high enough, entire vessels- and salvage some Equipment in the process. You'll need a kerbal with the RepairSkill (Engineers have it) to perform the operation. The amount of Equipment recycled depends upon the mass of the part/vessel and the skill of the kerbal. A level 3 kerbal can scrap individual parts, while a level 5 kerbal can scrap entire vessels. For safety reasons, you  cannot scrap a part or vessel that has crew aboard.
+
+When you scrap parts and vessels, any resources it contains can be distributed to any nearby containers participating in Pathfinder's resource distribution system. The container must be within 50 meters of the part scrapping kerbal, and the participating container must have resources you're interested in set to either Share or Consume. So if you want to recover resources from the part, then be sure to turn on resource distribution for your storage containers. You can always scrap a part regardless of distance to an available container.
+
+Bug Fixes
+- Restricted the number of contracts that are offered and/or active.
+- Fixed a situation where experiments weren't registering as completed.
+- Contracts won't be offered until you've orbited the target world and have unlocked the proper tech tree.
+- Contracts that must be returned to the homeworld must be landed or splashed.
+
 1.7.0 Spring Cleaning
 
 Pathfinder Geology Lab

@@ -1,28 +1,27 @@
 PART
 {
-	name = WBIOspreyTiltRotor
+	name = WBIDuctedFan
 	module = Part
 	author = Angel-125
 
 	MODEL
 	{
-		model = WildBlueIndustries/Buffalo/Assets/Osprey
+		model = WildBlueIndustries/Buffalo/Assets/DuctedFan
 	}
 	rescaleFactor = 1
 	mirrorRefAxis = 0, 1, 0
 
-	node_stack_top = 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
-	node_attach = 0.0, 0.0, 0.0, 0, 0, 1
+	node_attach = 0.0, 0.0, 0.0, -1, 0, 0
 
 	TechRequired = aerodynamicSystems
 	entryCost = 4000
 	cost = 1400
 	category = Engine
 	subcategory = 0
-	title = V-22 "Osprey" Tilt Rotor
-	manufacturer = C7 Aerospace Division
-	description = This turboprop engine is designed to tilt upwards for VTOL flight and forwards for forward flight.
-	attachRules = 1,1,1,0,0
+	title = SA-120 Ducted Fan
+	manufacturer = Wild Blue Industries
+	description = This ducted fan is great for VTOL aircraft. It can pivot upwards, forwards, and backwards as needed. Its powerful electric motors allow for fast response to throttle commands but the motors require enormous amounts of electric charge. The prop-rotors can be folded up for compact storage as well.
+	attachRules = 0,1,1,0,0
 	mass = 1.5
 	heatConductivity = 0.06 // half default
 	skinInternalConductionMult = 4.0
@@ -57,10 +56,10 @@ PART
 //	MODULE
 //	{
 //		name = ModuleAnimateGeneric
-//		animationName = RotateNacelle
-//		startEventGUIName = Rotate Vertical
-//		endEventGUIName = Rotate Horizontal
-//		actionGUIName = Rotate Vertical/Horizontal
+//		animationName = Deploy
+//		startEventGUIName = Stow Fan
+//		endEventGUIName = Unstow Fan
+//		actionGUIName = Stow/Unstow Fan
 //	}
 
 	MODULE
@@ -132,28 +131,6 @@ PART
 
 	MODULE
 	{
-		name = FXModuleAnimateThrottle
-		animationName = PropSpin
-		responseSpeed = 0.5
-		layer = 2
-		dependOnEngineState = True
-		dependOnThrottle = True
-		weightOnOperational = True
-		affectTime = false
-		baseAnimSpeed = 10		// base + (throttle setting * multiplier)
-		baseAnimSpeedMult = 1000
-		playInEditor = False
-		animWrapMode = 2  	//	Default = 0	Once = 1		Clamp = 1	Loop = 2		PingPong = 4	ClampForever = 8
-	}
-
-//	MODULE
-//	{
-//		name = ModuleAnimateHeat
-//		ThermalAnim = TF1Heat
-//	}
-
-	MODULE
-	{
 		name = ModuleAlternator
 		RESOURCE
 		{
@@ -169,6 +146,20 @@ PART
 		{
 			name = CompressedAir
 			rate = 2
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleReactionWheel
+		PitchTorque = 15
+		YawTorque = 15
+		RollTorque = 15
+		torqueResponseSpeed = 15
+		RESOURCE
+		{
+			name = ElectricCharge
+			rate = 0.45
 		}
 	}
 

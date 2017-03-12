@@ -105,6 +105,7 @@
     <Compile Include="GoldStrike\WBIGoldStrikeConverter.cs" />
     <Compile Include="Science\WBIPathfinderLab.cs" />
     <Compile Include="Science\WBIPathfinderResults.cs" />
+    <Compile Include="Industry\WBIPartScrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">

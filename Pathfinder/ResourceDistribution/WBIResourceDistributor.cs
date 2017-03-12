@@ -44,6 +44,8 @@ namespace WildBlueIndustries
         string templateName;
         WBIResourceSwitcher switcher;
         DistributionView distributionView = new DistributionView();
+        List<PartResource> sharedResourcesCache = new List<PartResource>();
+        List<PartResource> requiredResourcesCache = new List<PartResource>();
 
         [KSPEvent(guiActiveEditor = true, guiActive = true, guiName = "Setup Distribution")]
         public void SetupDistribution()
@@ -102,6 +104,7 @@ namespace WildBlueIndustries
             {
                 distNode = distributionNodes[index];
                 distributionMap.Add(distNode.GetValue("resourceName"), (EDistributionModes)int.Parse(distNode.GetValue("mode")));
+                RebuidDistribtuionCache();
             }
         }
 
@@ -135,12 +138,15 @@ namespace WildBlueIndustries
 
             //if we have an empty list then create a new one.
             if (distributionMap.Count == 0)
+            {
                 RebuildDistributionList();
+            }
 
             //Setup view
             distributionView.part = this.part;
             distributionView.isParticipating = this.isParticipating;
             distributionView.distributionMap = this.distributionMap;
+            distributionView.rebuildCache = RebuidDistribtuionCache;
 
             if (isConsumer)
             {
@@ -153,8 +159,8 @@ namespace WildBlueIndustries
         {
             if (switcher.CurrentTemplateName != templateName)
             {
-                templateName = switcher.CurrentTemplateName;
                 RebuildDistributionList();
+                templateName = switcher.CurrentTemplateName;
             }
         }
         
@@ -165,6 +171,7 @@ namespace WildBlueIndustries
 
         public virtual void RebuildDistributionList()
         {
+            WBIDistributionManager.Log("[WBIResourceDistributor] - Rebuilding distribution list.");
             List<BaseConverter> converters = null;
             int index, totalCount, totalRequired, reqIndex;
             BaseConverter converter;
@@ -203,28 +210,22 @@ namespace WildBlueIndustries
                         distributionMap[ratio.ResourceName] = EDistributionModes.DistributionModeRequired;
                 }
             }
+
+            //Rebuild the cache
+            RebuidDistribtuionCache();
         }
 
-        public virtual void GetResourcesToDistribute(List<PartResource> sharedResources, List<PartResource> requiredResources)
+        public virtual void RebuidDistribtuionCache()
         {
+            WBIDistributionManager.Log("[WBIResourceDistributor] - Rebuilding distribution cache.");
             List<string> requiredResourceNames = new List<string>();
-            int index, totalCount;//, totalRequired, reqIndex;
+            int index, totalCount;
             PartResource resource;
             EDistributionModes mode;
 
-            //If the part does not particupate in resource distribution then we're done.
-            if (!isParticipating)
-            {
-                Debug.Log("This part is not participating in resource distribution");
-                return;
-            }
-
-            //Log info
-            Debug.Log(this.part.partInfo.title + " is gathering resources to distribute.");
-
             //Clear the lists passed in.
-            sharedResources.Clear();
-            requiredResources.Clear();
+            sharedResourcesCache.Clear();
+            requiredResourcesCache.Clear();
 
             //Now go through our resource list and divide them up between the two lists
             totalCount = this.part.Resources.Count;
@@ -235,20 +236,23 @@ namespace WildBlueIndustries
                 //See if the resource is on the ignore list
                 if (resourceBlacklist.Contains(resource.resourceName))
                 {
-                    Debug.Log("Skipping " + resource.resourceName + ", it is blacklisted.");
+                    WBIDistributionManager.Log("[WBIResourceDistributor] - Skipping " + resource.resourceName + ", it is blacklisted.");
                     continue;
                 }
 
                 //Add to the appropriate list
                 if (distributionMap.ContainsKey(resource.resourceName) == false)
+                {
+                    WBIDistributionManager.Log("[WBIResourceDistributor] - Skipping " + resource.resourceName + ", it is not in the resource map.");
                     continue;
+                }
                 mode = distributionMap[resource.resourceName];
                 switch (mode)
                 {
                     case EDistributionModes.DistributionModeShare:
                         //Share the resource
-                        Debug.Log("Added " + resource.resourceName + " to shared resources");
-                        sharedResources.Add(resource);
+                        WBIDistributionManager.Log("[WBIResourceDistributor] - Added " + resource.resourceName + " to shared resources");
+                        sharedResourcesCache.Add(resource);
                         break;
 
                     case EDistributionModes.DistributionModeConsume:
@@ -256,16 +260,38 @@ namespace WildBlueIndustries
                         //Consume if our resource isn't full
                         if (resource.amount < resource.maxAmount)
                         {
-                            Debug.Log("Added " + resource.resourceName + " to required resources");
-                            requiredResources.Add(resource);
+                            WBIDistributionManager.Log("[WBIResourceDistributor] - Added " + resource.resourceName + " to required resources");
+                            requiredResourcesCache.Add(resource);
                         }
                         break;
 
                     default:
-                        Debug.Log("Skipping " + resource.resourceName + ", it is not participating.");
+                        WBIDistributionManager.Log("[WBIResourceDistributor] - Skipping " + resource.resourceName + ", it is ignored.");
                         break;
                 }
             }
+        }
+
+        public virtual void GetResourcesToDistribute(out List<PartResource> sharedList, out List<PartResource> requiredList)
+        {
+            //If the part does not particupate in resource distribution then we're done.
+            if (!isParticipating)
+            {
+                WBIDistributionManager.Log("[WBIResourceDistributor] - This part is not participating in resource distribution");
+                sharedList = null;
+                requiredList = null;
+                return;
+            }
+
+            //Log info
+            WBIDistributionManager.Log("[WBIResourceDistributor] - " + this.part.partInfo.title + " is gathering resources to distribute.");
+
+            //Rebuild cache if needed.
+//            if (this.sharedResourcesCache.Count() == 0 || this.requiredResourcesCache.Count() == 0)
+//                RebuildDistributionList();
+
+            sharedList = this.sharedResourcesCache;
+            requiredList = this.requiredResourcesCache;
         }
 
         public virtual double FillRequiredResource(string resourceName, double grandTotal)

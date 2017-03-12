@@ -18,8 +18,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
+    public delegate void RebuildCacheDelegate();
+
     public class DistributionView : Window<DistributionView>
     {
+        public RebuildCacheDelegate rebuildCache;
         public bool isParticipating;
         public Dictionary<string, EDistributionModes> distributionMap = null;
         Vector2 scrollPos = new Vector2();
@@ -40,6 +43,8 @@ namespace WildBlueIndustries
         public override void SetVisible(bool newValue)
         {
             base.SetVisible(newValue);
+            if (!newValue && rebuildCache != null)
+                rebuildCache();
         }
 
         public void DrawView()

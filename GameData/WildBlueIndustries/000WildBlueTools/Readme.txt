@@ -6,6 +6,11 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.15
+- Restricted the number of contracts that are offered and/or active.
+- Fixed a situation where experiments weren't registering as completed.
+- Contracts won't be offered until you've orbited the target world and have unlocked the proper tech tree.
+
 1.14
 - New WBIEnhancedExperiment PartModule. It brings the enhanced experiment requirements of WBIModuleScienceExperiments to science parts that don't need to be loaded into an experiment lab.
 - Science system now generates research contracts.
