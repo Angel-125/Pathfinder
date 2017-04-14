@@ -25,6 +25,7 @@ namespace WildBlueIndustries
         private const string kSettingsWindow = "Settings Window";
         private const string kPartsTip = "Don't want to pay to redecorate? No problem. Just press Mod P (the modifier key defaults to the Alt key on Windows) to open the Settings window and uncheck the option.\r\n\r\n";
         private const string kPonderosaOpsView = "Ponderosa Operations";
+        private const string kResourceDistributed = "Distributed {0:f2} units of {1:s}";
 
         [KSPField]
         public string partToolTip;
@@ -301,7 +302,7 @@ namespace WildBlueIndustries
         {
             WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
             bool canAfford = base.canAffordReconfigure(templateName, deflatedModulesAutoPass);
-            string requiredName = templateManager[templateName].GetValue("requiredResource");
+            string requiredName = templateManager[templateName].GetValue(WBIAffordableSwitcher.kRequiredResourceField);
 
             //If the vessel can't afford to reconfigure the module, then maybe the distribution manager can help.
             if (canAfford == false)
@@ -338,7 +339,7 @@ namespace WildBlueIndustries
             if (canAffordCost == false)
             {
                 double remodelCost = calculateRemodelCost(templateIndex);
-                string resourceName = templateManager[templateIndex].GetValue("requiredResource");
+                string resourceName = templateManager[templateIndex].GetValue(WBIAffordableSwitcher.kRequiredResourceField);
                 if (string.IsNullOrEmpty(resourceName))
                     return true;
 
@@ -348,6 +349,31 @@ namespace WildBlueIndustries
             }
 
             return canAffordCost;
+        }
+
+        protected override void recoverResourceCost(string resourceName, double recycleAmount)
+        {
+            double availableStorage = ResourceHelper.GetTotalResourceSpaceAvailable(resourceName, this.part.vessel);
+
+            //Do we have sufficient space in the vessel to store the recycled parts?
+            //If not, distrubute what we don't have space for.
+            if (availableStorage < recycleAmount)
+            {
+                double amountRemaining = recycleAmount - availableStorage;
+                string recycleMessage;
+
+                //We'll only recycle what we have room to store aboard the vessel.
+                recycleAmount = availableStorage;
+
+                //Distribute the rest.
+                List<DistributedResource> recycledResources = new List<DistributedResource>();
+                recycleMessage = string.Format(kResourceDistributed, amountRemaining, resourceName);
+                recycledResources.Add(new DistributedResource(resourceName, amountRemaining, recycleMessage));
+                WBIDistributionManager.Instance.DistributeResources(recycledResources);
+            }
+
+            //Store what we have space for.
+            this.part.RequestResource(resourceName, -recycleAmount, ResourceFlowMode.ALL_VESSEL);
         }
 
         protected void checkAndShowToolTip()

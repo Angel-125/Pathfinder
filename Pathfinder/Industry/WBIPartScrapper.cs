@@ -31,6 +31,10 @@ namespace WildBlueIndustries
         private const string kResourceRecycled = "Recycled {0:f2} units of {1:s}";
         private const string kPartRecycled = "{0:s} recycled.";
         private const string kPartHasChildren = "Scrap the attached parts first before scrapping this part.";
+        private const string kConfirmScrap = "Click a second time to confirm scrap operation.";
+
+        [KSPField]
+        public bool canScrapVessel = true;
 
         [KSPField]
         public double recyclePercentPerSkill = 10f;
@@ -47,6 +51,8 @@ namespace WildBlueIndustries
         [KSPField]
         public string recycleResource = "Equipment";
 
+        bool scrapConfirmed;
+
         [KSPEvent(guiActiveUnfocused = true, externalToEVAOnly = true, unfocusedRange = 3.0f)]
         public void ScrapVessel()
         {
@@ -56,6 +62,15 @@ namespace WildBlueIndustries
                 ScreenMessages.PostScreenMessage(kVesselIsOccupied, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
                 return;
             }
+
+            //Check for confirmation
+            if (PathfinderSettings.ConfirmScrap && !scrapConfirmed)
+            {
+                scrapConfirmed = true;
+                ScreenMessages.PostScreenMessage(kConfirmScrap, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
+            scrapConfirmed = false;
 
             if (FlightGlobals.ActiveVessel.isEVA)
             {
@@ -101,14 +116,91 @@ namespace WildBlueIndustries
             }
         }
 
+        public void ScrapPart(Part doomedPart)
+        {
+            //Make sure that there are no kerbals on the part.
+            if (doomedPart.protoModuleCrew.Count > 0)
+            {
+                ScreenMessages.PostScreenMessage(kPartIsOccupied, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+            }
+
+            //Check for confirmation
+            if (PathfinderSettings.ConfirmScrap && !scrapConfirmed)
+            {
+                scrapConfirmed = true;
+                ScreenMessages.PostScreenMessage(kConfirmScrap, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
+            scrapConfirmed = false;
+
+            //Check for skill & experience.
+            List<ProtoCrewMember> crewMembers = this.part.vessel.GetVesselCrew();
+            bool hasSufficientSkill = false;
+            bool hasSufficientExperience = false;
+            ProtoCrewMember highestRankingAstronaut = null;
+            foreach (ProtoCrewMember astronaut in crewMembers)
+            {
+                //Check skill
+                if (astronaut.HasEffect(scrapSkill))
+                    hasSufficientSkill = true;
+
+                //Check for experience level
+                if (Utils.IsExperienceEnabled())
+                {
+                    if (astronaut.experienceLevel >= minimumPartRecycleSkill)
+                    {
+                        hasSufficientExperience = true;
+
+                        if (highestRankingAstronaut == null)
+                            highestRankingAstronaut = astronaut;
+
+                        if (astronaut.experienceLevel > highestRankingAstronaut.experienceLevel)
+                            highestRankingAstronaut = astronaut;
+                    }
+                }
+            }
+
+            if (!hasSufficientSkill)
+            {
+                ScreenMessages.PostScreenMessage(string.Format(kInsufficientSkill, Utils.GetTraitsWithEffect(scrapSkill)), kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
+
+            if (!hasSufficientExperience)
+            {
+                ScreenMessages.PostScreenMessage(string.Format(kInsufficientExperiencePart, minimumPartRecycleSkill), kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
+
+            //Ok, we're good to go, get the resource definition for the recycleResource.
+            PartResourceDefinition def = ResourceHelper.DefinitionForResource(recycleResource);
+            if (def == null)
+            {
+                Debug.Log("[WBIPartScrapper] - Definition not found for " + recycleResource);
+                return;
+            }
+
+            //Recycle the part and its resources
+            recyclePart(doomedPart, def, highestRankingAstronaut);
+        }
+
         [KSPEvent(guiActiveUnfocused = true, externalToEVAOnly = true, unfocusedRange = 3.0f)]
-        public void ScrapPart()
+        public void ScrapPartEVA()
         {
             //Make sure that there are no kerbals on the part.
             if (this.part.protoModuleCrew.Count > 0)
             {
                 ScreenMessages.PostScreenMessage(kPartIsOccupied, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
             }
+
+            //Check for confirmation
+            if (PathfinderSettings.ConfirmScrap && !scrapConfirmed)
+            {
+                scrapConfirmed = true;
+                ScreenMessages.PostScreenMessage(kConfirmScrap, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
+            scrapConfirmed = false;
 
             if (FlightGlobals.ActiveVessel.isEVA)
             {
@@ -130,7 +222,6 @@ namespace WildBlueIndustries
                         return;
                     }
                 }
-
 
                 //Ok, we're good to go, get the resource definition for the recycleResource.
                 PartResourceDefinition def = ResourceHelper.DefinitionForResource(recycleResource);
@@ -161,7 +252,7 @@ namespace WildBlueIndustries
                 distributor.distribution = EDistributionModes.DistributionModeOff;
             }
 
-            //Distribute any resources that the part has.
+            //Find any resources that the part has.
             List<DistributedResource> scrappedResources = new List<DistributedResource>();
             PartResource[] doomedResources = doomed.Resources.ToArray();
             string recycleMessage;
@@ -188,8 +279,11 @@ namespace WildBlueIndustries
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
-            Events["ScrapPart"].guiName = "Scrap part for " + recycleResource;
+            Events["ScrapPartEVA"].guiName = "Scrap part for " + recycleResource;
             Events["ScrapVessel"].guiName = "Scrap vessel for " + recycleResource;
+
+            if (!canScrapVessel)
+                Events["ScrapVessel"].active = false;
         }
     }
 }

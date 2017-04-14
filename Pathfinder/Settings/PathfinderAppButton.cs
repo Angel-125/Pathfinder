@@ -7,7 +7,7 @@ using KSP.IO;
 using KSP.UI.Screens;
 
 /*
-Source code copyrighgt 2015, by Michael Billard (Angel-125)
+Source code copyrighgt 2017, by Michael Billard (Angel-125)
 License: GNU General Public License Version 3
 License URL: http://www.gnu.org/licenses/
 If you want to use this code, give me a shout on the KSP forums! :)

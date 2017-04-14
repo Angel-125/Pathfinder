@@ -60,6 +60,7 @@
     <Compile Include="GoldStrike\GoldStrikeLode.cs" />
     <Compile Include="GoldStrike\GoldStrikeData.cs" />
     <Compile Include="GUI\PipelineWindow.cs" />
+    <Compile Include="Settings\PathfinderSettings.cs" />
     <Compile Include="ResourceDistribution\DistributionView.cs" />
     <Compile Include="GUI\DrillSwitchWindow.cs" />
     <Compile Include="Science\WBIBiomeAnalysis.cs" />

@@ -6,6 +6,10 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+X
+- Added a Tweakscale patch for the plasma screens. Thanks for the patch, Violet_Wyvern!
+- S.A.F.E.R. : The Safe Affordable Fission Engine for Rovers generates ElectricCharge for your spacecraft needs. It is based upon the real-world SAFE - 400 reactor created by NASA.
+
 1.15
 - Restricted the number of contracts that are offered and/or active.
 - Fixed a situation where experiments weren't registering as completed.

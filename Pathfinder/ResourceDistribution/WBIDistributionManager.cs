@@ -243,7 +243,7 @@ namespace WildBlueIndustries
             return amountObtained;
         }
 
-        public void DistributeResources(List<DistributedResource> distributedResources, float distributionRange = kDefaultDistributionRange)
+        public void DistributeResources(List<DistributedResource> distributedResources, float distributionRange = kDefaultDistributionRange, bool ignoreSituation = true)
         {
             if (distributionInProgress)
                 return;
@@ -251,7 +251,7 @@ namespace WildBlueIndustries
             Log("[WBIDistributionManager] - DistributeResources called. Number of resources to distribute: " + distributedResources.Count());
 
             //Build the distributor list
-            getDistributors(distributionRange);
+            getDistributors(distributionRange, ignoreSituation);
 
             TalliedResource talliedResource;
             double amountRemaining;
@@ -408,7 +408,7 @@ namespace WildBlueIndustries
             distributionInProgress = false;
         }
 
-        protected List<WBIResourceDistributor> getDistributors(float distributionRange = 0)
+        protected List<WBIResourceDistributor> getDistributors(float distributionRange = 0, bool ignoreSituation = false)
         {
             List<WBIResourceDistributor> potentialDistributors = null;
             WBIResourceDistributor distributor;
@@ -440,7 +440,7 @@ namespace WildBlueIndustries
             for (vesselIndex = 0; vesselIndex < totalVessels; vesselIndex++)
             {
                 vessel = FlightGlobals.VesselsLoaded[vesselIndex];
-                if (vessel.situation != Vessel.Situations.PRELAUNCH && vessel.situation != Vessel.Situations.LANDED && vessel.situation != Vessel.Situations.SPLASHED)
+                if (!ignoreSituation && vessel.situation != Vessel.Situations.PRELAUNCH && vessel.situation != Vessel.Situations.LANDED && vessel.situation != Vessel.Situations.SPLASHED)
                 {
                     Log("[WBIDistributionManager] - Skipping vessel due to situation: " + vessel.situation);
                     continue;

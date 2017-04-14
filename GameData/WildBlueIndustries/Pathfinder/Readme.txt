@@ -8,6 +8,21 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.8.0
+Buffalo MSEV
+- Added new Buffalo Wings parts. See the Buffalo readme for details.
+
+New Part
+- S.A.F.E.R. : The Safe Affordable Fission Engine with Radiators generates ElectricCharge for your spacecraft needs. It is based upon the real-world SAFE - 400 reactor created by NASA.
+
+Bug Fixes & Enhancements
+- Fixed airlock issue on the Chuckwagon.
+- Part scrapping now requires a confirmation click (which can be disabled in the options screen).
+- With Extraplanetary Launchpads installed, you can turn Equipment into ScrapMetal.
+- When Far Future Technologies is installed, FusionPellets are made from LqdHe3 and LqdDeuterium.
+- Fixed an issue where Equipment wasn't being recycled after deflating a module.
+- If you have insufficient room on your vessel to store Equipment recovered during module deflation, then the remaining amount will be distributed.
+
 1.7.5 Shipbreakers
 
 Part Scrapping

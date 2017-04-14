@@ -32,6 +32,46 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.0 Buffalo Wings
+
+The Buffalo Modular Space Exploration Vehicle (MSEV) is designed for a wide variety of environments. While previous releases focused upon rover and spacecraft components, this release introduces Buffalo's aircraft components; now you can fly the Buffalo to various destinations!
+
+New Parts
+
+- WB-22 "Typhoon" Tiltrotor: This tiltrotor is designed for both horizontal and vertical flight. You can control the tilt angle via the new VTOL Manager GUI; just look for the helicopter icon in the app toolbar. For compact storage, the tiltrotor's blades can be folded. It is powered by ElectricCharge and takes in Atmosphere (found on Kerbin, Laythe, Eve, Duna, and others).
+
+- WB-44 "Hurricane" Tiltrotor: This is a larger, heavy-lift version of the WB-22.
+
+- Compressed Air RCS Thruster: Instead of running on Monopropellant, this RCS thruster runs on Compressed Air (produced by the WB-22 and WB-44).
+
+- GTG-125 Gas Turbine Generator: Similar to a jet engine, the gas turbine generator is throttle-controlled and consumes LiquidFuel/IntakeAir. But instead of generating thrust, it generates large amounts of ElectricCharge.
+
+- GTG-250: This is a larger version of the GTG-125.
+
+- Buffalo Half-Service Bay: As its name sounds, this part is half the length of the Buffalo Service Bay. It can hold a single Buckboard 1000.
+
+- Buffalo Wing Root: Specially designed for the Buffalo rover, the Wing Root gives you a place to attach wings, and it can store resources.
+
+- Buffalo Wing: This wing fits the new tiltrotor. There are 4 types.
+
+- Type 1 Buffalo Elevon: This elevon fits the Type 4 Buffalo Wing.
+
+- Buffalo Winglet: This winglet is rougly equivalent to the stock AV-R8 Winglet, but done in pork-alike fashion.
+
+- Buffalo Canard: A half-sized version of the winglet.
+
+- Chassis 3u: 3x the size of the Chassis 1u, with 3x the storage capacity.
+
+- S.A.F.E.R. : The Safe Affordable Fission Engine with Radiators generates ElectricCharge for your spacecraft needs. It is based upon the real-world SAFE - 400 reactor created by NASA.
+
+Bug Fixes & Enhancements
+- Moved the Flatbeds to the Payload tab.
+- Moved the Flex Fuel Power Pack to the Electrical tab.
+- The Flex Fuel Power Pack is now available after unlocking the Electrics node. The available flex fuel generators increases as you unlock more tech nodes.
+- Both the Tundra 200 and Tundra 400 storage tanks now have rooftop solar arrays.
+- The Grizzly and Bear Cub wheels now have the ability to decouple and self-destruct.
+- Moved the Bear Cub to the Miniaturization tech node.
+
 1.2.3
 - WBT Update
 

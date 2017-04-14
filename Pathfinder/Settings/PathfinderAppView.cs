@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using KSP.IO;
-
+using ModuleWheels;
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
 License: GNU General Public License Version 3
