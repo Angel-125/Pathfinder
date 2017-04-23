@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.8.5
+Gold Strike
+- Some locations now have a higher chance of containing valuable resources than others.
+
 1.8.0
 Buffalo MSEV
 - Added new Buffalo Wings parts. See the Buffalo readme for details.

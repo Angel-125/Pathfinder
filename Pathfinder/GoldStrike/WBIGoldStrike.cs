@@ -22,9 +22,12 @@ namespace WildBlueIndustries
 {
     public class WBIGoldStrike : PartModule, IOpsView
     {
+        private const string kAnomalyBlacklist = "KSC;KSC2;IslandAirfield;Harvester Massif;Nye Island;Mesa South;Crater Rim;North Station One"; //TODO: Make this externally configurable
         private const float kMessageDisplayTime = 10.0f;
         private const float kMotherlodeFactor = 0.05f;
         private const float kLabSkillBonus = 0.5f;
+        private const float kLocationBonus = 50.0f;
+        private const float kMinAnomalyDistance = 0.2f;
 
         [KSPField()]
         public bool showGUI;
@@ -60,6 +63,7 @@ namespace WildBlueIndustries
         protected Vector3d lastProspectLocation = Vector3d.zero;
         double minTravelDistance = 10f;
         bool prospectResetConfirmed;
+        protected string anomalyName = string.Empty;
 
         protected void debugLog(string message)
         {
@@ -251,6 +255,8 @@ namespace WildBlueIndustries
                 ScreenMessages.PostScreenMessage(string.Format("Congratulations! You found a {0:s} lode with {1:f2} units available to mine!", resourceName, resourceAmount),
                     kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
             }
+            if (!string.IsNullOrEmpty(anomalyName))
+                ScreenMessages.PostScreenMessage("Special cache found at " + anomalyName, kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
             ScreenMessages.PostScreenMessage(chancesRemaining + " chances remain to find another lode in the " + biomeName, kMessageDisplayTime, ScreenMessageStyle.UPPER_LEFT);
 
             //Play the jingle
@@ -351,6 +357,7 @@ namespace WildBlueIndustries
             float skillBonus = GoldStrikeSettings.BonusPerSkillPoint;
             float prospectBonus = 0f;
             float labBonus = 0f;
+            float locationBonus = 0f;
             Vessel[] vessels;
             Vessel vessel;
             ProtoCrewMember[] crewMembers;
@@ -454,8 +461,11 @@ namespace WildBlueIndustries
                 }
             }
 
-            debugLog("Prospector bonus: " + prospectBonus + " labBonus: " + labBonus);
-            return prospectBonus + labBonus;
+            //Location bonus
+            locationBonus = getLocationBonus();
+            
+            debugLog("Prospector bonus: " + prospectBonus + " labBonus: " + labBonus + " locationBonus: " + locationBonus);
+            return prospectBonus + labBonus + locationBonus;
         }
 
         public bool HasSufficientAbundance()
@@ -521,6 +531,44 @@ namespace WildBlueIndustries
             }
 
             return true;
+        }
+
+        protected float getLocationBonus()
+        {
+            CelestialBody mainBody = this.part.vessel.mainBody;
+            PQSSurfaceObject[] anomalies = mainBody.pqsSurfaceObjects;
+            double longitude;
+            double latitude;
+            double distance = 0f;
+
+            if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
+            {
+                for (int index = 0; index < anomalies.Length; index++)
+                {
+                    //If the anomaly is on the blacklist, skip it.
+                    if (kAnomalyBlacklist.Contains(anomalies[index].SurfaceObjectName))
+                        continue;
+
+                    //Get the longitude and latitude of the anomaly
+                    longitude = mainBody.GetLongitude(anomalies[index].transform.position);
+                    latitude = mainBody.GetLatitude(anomalies[index].transform.position);
+
+                    //Get the distance (in kilometers) from the anomaly.
+                    distance = GoldStrikeUtils.HaversineDistance(longitude, latitude,
+                        this.part.vessel.longitude, this.part.vessel.latitude, this.part.vessel.mainBody);
+
+                    //If we're near the anomaly, then we get a big location bonus.
+                    if (distance < kMinAnomalyDistance)
+                    {
+                        anomalyName = anomalies[index].SurfaceObjectName;
+                        return kLocationBonus;
+                    }
+                }
+            }
+
+            //No bonus
+            anomalyName = string.Empty;
+            return 0f;
         }
 
         protected void playJingle()

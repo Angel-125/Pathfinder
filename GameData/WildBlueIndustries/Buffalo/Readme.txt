@@ -32,6 +32,10 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.0.5
+- WBT Update
+- Added the V-22 Buffalo Wings development aircraft to the SampleCraft/Ships/SPH folder. It is properly balanced for VTOL flight.
+
 2.0 Buffalo Wings
 
 The Buffalo Modular Space Exploration Vehicle (MSEV) is designed for a wide variety of environments. While previous releases focused upon rover and spacecraft components, this release introduces Buffalo's aircraft components; now you can fly the Buffalo to various destinations!

@@ -88,8 +88,8 @@ namespace WildBlueIndustries
     {
         public const string kLodeIcon = "WildBlueIndustries/Pathfinder/Icons/LodeIcon";
         public const int kMaxCoreSamples = 8;
+        public const double kMaxProspectSearchDistance = 0.1f; //km
 
-        private const double kMaxProspectSearchDistance = 0.1f; //km
         private const string kEfficiencyData = "EfficiencyData";
         private const string kToolTip = "ToolTip";
         private const string kReputationIndex = "reputationIndex";
