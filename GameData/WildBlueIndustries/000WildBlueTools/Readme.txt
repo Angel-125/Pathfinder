@@ -6,6 +6,9 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.19
+- Minor bug fixes
+
 1.18
 - Experiments can now check the entire vessel via their "checkVesselResources" flag, to see if there are enough resources to complete the experiment.
 

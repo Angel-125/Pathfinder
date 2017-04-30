@@ -8,6 +8,12 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.8.6
+
+Buffalo
+- VTOL Manager has improved hover management during low framerate conditions.
+- Fix for IVA screens not remembering what image they were displaying.
+
 1.8.5
 Gold Strike
 - Some locations now have a higher chance of containing valuable resources than others.

@@ -32,6 +32,11 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.0.6
+- Minor update to consolidate RPM/ASET ModuleManager patches into one file.
+- VTOL Manager has improved hover management during low framerate conditions.
+- Fix for IVA screens not remembering what image they were displaying.
+
 2.0.5
 - WBT Update
 - Added the V-22 Buffalo Wings development aircraft to the SampleCraft/Ships/SPH folder. It is properly balanced for VTOL flight.
