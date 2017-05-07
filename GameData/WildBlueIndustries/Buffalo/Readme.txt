@@ -32,6 +32,10 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.0.7
+- Made it easier to climb into the roof of the crewed parts.
+- Recompiled Kerbal Actuators.
+
 2.0.6
 - Minor update to consolidate RPM/ASET ModuleManager patches into one file.
 - VTOL Manager has improved hover management during low framerate conditions.

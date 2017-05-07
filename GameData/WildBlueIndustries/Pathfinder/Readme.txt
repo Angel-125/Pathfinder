@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.8.7
+- Made it easier to climb onto the roof of the Buffalo cabins.
+- Kerbal Actuators recompiled.
+
 1.8.6
 
 Buffalo

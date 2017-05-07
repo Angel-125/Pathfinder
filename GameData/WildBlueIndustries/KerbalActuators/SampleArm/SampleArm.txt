@@ -1,0 +1,349 @@
+PART
+{
+	// this is a sample config file, for determining a good file format for defining part parameters
+	// comment line - ignored by cfg parser
+	// empty lines, or lines without a '=' sign are also ignored
+	// all other lines are split at the '=' sign, and the left operand is used to know what parameter we are setting
+	// diferent parameters require data in different formats (see docs), and each module has it's own parameters (again, see docs)
+	// each assignment must be in a single line. Lines without assignments will be ignored. (You CAN turn on word wrap, though)
+	// each keyword here relates to an existing variable in the assigned module. If the keyword isn't found, it is ignored.
+	// conversely, if a keyword is left unassigned (as in not in the file), it will be initialized with it's default value
+	// This is done automatically, so any public variable defined in the loaded module can be accessed this way (provided it's value can be parsed)
+
+	// --- general parameters ---
+	name = SampleArm
+	module = Part
+	author = Pak/Michael Billard (Angel-125)
+
+	// --- asset parameters ---
+	rescaleFactor = 1
+	MODEL
+	{
+		model = WildBlueIndustries/KerbalActuators/SampleArm/kanadarm
+	}
+
+	// --- node definitions ---
+	// definition format is Position X, Position Y, Position Z, Up X, Up Y, Up Z
+	node_stack_bottom = 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0
+	node_attach = 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0
+
+	// --- editor parameters ---
+	TechRequired = actuators
+	entryCost = 3250
+	cost = 900
+	category = Utility
+	subcategory = 0
+	title = Kanadarm
+	manufacturer = Wild Blue Industries
+	description = This is a simple test part to test functionality for a robot arm.
+
+	// attachment rules: stack, srfAttach, allowStack, allowSrfAttach, allowCollision
+	attachRules = 1,1,1,1,1
+
+	// --- standard part parameters ---
+	mass = 0.375
+	dragModelType = default
+	maximum_drag = 0.25
+	minimum_drag = 0.25
+	angularDrag = .5
+	crashTolerance = 45
+	breakingForce = 280
+	breakingTorque = 280
+	maxTemp = 2000
+	fuelCrossFeed = True
+	heatConductivity = 0.001
+
+	MODULE
+	{
+		name = WBIMagnetController
+	}
+
+	MODULE
+	{
+		//This module handles mesh rotation operations such as an engine nacelle pivot.
+		name = WBIRotationController
+
+		//(Optional, defaults to Actuator) User-friendly name of the rotation controller.
+		rotatorName = Rotate Hand
+
+		//(Optional, defaults to Engine) Group ID for the actuator. Allows you to differentiate
+		//between the VTOL manager (which uses the Engine group), and, say, a robot arm manager.
+		groupID = Arm
+
+		//Name of the pivot z+ points down the length of the arm. See Unity model.
+		rotationMeshName = Hand
+
+		//Rotation axis of the pivot (x, y, z)
+		rotationMeshAxis = 0,0,1
+
+		//We'll use the Servo Manager to control the rotation
+		//(defaults to true, so we have the buttons in the right-click menu)
+		guiVisible = false
+
+		//We don't do symmetry with this part. This is used for engines for the most part.
+		canMirrorRotation = false
+
+		//How fast to rotate the pivot
+		rotationDegPerSec = 15
+	}
+
+	MODULE
+	{
+		//This module handles mesh rotation operations such as an engine nacelle pivot.
+		name = WBIRotationController
+
+		//(Optional, defaults to Actuator) User-friendly name of the rotation controller.
+		rotatorName = Yaw Wrist
+
+		//(Optional, defaults to Engine) Group ID for the actuator. Allows you to differentiate
+		//between the VTOL manager (which uses the Engine group), and, say, a robot arm manager.
+		groupID = Arm
+
+		//Name of the pivot z+ points down the length of the arm. See Unity model.
+		rotationMeshName = WristLtRt
+
+		//Rotation axis of the pivot (x, y, z)
+		rotationMeshAxis = 1,0,0
+
+		//We'll use the Servo Manager to control the rotation
+		//(defaults to true, so we have the buttons in the right-click menu)
+		guiVisible = false
+
+		//We don't do symmetry with this part. This is used for engines for the most part.
+		canMirrorRotation = false
+
+		//How fast to rotate the pivot
+		rotationDegPerSec = 15
+
+		//Maximum rotation angle
+		//From 0 to 360 degrees
+		//Min --- Neutral (0) --- Max
+		//NOTE: if maxRotateAngle & minRotateAngle = -1 (which is the default),
+		//then the rotation pivot can go 360 degrees.
+		maxRotateAngle = 90
+
+		//Minimum rotation angle (0 to 360 degrees)
+		minRotateAngle = 270
+
+		//Can we rotate to minimum?
+		//Ex: tilt-rotor can pivot up and forward and that's it.
+		canRotateMin = true
+
+		//Can we rotate to maximum?
+		canRotateMax = true
+
+		//Name of the rotate to maximum button (only applies if gui buttons are visible)
+		rotateMaxName = Elevate To Maximum
+	
+		//Name of the rotate to minimum button (only applies if gui buttons are visible)
+		rotateMinName = Elevate To Minimum
+
+		//Name of the rotate to neutral button (only applies if gui buttons are visible)
+		rotateNeutralName = Elevate To Neutral
+	}
+
+	MODULE
+	{
+		//This module handles mesh rotation operations such as an engine nacelle pivot.
+		name = WBIRotationController
+
+		//(Optional, defaults to Actuator) User-friendly name of the rotation controller.
+		rotatorName = Pitch Wrist
+
+		//(Optional, defaults to Engine) Group ID for the actuator. Allows you to differentiate
+		//between the VTOL manager (which uses the Engine group), and, say, a robot arm manager.
+		groupID = Arm
+
+		//Name of the pivot z+ points down the length of the arm. See Unity model.
+		rotationMeshName = WristUpDn
+
+		//Rotation axis of the pivot (x, y, z)
+		rotationMeshAxis = 0,1,0
+
+		//We'll use the Servo Manager to control the rotation
+		//(defaults to true, so we have the buttons in the right-click menu)
+		guiVisible = false
+
+		//We don't do symmetry with this part. This is used for engines for the most part.
+		canMirrorRotation = false
+
+		//How fast to rotate the pivot
+		rotationDegPerSec = 15
+
+		//Maximum rotation angle
+		//From 0 to 360 degrees
+		//Min --- Neutral (0) --- Max
+		//NOTE: if maxRotateAngle & minRotateAngle = -1 (which is the default),
+		//then the rotation pivot can go 360 degrees.
+		maxRotateAngle = 115
+
+		//Minimum rotation angle (0 to 360 degrees)
+		minRotateAngle = 245
+
+		//Can we rotate to minimum?
+		//Ex: tilt-rotor can pivot up and forward and that's it.
+		canRotateMin = true
+
+		//Can we rotate to maximum?
+		canRotateMax = true
+
+		//Name of the rotate to maximum button (only applies if gui buttons are visible)
+		rotateMaxName = Elevate To Maximum
+	
+		//Name of the rotate to minimum button (only applies if gui buttons are visible)
+		rotateMinName = Elevate To Minimum
+
+		//Name of the rotate to neutral button (only applies if gui buttons are visible)
+		rotateNeutralName = Elevate To Neutral
+	}
+
+	MODULE
+	{
+		//This module handles mesh rotation operations such as an engine nacelle pivot.
+		name = WBIRotationController
+
+		//(Optional, defaults to Actuator) User-friendly name of the rotation controller.
+		rotatorName = Pitch Elbow
+
+		//(Optional, defaults to Engine) Group ID for the actuator. Allows you to differentiate
+		//between the VTOL manager (which uses the Engine group), and, say, a robot arm manager.
+		groupID = Arm
+
+		//Name of the pivot z+ points down the length of the arm. See Unity model.
+		rotationMeshName = Elbow
+
+		//Rotation axis of the pivot (x, y, z)
+		rotationMeshAxis = 0,1,0
+
+		//We'll use the Servo Manager to control the rotation
+		//(defaults to true, so we have the buttons in the right-click menu)
+		guiVisible = false
+
+		//We don't do symmetry with this part. This is used for engines for the most part.
+		canMirrorRotation = false
+
+		//How fast to rotate the pivot
+		rotationDegPerSec = 15
+
+		//Maximum rotation angle
+		//From 0 to 360 degrees
+		//Min --- Neutral (0) --- Max
+		//NOTE: if maxRotateAngle & minRotateAngle = -1 (which is the default),
+		//then the rotation pivot can go 360 degrees.
+		maxRotateAngle = 115
+
+		//Minimum rotation angle (0 to 360 degrees)
+		minRotateAngle = 245
+
+		//Can we rotate to minimum?
+		//Ex: tilt-rotor can pivot up and forward and that's it.
+		canRotateMin = true
+
+		//Can we rotate to maximum?
+		canRotateMax = true
+
+		//Name of the rotate to maximum button (only applies if gui buttons are visible)
+		rotateMaxName = Elevate To Maximum
+	
+		//Name of the rotate to minimum button (only applies if gui buttons are visible)
+		rotateMinName = Elevate To Minimum
+
+		//Name of the rotate to neutral button (only applies if gui buttons are visible)
+		rotateNeutralName = Elevate To Neutral
+	}
+
+	MODULE
+	{
+		//This module handles mesh rotation operations such as an engine nacelle pivot.
+		name = WBIRotationController
+
+		//(Optional, defaults to Actuator) User-friendly name of the rotation controller.
+		rotatorName = Pitch Shoulder
+
+		//(Optional, defaults to Engine) Group ID for the actuator. Allows you to differentiate
+		//between the VTOL manager (which uses the Engine group), and, say, a robot arm manager.
+		groupID = Arm
+
+		//Name of the pivot z+ points down the length of the arm. See Unity model.
+		rotationMeshName = ShoulderUpDn
+
+		//Rotation axis of the pivot (x, y, z)
+		rotationMeshAxis = 0,1,0
+
+		//We'll use the Servo Manager to control the rotation
+		//(defaults to true, so we have the buttons in the right-click menu)
+		guiVisible = false
+
+		//We don't do symmetry with this part. This is used for engines for the most part.
+		canMirrorRotation = false
+
+		//How fast to rotate the pivot
+		rotationDegPerSec = 15
+
+		//Maximum rotation angle
+		//From 0 to 360 degrees
+		//Min --- Neutral (0) --- Max
+		//NOTE: if maxRotateAngle & minRotateAngle = -1 (which is the default),
+		//then the rotation pivot can go 360 degrees.
+		maxRotateAngle = 90
+
+		//Minimum rotation angle (0 to 360 degrees)
+		minRotateAngle = 270
+
+		//The current rotation angle. We don't need to set this but for Kanadarm,
+		//we set a starting angle for the arm.
+		currentRotationAngle = 90
+
+		//Can we rotate to minimum?
+		//Ex: tilt-rotor can pivot up and forward and that's it.
+		canRotateMin = true
+
+		//Can we rotate to maximum?
+		canRotateMax = true
+
+		//Name of the rotate to maximum button (only applies if gui buttons are visible)
+		rotateMaxName = Elevate To Maximum
+	
+		//Name of the rotate to minimum button (only applies if gui buttons are visible)
+		rotateMinName = Elevate To Minimum
+
+		//Name of the rotate to neutral button (only applies if gui buttons are visible)
+		rotateNeutralName = Elevate To Neutral
+	}
+
+	MODULE
+	{
+		//This module handles mesh rotation operations such as an engine nacelle pivot.
+		name = WBIRotationController
+
+		//(Optional, defaults to Actuator) User-friendly name of the rotation controller.
+		rotatorName = Rotate Shoulder
+
+		//(Optional, defaults to Engine) Group ID for the actuator. Allows you to differentiate
+		//between the VTOL manager (which uses the Engine group), and, say, a robot arm manager.
+		groupID = Arm
+
+		//Name of the pivot z+ points down the length of the arm. See Unity model.
+		rotationMeshName = ShoulderLtRt
+
+		//Rotation axis of the pivot (x, y, z)
+		rotationMeshAxis = 0,0,1
+
+		//We'll use the Servo Manager to control the rotation
+		//(defaults to true, so we have the buttons in the right-click menu)
+		guiVisible = false
+
+		//We don't do symmetry with this part. This is used for engines for the most part.
+		canMirrorRotation = false
+
+		//How fast to rotate the pivot
+		rotationDegPerSec = 15
+	}
+
+	//Put this module LAST in the list of rotation controllers and such.
+	//It provides a button to display a GUI.
+	MODULE
+	{
+		name = WBIServoManager
+	}
+}
