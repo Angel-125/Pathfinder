@@ -8,6 +8,13 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.8.8
+- Fixed Crash To Desktop issues experienced at startup that are associated with Kerbal Actuators.
+- Revised Kerbal Actuators GUI.
+- You can now scrap parts and distribute the resources while in orbit.
+- You can no longer scrap kerbals. That's just mean.
+- Fixed NRE issues with the JetWing.
+
 1.8.7
 - Made it easier to climb onto the roof of the Buffalo cabins.
 - Kerbal Actuators recompiled.

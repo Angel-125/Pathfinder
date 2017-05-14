@@ -14,3 +14,4 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\WildBlueTools
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.xml
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.pdb
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csprojResolveAssemblyReference.cache

@@ -268,7 +268,7 @@ namespace WildBlueIndustries
             //Now distribute the recycled resources
             recycleMessage = string.Format(kResourceRecycled, totalRecycleUnits, recycleResource);
             scrappedResources.Add(new DistributedResource(recycleResource, totalRecycleUnits, recycleMessage));
-            WBIDistributionManager.Instance.DistributeResources(scrappedResources);
+            WBIDistributionManager.Instance.DistributeResources(scrappedResources, WBIDistributionManager.kDefaultDistributionRange, true);
 
             //Finally, poof the part.
             ScreenMessages.PostScreenMessage(string.Format(kPartRecycled, doomed.partInfo.title), kMessageDuration, ScreenMessageStyle.UPPER_CENTER);

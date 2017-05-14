@@ -32,6 +32,11 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.0.8
+- Fixed Crash To Desktop issues experienced at startup that are associated with Kerbal Actuators.
+- Revised Kerbal Actuators GUI.
+- Fixed NRE issues with the JetWing.
+
 2.0.7
 - Made it easier to climb into the roof of the crewed parts.
 - Recompiled Kerbal Actuators.

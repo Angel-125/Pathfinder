@@ -60,14 +60,12 @@ namespace WildBlueIndustries
     {
         public const float kDefaultDistributionRange = 50.0f;
 
-        public static bool debugMode = false;
+        public static bool debugMode = true;
         public static WBIDistributionManager Instance;
         public static double secondsPerCycle = 10.0f;
 
         protected List<WBIResourceDistributor> distributors = new List<WBIResourceDistributor>();
         protected int lastTotalVessels = 0;
-        protected Dictionary<string, TalliedResource> requiredResourceTally = new Dictionary<string, TalliedResource>();
-        protected Dictionary<string, TalliedResource> sharedResourceTally = new Dictionary<string, TalliedResource>();
         protected double elapsedTime;
         protected double cycleStartTime;
         protected bool distributionInProgress;
@@ -149,22 +147,28 @@ namespace WildBlueIndustries
         public double GetDistributedAmount(string resourceName)
         {
             double distributedAmount = 0f;
+            Dictionary<string, TalliedResource> requiredResourceTally = new Dictionary<string, TalliedResource>();
+            Dictionary<string, TalliedResource> sharedResourceTally = new Dictionary<string, TalliedResource>();
+            int totalDistributors, distributorIndex;
 
-            getDistributors();
+            //Refresh distributor list if needed
+            if (needsDistributorRefresh())
+                distributors = getDistributors();
+
+            //Tally up the resources.
+            totalDistributors = distributors.Count;
+            for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
+                tallyResources(distributors[distributorIndex], sharedResourceTally, requiredResourceTally);
+
             if (sharedResourceTally.ContainsKey(resourceName) == false)
             {
                 Log("[WBIDistributionManager] - " + resourceName + " does not appear to be a shared resource");
-                sharedResourceTally.Clear();
-                requiredResourceTally.Clear();
                 return 0f;
             }
 
             //Get the amount that we have.
             distributedAmount = sharedResourceTally[resourceName].grandTotal;
 
-            //Cleanup
-            sharedResourceTally.Clear();
-            requiredResourceTally.Clear();
             return distributedAmount;
         }
 
@@ -177,14 +181,23 @@ namespace WildBlueIndustries
             TalliedResource talliedResource;
             WBIResourceDistributor distributor;
             int totalDistributors, distributorIndex;
+            Dictionary<string, TalliedResource> requiredResourceTally = new Dictionary<string, TalliedResource>();
+            Dictionary<string, TalliedResource> sharedResourceTally = new Dictionary<string, TalliedResource>();
 
             distributionInProgress = true;
-            getDistributors();
+
+            //Refresh distributor list if needed
+            if (needsDistributorRefresh())
+                distributors = getDistributors();
+
+            //Tally up the resources.
+            totalDistributors = distributors.Count;
+            for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
+                tallyResources(distributors[distributorIndex], sharedResourceTally, requiredResourceTally);
+
             if (sharedResourceTally.ContainsKey(resourceName) == false)
             {
                 distributionInProgress = false;
-                sharedResourceTally.Clear();
-                requiredResourceTally.Clear();
                 return 0f;
             }
 
@@ -194,8 +207,6 @@ namespace WildBlueIndustries
             if (amountRemaining < 0.001f && grandCapacity < 0.001f)
             {
                 distributionInProgress = false;
-                sharedResourceTally.Clear();
-                requiredResourceTally.Clear();
                 return 0f;
             }
 
@@ -217,8 +228,6 @@ namespace WildBlueIndustries
             else
             {
                 distributionInProgress = false;
-                sharedResourceTally.Clear();
-                requiredResourceTally.Clear();
                 return 0;
             }
 
@@ -237,21 +246,14 @@ namespace WildBlueIndustries
             }
 
             //Cleanup
-            sharedResourceTally.Clear();
-            requiredResourceTally.Clear();
             distributionInProgress = false;
             return amountObtained;
         }
 
         public void DistributeResources(List<DistributedResource> distributedResources, float distributionRange = kDefaultDistributionRange, bool ignoreSituation = true)
         {
-            if (distributionInProgress)
-                return;
-            distributionInProgress = true;
             Log("[WBIDistributionManager] - DistributeResources called. Number of resources to distribute: " + distributedResources.Count());
-
-            //Build the distributor list
-            getDistributors(distributionRange, ignoreSituation);
+            Log("[WBIDistributionManager] - ignoreSituation: " + ignoreSituation + " distributionRange: " + distributionRange);
 
             TalliedResource talliedResource;
             double amountRemaining;
@@ -261,9 +263,20 @@ namespace WildBlueIndustries
             WBIResourceDistributor distributor;
             string resourceName;
             bool resourceDistributed = false;
-
+            Dictionary<string, TalliedResource> requiredResourceTally = new Dictionary<string, TalliedResource>();
+            Dictionary<string, TalliedResource> sharedResourceTally = new Dictionary<string, TalliedResource>();
+            List<WBIResourceDistributor> distributors = null;
             DistributedResource[] distributedResourcesArray = distributedResources.ToArray();
             DistributedResource distributedResource;
+
+            //Refresh distributor list if needed
+            distributors = getDistributors(distributionRange, ignoreSituation);
+
+            //Tally up the resources.
+            totalDistributors = distributors.Count;
+            for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
+                tallyResources(distributors[distributorIndex], sharedResourceTally, requiredResourceTally);
+
             for (int index = 0; index < distributedResourcesArray.Length; index++)
             {
                 distributedResource = distributedResources[index];
@@ -311,9 +324,6 @@ namespace WildBlueIndustries
                         ScreenMessages.PostScreenMessage(distributedResource.message, 3.0f, ScreenMessageStyle.UPPER_LEFT);
 
                     //Cleanup
-                    sharedResourceTally.Clear();
-                    requiredResourceTally.Clear();
-                    distributionInProgress = false;
                     return;
                 }
 
@@ -334,11 +344,6 @@ namespace WildBlueIndustries
                 if (!string.IsNullOrEmpty(distributedResource.message) && resourceDistributed)
                     ScreenMessages.PostScreenMessage(distributedResource.message, 3.0f, ScreenMessageStyle.UPPER_LEFT);
             }
-
-            //Cleanup
-            sharedResourceTally.Clear();
-            requiredResourceTally.Clear();
-            distributionInProgress = false;
         }
 
         public void DistributeResources()
@@ -347,16 +352,26 @@ namespace WildBlueIndustries
                 return;
             distributionInProgress = true;
 
-            List<WBIResourceDistributor> distributors = getDistributors();
             TalliedResource talliedResource;
             double amountRemaining;
             double grandCapacity;
             double sharePercent;
-            int totalDistributors, distributorIndex;
             WBIResourceDistributor distributor;
             string[] tallyKeys;
             int totalTallyKeys, keyIndex;
             string resourceName;
+            int totalDistributors, distributorIndex;
+            Dictionary<string, TalliedResource> requiredResourceTally = new Dictionary<string, TalliedResource>();
+            Dictionary<string, TalliedResource> sharedResourceTally = new Dictionary<string, TalliedResource>();
+
+            //Refresh distributor list if needed
+            if (needsDistributorRefresh())
+                distributors = getDistributors();
+
+            //Tally up the resources.
+            totalDistributors = distributors.Count;
+            for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
+                tallyResources(distributors[distributorIndex], sharedResourceTally, requiredResourceTally);
 
             //Now go through each resource in the dictionary of shared resources.
             //Take the grand total and distribute it amongst the dictionary of required resources (if an entry exists) first.
@@ -403,40 +418,41 @@ namespace WildBlueIndustries
             }
 
             //Cleanup
-            sharedResourceTally.Clear();
-            requiredResourceTally.Clear();
             distributionInProgress = false;
         }
 
-        protected List<WBIResourceDistributor> getDistributors(float distributionRange = 0, bool ignoreSituation = false)
+        protected bool needsDistributorRefresh()
         {
-            List<WBIResourceDistributor> potentialDistributors = null;
-            WBIResourceDistributor distributor;
-            Vessel vessel;
-            int totalVessels, totalDistributors, vesselIndex, distributorIndex;
+            int totalVessels;
 
             //If the loaded vessel count hasn't changed from the last time we checked then use the cached distributors.
             totalVessels = FlightGlobals.VesselsLoaded.Count;
             if (totalVessels == lastTotalVessels)
             {
                 Log("[WBIDistributionManager] - Using distributor cache");
-                totalDistributors = distributors.Count;
-                for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
-                    tallyResources(distributors[distributorIndex]);
-                return distributors;
+                return false;
             }
 
             //We need to build the cache of distributors.
             else
             {
                 Log("[WBIDistributionManager] - Rebuilding distributor cache");
-                distributors.Clear();
-                sharedResourceTally.Clear();
-                requiredResourceTally.Clear();
                 lastTotalVessels = totalVessels;
             }
 
+            return true;
+        }
+
+        protected List<WBIResourceDistributor> getDistributors(float distributionRange = 0, bool ignoreSituation = false)
+        {
+            Log("[WBIDistributionManager] - getDistributors - ignoreSituation: " + ignoreSituation + " distributionRange: " + distributionRange);
+            List<WBIResourceDistributor> potentialDistributors = null;
+            List<WBIResourceDistributor> foundDistributors = new List<WBIResourceDistributor>();
+            Vessel vessel;
+            int totalVessels, totalDistributors, vesselIndex, distributorIndex;
+
             //Get the list of all the vessels within physics range (they're loaded)
+            totalVessels = FlightGlobals.VesselsLoaded.Count;
             for (vesselIndex = 0; vesselIndex < totalVessels; vesselIndex++)
             {
                 vessel = FlightGlobals.VesselsLoaded[vesselIndex];
@@ -458,20 +474,15 @@ namespace WildBlueIndustries
 
                 potentialDistributors = vessel.FindPartModulesImplementing<WBIResourceDistributor>();
                 totalDistributors = potentialDistributors.Count;
-
                 for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
-                {
-                    distributor = potentialDistributors[distributorIndex];
-                    tallyResources(distributor);
-                    distributors.Add(distributor);
-                }
+                    foundDistributors.Add(potentialDistributors[distributorIndex]);
             }
 
             if (debugMode)
             {
                 int activeDistributors = 0;
 
-                foreach (WBIResourceDistributor resourceDistributor in distributors)
+                foreach (WBIResourceDistributor resourceDistributor in foundDistributors)
                 {
                     if (resourceDistributor.isParticipating)
                         activeDistributors += 1;
@@ -479,10 +490,10 @@ namespace WildBlueIndustries
 
                 Log("[WBIDistributionManager] - Total active distributors: " + activeDistributors);
             }
-            return distributors;
+            return foundDistributors;
         }
 
-        protected void tallyResources(WBIResourceDistributor distributor)
+        protected void tallyResources(WBIResourceDistributor distributor, Dictionary<string, TalliedResource> sharedResourceTally, Dictionary<string, TalliedResource> requiredResourceTally)
         {
             //If the distributor isn't actively participating then we're done.
             if (!distributor.isParticipating)
