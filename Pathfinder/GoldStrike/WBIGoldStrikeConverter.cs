@@ -32,7 +32,7 @@ namespace WildBlueIndustries
         public string inputResource = "Ore";
 
         [KSPField()]
-        public float maxHarvestRange = 100.0f;
+        public float maxHarvestRange = 200.0f;
 
         protected GoldStrikeLode nearestLode = null;
         protected ModuleAsteroid asteroid = null;
@@ -98,6 +98,8 @@ namespace WildBlueIndustries
 
             if (nearestLode != null)
                 debugLog("nearestLode: " + nearestLode.ToString());
+            else
+                debugLog("No lode found nearby.");
         }
 
         public override void OnUpdate()
@@ -175,19 +177,16 @@ namespace WildBlueIndustries
 
             //Keep track of how many units we've dug up.
             //If the amount remaining < outputUnits then adjust accordingly.
+            double unitsAvailable = 0;
             if (nearestLode.amountRemaining > outputUnits)
             {
-                nearestLode.amountRemaining -= outputUnits;
+                unitsAvailable = outputUnits;
             }
 
             else
             {
-                outputUnits = nearestLode.amountRemaining;
-                nearestLode.amountRemaining = 0f;
+                unitsAvailable = nearestLode.amountRemaining;
             }
-
-            //Update GUI
-            lodeUnitsRemaining = nearestLode.amountRemaining;
 
 //            debugLog("nearestLode.amountRemaining: " + nearestLode.amountRemaining);
 //            debugLog("status: " + status);
@@ -204,8 +203,24 @@ namespace WildBlueIndustries
             outputUnits = 0f;
              */
 
-            //The converter is set up to just consume Ore. Manually create the output resource, with the units already accounting for conservation of mass.
-            this.part.RequestResource(nearestLode.resourceName, -outputUnits, ResourceFlowMode.ALL_VESSEL_BALANCE);
+            //HACK! The converter is set up to just consume Ore. Manually create the output resource, with the units already accounting for conservation of mass.
+            double unitsAdded = this.part.RequestResource(nearestLode.resourceName, -unitsAvailable, ResourceFlowMode.ALL_VESSEL_BALANCE);
+            if (unitsAdded > 0.001)
+            {
+                nearestLode.amountRemaining -= unitsAdded;
+                if (nearestLode.amountRemaining < 0.001)
+                    nearestLode.amountRemaining = 0;
+            }
+
+            //No room on the ship, stop converter.
+            else
+            {
+                status = nearestLode.resourceName + " full";
+                StopResourceConverter();
+            }
+
+            //Update GUI
+            lodeUnitsRemaining = nearestLode.amountRemaining;
 
             return base.PrepareRecipe(deltatime);
         }

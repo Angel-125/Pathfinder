@@ -60,9 +60,10 @@ namespace WildBlueIndustries
     {
         public const float kDefaultDistributionRange = 50.0f;
 
-        public static bool debugMode = true;
+        public static bool debugMode = false;
         public static WBIDistributionManager Instance;
         public static double secondsPerCycle = 10.0f;
+        public bool isDirty = false;
 
         protected List<WBIResourceDistributor> distributors = new List<WBIResourceDistributor>();
         protected int lastTotalVessels = 0;
@@ -427,7 +428,7 @@ namespace WildBlueIndustries
 
             //If the loaded vessel count hasn't changed from the last time we checked then use the cached distributors.
             totalVessels = FlightGlobals.VesselsLoaded.Count;
-            if (totalVessels == lastTotalVessels)
+            if (totalVessels == lastTotalVessels && !isDirty)
             {
                 Log("[WBIDistributionManager] - Using distributor cache");
                 return false;

@@ -102,6 +102,14 @@ namespace WildBlueIndustries
             }
         }
 
+        public override string DisplaySection
+        {
+            get 
+            {
+                return Section;
+            }
+        }
+
         public override string Section
         {
             get

@@ -8,6 +8,12 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.9.0
+- Recompiled plugin for KSP 1.3.
+- You can now covert Equipment into MaterialKits in the Blacksmith and Clockworks.
+- Reduced the price of the economy-breaking Aurum resource.
+- Updated Snacks support.
+
 1.8.8
 - Fixed Crash To Desktop issues experienced at startup that are associated with Kerbal Actuators.
 - Revised Kerbal Actuators GUI.
