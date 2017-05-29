@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.9.1
+- Contracts update to include Spyglass as a cupola (Thanks Krakatoa! :) )
+- Recompiled Kerbal Actuators.
+
 1.9.0
 - Recompiled plugin for KSP 1.3.
 - You can now covert Equipment into MaterialKits in the Blacksmith and Clockworks.

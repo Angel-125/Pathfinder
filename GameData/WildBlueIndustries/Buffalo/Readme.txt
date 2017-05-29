@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.1.1
+- Recompiled KerbalActuators.
+
 2.1.0
 - Recompiled plugin for KSP 1.3.
 - Updated Snacks support.
