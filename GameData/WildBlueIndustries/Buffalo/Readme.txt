@@ -32,6 +32,11 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.1.2
+- You can now upgrade the WB-22 "Typhoon" tilt-rotor's thrust output.
+- You can now upgrade the GTG-125's power output.
+- Texture fixes.
+
 2.1.1
 - Recompiled KerbalActuators.
 

@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.9.2
+- WBT Update
+- Bug fixes for Buffalo.
+
 1.9.1
 - Contracts update to include Spyglass as a cupola (Thanks Krakatoa! :) )
 - Recompiled Kerbal Actuators.
