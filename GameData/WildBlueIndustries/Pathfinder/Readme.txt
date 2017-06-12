@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.9.3
+- WBT Update
+
 1.9.2
 - WBT Update
 - Bug fixes for Buffalo.
