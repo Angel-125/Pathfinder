@@ -10,6 +10,7 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 1.9.3
 - WBT Update
+- When you scrap a part or vessel, you no longer need to have resource distribution turned on. Any loaded vessel within range that can store the recycled resources will store them.
 
 1.9.2
 - WBT Update

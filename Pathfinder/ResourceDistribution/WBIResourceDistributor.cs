@@ -286,10 +286,6 @@ namespace WildBlueIndustries
             //Log info
             WBIDistributionManager.Log("[WBIResourceDistributor] - " + this.part.partInfo.title + " is gathering resources to distribute.");
 
-            //Rebuild cache if needed.
-//            if (this.sharedResourcesCache.Count() == 0 || this.requiredResourcesCache.Count() == 0)
-//                RebuildDistributionList();
-
             sharedList = this.sharedResourcesCache;
             requiredList = this.requiredResourcesCache;
         }

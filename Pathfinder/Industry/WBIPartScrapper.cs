@@ -268,7 +268,57 @@ namespace WildBlueIndustries
             //Now distribute the recycled resources
             recycleMessage = string.Format(kResourceRecycled, totalRecycleUnits, recycleResource);
             scrappedResources.Add(new DistributedResource(recycleResource, totalRecycleUnits, recycleMessage));
-            WBIDistributionManager.Instance.DistributeResources(scrappedResources, WBIDistributionManager.kDefaultDistributionRange, true);
+            //WBIDistributionManager.Instance.DistributeResources(scrappedResources, WBIDistributionManager.kDefaultDistributionRange, true);
+            int totalResources = scrappedResources.Count;
+            double amountRecycled = 0;
+            double totalAmountRecycled = 0f;
+            DistributedResource scrappedResource;
+            int totalVessels = FlightGlobals.VesselsLoaded.Count;
+            Vessel currentVessel;
+            for (int index = 0; index < totalResources; index++)
+            {
+                //Setup
+                totalAmountRecycled = 0;
+                scrappedResource = scrappedResources[index];
+
+                //Skip ElectricCharge
+                if (scrappedResource.resourceName == "ElectricCharge")
+                    continue;
+
+                //Now go through every loaded vessel and hand out the resource.
+                for (int vesselIndex = 0; vesselIndex < totalVessels; vesselIndex++)
+                {
+                    //Skip the distribution if we're out of the resource
+                    if (scrappedResource.amount == 0f)
+                        break;
+
+                    //Get the vessel that we'll distribute the resource to.
+                    currentVessel = FlightGlobals.VesselsLoaded[vesselIndex];
+
+                    //Skip the vessel if it's not in range
+                    if ((Vector3.Distance(vessel.GetWorldPos3D(), FlightGlobals.ActiveVessel.GetWorldPos3D()) / WBIDistributionManager.kDefaultDistributionRange) > 1.0f)
+                    {
+                        Debug.Log("Vessel " + currentVessel.vesselName + " not in range");
+                        continue;
+                    }
+
+                    //Hand out the resource.
+                    amountRecycled = currentVessel.rootPart.RequestResource(scrappedResource.resourceName, -scrappedResource.amount);
+                    scrappedResource.amount = amountRecycled;
+                    Debug.Log("Recycled " + amountRecycled + " units of " + scrappedResource.resourceName);
+
+                    //Zero out the resource if needed.
+                    if (scrappedResource.amount < 0.001f)
+                        scrappedResource.amount = 0f;
+
+                    //Record what we recycled.
+                    totalAmountRecycled += amountRecycled;
+                }
+
+                //Report what we recycled.
+                if (!string.IsNullOrEmpty(scrappedResource.message))
+                    ScreenMessages.PostScreenMessage(scrappedResource.message, 3.0f, ScreenMessageStyle.UPPER_LEFT);
+            }
 
             //Finally, poof the part.
             ScreenMessages.PostScreenMessage(string.Format(kPartRecycled, doomed.partInfo.title), kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
