@@ -114,6 +114,14 @@ namespace WildBlueIndustries
             //In flight, switch between resources and settings
             if (HighLogic.LoadedSceneIsFlight)
             {
+                if (WBIPathfinderScenario.debugGoldStrike)
+                {
+                    if (GUILayout.Button("Clear Prospects"))
+                    {
+                        WBIPathfinderScenario.Instance.ClearProspects();
+                    }
+                }
+
                 if (GUILayout.Button("Manage Operations"))
                     localOpsManager.SetVisible(true);
 

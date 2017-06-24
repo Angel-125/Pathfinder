@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using KSP.IO;
 using FinePrint;
+using KSP.Localization;
 
 /*
 Source code copyrighgt 2017, by Michael Billard (Angel-125)
@@ -22,15 +23,21 @@ namespace WildBlueIndustries
 {
     public class WBIGoldStrike : PartModule, IOpsView
     {
-        private const string kAnomalyBlacklist = "KSC;KSC2;IslandAirfield;Harvester Massif;Nye Island;Mesa South;Crater Rim;North Station One"; //TODO: Make this externally configurable
+        private const string kAnomalyBlacklist = "KSC;KSC2;IslandAirfield;Harvester Massif;Nye Island;Mesa South;Crater Rim;North Station One";
+        private const string kAnomalyBlacklistNode = "ANOMALY_BLACKLIST";
         private const float kMessageDisplayTime = 10.0f;
         private const float kMotherlodeFactor = 0.05f;
         private const float kLabSkillBonus = 0.5f;
-        private const float kLocationBonus = 50.0f;
+        private const float kAnomalyBonus = 35.0f;
+        private const float kAsteroidBonus = 50.0f;
         private const float kMinAnomalyDistance = 0.2f;
 
         [KSPField()]
         public bool showGUI;
+
+        //Minimum number of crew required by the part
+        [KSPField()]
+        public int minimumCrew = 0;
 
         //prospectChance: base chance to find a prospect. Some parts are better than others.
         [KSPField()]
@@ -44,26 +51,39 @@ namespace WildBlueIndustries
         [KSPField()]
         public float prospectSkillBonus = 1.0f;
 
-        //Default ore to search through is er, Ore.
-        [KSPField()]
-        public string oreResource = "Ore";
-
-        [KSPField()]
-        public float prospectThreshold = 0.01f;
-
         [KSPField()]
         public string lodeStrikeSound = string.Empty;
 
-        [KSPField(guiName = "Next Prospect (km)", guiFormat = "f2", guiActive = true)]
+        [KSPField(guiActive = true, guiName = "Prospecting")]
+        public string status = "N/A";
+
+        [KSPField()]
+        public string statusReadyName = "Can prospect";
+
+        [KSPField()]
+        public string statusGoFartherName = "Travel farther";
+
+        [KSPField()]
+        public string statusAlreadyProspectedName = "Already prospected";
+
+        [KSPField()]
+        public string statusInsufficientCrewName = "Insufficient crew";
+
+        [KSPField()]
+        public string statusNoAsteroidName = "Land or get asteroid";
+
+        [KSPField()]
+        public string statusNAName = "N/A";
+
+        [KSPField(guiName = "Next prospect", guiFormat = "f2", guiUnits = "km", guiActive = true)]
         public double nextProspectDistance = 0f;
 
         protected ModuleAsteroid asteroid = null;
         protected ModuleAsteroidInfo asteroidInfo = null;
         protected AudioSource jingle = null;
-        protected Vector3d lastProspectLocation = Vector3d.zero;
-        double minTravelDistance = 10f;
-        bool prospectResetConfirmed;
+        double minTravelDistance = 3f;
         protected string anomalyName = string.Empty;
+        protected GoldStrikeVesselModule vesselModule = null;
 
         protected void debugLog(string message)
         {
@@ -91,19 +111,22 @@ namespace WildBlueIndustries
             if (HighLogic.LoadedSceneIsFlight == false)
                 return;
 
-            //See if we have an asteroid.
-            asteroid = this.part.vessel.FindPartModuleImplementing<ModuleAsteroid>();
-
             //Minimum travel distance
             minTravelDistance = GoldStrikeSettings.DistanceBetweenProspects;
             GameEvents.OnGameSettingsApplied.Add(onGameSettingsApplied);
 
-            //Get the last prospect location for the local planet and biome
-            if (this.part.vessel.situation == Vessel.Situations.PRELAUNCH || this.part.vessel.situation == Vessel.Situations.LANDED)
+            //Vessel Module
+            foreach (VesselModule module in this.part.vessel.vesselModules)
             {
-                CBAttributeMapSO.MapAttribute biome = Utils.GetCurrentBiome(this.part.vessel);
-                lastProspectLocation = WBIPathfinderScenario.Instance.GetLastProspectLocation(this.part.vessel.mainBody.flightGlobalsIndex, biome.name);
+                if (module is GoldStrikeVesselModule)
+                {
+                    vesselModule = (GoldStrikeVesselModule)module;
+                    break;
+                }
             }
+
+            //Get asteroid (if any)
+            asteroid = this.part.vessel.FindPartModuleImplementing<ModuleAsteroid>();
         }
 
         public override void OnUpdate()
@@ -113,54 +136,60 @@ namespace WildBlueIndustries
                 return;
 
             //If we don't have a last prospect location then the distance is zero.
-            if (lastProspectLocation == Vector3d.zero)
+            if (vesselModule.HasLastProspectLocation() == false)
             {
+                status = Localizer.Format(statusReadyName);
                 nextProspectDistance = 0f;
                 return;
             }
 
-            double distance = getDistanceFromLastLocation();
-
-            //Update distance to next prospect
-            nextProspectDistance = (minTravelDistance - distance);
-        }
-
-        [KSPEvent(guiName = "Reset Prospect Chances", unfocusedRange = 3.0f)]
-        public void ResetProspects()
-        {
-            //Since it costs science, ask for confirmation.
-            if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER || HighLogic.CurrentGame.Mode == Game.Modes.SCIENCE_SANDBOX)
+            //If we have an asteroid, then check its prospect status.
+            //Priority is to check for captured asteroids before checking to see if we've prospected a particular planetary biome.
+            if (asteroid != null)
             {
-                float scienceCost = GoldStrikeSettings.ProspectResetCost;
-
-                //Confirmed, pay the science cost.
-                if (prospectResetConfirmed)
+                if (WBIPathfinderScenario.Instance.IsAsteroidProspected(asteroid))
                 {
-                    ResearchAndDevelopment.Instance.AddScience(-scienceCost, TransactionReasons.Any);
+                    status = Localizer.Format(statusAlreadyProspectedName);
+                    nextProspectDistance = 0;
+                    return;
+                }
+
+                //Ready to be prospected.
+                else
+                {
+                    status = Localizer.Format(statusReadyName);
+                    nextProspectDistance = 0;
+                }
+
+                //Done
+                return;
+            }
+
+            //No asteroid, check prospect distance if we're landed
+            if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
+            {
+                double distance = getDistanceFromLastLocation();
+
+                //Update distance to next prospect
+                nextProspectDistance = (minTravelDistance - distance);
+                if (nextProspectDistance <= 0.00001f)
+                {
+                    nextProspectDistance = 0f;
+                    status = Localizer.Format(statusReadyName);
                 }
 
                 else
                 {
-                    prospectResetConfirmed = true;
-                    string message = string.Format("It will cost {0:f2} Science to renew your prospecting chances in this biome. Click to confirm.", scienceCost);
-                    ScreenMessages.PostScreenMessage(message, kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-                    return;
+                    status = Localizer.Format(statusGoFartherName);
                 }
             }
 
-            //Reset the chances
-            string biomeName = string.Empty;
-            int planetID = -1;
-            GoldStrikeUtils.GetBiomeAndPlanet(out biomeName, out planetID, this.part.vessel, asteroid);
-            GoldStrikeChance chance = WBIPathfinderScenario.Instance.GetGoldStrikeChance(planetID, biomeName);
-            chance.chancesRemaining = GoldStrikeSettings.ProspectsPerBiome;
-
-            //Hide the reset button
-            Events["ResetProspects"].guiActive = false;
-            Events["ResetProspects"].guiActiveUnfocused = false;
-
-            //Save the game
-            GamePersistence.SaveGame("quicksave", HighLogic.SaveFolder, SaveMode.BACKUP);
+            //No asteroid and not landed.
+            else
+            {
+                status = Localizer.Format(statusNoAsteroidName);
+                nextProspectDistance = 0;
+            }
         }
 
         [KSPEvent(guiName = "Prospect for resources", unfocusedRange = 3.0f)]
@@ -174,7 +203,6 @@ namespace WildBlueIndustries
             double resourceAmount = 0f;
             float analysisRoll = 0f;
             float successTargetNumber = prospectChance;
-            int chancesRemaining = 0;
             string navigationID = string.Empty;
             GoldStrikeLode lode = null;
             string biomeName = string.Empty;
@@ -192,38 +220,26 @@ namespace WildBlueIndustries
             if (SituationIsValid() == false)
                 return;
 
-            //Ok, we can prospect at this location.
+            //Update our location.
+            asteroid = this.part.vessel.FindPartModuleImplementing<ModuleAsteroid>();
             GoldStrikeUtils.GetBiomeAndPlanet(out biomeName, out planetID, this.part.vessel, asteroid);
-            setLastLocation();
-            chancesRemaining = updateChancesRemaining();
+            vesselModule.UpdateLastProspectLocation();
 
             //Time to see if we find anything.
-            //Tally up the % chance we have to make a successful prospect.
             //prospectChance: base chance to find a prospect. Some parts are better than others.
-            //prospectSkillBonus: multiplied by the EVA prospector's skill level. Default is 1.0.
-            //labBonus: For each Pathfinder geology lab in the vicinity, give one point per crew member staffing the lab that has the prospectSkill.
-            //For each non-Pathfinder geology lab in the vicinity, give half a point per crew member staffing the lab that has the prospectSkill.
-            //Chance = prospectChance + prospectSkillBonus + labBonus.
-            //Ex: A 3-star scientist on EVA makes a prospect check. skillBonus = 3; prospectSkillBonus = 1.0. Total skill bonus = 3.0.
-            //Inside the Bison are two scientists staffing a geology lab (non-pathfinder). labBonus = 2 * 0.5 = 1
-            //Gold Digger has a base 10% chance of finding a prospect.
-            //successTargetNumber = 10 + 3 + 1 = 14.
-            successTargetNumber = prospectChance + GetProspectBonus();
-            debugLog("Base chance to succeed: " + prospectChance);
+            //prospectBonus: Various situations contribute to the success of the attempt.
+            successTargetNumber = 100 - (prospectChance + GetProspectBonus());
             debugLog("successTargetNumber: " + successTargetNumber);
 
             //Roll the chance and check it.
-            analysisRoll = UnityEngine.Random.Range(1, 6);
-            analysisRoll += UnityEngine.Random.Range(1, 6);
-            analysisRoll += UnityEngine.Random.Range(1, 6);
-            analysisRoll *= 5.5556f;
+            analysisRoll = UnityEngine.Random.Range(1, 100);
             debugLog("analysisRoll: " + analysisRoll);
 
             //If we didn't succeed then we're done.
-            if (analysisRoll > successTargetNumber)
+            if (analysisRoll < successTargetNumber && !WBIPathfinderScenario.debugProspectAlwaysSuccessful)
             {
-                debugLog("Prospect failed; didn't roll low enough.");
-                ScreenMessages.PostScreenMessage("Nothing of value here, try another location. " + chancesRemaining + " chances remain in the " + biomeName, kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+                debugLog("Prospect failed; didn't roll high enough.");
+                ScreenMessages.PostScreenMessage("Nothing of value here, try another location. ", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
                 return;
             }
 
@@ -236,117 +252,159 @@ namespace WildBlueIndustries
             debugLog("resourceIndex: " + resourceIndex);
             debugLog("strikeData: " + strikeData.ToString());
 
-            //Now, generate the resource amount to add to the map
-            resourceAmount = UnityEngine.Random.Range(strikeData.minAmount, strikeData.maxAmount);
-            debugLog("resourceAmount: " + resourceAmount);
-
-            //If we hit the motherlode then factor that in.
-            //The motherloade is 5% of the target number.
-            if (analysisRoll <= (successTargetNumber * kMotherlodeFactor))
-            {
-                resourceAmount *= strikeData.motherlodeMultiplier;
-                debugLog("resourceAmount after motherlode: " + resourceAmount);
-                ScreenMessages.PostScreenMessage(string.Format("Congratulations! You found a {0:s} motherlode with {1:f2} units available to mine!", resourceName, resourceAmount),
-                    kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-            }
-
-            else
-            {
-                ScreenMessages.PostScreenMessage(string.Format("Congratulations! You found a {0:s} lode with {1:f2} units available to mine!", resourceName, resourceAmount),
-                    kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-            }
-            if (!string.IsNullOrEmpty(anomalyName))
-                ScreenMessages.PostScreenMessage("Special cache found at " + anomalyName, kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-            ScreenMessages.PostScreenMessage(chancesRemaining + " chances remain to find another lode in the " + biomeName, kMessageDisplayTime, ScreenMessageStyle.UPPER_LEFT);
-
             //Play the jingle
             playJingle();
 
-            //Now set up the lode
-            debugLog("Adding new lode entry to " + FlightGlobals.currentMainBody.name + " with flight global index " + FlightGlobals.currentMainBody.flightGlobalsIndex);
-            debugLog("Biome: " + biomeName);
-            debugLog("Lon/Lat: " + this.part.vessel.longitude + "/" + this.part.vessel.latitude);
-            lode = scenario.AddLode(planetID, biomeName,
-                this.part.vessel.longitude, this.part.vessel.latitude, resourceName, resourceAmount);
+            //Setup a planetary surface lode
+            if (asteroid == null)
+            {
+                debugLog("Setting up surface lode");
+                //Now, generate the resource amount to add to the map
+                resourceAmount = UnityEngine.Random.Range(strikeData.minAmount, strikeData.maxAmount);
+                debugLog("resourceAmount: " + resourceAmount);
+
+                //If we hit the motherlode then factor that in.
+                //The motherloade is 5% of the target number.
+                if (analysisRoll <= (successTargetNumber * kMotherlodeFactor))
+                {
+                    resourceAmount *= strikeData.motherlodeMultiplier;
+                    debugLog("resourceAmount after motherlode: " + resourceAmount);
+                    ScreenMessages.PostScreenMessage(string.Format("Congratulations! You found a {0:s} motherlode with {1:f2} units available to mine!", resourceName, resourceAmount),
+                        kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+                }
+
+                else
+                {
+                    ScreenMessages.PostScreenMessage(string.Format("Congratulations! You found a {0:s} lode with {1:f2} units available to mine!", resourceName, resourceAmount),
+                        kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+                }
+                if (!string.IsNullOrEmpty(anomalyName))
+                    ScreenMessages.PostScreenMessage("Special cache found at " + anomalyName, kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER); 
+                
+                debugLog("Adding new lode entry to " + FlightGlobals.currentMainBody.name + " with flight global index " + FlightGlobals.currentMainBody.flightGlobalsIndex);
+                debugLog("Biome: " + biomeName);
+                debugLog("Lon/Lat: " + this.part.vessel.longitude + "/" + this.part.vessel.latitude);
+                lode = scenario.AddLode(planetID, biomeName,
+                    this.part.vessel.longitude, this.part.vessel.latitude, resourceName, resourceAmount);
+            }
+
+            //Setup an asteroid lode
+            else
+            {
+                debugLog("Setting up asteroid lode");
+                float abundance = 0.01f;
+                
+                //Get the resource module for the lode.
+                ModuleAsteroidResource lodeResource = null;
+                ModuleAsteroidResource[] resourceModules = asteroid.part.FindModulesImplementing<ModuleAsteroidResource>().ToArray();
+                for (int index = 0; index < resourceModules.Length; index++)
+                {
+                    if (resourceModules[index].resourceName == resourceName)
+                    {
+                        debugLog("ModuleAsteroidResource found for " + resourceName);
+                        lodeResource = resourceModules[index];
+                        break;
+                    }
+                }
+                if (lodeResource == null)
+                {
+                    debugLog("ModuleAsteroidResource NOT found for " + resourceName);
+                    return;
+                }
+
+                //Adjust abundance for motherlode
+                if (analysisRoll <= (successTargetNumber * kMotherlodeFactor))
+                    abundance *= strikeData.motherlodeMultiplier;
+                debugLog("abundance increase: " + abundance);
+
+                //Display appropriate message
+                ScreenMessages.PostScreenMessage(string.Format("Congratulations! A careful scan of {0:s} has revealed an increased abundance of {1:s}", asteroid.AsteroidName, resourceName),
+                    kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+
+                //Update resource module
+                debugLog("Old abundance: " + lodeResource.abundance);
+                lodeResource.abundance += abundance;
+                lodeResource.displayAbundance += abundance;
+                debugLog("New abundance: " + lodeResource.abundance);
+
+                debugLog("Adding new lode entry for asteroid: " + asteroid.AsteroidName);
+                lode = scenario.AddLode(asteroid, resourceName, lodeResource.displayAbundance);
+            }
+
+            //Update any drills in the area.
+            scenario.UpdateDrillLodes(asteroid);
 
             //Set waypoint
-            if (lode != null)
+            if (lode != null && asteroid == null)
                 setWaypoint(resourceName, lode);
-
         }
 
         public bool SituationIsValid()
         {
             debugLog("SituationIsValid: checking...");
-            CBAttributeMapSO.MapAttribute biome = null;
-            string biomeName = string.Empty;
-            int planetID = int.MaxValue;
-            bool vesselSituationIsValid = false;
-            double longitude = 0f;
-            double latitude = 0f;
-            double altitude = 0f;
             GoldStrikeLode lode = null;
 
-            //If we're landed then we're ok to check prospect situation.
-            if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
+            //Do we have enough crew?
+            if (minimumCrew > 0)
             {
-                biome = Utils.GetCurrentBiome(this.part.vessel);
-                biomeName = biome.name;
-                planetID = this.part.vessel.mainBody.flightGlobalsIndex;
-                longitude = this.part.vessel.longitude;
-                latitude = this.part.vessel.latitude;
-                altitude = this.part.vessel.altitude;
-                vesselSituationIsValid = true;
-                debugLog("Vessel is landed or prelaunch");
+                if (this.part.protoModuleCrew.Count < minimumCrew)
+                {
+                    ScreenMessages.PostScreenMessage(this.part.partInfo.title + "Must be staffed with at least " + minimumCrew + " crewmembers.", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+                    status = Localizer.Format(statusInsufficientCrewName);
+                    return false;
+                }
             }
-
-            //If we're docked or orbiting, and we have an asteroid, then we're ok to check prospect situation.
-            if ((this.part.vessel.situation == Vessel.Situations.ORBITING || this.part.vessel.situation == Vessel.Situations.DOCKED) && asteroid != null)
-            {
-                biomeName = asteroid.AsteroidName;
-                vesselSituationIsValid = true;
-                debugLog("Vessel has an asteroid");
-            }
-
-            //If the flight situation is bad then we're done.
-            if (vesselSituationIsValid == false)
-            {
-                debugLog("Vessel situation not valid");
-                ScreenMessages.PostScreenMessage("Vessel must be landed or in orbit/docked with an asteroid attached", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-                return false;
-            }
-
-            //If we don't have sufficient ore abundance then we're done.
-            if (!HasSufficientAbundance())
-                return false;
 
             //Can we prospect the location?
-            switch (WBIPathfinderScenario.Instance.GetProspectSituation(planetID, biomeName, longitude, latitude, altitude, out lode))
+            switch (WBIPathfinderScenario.Instance.GetProspectSituation(this.part.vessel, out lode))
             {
+                case ProspectSituations.InvalidVesselSituation:
+                    debugLog("Vessel situation not valid");
+                    ScreenMessages.PostScreenMessage("Vessel must be landed or in orbit/docked with an asteroid attached", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+                    status = Localizer.Format(statusNAName);
+                    return false;
+
                 case ProspectSituations.LodeAlreadyExists:
                     if (lode != null)
                     {
                         debugLog("Situation not valid, existing lode found: " + lode.ToString());
                         string message = string.Format("You already found a vein of {0:s} at this location. It has {1:f2} units remaining.", lode.resourceName, lode.amountRemaining);
                         ScreenMessages.PostScreenMessage(message, kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+                        status = Localizer.Format(statusAlreadyProspectedName);
                     }
                     return false;
 
                 case ProspectSituations.NotEnoughDistance:
                     debugLog("Vessel has not traveled enough distance between prospects");
                     ScreenMessages.PostScreenMessage("Vessel must travel further before prospecting again.", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-                    return false;
+                    status = Localizer.Format(statusGoFartherName);
+                    if (!WBIPathfinderScenario.debugProspectAlwaysSuccessful)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        debugLog("Debug: Prospect is guaranteed");
+                        return true;
+                    }
 
-                case ProspectSituations.OutOfChances:
-                    debugLog("Out of prospecting chances for this area or asteroid");
-                    ScreenMessages.PostScreenMessage("Out of prospecting chances in this area.", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-                    //Enable option to reset chances.
-                    Events["ResetProspects"].guiActive = true;
-                    Events["ResetProspects"].guiActiveUnfocused = true;
-                    return false;
+                case ProspectSituations.AsteroidProspected:
+                    debugLog("Asteroid has already been prospected");
+                    ScreenMessages.PostScreenMessage("Asteroid has already been prospected.", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+                    status = Localizer.Format(statusAlreadyProspectedName);
+                    if (!WBIPathfinderScenario.debugProspectAlwaysSuccessful)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        debugLog("Debug: Prospect is guaranteed");
+                        return true;
+                    }
 
                 //A-OK
                 default:
+                    status = Localizer.Format(statusReadyName);
                     return true;
             }
 
@@ -354,10 +412,18 @@ namespace WildBlueIndustries
 
         public float GetProspectBonus()
         {
+            //skillBonus: multiplied by the EVA prospector's skill level. Default is 1.0.
+            //labBonus: For each geology lab in the vicinity, bonus is 0.5 * crew skill per crewmember that has the prospectSkill.
+            //anomalyBonus: If the prospector is near an anomaly, then they get an anomaly bonus.
+            //asteroidBonus: If the prospector has captured an asteroid, then they get an asteroid bonus.
+            //Ex: A 3-star scientist on EVA makes a prospect check. skillBonus = 3; prospectSkillBonus = 1.0. Total skill bonus = 3.0.
+            //Inside the Bison there are two level-1 scientists staffing a geology lab. labBonus = 2 * 0.5 = 1
+
             float skillBonus = GoldStrikeSettings.BonusPerSkillPoint;
             float prospectBonus = 0f;
             float labBonus = 0f;
-            float locationBonus = 0f;
+            float anomalyBonus = 0f;
+            float asteroidBonus = 0f;
             Vessel[] vessels;
             Vessel vessel;
             ProtoCrewMember[] crewMembers;
@@ -431,7 +497,7 @@ namespace WildBlueIndustries
                 }
             }
 
-            //Unloaded vessels
+            //Unloaded vessels lab bonus
             vessels = FlightGlobals.VesselsUnloaded.ToArray();
             for (int index = 0; index < vessels.Length; index++)
             {
@@ -462,91 +528,40 @@ namespace WildBlueIndustries
             }
 
             //Location bonus
-            locationBonus = getLocationBonus();
-            
-            debugLog("Prospector bonus: " + prospectBonus + " labBonus: " + labBonus + " locationBonus: " + locationBonus);
-            return prospectBonus + labBonus + locationBonus;
+            anomalyBonus = getAnomalyBonus();
+
+            //Asteroid bonus
+            if (asteroid != null)
+                asteroidBonus = kAsteroidBonus;
+
+            debugLog("Prospector bonus: " + prospectBonus + " labBonus: " + labBonus + " anomalyBonus: " + anomalyBonus + " asteroidBonus: " + asteroidBonus);
+            return Mathf.RoundToInt(prospectBonus + labBonus + anomalyBonus + asteroidBonus);
         }
 
-        public bool HasSufficientAbundance()
-        {
-            ModuleAsteroidResource[] asteroidResources;
-
-            if (asteroid == null)
-            {
-                CBAttributeMapSO.MapAttribute biome = Utils.GetCurrentBiome(this.part.vessel);
-                string biomeName = biome.name;
-
-                IEnumerable<ResourceCache.AbundanceSummary> abundanceCache = ResourceCache.Instance.AbundanceCache.
-                    Where(a => a.HarvestType == HarvestTypes.Planetary && a.BodyId == this.part.vessel.mainBody.flightGlobalsIndex && a.BiomeName == biomeName);
-
-                if (abundanceCache.Count<ResourceCache.AbundanceSummary>() > 0)
-                {
-                    foreach (ResourceCache.AbundanceSummary summary in abundanceCache)
-                    {
-                        if (summary.ResourceName != oreResource)
-                            continue;
-
-                        if (summary.Abundance < prospectThreshold)
-                        {
-                            setLastLocation();
-                            debugLog("Biome location's ore concentration is too low.");
-                            debugLog("Abundance: " + summary.Abundance);
-                            debugLog("Threshold: " + prospectThreshold);
-                            ScreenMessages.PostScreenMessage("Insufficient concentration of " + oreResource + " in this area. Try another location.", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-                            return false;
-                        }
-
-                        else //We have enough ore in the location
-                        {
-                            debugLog("Biome location has enough ore concentration");
-                            debugLog("Abundance: " + summary.Abundance);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            //Check asteroid ore concentration
-            else
-            {
-                asteroidResources = asteroid.part.FindModulesImplementing<ModuleAsteroidResource>().ToArray();
-                foreach (ModuleAsteroidResource asteroidResource in asteroidResources)
-                {
-                    if (asteroidResource.abundance < prospectThreshold)
-                    {
-                        debugLog("asteroid's ore concentration is too low.");
-                        debugLog("Abundance: " + asteroidResource.abundance);
-                        debugLog("Threshold: " + prospectThreshold);
-                        ScreenMessages.PostScreenMessage("Insufficient concentration of " + oreResource + " in the asteroid. Try another asteroid.", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-                        return false;
-                    }
-                    else //We have enough ore in the asteroid
-                    {
-                        debugLog("asteroid has enough ore concentration");
-                        debugLog("Abundance: " + asteroidResource.abundance);
-                        break;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        protected float getLocationBonus()
+        protected float getAnomalyBonus()
         {
             CelestialBody mainBody = this.part.vessel.mainBody;
             PQSSurfaceObject[] anomalies = mainBody.pqsSurfaceObjects;
             double longitude;
             double latitude;
             double distance = 0f;
+            ConfigNode[] anomalyBlacklists = GameDatabase.Instance.GetConfigNodes(kAnomalyBlacklistNode);
+            string blacklist = kAnomalyBlacklist;
+
+            //We've covered the stock anomalies, now make sure we can blacklist anomalies from mods.
+            try
+            {
+                foreach (ConfigNode blacklistNode in anomalyBlacklists)
+                    blacklist += ";" + blacklistNode.GetValue("anomalies");
+            }
+            catch { }
 
             if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
             {
                 for (int index = 0; index < anomalies.Length; index++)
                 {
                     //If the anomaly is on the blacklist, skip it.
-                    if (kAnomalyBlacklist.Contains(anomalies[index].SurfaceObjectName))
+                    if (blacklist.Contains(anomalies[index].SurfaceObjectName))
                         continue;
 
                     //Get the longitude and latitude of the anomaly
@@ -561,7 +576,7 @@ namespace WildBlueIndustries
                     if (distance < kMinAnomalyDistance)
                     {
                         anomalyName = anomalies[index].SurfaceObjectName;
-                        return kLocationBonus;
+                        return kAnomalyBonus;
                     }
                 }
             }
@@ -625,53 +640,6 @@ namespace WildBlueIndustries
             return string.Empty;
         }
 
-        protected void setLastLocation()
-        {
-            CBAttributeMapSO.MapAttribute biome = null;
-            string biomeName = string.Empty;
-            int planetID = int.MaxValue;
-            double longitude = 0f;
-            double latitude = 0f;
-            double altitude = 0f;
-
-            if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
-            {
-                biome = Utils.GetCurrentBiome(this.part.vessel);
-                biomeName = biome.name;
-
-                planetID = this.part.vessel.mainBody.flightGlobalsIndex;
-
-                longitude = this.part.vessel.longitude;
-                latitude = this.part.vessel.latitude;
-                altitude = this.part.vessel.altitude;
-            }
-
-            else if ((this.part.vessel.situation == Vessel.Situations.ORBITING || this.part.vessel.situation == Vessel.Situations.DOCKED) && asteroid != null)
-            {
-                biomeName = asteroid.AsteroidName;
-            }
-
-            //Keep a copy of the location for our purposes
-            lastProspectLocation.x = longitude;
-            lastProspectLocation.y = latitude;
-
-            debugLog("Last lode location: " + planetID + " " + biomeName + " lon: " + longitude + " lat: " + latitude + " altitude: " + altitude);
-            WBIPathfinderScenario.Instance.SetLastProspectLocation(planetID, biomeName, longitude, latitude, altitude);
-        }
-
-        protected int updateChancesRemaining()
-        {
-            string biomeName = string.Empty;
-            int planetID = int.MaxValue;
-            int chancesRemaining = 0;
-
-            GoldStrikeUtils.GetBiomeAndPlanet(out biomeName, out planetID, this.part.vessel, asteroid);
-
-            chancesRemaining = WBIPathfinderScenario.Instance.DecrementProspectAttempts(planetID, biomeName);
-            debugLog("chancesRemaining at " + planetID + " " + biomeName + " = " + chancesRemaining);
-            return chancesRemaining;
-        }
-
         protected double getDistanceFromLastLocation()
         {
             double distance = 0f;
@@ -679,17 +647,18 @@ namespace WildBlueIndustries
             if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
             {
                 //If we have no last prospect then the distance is zero.
-                if (lastProspectLocation == Vector3d.zero)
+                if (!vesselModule.HasLastProspectLocation())
                     return 0f;
 
                 //In kilometers
-                distance = GoldStrikeUtils.HaversineDistance(lastProspectLocation.x, lastProspectLocation.y,
+                distance = GoldStrikeUtils.HaversineDistance(vesselModule.lastProspectLongitude, vesselModule.lastProspectLatitude,
                     this.part.vessel.longitude, this.part.vessel.latitude, this.part.vessel.mainBody);
             }
 
             return distance;
         }
 
+        #region IOpsView
         public List<string> GetButtonLabels()
         {
             List<string> labels = new List<string>();
@@ -708,12 +677,6 @@ namespace WildBlueIndustries
             if (GUILayout.Button("Prospect for resources"))
                 CheckGoldStrike();
 
-            if (Events["ResetProspects"].guiActive)
-            {
-                if (GUILayout.Button("Reset prospect chances"))
-                    ResetProspects();
-            }
-
             GUILayout.EndVertical();
         }
 
@@ -731,5 +694,6 @@ namespace WildBlueIndustries
         {
             return this.part.partInfo.title;
         }
+        #endregion
     }
 }

@@ -60,8 +60,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GoldStrike\GoldStrikeVesselModule.cs" />
     <Compile Include="GoldStrike\GoldStrikeUtils.cs" />
-    <Compile Include="GoldStrike\GoldStrikeChance.cs" />
     <Compile Include="GoldStrike\GoldStrikeLode.cs" />
     <Compile Include="GoldStrike\GoldStrikeData.cs" />
     <Compile Include="GUI\PipelineWindow.cs" />
@@ -108,12 +108,17 @@
     <Compile Include="ResourceDistribution\WBIPipeEndpoint.cs" />
     <Compile Include="GoldStrike\WBIGoldStrike.cs" />
     <Compile Include="GoldStrike\GoldStrikeSettings.cs" />
-    <Compile Include="GoldStrike\WBIGoldStrikeConverter.cs" />
     <Compile Include="Science\WBIPathfinderLab.cs" />
     <Compile Include="Science\WBIPathfinderResults.cs" />
     <Compile Include="Industry\WBIPartScrapper.cs" />
+    <Compile Include="GoldStrike\WBIGoldStrikeDrill.cs" />
+    <Compile Include="GoldStrike\WBIGoldStrikeAsteroidDrill.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\BARIS\BARIS.csproj">
+      <Project>{7923C5AB-895D-4687-883E-CD5116986954}</Project>
+      <Name>BARIS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">
       <Project>{CC0BDF1A-9641-4628-9F0F-3500DDC99534}</Project>
       <Name>WildBlueTools</Name>

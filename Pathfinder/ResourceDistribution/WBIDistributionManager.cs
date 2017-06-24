@@ -426,6 +426,10 @@ namespace WildBlueIndustries
         {
             int totalVessels;
 
+            //If somebody dirtied the interface then we need a refresh.
+            if (this.isDirty)
+                return true;
+
             //If the loaded vessel count hasn't changed from the last time we checked then use the cached distributors.
             totalVessels = FlightGlobals.VesselsLoaded.Count;
             if (totalVessels == lastTotalVessels && !isDirty)

@@ -312,10 +312,16 @@ namespace WildBlueIndustries
                     return true;
 
                 double distributedAmount = WBIDistributionManager.Instance.GetDistributedAmount(requiredName);
+                Log("Distributors have " + distributedAmount + " units of " + requiredName);
                 if (distributedAmount >= reconfigureCost)
                 {
                     ScreenMessages.PostScreenMessage("Distributors have enough " + requiredName, 10.0f);
                     return true;
+                }
+                else
+                {
+                    ScreenMessages.PostScreenMessage("No active distributors have " + requiredName + " to share. Make sure resource distribution is turned on, and a distributor is sharing " + requiredName + ".", 10.0f);
+                    canAfford = false;
                 }
             }
 

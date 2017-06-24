@@ -23,8 +23,9 @@ namespace WildBlueIndustries
     {
         Valid,
         NotEnoughDistance,
-        OutOfChances,
-        LodeAlreadyExists
+        AsteroidProspected,
+        LodeAlreadyExists,
+        InvalidVesselSituation
     }
 
     public class GoldStrikeLode
@@ -36,6 +37,7 @@ namespace WildBlueIndustries
         public string resourceName;
         public double amountRemaining;
         public string navigationID;
+        public float abundance;
 
         public void Load(ConfigNode node)
         {
@@ -61,6 +63,9 @@ namespace WildBlueIndustries
 
                 if (node.HasValue("amountRemaining"))
                     amountRemaining = double.Parse(node.GetValue("amountRemaining"));
+
+                if (node.HasValue("abundance"))
+                    abundance = float.Parse(node.GetValue("abundance"));
             }
             catch (Exception ex)
             {
@@ -80,6 +85,7 @@ namespace WildBlueIndustries
                 node.AddValue("navigationID", navigationID);
             node.AddValue("resourceName", resourceName);
             node.AddValue("amountRemaining", amountRemaining);
+            node.AddValue("abundance", abundance);
 
             return node;
         }
@@ -96,6 +102,7 @@ namespace WildBlueIndustries
                 sb.AppendLine("navigationID: " + navigationID);
             sb.AppendLine("resourceName: " + resourceName);
             sb.AppendLine("amountRemaining: " + amountRemaining);
+            sb.AppendLine("abundance: " + abundance);
 
             return sb.ToString();
         }

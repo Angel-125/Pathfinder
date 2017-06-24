@@ -8,6 +8,24 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.10.0
+
+Gold Strike
+- You now have an unlimited number of chances to find resources in any given biome on any given planet. You still only get once chance per asteroid though.
+- You now only need to drive a minimum of 3km away from the previous prospecting location in order to make another attempt.
+- Lowered the chances of finding a lode.
+- Lowered the max units of a lode's resource that you can find.
+- The Pathfinder geology lab has the ability to prospect for resources.
+- Your drills will automatically dig up the lode resource if there's room for it in your vessel; it functions independently of drilling for Ore.
+- Prospecting asteroids is now functioning properly.
+
+Bug Fixes & Enhancements.
+- You can now carry the Sombrero and Telegraph.
+- Drills no longer generate heat when in operation.
+- When inflating parts, if you have no active distributors that are sharing the needed Equipment, you'll receive a message to remind you to turn on resource distribution.
+- Fixed an issue where the resource distributor cache wouldn't be rebuilt after changing a part's distributor status and/or what resources to distribute.
+- Fixed an integration issue with KPBS.
+
 1.9.3
 - WBT Update
 - When you scrap a part or vessel, you no longer need to have resource distribution turned on. Any loaded vessel within range that can store the recycled resources will store them.

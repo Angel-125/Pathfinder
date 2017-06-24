@@ -34,7 +34,6 @@ namespace WildBlueIndustries
         {
             base.OnSave(node);
             ConfigNode nodeTest = new ConfigNode("TEST");
-            nodeTest.AddValue("name", "FRED");
             node.AddNode(nodeTest);
         }
 

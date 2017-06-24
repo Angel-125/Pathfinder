@@ -26,18 +26,23 @@ namespace WildBlueIndustries
         public static void GetBiomeAndPlanet(out string biomeName, out int planetID, Vessel vessel, ModuleAsteroid asteroid = null)
         {
             CBAttributeMapSO.MapAttribute biome;
+            biomeName = "UNKNOWN";
+            planetID = -1;
 
-            if (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH)
+            if (asteroid != null)
             {
-                biome = Utils.GetCurrentBiome(vessel);
-                biomeName = biome.name;
-                planetID = vessel.mainBody.flightGlobalsIndex;
+                biomeName = asteroid.AsteroidName;
+                planetID = int.MaxValue;
             }
 
-            else if (asteroid != null)
+            else if (vessel != null)
             {
-                biomeName = asteroid.name;
-                planetID = int.MaxValue;
+                if (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH)
+                {
+                    biome = Utils.GetCurrentBiome(vessel);
+                    biomeName = biome.name;
+                    planetID = vessel.mainBody.flightGlobalsIndex;
+                }
             }
 
             else

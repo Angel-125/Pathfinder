@@ -97,12 +97,15 @@ namespace WildBlueIndustries
         private const string kName = "name";
         private const string kGoldStrikeDataNode = "GOLDSTRIKE";
         private const string kGoldStrikeLodeNode = "GoldStrikeLode";
-        private const string kGoldStrikeChance = "GoldStrikeChance";
+        private const string kAsteroidsSearched = "AsteroidsSearched";
+        private const string kAsteroidNodeName = "ProspectedAsteroid";
 
         public static WBIPathfinderScenario Instance;
 
         //Debug stuff
-        public static bool showDebugLog = true;
+        public static bool showDebugLog = false;
+        public static bool debugProspectAlwaysSuccessful = false;
+        public static bool debugGoldStrike = false;
 
         //Core sample reputation
         public int reputationIndex;
@@ -110,7 +113,7 @@ namespace WildBlueIndustries
         //Gold strike
         public Dictionary<string, GoldStrikeData> goldStrikeResources = new Dictionary<string, GoldStrikeData>();
         public Dictionary<string, Dictionary<string, GoldStrikeLode>> goldStrikeLodes = new Dictionary<string, Dictionary<string, GoldStrikeLode>>();
-        public Dictionary<string, GoldStrikeChance> goldStrikeChances = new Dictionary<string, GoldStrikeChance>();
+        public List<String> prospectedAsteroids = new List<string>();
 
         private Dictionary<string, EfficiencyData> efficiencyDataMap = new Dictionary<string, EfficiencyData>();
         private static Dictionary<string, ConfigNode> toolTips = new Dictionary<string, ConfigNode>();
@@ -145,9 +148,8 @@ namespace WildBlueIndustries
             ConfigNode[] toolTipsShown = node.GetNodes(kToolTip);
             ConfigNode[] goldStrikeNodes = GameDatabase.Instance.GetConfigNodes(kGoldStrikeDataNode);
             ConfigNode[] goldStrikeLodeNodes = node.GetNodes(kGoldStrikeLodeNode);
-            ConfigNode[] strikeChances = node.GetNodes(kGoldStrikeChance);
+            ConfigNode[] asteroidsSearched = node.GetNodes(kAsteroidsSearched);
             string value = node.GetValue(kReputationIndex);
-            GoldStrikeChance chance = null;
 
             if (string.IsNullOrEmpty(value) == false)
                 reputationIndex = int.Parse(value);
@@ -183,14 +185,9 @@ namespace WildBlueIndustries
                 lodeMap.Add(lodeKey, lode);
             }
 
-            debugLog("OnLoad: there are " + strikeChances.Length + " GoldStrikeChance items to load.");
-            foreach (ConfigNode chanceNode in strikeChances)
-            {
-                chance = new GoldStrikeChance();
-                chance.Load(chanceNode);
-                string planetBiomeKey = chance.planetID.ToString() + chance.biome;
-                goldStrikeChances.Add(planetBiomeKey, chance);
-            }
+            debugLog("OnLoad: there are " + asteroidsSearched.Length + " asteroids that have been prospected.");
+            foreach (ConfigNode asteroidNode in asteroidsSearched)
+                prospectedAsteroids.Add(asteroidNode.GetValue(kName));
 
             foreach (ConfigNode efficiencyNode in efficiencyNodes)
             {
@@ -239,11 +236,12 @@ namespace WildBlueIndustries
                 }
             }
 
-            debugLog("OnSave: there are " + goldStrikeChances.Values.Count + " GoldStrikeChance items to save.");
-            foreach (GoldStrikeChance chance in goldStrikeChances.Values)
+            debugLog("OnSave: there are " + prospectedAsteroids.Count + " prospected asteroids to save.");
+            foreach (string asteroidName in prospectedAsteroids)
             {
-                ConfigNode chanceNode = chance.Save();
-                node.AddNode(chanceNode);
+                ConfigNode asteroidNode = new ConfigNode(kAsteroidNodeName);
+                asteroidNode.AddValue(kName, asteroidName);
+                node.AddNode(asteroidNode);
             }
 
             node.RemoveNodes(kToolTip);
@@ -251,66 +249,10 @@ namespace WildBlueIndustries
                 node.AddNode(toolTipNode);
         }
 
-        public Vector3d GetLastProspectLocation(int planetID, string biome)
+        public void ClearProspects()
         {
-            string planetBiomeKey = planetID.ToString() + biome;
-            GoldStrikeChance goldStrikeChance = null;
-            Vector3d lastLocation = Vector3d.zero;
-
-            if (goldStrikeChances.ContainsKey(planetBiomeKey) == false)
-                return Vector3d.zero;
-
-            goldStrikeChance = goldStrikeChances[planetBiomeKey];
-
-            lastLocation.x = goldStrikeChance.lastProspectLocation.x;
-            lastLocation.y = goldStrikeChance.lastProspectLocation.y;
-            lastLocation.z = goldStrikeChance.lastProspectLocation.z;
-
-            return lastLocation;
-        }
-
-        public void SetLastProspectLocation(int planetID, string biome, double longitude, double latitude, double altitude)
-        {
-            string planetBiomeKey = planetID.ToString() + biome;
-            GoldStrikeChance goldStrikeChance = null;
-
-            if (goldStrikeChances.ContainsKey(planetBiomeKey) == false)
-            {
-                goldStrikeChance = new GoldStrikeChance();
-                goldStrikeChance.planetID = planetID;
-                goldStrikeChance.biome = biome;
-                goldStrikeChances.Add(planetBiomeKey, goldStrikeChance);
-            }
-
-            goldStrikeChance = goldStrikeChances[planetBiomeKey];
-            goldStrikeChance.lastProspectLocation.x = longitude;
-            goldStrikeChance.lastProspectLocation.y = latitude;
-            goldStrikeChance.lastProspectLocation.z = altitude;
-
-            //Save the game
-            GamePersistence.SaveGame("quicksave", HighLogic.SaveFolder, SaveMode.BACKUP);
-        }
-
-        public int DecrementProspectAttempts(int planetID, string biome)
-        {
-            string planetBiomeKey = planetID.ToString() + biome;
-            GoldStrikeChance goldStrikeChance = null;
-
-            if (goldStrikeChances.ContainsKey(planetBiomeKey) == false)
-            {
-                goldStrikeChance = new GoldStrikeChance();
-                goldStrikeChance.planetID = planetID;
-                goldStrikeChance.biome = biome;
-                goldStrikeChances.Add(planetBiomeKey, goldStrikeChance);
-            }
-
-            goldStrikeChance = goldStrikeChances[planetBiomeKey];
-            goldStrikeChance.chancesRemaining -= 1;
-
-            //Save the game
-            GamePersistence.SaveGame("quicksave", HighLogic.SaveFolder, SaveMode.BACKUP);
-
-            return goldStrikeChance.chancesRemaining;
+            goldStrikeLodes.Clear();
+            prospectedAsteroids.Clear();
         }
 
         public bool IsLodeWaypoint(string navigationID)
@@ -338,63 +280,186 @@ namespace WildBlueIndustries
             return false;
         }
 
-        public GoldStrikeChance GetGoldStrikeChance(int planetID, string biome)
+        public void UpdateDrillLodes(ModuleAsteroid asteroid)
         {
-            string planetBiomeKey = planetID.ToString() + biome;
-            GoldStrikeChance goldStrikeChance = null;
 
-            if (goldStrikeChances.ContainsKey(planetBiomeKey) == false)
+            //Find all loaded vessels that have drills, and tell them to update their lode data.
+            //If we prospected an asteroid then just inform the asteroid drills.
+            //Otherwise just inform the ground drills.
+            if (asteroid == null)
             {
-                goldStrikeChance = new GoldStrikeChance();
-                goldStrikeChance.planetID = planetID;
-                goldStrikeChance.biome = biome;
-                goldStrikeChances.Add(planetBiomeKey, goldStrikeChance);
+                debugLog("Updating ground drills");
+                List<WBIGoldStrikeDrill> groundDrills = null;
+                foreach (Vessel loadedVessel in FlightGlobals.VesselsLoaded)
+                {
+                    groundDrills = loadedVessel.FindPartModulesImplementing<WBIGoldStrikeDrill>();
+                    if (groundDrills != null)
+                    {
+                        foreach (WBIGoldStrikeDrill groundDrill in groundDrills)
+                            groundDrill.UpdateLode();
+                    }
+                }
             }
 
-            goldStrikeChance = goldStrikeChances[planetBiomeKey];
-            debugLog("GetGoldStrikeChance retrieved " + goldStrikeChance.ToString());
-            return goldStrikeChance;
+            else
+            {
+                debugLog("Updating asteroid drills");
+                List<WBIGoldStrikeAsteroidDrill> asteroidDrills = null;
+                foreach (Vessel loadedVessel in FlightGlobals.VesselsLoaded)
+                {
+                    asteroidDrills = loadedVessel.FindPartModulesImplementing<WBIGoldStrikeAsteroidDrill>();
+                    if (asteroidDrills != null)
+                    {
+                        debugLog("Found " + asteroidDrills.Count + " asteroid drills");
+                        foreach (WBIGoldStrikeAsteroidDrill asteroidDrill in asteroidDrills)
+                            asteroidDrill.UpdateLode();
+                    }
+                }
+            }
         }
 
-        public int GetProspectAttemptsRemaining(int planetID, string biome)
+        public double GetDistanceFromLastLocation(Vessel vessel)
         {
-            string planetBiomeKey = planetID.ToString() + biome;
-            GoldStrikeChance goldStrikeChance = null;
+            double distance = 0;
 
-            if (goldStrikeChances.ContainsKey(planetBiomeKey) == false)
+            //Pull last prospect location from the vessel module.
+            GoldStrikeVesselModule vesselModule = null;
+            foreach (VesselModule module in vessel.vesselModules)
             {
-                goldStrikeChance = new GoldStrikeChance();
-                goldStrikeChances.Add(planetBiomeKey, goldStrikeChance);
+                if (module is GoldStrikeVesselModule)
+                {
+                    vesselModule = (GoldStrikeVesselModule)module;
+                    break;
+                }
+            }
+            if (vesselModule == null)
+                return double.MaxValue;
+            
+            //If we've never set a prospect location then we're automatically ok.
+            if (!vesselModule.HasLastProspectLocation())
+                return double.MaxValue;
+
+            //Calculate the distance
+            distance = GoldStrikeUtils.HaversineDistance(vesselModule.lastProspectLongitude, vesselModule.lastProspectLatitude,
+                vessel.longitude, vessel.latitude, vessel.mainBody);
+
+            return distance;
+        }
+
+        public bool IsAsteroidProspected(ModuleAsteroid asteroid)
+        {
+            if (asteroid == null)
+                return false;
+
+            if (this.prospectedAsteroids.Contains(asteroid.AsteroidName))
+                return true;
+
+            return false;
+        }
+
+        public ProspectSituations GetProspectSituation(Vessel vessel, out GoldStrikeLode lode)
+        {
+            ModuleAsteroid asteroid = null;
+            CBAttributeMapSO.MapAttribute biome = null;
+            string biomeName = string.Empty;
+            int planetID = int.MaxValue;
+            bool vesselSituationIsValid = false;
+            double longitude = 0f;
+            double latitude = 0f;
+            double altitude = 0f;
+
+            //If we're landed then we're ok to check prospect situation.
+            if (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH)
+            {
+                biome = Utils.GetCurrentBiome(vessel);
+                biomeName = biome.name;
+                planetID = vessel.mainBody.flightGlobalsIndex;
+                longitude = vessel.longitude;
+                latitude = vessel.latitude;
+                altitude = vessel.altitude;
+                vesselSituationIsValid = true;
+                debugLog("Vessel is landed or prelaunch");
             }
 
-            goldStrikeChance = goldStrikeChances[planetBiomeKey];
-            return goldStrikeChance.chancesRemaining;
-        }
-
-        public ProspectSituations GetProspectSituation(int planetID, string biome, double longitude, double lattitude, double altitude, out GoldStrikeLode lode)
-        {
-            GoldStrikeChance chance = GetGoldStrikeChance(planetID, biome);
-            double travelDistance = chance.GetDistanceFromLastLocation(longitude, lattitude, altitude);
-
-            //Set the lode object
-            lode = FindNearestLode(planetID, biome, longitude, lattitude);
-
-            //Are we out of chances?
-            if (chance.chancesRemaining <= 0)
-                return ProspectSituations.OutOfChances;
+            //If we have an asteroid, then we're ok to check prospect situation.
+            asteroid = vessel.FindPartModuleImplementing<ModuleAsteroid>();
+            if (asteroid != null)
+            {
+                biomeName = asteroid.AsteroidName;
+                vesselSituationIsValid = true;
+                debugLog("Vessel has an asteroid");
+            }
 
             //Is there a lode in the area?
+            if (asteroid != null)
+                lode = FindNearestLode(asteroid);
+            else
+                lode = FindNearestLode(planetID, biomeName, vessel.longitude, vessel.latitude);
             if (lode != null)
                 return ProspectSituations.LodeAlreadyExists;
-            
-            //Have we traveled far enough?
-            if (travelDistance < GoldStrikeSettings.DistanceBetweenProspects)
+
+            //If the flight situation is bad then we're done.
+            if (vesselSituationIsValid == false)
+                return ProspectSituations.InvalidVesselSituation;
+
+            //Is the prospect site an asteroid, and has it been prospected?
+            if (asteroid != null)
             {
-                debugLog("Calculated distance between current location and last prospect location: " + travelDistance);
-                return ProspectSituations.NotEnoughDistance;
+                if (prospectedAsteroids.Contains(asteroid.AsteroidName))
+                    return ProspectSituations.AsteroidProspected;
+
+                else //Record the fact that we prospected the asteroid.
+                    prospectedAsteroids.Add(asteroid.AsteroidName);
+            }
+
+            //Have we traveled far enough?
+            else
+            {
+                double travelDistance = GetDistanceFromLastLocation(vessel);
+                if (travelDistance < GoldStrikeSettings.DistanceBetweenProspects)
+                {
+                    debugLog("Calculated distance between current location and last prospect location: " + travelDistance);
+                    return ProspectSituations.NotEnoughDistance;
+                }
             }
 
             return ProspectSituations.Valid;
+        }
+
+        public GoldStrikeLode FindNearestLode(ModuleAsteroid asteroid)
+        {
+            int planetID;
+            string biomeName;
+            GoldStrikeUtils.GetBiomeAndPlanet(out biomeName, out planetID, null, asteroid);
+
+            string planetBiomeKey = planetID.ToString() + biomeName;
+            Dictionary<string, GoldStrikeLode> lodeMap = null;
+            debugLog("planetBiomeKey: " + planetBiomeKey);
+
+            //Get the lode map. If there is none then we're done.
+            if (goldStrikeLodes.ContainsKey(planetBiomeKey) == false)
+            {
+                debugLog("goldStrikeLodes has no lodeMap for key: " + planetBiomeKey);
+                return null;
+            }
+            lodeMap = goldStrikeLodes[planetBiomeKey];
+            debugLog("lodeMap has " + lodeMap.Count + " entries");
+            if (showDebugLog)
+            {
+                foreach (string key in lodeMap.Keys)
+                {
+                    debugLog("Key: " + key + "\r\n lode: " + lodeMap[key].ToString());
+                }
+            }
+
+            //Asteroids only have one lode
+            if (lodeMap.ContainsKey(asteroid.AsteroidName) == false)
+            {
+                debugLog("No GoldStrikeLode found in lodeMap for " + asteroid.AsteroidName);
+                return null;
+            }
+
+            return lodeMap[asteroid.AsteroidName];
         }
 
         public GoldStrikeLode FindNearestLode(int planetID, string biome, double longitude, double latitude, double searchDistance = kMaxProspectSearchDistance)
@@ -444,6 +509,43 @@ namespace WildBlueIndustries
             }
         }
 
+        public GoldStrikeLode AddLode(ModuleAsteroid asteroid, string resourceName, float abundance)
+        {
+            int planetID;
+            string biomeName;
+            GoldStrikeUtils.GetBiomeAndPlanet(out biomeName, out planetID, null, asteroid);
+            GoldStrikeLode lode = new GoldStrikeLode();
+            Dictionary<string, GoldStrikeLode> lodeMap = null;
+            string planetBiomeKey = planetID.ToString() + biomeName;
+
+            //Setup the new lode
+            lode.resourceName = resourceName;
+            lode.longitude = 0;
+            lode.lattitude = 0;
+            lode.biome = biomeName;
+            lode.abundance = abundance;
+            lode.planetID = planetID;
+
+            //Get the lode map
+            if (goldStrikeLodes.ContainsKey(planetBiomeKey) == false)
+            {
+                lodeMap = new Dictionary<string, GoldStrikeLode>();
+                goldStrikeLodes.Add(planetBiomeKey, lodeMap);
+                debugLog("Added new goldStrikeLode with planetBiomeKey: " + planetBiomeKey);
+            }
+            lodeMap = goldStrikeLodes[planetBiomeKey];
+
+            //Add the new lode
+            lodeMap.Add(asteroid.AsteroidName, lode);
+            goldStrikeLodes[planetBiomeKey] = lodeMap;
+            debugLog("Added new lode: " + lode.ToString());
+
+            //Save the game
+            GamePersistence.SaveGame("quicksave", HighLogic.SaveFolder, SaveMode.BACKUP);
+
+            return lode;
+        }
+
         public GoldStrikeLode AddLode(int planetID, string biome, double longitude, double lattitude, string resourceName, double amountRemaining)
         {
             GoldStrikeLode lode = new GoldStrikeLode();
@@ -469,6 +571,7 @@ namespace WildBlueIndustries
 
             //Add the new lode
             lodeMap.Add(lodeKey, lode);
+            goldStrikeLodes[planetBiomeKey] = lodeMap;
             debugLog("Added new lode: " + lode.ToString());
 
             //Save the game
