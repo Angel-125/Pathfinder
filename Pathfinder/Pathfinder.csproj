@@ -97,7 +97,6 @@
     <Compile Include="ResourceDistribution\WBIDistributionManager.cs" />
     <Compile Include="Utility\WBIMultipurposeStorage.cs" />
     <Compile Include="Habitat\WBIHabitat.cs" />
-    <Compile Include="Industry\WBIBreakableResourceConverter.cs" />
     <Compile Include="Industry\WBIGeoThermalPlant.cs" />
     <Compile Include="Parts\WBICoolingTower.cs" />
     <Compile Include="Industry\WBIBuckboardGenerator.cs" />
@@ -113,6 +112,7 @@
     <Compile Include="Industry\WBIPartScrapper.cs" />
     <Compile Include="GoldStrike\WBIGoldStrikeDrill.cs" />
     <Compile Include="GoldStrike\WBIGoldStrikeAsteroidDrill.cs" />
+    <Compile Include="WBIAutoStrut.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BARIS\BARIS.csproj">

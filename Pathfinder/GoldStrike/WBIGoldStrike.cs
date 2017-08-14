@@ -28,7 +28,7 @@ namespace WildBlueIndustries
         private const float kMessageDisplayTime = 10.0f;
         private const float kMotherlodeFactor = 0.05f;
         private const float kLabSkillBonus = 0.5f;
-        private const float kAnomalyBonus = 35.0f;
+        private const float kAnomalyBonus = 50.0f;
         private const float kAsteroidBonus = 50.0f;
         private const float kMinAnomalyDistance = 0.2f;
 
@@ -671,6 +671,13 @@ namespace WildBlueIndustries
         public void DrawOpsWindow(string buttonLabel)
         {
             GUILayout.BeginVertical();
+
+            if (HighLogic.LoadedSceneIsFlight == false)
+            {
+                GUILayout.Label("<color=yellow><b>Feature only available during flight.</b></color>");
+                GUILayout.EndVertical();
+                return;
+            }
 
             GUILayout.Label(string.Format("Next Prospect: {0:f2}km", nextProspectDistance));
 

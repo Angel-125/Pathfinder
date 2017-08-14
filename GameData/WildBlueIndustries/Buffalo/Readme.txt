@@ -32,6 +32,16 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.2 BARIS: Building A Rocket Isn't Simple
+This update introduces BARIS, a replacement for the stock heat mechanic used on the mod's drills and converters. You can think of BARIS (the name is a nod to Buzz Aldrin's Race Into Space) as a highly customizable Dangit-lite. Don't want your drills or converters to break? Don't want the hassle of parts wearing out? Do you prefer not to send Equipment up to repair your parts, or to requrire specific skills to repair them? No problem! All that and more are options. As always, It's Your Game, Your Choice.
+
+BARIS IS OFF BY DEFAULT! You'll have to opt-in via the Settings->Difficulty->BARIS tab.
+
+With BARIS, converters and drills now have wear and tear, which is indicated by the part's Quality rating. They're unlikely to break during their normal design life, but they can start to break down after you exceed their design life. If you perform maintenance on them, you can reduce the chance that they'll break. A broken drill or base part won't function, which can be either annoying or life threatening depending upon the mods you have installed. Once you fix the part, it will continue to function, but its design life will be reduced- unless you disable that option.
+
+Bug Fixes & Enhancements
+- Bug fixes in Kerbal Actuators and animation improvemts - thanks Nertea! :)
+
 2.1.3
 - WBT Update
 

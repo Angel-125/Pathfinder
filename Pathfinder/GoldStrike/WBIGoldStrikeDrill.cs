@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    public class WBIGoldStrikeDrill : ModuleResourceHarvester
+    public class WBIGoldStrikeDrill : ModuleBreakableHarvester
     {
         private const float kMessageDisplayTime = 10.0f;
 
@@ -60,30 +60,12 @@ namespace WildBlueIndustries
         protected double outputUnits = 0f;
         protected PartResourceDefinition outputDef;
 
-        protected void debugLog(string message)
-        {
-            if (WBIPathfinderScenario.showDebugLog == true)
-                Debug.Log("[" + this.ClassName + "] - " + message);
-        }
-
-        [KSPEvent(guiActive = true, guiActiveUnfocused = true, unfocusedRange = 5.0f, guiName = "Start Drill")]
-        public void StartConverter()
+        public override void StartConverter()
         {
             //Update the output units
             UpdateLode();
 
-            //Update events
-            Events["StartConverter"].guiActive = false;
-            Events["StartConverter"].guiActiveUnfocused = false;
-
-            //Start the converter
-            StartResourceConverter();
-        }
-
-        [KSPAction()]
-        public void StartConverterAction(KSPActionParam param)
-        {
-            StartConverter();
+            base.StartConverter();
         }
 
         public override void OnStart(StartState state)
@@ -92,19 +74,6 @@ namespace WildBlueIndustries
 
             //Make sure our lode is up to date
             UpdateLode();
-
-            //Setup the events
-            Events["StartConverter"].guiName = "Start " + ConverterName;
-            Events["StartResourceConverter"].active = false;
-            if (IsActivated)
-            {
-                Events["StartConverter"].guiActive = false;
-                Events["StartConverter"].guiActiveUnfocused = false;
-            }
-
-            //Setup actions
-            Actions["StartResourceConverterAction"].active = false;
-            Actions["StartConverterAction"].guiName = StartActionName;
         }
 
         public bool UpdateLode()
@@ -190,18 +159,9 @@ namespace WildBlueIndustries
         {
             base.OnUpdate();
 
-            //Always hide the start resource converter button
-            Events["StartResourceConverter"].active = false;
-
             //Only need to do the stuff below if we're in flight.
             if (HighLogic.LoadedSceneIsFlight == false)
                 return;
-
-            if (!IsActivated && Events["StartConverter"].guiActive == false)
-            {
-                Events["StartConverter"].guiActive = true;
-                Events["StartConverter"].guiActiveUnfocused = true;
-            }
 
             //Make sure our conditions are met.
             if (this.part.vessel.situation != Vessel.Situations.PRELAUNCH && this.part.vessel.situation != Vessel.Situations.LANDED)
@@ -241,6 +201,11 @@ namespace WildBlueIndustries
             if (this.part.vessel.situation != Vessel.Situations.PRELAUNCH && this.part.vessel.situation != Vessel.Situations.LANDED)
             {
                 lodeStatus = Localizer.Format(statusNAName);
+                return;
+            }
+            if (isBroken)
+            {
+                StopResourceConverter();
                 return;
             }
             

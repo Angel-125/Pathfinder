@@ -1,0 +1,23 @@
+{
+    "NAME":"BARIS",
+    "URL":"https://raw.githubusercontent.com/Angel-125/BARIS/master/GameData/WildBlueIndustries/000BARIS/BARIS.version",
+    "DOWNLOAD":"https://github.com/Angel-125/BARIS/releases",
+    "GITHUB":
+    {
+        "USERNAME":"Angel-125",
+        "REPOSITORY":"BARIS",
+        "ALLOW_PRE_RELEASE":false,
+    },
+    "VERSION":
+    {
+	"MAJOR":1,
+	"MINOR":0,
+	"PATCH":0
+    },
+    "KSP_VERSION":
+    {
+        "MAJOR":1,
+        "MINOR":3,
+        "PATCH":0
+    },
+}

@@ -19,16 +19,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    public class WBIPowerGenerator : WBIBreakableResourceConverter
+    public class WBIPowerGenerator : ModuleBreakableConverter, IOpsView
     {
         [KSPField(guiName = "Power Output", guiActive = true)]
         public string powerOutputDisplay = string.Empty;
 
+        [KSPField()]
+        public string efficiencyType;
+
+        [KSPField()]
+        public int harvestType;
+
         protected double ecBaseOutput;
+        private string biomeName;
+        private int planetID = -1;
+        HarvestTypes harvestID;
+        protected string efficiencyString = "Efficiency";
 
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
+            if (HighLogic.LoadedSceneIsFlight == false)
+                return;
 
             ResourceRatio[] outputs = outputList.ToArray();
             ResourceRatio output;
@@ -41,11 +53,25 @@ namespace WildBlueIndustries
                     break;
                 }
             }
+
+            CBAttributeMapSO.MapAttribute biome = Utils.GetCurrentBiome(this.part.vessel);
+
+            biomeName = biome.name;
+
+            if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.SPLASHED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
+            {
+                harvestID = (HarvestTypes)harvestType;
+                planetID = this.part.vessel.mainBody.flightGlobalsIndex;
+            }
+
+            float efficiencyModifier = WBIPathfinderScenario.Instance.GetEfficiencyModifier(planetID, biomeName, harvestID, efficiencyType);
+            if (this.EfficiencyBonus != efficiencyModifier)
+                this.EfficiencyBonus = efficiencyModifier;
         }
 
-        public override void OnUpdate()
+        protected override void PostProcess(ConverterResults result, double deltaTime)
         {
-            base.OnUpdate();
+            base.PostProcess(result, deltaTime);
 
             if (!IsActivated)
             {
@@ -77,13 +103,36 @@ namespace WildBlueIndustries
             }
         }
 
-        public override void SetContextGUIVisible(bool isVisible)
+        public override void StopConverter()
         {
-            base.SetContextGUIVisible(isVisible);
-            Fields["powerOutputDisplay"].guiActive = true;
+            base.StopConverter();
+            powerOutputDisplay = "n/a";
         }
 
-        public override void DrawOpsWindow(string buttonLabel)
+        #region IOpsView
+        public string GetPartTitle()
+        {
+            return this.part.partInfo.title;
+        }
+
+        public void SetParentView(IParentView parentView)
+        {
+        }
+
+        public virtual List<string> GetButtonLabels()
+        {
+            List<string> buttonLabels = new List<string>();
+            buttonLabels.Add(ConverterName);
+            return buttonLabels;
+        }
+
+        public virtual void SetContextGUIVisible(bool isVisible)
+        {
+            Fields["powerOutputDisplay"].guiActive = true;
+            
+        }
+
+        public virtual void DrawOpsWindow(string buttonLabel)
         {
             string absentResource = GetMissingRequiredResource();
             GUILayout.BeginVertical();
@@ -95,8 +144,6 @@ namespace WildBlueIndustries
                 GUILayout.Label("<color=white><b>Status: </b>Requires " + absentResource + "</color>");
             GUILayout.Label("<color=white><b>Power Generation: </b>" + powerOutputDisplay + "</color>");
             GUILayout.Label(string.Format("<color=white><b>" + efficiencyString + ": </b>{0:f2}%</color>", this.EfficiencyBonus * 100f));
-            GUILayout.Label("<color=white><b>Time Until Maintennance: </b>" + getTimeUntilCheck() + "</color>");
-            GUILayout.Label("<color=white><b>Failure Probability: </b>" + criticalFail + "%</color>");
             GUILayout.EndScrollView();
 
             if (ModuleIsActive())
@@ -111,6 +158,46 @@ namespace WildBlueIndustries
             }
 
             GUILayout.EndVertical();
+        }
+        #endregion
+
+        public string GetMissingRequiredResource()
+        {
+            PartResourceDefinition definition;
+            Dictionary<string, PartResource> resourceMap = new Dictionary<string, PartResource>();
+
+            foreach (PartResource res in this.part.Resources)
+            {
+                resourceMap.Add(res.resourceName, res);
+            }
+
+            //If we have required resources, make sure we have them.
+            if (reqList.Count > 0)
+            {
+                foreach (ResourceRatio resRatio in reqList)
+                {
+                    //Do we have a definition?
+                    definition = ResourceHelper.DefinitionForResource(resRatio.ResourceName);
+                    if (definition == null)
+                    {
+                        return resRatio.ResourceName;
+                    }
+
+                    //Do we have the resource aboard?
+                    if (resourceMap.ContainsKey(resRatio.ResourceName) == false)
+                    {
+                        return resRatio.ResourceName;
+                    }
+
+                    //Do we have enough?
+                    if (resourceMap[resRatio.ResourceName].amount < resRatio.Ratio)
+                    {
+                        return resRatio.ResourceName;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

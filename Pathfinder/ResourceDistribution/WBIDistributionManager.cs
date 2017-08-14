@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -93,7 +94,7 @@ namespace WildBlueIndustries
             {
                 cycleStartTime = Planetarium.GetUniversalTime();
                 elapsedTime = 0f;
-                DistributeResources();
+                StartCoroutine(DistributeResources());
             }
         }
 
@@ -347,10 +348,10 @@ namespace WildBlueIndustries
             }
         }
 
-        public void DistributeResources()
+        public IEnumerator<YieldInstruction> DistributeResources()
         {
             if (distributionInProgress)
-                return;
+                yield return new WaitForFixedUpdate();
             distributionInProgress = true;
 
             TalliedResource talliedResource;
@@ -367,12 +368,18 @@ namespace WildBlueIndustries
 
             //Refresh distributor list if needed
             if (needsDistributorRefresh())
+            {
                 distributors = getDistributors();
+                yield return new WaitForFixedUpdate();
+            }
 
             //Tally up the resources.
             totalDistributors = distributors.Count;
             for (distributorIndex = 0; distributorIndex < totalDistributors; distributorIndex++)
+            {
                 tallyResources(distributors[distributorIndex], sharedResourceTally, requiredResourceTally);
+                yield return new WaitForFixedUpdate();
+            }
 
             //Now go through each resource in the dictionary of shared resources.
             //Take the grand total and distribute it amongst the dictionary of required resources (if an entry exists) first.
@@ -400,6 +407,7 @@ namespace WildBlueIndustries
                         amountRemaining = distributor.FillRequiredResource(resourceName, amountRemaining);
                         if (amountRemaining < 0.001f)
                             break;
+                        yield return new WaitForFixedUpdate();
                     }
                 }
 
@@ -415,11 +423,13 @@ namespace WildBlueIndustries
                 {
                     distributor = talliedResource.distributors[distributorIndex];
                     distributor.TakeShare(resourceName, sharePercent);
+                    yield return new WaitForFixedUpdate();
                 }
             }
 
             //Cleanup
             distributionInProgress = false;
+            yield return new WaitForFixedUpdate();
         }
 
         protected bool needsDistributorRefresh()

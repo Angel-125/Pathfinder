@@ -12,8 +12,13 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\TDx.TDxInput.
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\Mono.Security.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\WildBlueTools.pdb
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.xml
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csprojResolveAssemblyReference.cache
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.pdb
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\BARIS.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\BARIS.pdb
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\MarkdownSeparator.exe
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\RunPowershell.bat
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\xmldoc2md.ps1
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\xmldoc2md.xsl
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\RunMDSeparator.bat
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csprojResolveAssemblyReference.cache

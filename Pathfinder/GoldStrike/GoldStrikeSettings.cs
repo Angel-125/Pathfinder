@@ -20,9 +20,6 @@ namespace WildBlueIndustries
 {
     public class GoldStrikeSettings : GameParameters.CustomParameterNode
     {
-        [GameParameters.CustomIntParameterUI("Prospects Per Biome", maxValue = 50, minValue = 1, stepSize = 1, toolTip = "How many chances to strike it rich", autoPersistance = true, gameMode = GameParameters.GameMode.ANY)]
-        public int prospectsPerBiome = 20;
-
         [GameParameters.CustomFloatParameterUI("Prospect Reset Cost", maxValue = 500.0f, minValue = 10.0f, toolTip = "How much for extra prospects?", autoPersistance = true, gameMode = GameParameters.GameMode.SCIENCE | GameParameters.GameMode.CAREER)]
         public float prospectResetCost = 100.0f;
 
@@ -46,15 +43,6 @@ namespace WildBlueIndustries
             }
         }
          */
-
-        public static int ProspectsPerBiome
-        {
-            get
-            {
-                GoldStrikeSettings settings = HighLogic.CurrentGame.Parameters.CustomParams<GoldStrikeSettings>();
-                return settings.prospectsPerBiome;
-            }
-        }
 
         public static float ProspectResetCost
         {

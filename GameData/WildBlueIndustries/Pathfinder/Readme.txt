@@ -8,6 +8,21 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.11 BARIS: Building A Rocket Isn't Simple.
+
+This release replaces the drill heat mechanic with BARIS: Building A Rocket Isn't Simple. You can think of BARIS (the name is a nod to an old video game) as a highly customizable Dangit-lite. Don't want your drills or converters to break? Don't want the hassle of parts wearing out? Do you prefer not to send Equipment up to repair your parts, or to requrire specific skills to repair them? No problem! All that and more are options. As always, It's Your Game, Your Choice.
+
+BARIS IS OFF BY DEFAULT! You'll have to opt-in via the Settings->Difficulty->BARIS tab.
+
+With BARIS, your drills and base parts now have wear and tear, which is indicated by the part's Quality rating. They're unlikely to break during their normal design life, but they can start to break down after you exceed their design life. If you perform maintenance on them, you can reduce the chance that they'll break. A broken drill or base part won't function, which can be either annoying or life threatening depending upon the mods you have installed. Once you fix the part, it will continue to function, but its design life will be reduced.
+
+Bug Fixes & Enhancements
+- Fixed missing textures.
+- Fixed issue with geology lab not transmitting bonus science.
+- Resource distribution should run a bit more smoothly now.
+- Simplified Mode's ISRU now includes a drill.
+- Fixed issues with template reconfiguring when no life support mod is installed.
+
 1.10.0
 
 Gold Strike

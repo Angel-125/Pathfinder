@@ -51,21 +51,9 @@ namespace WildBlueIndustries
             orbitalSurveyer.PerformSurvey();
         }
 
-        public override void RepairLab()
+        public override void OnPartFixed(ModuleQualityControl qualityControl)
         {
-            //Do we require resources to fix the scope?
-            //If so, make sure the kerbal on EVA has enough resources.
-            if (WBIMainSettings.RepairsRequireResources)
-            {
-                base.RepairLab();
-
-                //If we couldn't repair the lab then we're done.
-                if (isBroken == true)
-                    return;
-            }
-
-            //Finally, unset broken.
-            isBroken = false;
+            base.OnPartFixed(qualityControl);
             SetupGUI();
         }
 
@@ -240,9 +228,6 @@ namespace WildBlueIndustries
             //and don't allow any research
             if (isBroken)
             {
-                //Enable repair button
-                Events["RepairLab"].active = true;
-
                 //Cannot perform an orbital survey...
                 Events["PerformOrbitalSurvey"].active = false;
 
@@ -258,9 +243,6 @@ namespace WildBlueIndustries
             //Show scanner GUI?
             if (planetUnlocked && orbitalScanner != null)
                 orbitalScanner.EnableModule();
-
-            //Hide repair button
-            Events["RepairLab"].active = false;
 
             //Show the perform orbital survey button if we've unlocked the planet
             Events["PerformOrbitalSurvey"].active = !planetUnlocked;
