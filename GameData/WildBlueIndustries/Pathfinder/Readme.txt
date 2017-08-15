@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.11.1
+- Minor fix for the Sunburn lab template.
+
 1.11 BARIS: Building A Rocket Isn't Simple.
 
 This release replaces the drill heat mechanic with BARIS: Building A Rocket Isn't Simple. You can think of BARIS (the name is a nod to an old video game) as a highly customizable Dangit-lite. Don't want your drills or converters to break? Don't want the hassle of parts wearing out? Do you prefer not to send Equipment up to repair your parts, or to requrire specific skills to repair them? No problem! All that and more are options. As always, It's Your Game, Your Choice.
