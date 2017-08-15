@@ -25,8 +25,11 @@ namespace WildBlueIndustries
         {
             base.OnStart(state);
 
-            this.part.autoStrutMode = Part.AutoStrutMode.Root;
-            this.part.UpdateAutoStrut();
+            if (this.part.autoStrutMode == Part.AutoStrutMode.Off && this.part != this.part.vessel.rootPart)
+            {
+                this.part.autoStrutMode = Part.AutoStrutMode.Root;
+                this.part.UpdateAutoStrut();
+            }
         }
     }
 }

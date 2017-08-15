@@ -112,7 +112,7 @@
     <Compile Include="Industry\WBIPartScrapper.cs" />
     <Compile Include="GoldStrike\WBIGoldStrikeDrill.cs" />
     <Compile Include="GoldStrike\WBIGoldStrikeAsteroidDrill.cs" />
-    <Compile Include="WBIAutoStrut.cs" />
+    <Compile Include="Utility\WBIAutoStrut.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BARIS\BARIS.csproj">
