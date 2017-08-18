@@ -25,10 +25,22 @@ namespace WildBlueIndustries
         {
             base.OnStart(state);
 
-            if (this.part.autoStrutMode == Part.AutoStrutMode.Off && this.part != this.part.vessel.rootPart)
+            if (HighLogic.LoadedSceneIsEditor)
             {
-                this.part.autoStrutMode = Part.AutoStrutMode.Root;
-                this.part.UpdateAutoStrut();
+                if (this.part.autoStrutMode == Part.AutoStrutMode.Off && this.part != EditorLogic.fetch.ship.parts[0])
+                {
+                    this.part.autoStrutMode = Part.AutoStrutMode.Root;
+                    this.part.UpdateAutoStrut();
+                }
+            }
+
+            else if (HighLogic.LoadedSceneIsFlight)
+            {
+                if (this.part.autoStrutMode == Part.AutoStrutMode.Off && this.part != this.part.vessel.rootPart)
+                {
+                    this.part.autoStrutMode = Part.AutoStrutMode.Root;
+                    this.part.UpdateAutoStrut();
+                }
             }
         }
     }

@@ -51,7 +51,7 @@ namespace WildBlueIndustries
             orbitalSurveyer.PerformSurvey();
         }
 
-        public override void OnPartFixed(ModuleQualityControl qualityControl)
+        public override void OnPartFixed(BaseQualityControl qualityControl)
         {
             base.OnPartFixed(qualityControl);
             SetupGUI();

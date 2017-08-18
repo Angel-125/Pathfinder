@@ -79,8 +79,7 @@ namespace WildBlueIndustries
         {
             WBIMainSettings.PayToReconfigure = playModesView.payToRemodel;
             WBIMainSettings.RequiresSkillCheck = playModesView.requireSkillCheck;
-            BARISSettings.RepairsRequireResources = playModesView.repairsRequireResources;
-            BARISSettings.PartsCanBreak = playModesView.partsCanBreak;
+            BARISBridge.Instance.UpdatePlayMode(playModesView.partsCanBreak, playModesView.repairsRequireResources);
             playModeName = playModesView.currentPlayMode;
             playModePath = playModesView.currentPlayModeFile;
 
