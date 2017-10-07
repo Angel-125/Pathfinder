@@ -24,7 +24,7 @@ namespace WildBlueIndustries
     {
         ModuleResourceHarvester harvester;
         WBIDrillSwitcher drillSwitcher;
-        WBIExtractionMonitor extractionMonitor;
+        WBIEfficiencyMonitor efficiencyMonitor;
         ModuleOverheatDisplay overheatDisplay;
         
         public override void OnStart(StartState state)
@@ -40,11 +40,9 @@ namespace WildBlueIndustries
                 drillSwitcher.Events["ShowDrillSwitchWindow"].guiActiveUnfocused = false;
             }
 
-            extractionMonitor = this.part.FindModuleImplementing<WBIExtractionMonitor>();
-            if (extractionMonitor != null)
-            {
-                extractionMonitor.Fields["extractionRateChange"].guiActive = false;
-            }
+            efficiencyMonitor = this.part.FindModuleImplementing<WBIEfficiencyMonitor>();
+            if (efficiencyMonitor != null)
+                efficiencyMonitor.Fields["efficiencyDisplayString"].guiActive = false;
 
             overheatDisplay = this.part.FindModuleImplementing<ModuleOverheatDisplay>();
         }
@@ -74,9 +72,16 @@ namespace WildBlueIndustries
             //Status
             GUILayout.Label("<color=white>GeoTap Extraction Status: " + harvester.ResourceStatus + "</color>");
 
-            //Extraction Monitor
-            if (extractionMonitor != null)
-                GUILayout.Label("<color=white>Extraction Rate At " + extractionMonitor.extractionRateChange + "</color>");
+            //Efficiency Monitor
+            if (efficiencyMonitor != null)
+            {
+                string extractionRate = "100%";
+
+                if (efficiencyMonitor.efficiencyModifier > 0f)
+                    extractionRate = string.Format("{0:f2}%", efficiencyMonitor.efficiencyModifier * 100.0f);
+
+                GUILayout.Label("<color=white>Extraction Rate At " + extractionRate + "</color>");
+            }
 
             //Overheat
             if (overheatDisplay != null)

@@ -19,10 +19,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 namespace WildBlueIndustries
 {
     public delegate void RebuildCacheDelegate();
+    public delegate void SetParticipationDelegate(bool isEnabled);
 
-    public class DistributionView : Window<DistributionView>
+    public class DistributionView : Dialog<DistributionView>
     {
         public RebuildCacheDelegate rebuildCache;
+        public SetParticipationDelegate setParticipation;
+
         public bool isParticipating;
         public Dictionary<string, EDistributionModes> distributionMap = null;
         Vector2 scrollPos = new Vector2();
@@ -52,6 +55,7 @@ namespace WildBlueIndustries
         public void DrawView()
         {
             int buttonIndex;
+            PartResourceDefinition definition;
             GUILayout.BeginVertical();
 
             if (scrollStyle == null)
@@ -68,13 +72,17 @@ namespace WildBlueIndustries
             for (int index = 0; index < resourceKeys.Length; index++)
             {
                 key = resourceKeys[index];
+                definition = ResourceHelper.DefinitionForResource(key);
                 if (distributionMap[key] != EDistributionModes.DistributionModeRequired)
                 {
                     GUILayout.BeginHorizontal();
                     buttonIndex = (int)distributionMap[key];
                     buttonIndex = GUILayout.SelectionGrid(buttonIndex, distributeOptions, distributeOptions.Length, gridOptions);
                     distributionMap[key] = (EDistributionModes)buttonIndex;
-                    GUILayout.Label("<color=white>" + key + "</color>");
+                    if (!string.IsNullOrEmpty(definition.displayName))
+                        GUILayout.Label("<color=white>" + definition.displayName + "</color>");
+                    else
+                        GUILayout.Label("<color=white>" + key + "</color>");
                     GUILayout.EndHorizontal();
                 }
             }
@@ -88,6 +96,8 @@ namespace WildBlueIndustries
         protected override void DrawWindowContents(int windowId)
         {
             DrawView();
+            if (setParticipation != null)
+                setParticipation(isParticipating);
         }
     }
 }

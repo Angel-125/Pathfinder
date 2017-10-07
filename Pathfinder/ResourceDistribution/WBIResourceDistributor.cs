@@ -53,18 +53,6 @@ namespace WildBlueIndustries
             distributionView.SetVisible(!distributionView.IsVisible());
         }
 
-        public void OnGUI()
-        {
-            if (HighLogic.LoadedSceneIsFlight == false && HighLogic.LoadedSceneIsEditor == false)
-                return;
-
-            if (distributionView.IsVisible())
-            {
-                distributionView.DrawWindow();
-                isParticipating = distributionView.isParticipating;
-            }
-        }
-
         public void SetDistributionMode(EDistributionModes mode)
         {
             //Setup our level of participation
@@ -147,12 +135,18 @@ namespace WildBlueIndustries
             distributionView.isParticipating = this.isParticipating;
             distributionView.distributionMap = this.distributionMap;
             distributionView.rebuildCache = RebuidDistribtuionCache;
+            distributionView.setParticipation = setParticipation;
 
             if (isConsumer)
             {
                 Events["SetupDistribution"].guiActive = false;
                 Fields["isParticipating"].guiName = "Acquire Resources";
             }
+        }
+
+        protected void setParticipation(bool isEnabled)
+        {
+            isParticipating = isEnabled;
         }
 
         void switcher_onModuleRedecorated(ConfigNode templateNode)

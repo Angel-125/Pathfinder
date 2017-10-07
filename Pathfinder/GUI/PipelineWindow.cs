@@ -26,7 +26,7 @@ namespace WildBlueIndustries
         public ConfigNode moduleValues;
     }
 
-    public class PipelineWindow : Window<PipelineWindow>
+    public class PipelineWindow : Dialog<PipelineWindow>
     {
         PipeEndpointNode[] pipeEndpoints;
 
@@ -53,7 +53,7 @@ namespace WildBlueIndustries
                 for (int index = 0; index < vessels.Length; index++)
                 {
                     vessel = vessels[index];
-                    if (vessel.mainBody == FlightGlobals.ActiveVessel.mainBody && vessel.situation == Vessel.Situations.LANDED)
+                    if (vessel.mainBody == FlightGlobals.ActiveVessel.mainBody)
                     {
                         foundEndpipe = false;
                         foreach (ProtoPartSnapshot protoPart in vessel.protoVessel.protoPartSnapshots)

@@ -54,14 +54,6 @@ namespace WildBlueIndustries
             }
         }
 
-        public override void OnGUI()
-        {
-            base.OnGUI();
-
-            if (terrainUplinkView.IsVisible())
-                terrainUplinkView.DrawWindow();
-        }
-
         protected override bool perfomBiomeAnalysys()
         {
             bool result = base.perfomBiomeAnalysys();

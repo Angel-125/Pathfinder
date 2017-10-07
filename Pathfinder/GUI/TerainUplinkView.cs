@@ -27,7 +27,7 @@ namespace WildBlueIndustries
         public Vessel vessel;
     }
 
-    public class TerainUplinkView : Window<TerainUplinkView>
+    public class TerainUplinkView : Dialog<TerainUplinkView>
     {
         private const int kWindowWidth = 300;
         private const int kWindowHeight = 310;

@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    [KSPAddon(KSPAddon.Startup.Flight | KSPAddon.Startup.EveryScene, false)]
+    [KSPAddon(KSPAddon.Startup.Flight, false)]
     class PathfinderConfigMenu : MonoBehaviour
     {
         static protected Texture2D appIcon = null;
@@ -35,17 +35,9 @@ namespace WildBlueIndustries
             appView.localOpsManager = localOpsManager;
         }
 
-        public void OnGUI()
-        {
-            if (appView.IsVisible())
-                appView.DrawWindow();
-            if (appView.localOpsManager.IsVisible())
-                appView.localOpsManager.DrawWindow();
-        }
-
         private void SetupGUI()
         {
-            if (HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.SPACECENTER)
+            if (HighLogic.LoadedScene == GameScenes.FLIGHT)
             {
                 if (appLauncherButton == null)
                     appLauncherButton = ApplicationLauncher.Instance.AddModApplication(ToggleGUI, ToggleGUI, null, null, null, null, ApplicationLauncher.AppScenes.ALWAYS, appIcon);

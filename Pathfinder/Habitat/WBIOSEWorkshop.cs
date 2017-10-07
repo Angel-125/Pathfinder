@@ -35,6 +35,8 @@ namespace WildBlueIndustries
 
             inflatableModule = this.part.FindModuleImplementing<WBIInflatablePartModule>();
 
+            if (this.part.Modules == null)
+                return;
             foreach (PartModule mod in this.part.Modules)
             {
                 if (mod.moduleName == "OseModuleWorkshop")

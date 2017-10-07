@@ -64,6 +64,7 @@
     <Compile Include="GoldStrike\GoldStrikeUtils.cs" />
     <Compile Include="GoldStrike\GoldStrikeLode.cs" />
     <Compile Include="GoldStrike\GoldStrikeData.cs" />
+    <Compile Include="GoldStrike\WBIGoldStrikeBonus.cs" />
     <Compile Include="GUI\PipelineWindow.cs" />
     <Compile Include="Settings\PathfinderSettings.cs" />
     <Compile Include="ResourceDistribution\DistributionView.cs" />
@@ -74,25 +75,21 @@
     <Compile Include="GUI\WBIDrillOpsView.cs" />
     <Compile Include="Habitat\WBIGreenhouse.cs" />
     <Compile Include="Settings\PathfinderAppView.cs" />
-    <Compile Include="GUI\PlayModesWindow.cs" />
     <Compile Include="GUI\TerainUplinkView.cs" />
-    <Compile Include="Drills\WBIDrillSwitcher.cs" />
+    <Compile Include="Industry\WBIDrillSwitcher.cs" />
     <Compile Include="Parts\WBIGaslight.cs" />
     <Compile Include="Parts\GeoSurveyCamera.cs" />
-    <Compile Include="Parts\WBIMultiKASPipe.cs" />
     <Compile Include="Science\WBIMultipurposeLab.cs" />
     <Compile Include="Habitat\WBIOSEWorkshop.cs" />
     <Compile Include="Habitat\WBIMultipurposeHab.cs" />
     <Compile Include="Science\WBIScienceConverter.cs" />
     <Compile Include="GUI\WBISciLabOpsView.cs" />
     <Compile Include="GUI\WBIToolTipWindow.cs" />
-    <Compile Include="Scenario\EfficiencyData.cs" />
+    <Compile Include="Efficiency\EfficiencyData.cs" />
     <Compile Include="Scenario\WBIPathfinderScenario.cs" />
-    <Compile Include="Drills\WBIDrillManager.cs" />
-    <Compile Include="Drills\WBIExtractionMonitor.cs" />
     <Compile Include="Science\WBIModuleCoreSample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scenario\WBIEfficiencyMonitor.cs" />
+    <Compile Include="Efficiency\WBIEfficiencyMonitor.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="ResourceDistribution\WBIDistributionManager.cs" />
     <Compile Include="Utility\WBIMultipurposeStorage.cs" />
@@ -113,6 +110,9 @@
     <Compile Include="GoldStrike\WBIGoldStrikeDrill.cs" />
     <Compile Include="GoldStrike\WBIGoldStrikeAsteroidDrill.cs" />
     <Compile Include="Utility\WBIAutoStrut.cs" />
+    <Compile Include="Utility\WBILoadIconHelper.cs" />
+    <Compile Include="Efficiency\WBIEfficiencyBonus.cs" />
+    <Compile Include="Science\WBIScienceDataGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BARIS\BARISBridge\BARISBridge.csproj">

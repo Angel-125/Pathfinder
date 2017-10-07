@@ -268,7 +268,6 @@ namespace WildBlueIndustries
             //Now distribute the recycled resources
             recycleMessage = string.Format(kResourceRecycled, totalRecycleUnits, recycleResource);
             scrappedResources.Add(new DistributedResource(recycleResource, totalRecycleUnits, recycleMessage));
-            //WBIDistributionManager.Instance.DistributeResources(scrappedResources, WBIDistributionManager.kDefaultDistributionRange, true);
             int totalResources = scrappedResources.Count;
             double amountRecycled = 0;
             double totalAmountRecycled = 0f;

@@ -452,6 +452,7 @@ namespace WildBlueIndustries
             {
                 vessel = vessels[index];
 
+                //Pathfinder lab
                 List<WBIPathfinderLab> wbiGeologyLabs = vessel.FindPartModulesImplementing<WBIPathfinderLab>();
                 if (wbiGeologyLabs.Count > 0)
                 {
@@ -474,6 +475,7 @@ namespace WildBlueIndustries
                     }
                 }
 
+                //Geology lab
                 List<WBIGeoLab> geologyLabs = vessel.FindPartModulesImplementing<WBIGeoLab>();
                 if (geologyLabs.Count > 0)
                 {
@@ -495,10 +497,29 @@ namespace WildBlueIndustries
                         }
                     }
                 }
+
+                //GoldStrike bonus: Some parts give a bonus- but it costs science data to do so.
+                List<WBIGoldStrikeBonus> goldStrikeBonuses = vessel.FindPartModulesImplementing<WBIGoldStrikeBonus>();
+                WBIGoldStrikeBonus goldStrikeBonus;
+                if (goldStrikeBonuses.Count > 0)
+                {
+                    for (int bonusIndex = 0; bonusIndex < goldStrikeBonuses.Count; bonusIndex++)
+                    {
+                        goldStrikeBonus = goldStrikeBonuses[bonusIndex];
+                        if (goldStrikeBonus.prospectingDataAmount >= goldStrikeBonus.dataCostPerBonus && goldStrikeBonus.prospectingDataAmount > 0f)
+                        {
+                            labBonus += (goldStrikeBonus.prospectingDataAmount / goldStrikeBonus.dataCostPerBonus) * goldStrikeBonus.Bonus;
+                            goldStrikeBonus.prospectingDataAmount = 0f;
+                        }
+                    }
+                }
             }
 
             //Unloaded vessels lab bonus
             vessels = FlightGlobals.VesselsUnloaded.ToArray();
+            float calculatedBonus = 0f;
+            float prospectingDataAmount = 0f;
+            float dataCostPerBonus = 1.0f;
             for (int index = 0; index < vessels.Length; index++)
             {
                 vessel = vessels[index];
@@ -510,17 +531,38 @@ namespace WildBlueIndustries
                 if (vessel.situation != Vessel.Situations.LANDED && vessel.situation != Vessel.Situations.PRELAUNCH)
                     continue;
 
-                //Find all the pathfinder labs
+                //Find all the geology labs & parts that give a bonus to Gold Strike
                 foreach (ProtoPartSnapshot partSnapshot in protoVessel.protoPartSnapshots)
                 {
                     foreach (ProtoPartModuleSnapshot moduleSnapshot in partSnapshot.modules)
                     {
+                        calculatedBonus = 0f;
+                        prospectingDataAmount = 0f;
+                        dataCostPerBonus = 1.0f;
+
                         if (moduleSnapshot.moduleName == "WBIGeologyLab" || moduleSnapshot.moduleName == "WBIGeoLab")
                         {
                             foreach (ProtoCrewMember protoCrewMember in partSnapshot.protoModuleCrew)
                             {
                                 if (protoCrewMember.HasEffect(prospectSkill))
                                     labBonus += kLabSkillBonus * protoCrewMember.experienceTrait.CrewMemberExperienceLevel();
+                            }
+                        }
+
+                        else if (moduleSnapshot.moduleName == "WBIGoldStrikeBonus")
+                        {
+                            if (moduleSnapshot.moduleValues.HasValue("calculatedBonus"))
+                                calculatedBonus = float.Parse(moduleSnapshot.moduleValues.GetValue("calculatedBonus"));
+                            if (moduleSnapshot.moduleValues.HasValue("prospectingDataAmount"))
+                                prospectingDataAmount = float.Parse(moduleSnapshot.moduleValues.GetValue("prospectingDataAmount"));
+                            if (moduleSnapshot.moduleValues.HasValue("dataCostPerBonus"))
+                                dataCostPerBonus = float.Parse(moduleSnapshot.moduleValues.GetValue("dataCostPerBonus"));
+
+                            if (prospectingDataAmount >= dataCostPerBonus && prospectingDataAmount > 0)
+                            {
+                                labBonus += (prospectingDataAmount / dataCostPerBonus) * calculatedBonus;
+                                prospectingDataAmount = 0f;
+                                moduleSnapshot.moduleValues.SetValue("prospectingDataAmount", 0f);
                             }
                         }
                     }

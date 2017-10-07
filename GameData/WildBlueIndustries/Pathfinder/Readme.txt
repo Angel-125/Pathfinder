@@ -8,6 +8,30 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.12.0 Classic Stock
+
+Module Reconfigurations
+- To improve playability, all the inflatable parts now require an Engineer to reconfigure or assemble/disassemble (it was a mix of Engineer and Scientist before).
+
+Play Modes
+- Play Mode moved to Wild Blue Tools. Look for the "WBT" button on the Space Center screen.
+- Play Modes now apply to all Wild Blue mods.
+- Added support for Classic Stock play mode. This is a new mode that uses resources inspired by a system proposed by NovaSilisko and HarvestR back in KSP 0.19. YOUR CURRENT GAMES THAT USE CRP ARE SAFE! For the complete list of resources in Classic Stock and to see how the various converters use them, follow this link: https://github.com/Angel-125/Pathfinder/wiki/Classic-Stock-Play-Mode
+
+Multipurpose Colony Modules
+- Deprecated the Multipurpose Colony Modules parts found in the extras folder; they're now obsolete and replaced with equivalents in DSEV:
+Multipurpose Base Unit -> Mk2 Ground Hub
+Multipurpose Colony Module -> Tranquility Mk2 Habitat
+Homestead Mk2 -> Homestead Mk3
+Stagecoach -> Junction Storage Hub
+
+Bug Fixes & Enhancements
+- Various bug fixes.
+- CRP is now a separate download.
+- Updated to KSP 1.3.1.
+- Skill required to recycle parts reduced to level 2.
+- Skill required to recycel whole vessels reduce to level 4.
+
 1.11.5
 - BARIS is now an optional download as originally intended- just took awhile for me to figure out how to make that work. DO NOT DELETE the 000ABARISBridgeDoNotDelete FOLDER! That plugin is the bridge between this mod and BARIS.
 
@@ -1447,7 +1471,6 @@ Do you have what it takes to be a prospector? Then step right up and try your lu
 ---ACKNOWLEDGEMENTS
 
 Module Manager by saribian
-Community Resource Pack by RoverDude, Nertea, and the KSP community
 Portions of this codebase include source by Snjo and Swamp-IG, used under CC BY-NC SA 4.0 license
 Icons by icons8: https://icons8.com/license/
 Eve: Order Zero graphic courtesy of Kuzztler and used with permission.

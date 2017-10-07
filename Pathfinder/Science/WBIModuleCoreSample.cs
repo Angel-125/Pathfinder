@@ -386,9 +386,8 @@ namespace WildBlueIndustries
             WBIPathfinderScenario.Instance.SetCoreSamplesRemaining(this.part.vessel.mainBody.flightGlobalsIndex, biome.name, (HarvestTypes)resourceType, samplesLeft);
             coreSampleStatus = samplesLeft.ToString();
 
-            UIPartActionWindow tweakableUI = Utils.FindActionWindow(this.part);
-            if (tweakableUI != null)
-                tweakableUI.displayDirty = true;
+            //Dirty the GUI
+            MonoUtilities.RefreshContextWindows(this.part);
 
             //If an experienced scientist is taking the core sample, then the scientist's experience will
             //affect the analysis.
@@ -437,9 +436,6 @@ namespace WildBlueIndustries
                     biome.name, (HarvestTypes)resourceType, EfficiencyData.kExtractionMod);
                 WBIPathfinderScenario.Instance.SetEfficiencyData(this.part.vessel.mainBody.flightGlobalsIndex,
                     biome.name, (HarvestTypes)resourceType, EfficiencyData.kExtractionMod, currentModifier + efficiencyModifier);
-
-                //Modify harvesters on the active vessel
-                WBIDrillManager.Instance.UpdateHarvesterEfficiencies(this.part.vessel);
             }
 
             //Good result!
@@ -456,9 +452,6 @@ namespace WildBlueIndustries
                     biome.name, (HarvestTypes)resourceType, EfficiencyData.kExtractionMod);
                 WBIPathfinderScenario.Instance.SetEfficiencyData(this.part.vessel.mainBody.flightGlobalsIndex,
                     biome.name, (HarvestTypes)resourceType, EfficiencyData.kExtractionMod, currentModifier + efficiencyModifier);
-
-                //Modify harvisters on the active vessel
-                WBIDrillManager.Instance.UpdateHarvesterEfficiencies(this.part.vessel);
             }
 
             else

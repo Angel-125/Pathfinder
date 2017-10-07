@@ -1,0 +1,254 @@
+PATH_HABITATION
+{
+	author = Angel-125
+	name = GeoLab
+	title = Pathfinder Geology Lab
+	shortName = Geology Lab
+	description = When you're out performing geoscience, it's nice to have a lab where you can analyze the results. That's where the Pathfinder Geology Lab comes in. With the right staff, you can make an impact in the field of astro geology. The lab specializes in soil analysis, metallurgic analysis, chemical analysis, and biome reports, all of which contribute to the knowledge of the local area.
+	mass = 1.5
+	requiredResource = Equipment
+	requiredAmount = 600
+	reconfigureSkill = ConverterSkill
+	logoPanel = WildBlueIndustries/Pathfinder/Decals/Pathfinder
+	glowPanel = WildBlueIndustries/Pathfinder/Decals/PathfinderGlow
+	toolTip = You might want to staff your Geology Labs with scientists to make a lasting impact on geoscience. Or profit from it... Just be sure you choose the right scientists for the job...
+	toolTipTitle = Your First Pathfinder Lab!
+	templateTags = orbitalWorkshop;moleHab;dsevHab;airshipHab
+
+	MODULE
+	{
+		name = ModuleGPS
+	}
+
+	MODULE
+	{
+		name = ModuleBiomeScanner
+	}
+
+	MODULE
+	{
+		name = ModuleResourceScanner
+		MaxAbundanceAltitude = 5000
+		RequiresUnlock = true
+		ScannerType = 0
+		ResourceName = Ore
+	}
+
+	MODULE
+	{
+		name = ModuleKerbNetAccess
+		EnhancedSituationMask = 7
+		EnhancedMinimumFoV = 160
+		EnhancedMaximumFoV = 179.5
+		MinimumFoV = 5
+		MaximumFoV = 90
+		AnomalyDetection = 0.75
+		DISPLAY_MODES
+		{
+			Mode = Resources
+			Mode = Biome
+			Mode = Terrain
+		}
+	}
+
+	MODULE
+	{
+		name = WBIModuleScienceExperiment
+		experimentID = WBIEmptyExperiment
+		defaultExperiment = WBIEmptyExperiment
+		experimentActionName = Do Nothing
+		resetActionName = Reset Nothing
+		useStaging = False
+		useActionGroups = True
+		hideUIwhenUnavailable = True
+		xmitDataScalar = 0.25
+		dataIsCollectable = False
+		interactionRange = 1.2
+		rerunnable = False
+		resettable = False
+		resettableOnEVA = False
+		usageReqMaskInternal = 1
+		usageReqMaskExternal = 8
+	}
+
+	MODULE
+	{
+		name = WBIModuleScienceExperiment
+		experimentID = WBIEmptyExperiment
+		defaultExperiment = WBIEmptyExperiment
+		experimentActionName = Do Nothing
+		resetActionName = Reset Nothing
+		useStaging = False
+		useActionGroups = True
+		hideUIwhenUnavailable = True
+		xmitDataScalar = 0.25
+		dataIsCollectable = False
+		interactionRange = 1.2
+		rerunnable = False
+		resettable = False
+		resettableOnEVA = False
+		usageReqMaskInternal = 1
+		usageReqMaskExternal = 8
+	}
+
+	//Improve production efficiencies in the local biome through geology research.
+	MODULE
+	{
+		name = WBIExperimentLab
+		opsButtonName = Geoscience
+
+		defaultExperiment = WBIEmptyExperiment
+		canCreateExperiments = true
+		needsConnectionToKSC = false
+		creationTags = geologyLab
+		checkCreationResources = false
+		experimentCreationSkill = ScienceSkill
+		defaultCreationResource = ResearchKits
+		minimumCreationAmount = 25.0
+		checkCreationResources = true
+
+		experimentID = WBISpaceResearch
+		ConverterName = Geology Lab
+		StartActionName = Start Geology
+		StopActionName = Stop Geology
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ScienceSkill
+		EfficiencyBonus = 1
+		hoursPerCycle = 6
+		minimumSuccess = 60
+		minimumSuccess = 5
+		criticalSuccess = 95
+		criticalFail = 2
+		sciencePerCycle = 1.0
+		repairSkill = ScienceSkill
+		repairResource = Equipment
+		repairAmount = 50
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 5
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ResearchKits
+			Ratio = 0.00027777
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = CoreSamples
+			Ratio = 0.00005
+			DumpExcess = true
+		}
+	}
+
+	//Unlock a biome, show abundance. Needs ModuleBiomeScanner.
+	MODULE
+	{
+		name = WBIPathfinderLab
+	}
+
+	//Prospect for valuable resources
+	MODULE
+	{
+		name = WBIGoldStrike
+		showDebugLog = true
+		showGUI = true
+		prospectChance = 40
+		lodeStrikeSound = WildBlueIndustries/Pathfinder/Sounds/wereInTheMoney
+	}
+
+	//Separates the biome's resources from Ore.
+	MODULE
+	{
+		name = WBIProspector
+		ConverterName = Prospector
+		StartActionName = Start Prospector
+		StopActionName = Stop Prospector
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ScienceSkill
+		EfficiencyBonus = 1
+
+		//Resource byproduct from prospecting that isn't part of the planetary/asteroid resource list.
+		byproduct = Slag
+
+		//Amount of input mass (units * density) that will become the byproduct mass. 
+		//Byproduct units produced depends upon the density of the byproduct. 
+		//This is the minimum, the actual amount will vary.
+		//Ore grades range from 25% to 75%
+		byproductMinPercent = 50.0
+
+		//Resources in the biome that should be ignored (and ther percentages added to the byproduct)
+		ignoreResources = GeoEnergy
+
+		INPUT_RESOURCE
+		{
+			ResourceName = Ore
+			Ratio = 0.1
+		}		
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 5
+		}		
+	}
+
+	MODULE
+	{
+		name = WBIEfficiencyMonitor
+		efficiencyType = habitation
+		harvestType = 0
+	}
+
+	RESOURCE
+	{
+		name = ElectricCharge
+		amount = 200
+		maxAmount = 200
+		isTweakable = false
+	}
+
+	RESOURCE
+	{
+		name = ResearchKits
+		amount = 500
+		maxAmount = 500
+	}
+
+	RESOURCE
+	{
+		name = Ore
+		amount = 500
+		maxAmount = 500
+	}
+	RESOURCE
+	{
+		name = ExoticMinerals
+		amount = 500
+		maxAmount = 500
+	}
+	RESOURCE
+	{
+		name = RareMetals
+		amount = 500
+		maxAmount = 500
+	}
+
+	RESOURCE
+	{
+		name = CoreSamples
+		amount = 36
+		maxAmount = 36
+	}
+}

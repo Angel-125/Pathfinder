@@ -1,0 +1,73 @@
+RESOURCE_DEFINITION
+{
+	name = Hexagen
+	displayName = Hexagen
+	density = 0.001  
+	unitCost = 4
+	hsp = 120
+	flowMode = STAGE_PRIORITY_FLOW
+	transfer = PUMP
+	isTweakable = true
+	volume = 0.1
+}
+
+STORAGE_TEMPLATE
+{
+	name = Hexagen
+	author = Angel-125
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Hexagen
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Hexagen
+	description = This kit stores Hexagen, a key component of NuclearFuel.
+	templateTags = stowage
+
+	RESOURCE
+	{
+		name = Hexagen
+		amount = 56000
+		maxAmount = 56000
+	}
+
+}
+
+@PART[PotatoRoid]
+{
+	MODULE
+	{
+		name = ModuleAsteroidResource
+		resourceName = Hexagen
+		presenceChance = 80
+		lowRange = 1
+		highRange = 10
+	}
+}
+
+GLOBAL_RESOURCE
+{
+	ResourceName = Hexagen
+	ResourceType = 0
+	
+	Distribution
+	{
+		PresenceChance = 50
+		MinAbundance = .001
+		MaxAbundance = 10
+		Variance = 50
+		Dispersal = 3
+	}
+}
+
+PLANETARY_RESOURCE
+{
+	ResourceName = Hexagen
+	ResourceType = 2
+	PlanetName = Jool
+	
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = 20
+		MaxAbundance = 50
+		Variance = 50
+		Dispersal = 3
+	}
+}

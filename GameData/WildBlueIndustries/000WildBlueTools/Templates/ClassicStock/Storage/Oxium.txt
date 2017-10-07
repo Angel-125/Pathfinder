@@ -1,0 +1,31 @@
+RESOURCE_DEFINITION
+{
+	name = Oxium
+	displayName = Oxium
+	density = 0.001141
+	flowMode = ALL_VESSEL
+	transfer = PUMP
+	isTweakable = true
+   	isVisible = true
+	unitCost = 0.001
+	color = 0,1,0
+	volume = 1
+}
+
+STORAGE_TEMPLATE
+{
+	name = Oxium
+	author = Angel-125
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Oxium
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/OxiumGlow
+	description = This kit stores oxium, a key component of Oxidizer and MonoPropellant.
+	templateTags = stowage
+
+	RESOURCE
+	{
+		name = Oxium
+		amount = 5600
+		maxAmount = 5600
+	}
+
+}

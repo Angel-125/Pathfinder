@@ -20,68 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
-    public class WBILodeIconHelper : MonoBehaviour
-    {
-        public void Awake()
-        {
-            DontDestroyOnLoad(this);
-            GameEvents.onCustomWaypointLoad.Add(OnCustomWaypointLoad);
-
-            SetupLodeIcons();
-        }
-
-        public void OnCustomWaypointLoad(GameEvents.FromToAction<Waypoint, ConfigNode> fta)
-        {
-            Waypoint waypoint = fta.from;
-            ConfigNode node = fta.to;
-            string location = string.Format("Lon: {0:f2} Lat: {1:f2}", waypoint.longitude, waypoint.latitude);
-
-            if (WBIPathfinderScenario.Instance.IsLodeWaypoint(waypoint.navigationId.ToString()))
-            {
-                waypoint.id = WBIPathfinderScenario.kLodeIcon;
-                waypoint.nodeCaption1 = location;
-            }
-        }
-
-        public void SetupLodeIcons()
-        {
-            try
-            {
-                Dictionary<string, Dictionary<string, GoldStrikeLode>> goldStrikeLodes = WBIPathfinderScenario.Instance.goldStrikeLodes;
-                Dictionary<string, GoldStrikeLode>[] lodeMaps = null;
-                Dictionary<string, GoldStrikeLode> lodeMap = null;
-                GoldStrikeLode[] lodes = null;
-                GoldStrikeLode lode = null;
-                Waypoint waypoint = null;
-                string location = string.Empty;
-
-                lodeMaps = goldStrikeLodes.Values.ToArray();
-                for (int index = 0; index < lodeMaps.Length; index++)
-                {
-                    lodeMap = lodeMaps[index];
-                    lodes = lodeMap.Values.ToArray();
-                    for (int lodeIndex = 0; lodeIndex < lodes.Length; lodeIndex++)
-                    {
-                        lode = lodes[lodeIndex];
-                        if (string.IsNullOrEmpty(lode.navigationID))
-                            continue;
-
-                        waypoint = WaypointManager.FindWaypoint(new Guid(lode.navigationID));
-                        location = string.Format("Lon: {0:f2} Lat: {1:f2}", waypoint.longitude, waypoint.latitude);
-                        if (waypoint != null)
-                        {
-                            WaypointManager.RemoveWaypoint(waypoint);
-                            waypoint.id = WBIPathfinderScenario.kLodeIcon;
-                            waypoint.nodeCaption1 = location;
-                            WaypointManager.AddWaypoint(waypoint);
-                        }
-                    }
-                }
-            }
-            catch { }
-        }
-    }
+    public delegate void EfficiencyUpdateDelegate(int planetID, string biomeName, HarvestTypes harvestID, string efficiencyType, float modifier);
 
     [KSPScenario(ScenarioCreationOptions.AddToAllGames, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.FLIGHT, GameScenes.TRACKSTATION)]
     public class WBIPathfinderScenario : ScenarioModule
@@ -103,9 +42,12 @@ namespace WildBlueIndustries
         public static WBIPathfinderScenario Instance;
 
         //Debug stuff
-        public static bool showDebugLog = false;
+        public static bool showDebugLog = true;
         public static bool debugProspectAlwaysSuccessful = false;
         public static bool debugGoldStrike = false;
+
+        //Events
+        public event EfficiencyUpdateDelegate onEfficiencyUpdate;
 
         //Core sample reputation
         public int reputationIndex;
@@ -118,6 +60,7 @@ namespace WildBlueIndustries
         private Dictionary<string, EfficiencyData> efficiencyDataMap = new Dictionary<string, EfficiencyData>();
         private static Dictionary<string, ConfigNode> toolTips = new Dictionary<string, ConfigNode>();
 
+        #region Housekeeping
         protected void debugLog(string message)
         {
             if (showDebugLog == true)
@@ -248,7 +191,114 @@ namespace WildBlueIndustries
             foreach (ConfigNode toolTipNode in toolTips.Values)
                 node.AddNode(toolTipNode);
         }
+        #endregion
 
+        #region Data science
+        public float DistributeData(float amount, Vessel vessel, bool distributeDataToLabs)
+        {
+            debugLog("DistributeData: " + amount + " to distribute.");
+            float amountPerModule;
+            float amountDistributed = 0f;
+            ModuleScienceLab lab;
+            WBIPipeEndpoint pipeEndpoint;
+            WBIGoldStrikeBonus goldStrikeBonus;
+            int totalCount;
+            List<WBIGoldStrikeBonus> activeBonuses = new List<WBIGoldStrikeBonus>();
+            List<WBIPipeEndpoint> activeEndpoints = new List<WBIPipeEndpoint>();
+            List<ModuleScienceLab> activeLabs = new List<ModuleScienceLab>();
+            List<ModuleScienceLab> scienceLabs = vessel.FindPartModulesImplementing<ModuleScienceLab>();
+            List<WBIGoldStrikeBonus> goldStrikeBonuses = vessel.FindPartModulesImplementing<WBIGoldStrikeBonus>();
+            List<WBIPipeEndpoint> pipeEndpoints = vessel.FindPartModulesImplementing<WBIPipeEndpoint>();
+
+
+            //If we're allowed to distribute data to labs, then get the active labs.
+            if (distributeDataToLabs && scienceLabs != null)
+            {
+                totalCount = scienceLabs.Count;
+                for (int index = 0; index < totalCount; index++)
+                {
+                    lab = scienceLabs[index];
+                    if (lab.processingData)
+                        activeLabs.Add(lab);
+                }
+            }
+            debugLog("Active Labs: " + activeLabs.Count);
+
+            //Get the active pipe endpoints
+            if (pipeEndpoints != null)
+            {
+                totalCount = pipeEndpoints.Count;
+                for (int index = 0; index < totalCount; index++)
+                {
+                    pipeEndpoint = pipeEndpoints[index];
+                    if (pipeEndpoint.accumulateData)
+                        activeEndpoints.Add(pipeEndpoint);
+                }
+            }
+            debugLog("Active Endpoints: " + activeEndpoints.Count);
+
+            //Get the active gold strike bonuses
+            if (goldStrikeBonuses != null)
+            {
+                totalCount = goldStrikeBonuses.Count;
+                for (int index = 0; index < totalCount; index++)
+                {
+                    goldStrikeBonus = goldStrikeBonuses[index];
+                    if (goldStrikeBonus.accumulateData)
+                        activeBonuses.Add(goldStrikeBonus);
+                }
+            }
+            debugLog("Active Bonuses: " + activeBonuses.Count);
+
+            //Divide up the remaining data between the active modules.
+            if (activeLabs.Count == 0 && activeBonuses.Count == 0 && activeEndpoints.Count == 0)
+                return 0f;
+            amountPerModule = amount / (activeBonuses.Count + activeEndpoints.Count + activeLabs.Count);
+            debugLog("amountPerModule: " + amountPerModule);
+
+            //Labs
+            totalCount = activeLabs.Count;
+            for (int index = 0; index < totalCount; index++)
+            {
+                lab = activeLabs[index];
+
+                //Add data to the lab
+                if (lab.dataStored + amountPerModule <= lab.dataStorage)
+                {
+                    lab.dataStored += amountPerModule;
+                    amountDistributed += amountDistributed;
+                }
+
+                else
+                {
+                    amountDistributed += lab.dataStorage - lab.dataStored;
+                    lab.dataStored = lab.dataStorage;
+                }
+            }
+
+            //Endpoints
+            totalCount = activeEndpoints.Count;
+            for (int index = 0; index < totalCount; index++)
+            {
+                pipeEndpoint = pipeEndpoints[index];
+                pipeEndpoint.AddData(amountPerModule);
+                amountDistributed += amountDistributed;
+            }
+
+            //GoldStrike
+            totalCount = activeBonuses.Count;
+            for (int index = 0; index < totalCount; index++)
+            {
+                goldStrikeBonus = goldStrikeBonuses[index];
+                goldStrikeBonus.AddData(amountPerModule);
+                amountDistributed += amountDistributed;
+            }
+
+            return amountDistributed;
+        }
+        #endregion
+
+        #region GoldStrike
         public void ClearProspects()
         {
             goldStrikeLodes.Clear();
@@ -579,7 +629,9 @@ namespace WildBlueIndustries
 
             return lode;
         }
+        #endregion
 
+        #region Tool Tips
         public void SetToolTipShown(string toolTipName)
         {
             //If we've already set the tool tip then we're done.
@@ -600,25 +652,22 @@ namespace WildBlueIndustries
 
             return false;
         }
+        #endregion
 
+        #region Efficiencies
         public void ResetEfficiencyData(int planetID, string biomeName, HarvestTypes harvestType)
         {
             string key = planetID.ToString() + biomeName + harvestType.ToString();
             EfficiencyData efficiencyData = null;
 
-            if (efficiencyDataMap.ContainsKey(key))
-            {
-                efficiencyData = efficiencyDataMap[key];
-                foreach (string modifierKey in efficiencyData.modifiers.Keys)
-                    efficiencyData.modifiers[modifierKey] = 1.0f;
-                efficiencyData.attemptsRemaining = kMaxCoreSamples;
-            }
-
-            else
-            {
-                //Create a new entry.
+            //Create a new entry if needed.
+            if (!efficiencyDataMap.ContainsKey(key))
                 createNewEfficencyEntry(planetID, biomeName, harvestType);
-            }
+
+            efficiencyData = efficiencyDataMap[key];
+            foreach (string modifierKey in efficiencyData.modifiers.Keys)
+                efficiencyData.modifiers[modifierKey] = 1.0f;
+            efficiencyData.attemptsRemaining = kMaxCoreSamples;
         }
 
         public void SetEfficiencyData(int planetID, string biomeName, HarvestTypes harvestType, string modifierName, float modifierValue)
@@ -626,19 +675,20 @@ namespace WildBlueIndustries
             string key = planetID.ToString() + biomeName + harvestType.ToString();
             EfficiencyData efficiencyData = null;
 
-            //If we already have the efficiency data then just update the value
-            if (efficiencyDataMap.ContainsKey(key))
-            {
-                efficiencyData = efficiencyDataMap[key];
-                if (efficiencyData.modifiers.ContainsKey(modifierName))
-                    efficiencyData.modifiers[modifierName] = modifierValue;
-                else
-                    efficiencyData.modifiers.Add(modifierName, modifierValue);
-                return;
-            }
+            //Create a new entry if needed.
+            if (!efficiencyDataMap.ContainsKey(key))
+                createNewEfficencyEntry(planetID, biomeName, harvestType);
 
-            //Create a new entry.
-            createNewEfficencyEntry(planetID, biomeName, harvestType);
+            //If we already have the efficiency data then just update the value
+            efficiencyData = efficiencyDataMap[key];
+            if (efficiencyData.modifiers.ContainsKey(modifierName))
+                efficiencyData.modifiers[modifierName] = modifierValue;
+            else
+                efficiencyData.modifiers.Add(modifierName, modifierValue);
+
+            //Update interested parties
+            if (onEfficiencyUpdate != null)
+                onEfficiencyUpdate(planetID, biomeName, harvestType, modifierName, modifierValue);
         }
 
         public float GetEfficiencyModifier(int planetID, string biomeName, HarvestTypes harvestType, string modifierName)
@@ -646,22 +696,15 @@ namespace WildBlueIndustries
             string key = planetID.ToString() + biomeName + harvestType.ToString();
             EfficiencyData efficiencyData = null;
 
-            if (efficiencyDataMap.ContainsKey(key))
-            {
-                efficiencyData = efficiencyDataMap[key];
-                if (efficiencyData.modifiers.ContainsKey(modifierName))
-                    return efficiencyData.modifiers[modifierName];
-                else
-                    return 1.0f;
-            }
-
-            else
-            {
-                //Create a new entry.
+            //Create a new entry if needed.
+            if (!efficiencyDataMap.ContainsKey(key))
                 createNewEfficencyEntry(planetID, biomeName, harvestType);
-            }
 
-            return 1.0f;
+            efficiencyData = efficiencyDataMap[key];
+            if (efficiencyData.modifiers.ContainsKey(modifierName))
+                return efficiencyData.modifiers[modifierName];
+            else
+                return 1.0f;
         }
 
         public void SetCoreSamplesRemaining(int planetID, string biomeName, HarvestTypes harvestType, int attemptsRemaining)
@@ -732,5 +775,6 @@ namespace WildBlueIndustries
 
             efficiencyDataMap.Add(efficiencyData.Key, efficiencyData);
         }
+        #endregion
     }
 }

@@ -1,0 +1,73 @@
+RESOURCE_DEFINITION
+{
+	name = Zeonium
+	displayName = Zeonium
+	density = 0.001  
+	unitCost = 4
+	hsp = 120
+	flowMode = STAGE_PRIORITY_FLOW
+	transfer = PUMP
+	isTweakable = true
+	volume = 0.1
+}
+
+STORAGE_TEMPLATE
+{
+	name = Zeonium
+	author = Angel-125
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Zeonium
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/ZeoniumGlow
+	description = This kit stores Zeonium, a key component of XenonGas.
+	templateTags = stowage
+
+	RESOURCE
+	{
+		name = Zeonium
+		amount = 56000
+		maxAmount = 56000
+	}
+
+}
+
+@PART[PotatoRoid]
+{
+	MODULE
+	{
+		name = ModuleAsteroidResource
+		resourceName = Zeonium
+		presenceChance = 80
+		lowRange = 1
+		highRange = 10
+	}
+}
+
+GLOBAL_RESOURCE
+{
+	ResourceName = Zeonium
+	ResourceType = 0
+	
+	Distribution
+	{
+		PresenceChance = 50
+		MinAbundance = .001
+		MaxAbundance = 10
+		Variance = 50
+		Dispersal = 3
+	}
+}
+
+PLANETARY_RESOURCE
+{
+	ResourceName = Zeonium
+	ResourceType = 2
+	PlanetName = Eve
+	
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = 20
+		MaxAbundance = 50
+		Variance = 50
+		Dispersal = 3
+	}
+}

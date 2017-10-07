@@ -1,0 +1,73 @@
+RESOURCE_DEFINITION
+{
+	name = Gemstones
+	displayName = Gemstones
+	density = 0.004625
+	flowMode = ALL_VESSEL
+	transfer = PUMP
+	unitCost = 175
+	isTweakable = true
+	isVisible = true
+	volume = 1
+}
+
+STORAGE_TEMPLATE
+{
+	author = Angel-125
+	name = Gemstones
+	shortName = Gemstones
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Gemstones
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Gemstones
+	description = This kit stores gemstones, good for earning Funds.
+	templateTags = stowage
+
+	RESOURCE
+	{
+		name = Gemstones
+		amount = 5600
+		maxAmount = 5600
+	}
+}
+
+@PART[PotatoRoid]
+{
+	MODULE
+	{
+		name = ModuleAsteroidResource
+		resourceName = Gemstones
+		presenceChance = 80
+		lowRange = 1
+		highRange = 30
+	}
+}
+
+GLOBAL_RESOURCE
+{
+	ResourceName = Gemstones
+	ResourceType = 0
+	
+	Distribution
+	{
+		PresenceChance = 50
+		MinAbundance = .001
+		MaxAbundance = 10
+		Variance = 50
+		Dispersal = 10
+	}
+}
+
+PLANETARY_RESOURCE
+{
+	ResourceName = Gemstones
+	ResourceType = 0
+	PlanetName = Jool
+	
+	Distribution
+	{
+		PresenceChance = 0
+		MinAbundance = 0
+		MaxAbundance = 0
+		Variance = 0
+		Dispersal = 0
+	}
+}

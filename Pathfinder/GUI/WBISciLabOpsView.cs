@@ -44,12 +44,6 @@ namespace WildBlueIndustries
             opsWindow.SetVisible(true);
         }
 
-        public void OnGUI()
-        {
-            if (opsWindow.IsVisible())
-                opsWindow.DrawWindow();
-        }
-
         public override void OnStart(StartState state)
         {
             base.OnStart(state);

@@ -39,6 +39,8 @@ namespace WildBlueIndustries
         [KSPField(isPersistant = true)]
         public bool isOpenCycle;
 
+        FixedUpdateHelper fixedUpdateHelper;
+
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, unfocusedRange = 3.0f, guiName = "Toggle Open Cycle")]
         public void ToggleOpenCycle()
         {
@@ -86,12 +88,17 @@ namespace WildBlueIndustries
 
             if (isDeployed == false && this.part.Resources.Contains("Water"))
                 this.part.Resources["Water"].amount = 0;
+
+            if (fixedUpdateHelper == null)
+            {
+                fixedUpdateHelper = this.part.gameObject.AddComponent<FixedUpdateHelper>();
+                fixedUpdateHelper.onFixedUpdateDelegate = OnUpdateFixed;
+            }
+            fixedUpdateHelper.enabled = true;
         }
 
-        public override void OnFixedUpdate()
+        public void OnUpdateFixed()
         {
-            base.OnFixedUpdate();
-
             if (isOpenCycle)
                 dumpCoolant();
         }

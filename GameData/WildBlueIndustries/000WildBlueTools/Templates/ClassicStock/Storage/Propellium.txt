@@ -1,0 +1,30 @@
+RESOURCE_DEFINITION
+{
+	name = Propellium
+	displayName = Propellium
+	density = 0.0000708
+	flowMode = ALL_VESSEL
+	transfer = PUMP
+	isTweakable = true
+   	isVisible = true
+	unitCost = 0.01
+	volume = 1
+}
+
+STORAGE_TEMPLATE
+{
+	name = Propellium
+	author = Angel-125
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Propellium
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/PropelliumGlow
+	description = This kit stores Propellium, a key component of LiquidFuel.
+	templateTags = stowage
+
+	RESOURCE
+	{
+		name = Propellium
+		amount = 5600
+		maxAmount = 5600
+	}
+
+}

@@ -1,0 +1,91 @@
+RESOURCE_DEFINITION
+{
+	name = Blutonium
+	displayName = Blutonium
+	abbreviation = Blutonium
+	density = 0.01088
+	unitCost = 650
+	isTweakable = true
+	isVisible = true
+	flowMode = NO_FLOW
+	transfer = NONE
+	volume = 1
+}
+
+STORAGE_TEMPLATE
+{
+	name = Blutonium
+	author = Angel-125
+	shortName = Blutonium
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Blutonium
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/BlutoniumGLow
+	description = This kit stores blutonium, a key component of making NuclearFuel.
+	templateTags = stowage
+
+	RESOURCE
+	{
+		name = Blutonium
+		amount = 5600
+		maxAmount = 5600
+	}
+
+}
+
+@PART[PotatoRoid]
+{
+	MODULE
+	{
+		name = ModuleAsteroidResource
+		resourceName = Blutonium
+		presenceChance = 25
+		lowRange = 50
+		highRange = 75
+	}
+}
+
+PLANETARY_RESOURCE
+{
+	ResourceName = Blutonium
+	ResourceType = 0
+	PlanetName = Jool
+	
+	Distribution
+	{
+		PresenceChance = 0
+		MinAbundance = 0
+		MaxAbundance = 0
+		Variance = 0
+		Dispersal = 0
+	}
+}
+
+GLOBAL_RESOURCE
+{
+	ResourceName = Blutonium
+	ResourceType = 0
+	
+	Distribution
+	{
+		PresenceChance = 70
+		MinAbundance = .001
+		MaxAbundance = 10
+		Variance = 50
+		Dispersal = 3
+	}
+}
+
+PLANETARY_RESOURCE
+{
+	ResourceName = Blutonium
+	ResourceType = 0
+	PlanetName = Kerbin
+	
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = .001
+		MaxAbundance = 10
+		Variance = 50
+		Dispersal = 3
+	}
+}

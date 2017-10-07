@@ -25,12 +25,12 @@ namespace WildBlueIndustries
         [KSPField]
         public string efficiencyType = EfficiencyData.kHabitationMod;
 
-        public override void OnFixedUpdate()
+        public override void OnUpdate()
         {
+            base.OnUpdate();
+
             //Get efficiency for habitation
             EfficiencyBonus = WBIPathfinderScenario.Instance.GetEfficiencyModifier(planetID, biomeName, harvestID, efficiencyType);
-
-            base.OnFixedUpdate();
         }
     }
 }

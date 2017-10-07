@@ -87,6 +87,13 @@ namespace WildBlueIndustries
 
         public void FixedUpdate()
         {
+            if (!HighLogic.LoadedSceneIsFlight)
+                return;
+            if (FlightGlobals.ActiveVessel == null)
+                return;
+            if (FlightGlobals.ActiveVessel.situation != Vessel.Situations.LANDED)
+                return;
+
             //If we've waited long enough to distribute resources, then distribute them.
             elapsedTime = Planetarium.GetUniversalTime() - cycleStartTime;
 

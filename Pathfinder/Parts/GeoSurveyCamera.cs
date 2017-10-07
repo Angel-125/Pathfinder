@@ -21,10 +21,9 @@ namespace WildBlueIndustries
 {
     public class GeoSurveyCamera : WBIBasicScienceLab
     {
-        private const string kSafeMode = "T.E.R.R.A.I.N. has suffered a malfunction and is now in safe mode. It needs maintennance to resume operations.";
-        private const string kToolTip = "Now that you’ve performed a basic scan for resources, why not continue to monitor them? With the T.E.R.R.A.I.N. you can monitor resources from orbit for Science!";
+        private const string kSafeMode = " has suffered a malfunction and is now in safe mode. It needs maintennance to resume operations.";
+        private const string kToolTip = "Now that you’ve performed a basic scan for resources, why not continue to monitor them? You can monitor resources from orbit for Science!";
         private const string kToolTipTitle = "Your first planetary scan";
-        private const string kNotEnoughResourcesToRepair = "Unable to repair the T.E.R.R.A.I.N. due to insufficient resources. You need {0:f1} ";
         private const string kInfoRepairSkill = "Required to conduct repairs: ";
         private const string kInfoRepairAmount = "Requires {0:f1} {1} to repair";
         private const string kExperimentTitle = "Dirt Watch Report orbiting ";
@@ -86,7 +85,7 @@ namespace WildBlueIndustries
             scienceContainer.Events["ReviewDataEvent"].guiActive = false;
 
             //Now setup our own GUI
-            botchedResultsMsg = kSafeMode;
+            botchedResultsMsg = this.part.partInfo.title + kSafeMode;
             SetupGUI();
         }
 

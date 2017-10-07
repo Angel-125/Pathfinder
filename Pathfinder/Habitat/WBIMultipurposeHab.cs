@@ -47,10 +47,6 @@ namespace WildBlueIndustries
             if (HighLogic.LoadedSceneIsEditor)
                 this.part.CrewCapacity = 0;
 
-            if (string.IsNullOrEmpty(animationName))
-                return;
-            anim = this.part.FindModelAnimators(animationName)[0];
-
             foreach (PartModule mod in this.part.Modules)
             {
                 if (mod.moduleName == "Seismometer")
@@ -63,6 +59,12 @@ namespace WildBlueIndustries
 
             if (string.IsNullOrEmpty(resourcesToKeep))
                 resourcesToKeep = "ElectricCharge";
+
+            if (!isInflatable)
+                return;
+            if (string.IsNullOrEmpty(animationName))
+                return;
+            anim = this.part.FindModelAnimators(animationName)[0];
         }
 
         public override void OnUpdate()
@@ -223,7 +225,7 @@ namespace WildBlueIndustries
                 drillSwitcher.isEnabled = enableDrill;
             }
 
-            WBIExtractionMonitor extractionMonitor = this.part.FindModuleImplementing<WBIExtractionMonitor>();
+            WBIEfficiencyMonitor extractionMonitor = this.part.FindModuleImplementing<WBIEfficiencyMonitor>();
             if (extractionMonitor != null)
             {
                 extractionMonitor.enabled = enableDrill;

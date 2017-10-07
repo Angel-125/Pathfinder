@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    public class DrillSwitchWindow : Window<DrillSwitchWindow>
+    public class DrillSwitchWindow : Dialog<DrillSwitchWindow>
     {
         private const string insufficientResourcesMsg = "Unable to reconfigure the drill. You need {0:f2} {1:s} to reconfigure it.";
         private const string kInsufficientSkill = "Unable to reconfigure the drill. You need a skilled {0:s}. to reconfigure it.";

@@ -18,25 +18,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    internal class SciLabOpsWindow : Window<SciLabOpsWindow>
+    internal class SciLabOpsWindow : Dialog<SciLabOpsWindow>
     {
         const string kTransmitResearch = "<color=lightBlue>Transmit research (Science)</color>";
         const string kPublishResearch = "<color=yellow>Publish research (Reputation)</color>";
         const string kSellResearch = "Sell research (Funds)";
+        const string kDistributeResearch = "<color=white>Distribute data to science labs, prospecting data collectors, and mass driver trajectory computers.</color>";
 
         public Part part;
         bool scienceHighlighted = false;
         bool publishHighlighted = false;
         bool sellHighlighted = false;
+        bool distributeHighlighted = false;
         Texture publishIconWhite;
         Texture sellIconWhite;
         Texture scienceIconWhite;
+        Texture distributeIconWhite;
         Texture publishIconBlack;
         Texture sellIconBlack;
         Texture scienceIconBlack;
+        Texture distributeIconBlack;
         Texture publishIcon;
         Texture sellIcon;
         Texture scienceIcon;
+        Texture distributeIcon;
+        GUILayoutOption[] buttonOptions = new GUILayoutOption[] { GUILayout.Width(64), GUILayout.Height(64) };
+        GUILayoutOption[] heightOptions = new GUILayoutOption[] { GUILayout.Height(24)};
+        Vector2 panelPosition = new Vector2(0, 0);
         public WBIScienceConverter converter = null;
         protected ModuleScienceLab sciLab = null;
         public ModuleScienceContainer scienceContainer = null;
@@ -49,14 +57,17 @@ namespace WildBlueIndustries
             publishIconWhite = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/WBIPublishWhite", false);
             sellIconWhite = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/WBISellWhite", false);
             scienceIconWhite = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/WBIScienceWhite", false);
+            distributeIconWhite = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/PathfinderApp", false);
 
             publishIconBlack = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/WBIPublish", false);
             sellIconBlack = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/WBISell", false);
             scienceIconBlack = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/WBIScience", false);
+            distributeIconBlack = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/PathfinderAppBlack", false);
 
             publishIcon = publishIconBlack;
             sellIcon = sellIconBlack;
             scienceIcon = scienceIconBlack;
+            distributeIcon = distributeIconWhite;
         }
 
         public void FindPartModules()
@@ -113,6 +124,11 @@ namespace WildBlueIndustries
             drawCnCButtons();
             GUILayout.EndHorizontal();
             drawTransmitButtons();
+            if (WBIPathfinderScenario.showDebugLog)
+            {
+                if (GUILayout.Button("+50 data"))
+                    converter.Lab.dataStored += 50.0f;
+            }
             GUILayout.EndVertical();
         }
 
@@ -126,7 +142,7 @@ namespace WildBlueIndustries
             int dataCount = scienceContainer.GetScienceCount();
 
             GUILayout.BeginVertical();
-            GUILayout.BeginScrollView(new Vector2(0, 0));
+            GUILayout.BeginScrollView(panelPosition);
 
             if (dataCount > 0)
             {
@@ -160,7 +176,7 @@ namespace WildBlueIndustries
             GUILayout.BeginHorizontal();
 
             //Transmit button
-            if (GUILayout.Button(scienceIcon, new GUILayoutOption[] { GUILayout.Width(64), GUILayout.Height(64) }))
+            if (GUILayout.Button(scienceIcon, buttonOptions))
                 converter.TransmitResearch();
 
             if (Event.current.type == EventType.Repaint && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
@@ -183,7 +199,7 @@ namespace WildBlueIndustries
             if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
                 //Publish button
-                if (GUILayout.Button(publishIcon, new GUILayoutOption[] { GUILayout.Width(64), GUILayout.Height(64) }))
+                if (GUILayout.Button(publishIcon, buttonOptions))
                     converter.PublishResearch();
 
                 if (Event.current.type == EventType.Repaint && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
@@ -204,7 +220,7 @@ namespace WildBlueIndustries
                 }
 
                 //Sell button
-                if (GUILayout.Button(sellIcon, new GUILayoutOption[] { GUILayout.Width(64), GUILayout.Height(64) }))
+                if (GUILayout.Button(sellIcon, buttonOptions))
                     converter.SellResearch();
 
                 if (Event.current.type == EventType.Repaint && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
@@ -225,7 +241,37 @@ namespace WildBlueIndustries
                 }
             }
 
-            GUILayout.BeginScrollView(new Vector2(0, 0));
+            //Distribute button
+            if (sciLab != null)
+            {
+                if (GUILayout.Button(distributeIcon, buttonOptions))
+                {
+                    float amount = converter.Lab.dataStored;
+                    converter.Lab.dataStored = 0f;
+                    float amountDistributed = WBIPathfinderScenario.Instance.DistributeData(amount, this.part.vessel, true);
+                    if (amountDistributed < amount)
+                        converter.Lab.dataStored += (amount - amountDistributed);
+                }
+
+                if (Event.current.type == EventType.Repaint && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
+                {
+                    distributeIcon = distributeIconWhite;
+                    distributeHighlighted = true;
+                    message = kDistributeResearch;
+                }
+                else if (distributeHighlighted)
+                {
+                    distributeIcon = distributeIconWhite;
+                    distributeHighlighted = false;
+                    message = kDistributeResearch;
+                }
+                else
+                {
+                    distributeIcon = distributeIconBlack;
+                }
+            }
+
+            GUILayout.BeginScrollView(panelPosition);
             GUILayout.BeginVertical();
             GUILayout.FlexibleSpace();
             GUILayout.Label(message);
@@ -240,36 +286,36 @@ namespace WildBlueIndustries
         {
             GUILayout.BeginVertical();
 
-            GUILayout.BeginScrollView(new Vector2(0, 0));
+            GUILayout.BeginScrollView(panelPosition);
             GUILayout.Label("<color=white><b>Status: </b>" + sciLab.statusText + "</color>");
             GUILayout.EndScrollView();
 
-            GUILayout.BeginScrollView(new Vector2(0, 0));
+            GUILayout.BeginScrollView(panelPosition);
             GUILayout.Label("<color=white><b>" + converter.Fields["status"].guiName + "</b>: " + converter.status + "</color>");
             GUILayout.EndScrollView();
 
-            GUILayout.BeginScrollView(new Vector2(0, 0));
-            GUILayout.Label("<color=white><b>Data: </b>" + converter.datString + "</color>");
+            GUILayout.BeginScrollView(panelPosition);
+            GUILayout.Label(string.Format("<color=white><b>Data: </b>{0:f2}/{1:f2}</color>", converter.Lab.dataStored, converter.Lab.dataStorage));
             GUILayout.EndScrollView();
 
-            GUILayout.BeginScrollView(new Vector2(0, 0));
-            GUILayout.Label("<color=white><b>Rate: </b>" + converter.rateString + "</color>");
+            GUILayout.BeginScrollView(panelPosition);
+            GUILayout.Label("<color=white><b>Summary:</b> " + converter.DataExpectationSummary(converter.Lab.dataStored) + "</color>");
             GUILayout.EndScrollView();
 
-            GUILayout.BeginScrollView(new Vector2(0, 0));
-            GUILayout.Label(new GUIContent("<color=lightBlue><b> Science: </b>" + sciLab.storedScience * converter.reputationPerData + "</color>", scienceIconWhite),
-                new GUILayoutOption[] { GUILayout.Height(24) });
+            GUILayout.BeginScrollView(panelPosition);
+            GUILayout.Label(new GUIContent("<color=lightBlue><b> Science: </b>" + sciLab.storedScience + "</color>", scienceIconWhite),
+                heightOptions);
             GUILayout.EndScrollView();
 
             if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
-                GUILayout.BeginScrollView(new Vector2(0, 0));
+                GUILayout.BeginScrollView(panelPosition);
                 GUILayout.Label(new GUIContent("<color=yellow><b> Reputation: </b>" + sciLab.storedScience * converter.reputationPerData + "</color>", publishIconWhite),
-                    new GUILayoutOption[] { GUILayout.Height(24) });
+                    heightOptions);
                 GUILayout.EndScrollView();
 
-                GUILayout.BeginScrollView(new Vector2(0, 0));
-                GUILayout.Label(new GUIContent("<b> Funds: </b>" + sciLab.storedScience * converter.fundsPerData, sellIconWhite), new GUILayoutOption[] { GUILayout.Height(24) });
+                GUILayout.BeginScrollView(panelPosition);
+                GUILayout.Label(new GUIContent("<b> Funds: </b>" + sciLab.storedScience * converter.fundsPerData, sellIconWhite), heightOptions);
                 GUILayout.EndScrollView();
             }
 

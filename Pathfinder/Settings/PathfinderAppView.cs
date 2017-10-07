@@ -29,17 +29,9 @@ namespace WildBlueIndustries
         {
             settingsWindow.localOpsManager = localOpsManager;
         }
-
-        public void OnGUI()
-        {
-            if (settingsWindow.IsVisible())
-                settingsWindow.DrawWindow();
-            if (settingsWindow.localOpsManager.IsVisible())
-                settingsWindow.localOpsManager.DrawWindow();
-        }
     }
 
-    public class PathfinderAppView : Window<PathfinderAppView>
+    public class PathfinderAppView : Dialog<PathfinderAppView>
     {
         public const string kDefaultDrillTechNode = "advConstruction";
 
@@ -50,7 +42,6 @@ namespace WildBlueIndustries
         string settingsPath;
         string playModeName;
         string playModePath;
-        PlayModesWindow playModesView = new PlayModesWindow();
         string[] configOptions = { "Resources", "Cheats" };
         int configIndex;
         string distributionSeconds;
@@ -63,8 +54,6 @@ namespace WildBlueIndustries
         base("Pathfinder Settings", 320, 100)
         {
             Resizable = false;
-            playModesView.changePlayModeDelegate = changePlayMode;
-
             settingsPath = AssemblyLoader.loadedAssemblies.GetPathByType(typeof(PathfinderAppView)) + "/Settings.cfg";
             loadSettings();
 
@@ -75,40 +64,9 @@ namespace WildBlueIndustries
             redStyle.focused.textColor = Color.red;
         }
 
-        public void changePlayMode()
-        {
-            WBIMainSettings.PayToReconfigure = playModesView.payToRemodel;
-            WBIMainSettings.RequiresSkillCheck = playModesView.requireSkillCheck;
-            BARISBridge.Instance.UpdatePlayMode(playModesView.partsCanBreak, playModesView.repairsRequireResources);
-            playModeName = playModesView.currentPlayMode;
-            playModePath = playModesView.currentPlayModeFile;
-
-            saveSettings();
-        }
-
-        public override void DrawWindow()
-        {
-            base.DrawWindow();
-            if (playModesView.IsVisible())
-                playModesView.DrawWindow();
-        }
-
         protected override void DrawWindowContents(int windowId)
         {
             GUILayout.BeginVertical();
-
-            //At the space center, draw the play modes
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER)
-            {
-                GUILayout.BeginHorizontal();
-                if (string.IsNullOrEmpty(playModeName))
-                    GUILayout.Label("Play Mode: Default");
-                else
-                    GUILayout.Label("Play Mode: " + playModeName);
-                if (GUILayout.Button("Change...", new GUILayoutOption[] { GUILayout.Width(64) }))
-                    playModesView.SetVisible(true);
-                GUILayout.EndHorizontal();
-            }
 
             //In flight, switch between resources and settings
             if (HighLogic.LoadedSceneIsFlight)

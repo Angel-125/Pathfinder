@@ -23,7 +23,7 @@ namespace WildBlueIndustries
     {
         ModuleResourceHarvester harvester;
         WBIDrillSwitcher drillSwitcher;
-        WBIExtractionMonitor extractionMonitor;
+        WBIEfficiencyMonitor efficiencyMonitor;
         ModuleOverheatDisplay overheatDisplay;
         WBIProspector prospector;
         WBIAsteroidProspector asteroidProspector;
@@ -41,11 +41,9 @@ namespace WildBlueIndustries
                 drillSwitcher.Events["ShowDrillSwitchWindow"].guiActiveUnfocused = false;
             }
 
-            extractionMonitor = this.part.FindModuleImplementing<WBIExtractionMonitor>();
-            if (extractionMonitor != null)
-            {
-                extractionMonitor.Fields["extractionRateChange"].guiActive = false;
-            }
+            efficiencyMonitor = this.part.FindModuleImplementing<WBIEfficiencyMonitor>();
+            if (efficiencyMonitor != null)
+                efficiencyMonitor.Fields["efficiencyDisplayString"].guiActive = false;
 
             prospector = this.part.FindModuleImplementing<WBIProspector>();
             asteroidProspector = this.part.FindModuleImplementing<WBIAsteroidProspector>();
@@ -86,9 +84,16 @@ namespace WildBlueIndustries
             GUILayout.Label("<color=white>Drilling For: " + harvester.ResourceName + "</color>");
             GUILayout.Label("<color=white>Status: " + harvester.ResourceStatus + "</color>");
 
-            //Extraction Monitor
-            if (extractionMonitor != null)
-                GUILayout.Label("<color=white>Extraction Rate At " + extractionMonitor.extractionRateChange + "</color>");
+            //Efficiency Monitor
+            if (efficiencyMonitor != null)
+            {
+                string extractionRate = "100%";
+
+                if (efficiencyMonitor.efficiencyModifier > 0f)
+                    extractionRate = string.Format("{0:f2}%", efficiencyMonitor.efficiencyModifier * 100.0f);
+
+                GUILayout.Label("<color=white>Extraction Rate At " + extractionRate + "</color>");
+            }
 
             //Overheat
             if (overheatDisplay != null)
