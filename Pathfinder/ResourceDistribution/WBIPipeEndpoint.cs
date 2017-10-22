@@ -10,7 +10,7 @@ using KSP.Localization;
 
 
 /*
-Source code copyrighgt 2015, by Michael Billard (Angel-125)
+Source code copyrighgt 2017, by Michael Billard (Angel-125)
 License: GNU General Public License Version 3
 License URL: http://www.gnu.org/licenses/
 If you want to use this code, give me a shout on the KSP forums! :)
@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 namespace WildBlueIndustries
 {
     [KSPModule("Pipe Endpoint")]
-    public class WBIPipeEndpoint : PartModule, ICanBreak
+    public class WBIPipeEndpoint : PartModule, ICanBreak//, IOpsView
     {
         #region Constants
         public const string kNoIdentifier = "kNoIdentifier";
@@ -33,22 +33,24 @@ namespace WildBlueIndustries
         public const string kOffStatus = "Deactivated";
         public const string kToolTipSend = "Mass drivers let you send resources to and receive resources from other mass drivers. Each delivery costs trajectory data to calculate the trajectory, ElectricCharge to launch the projectile, and LiquidFuel and Oxidizer to make course corrections. This part can generate trajectory data, but you can also obtain data from the Ranch House as well as the Doc Science Lab.";
         public const string kTookTipReceive = "Mass catchers can receive resources launched from mass drivers. Each shipment's resources will be evenly distributed to all parts on the vessel that can hold the resource. Any excess will be lost. Make sure to turn the power on or you won't receive your shipments.";
-        public const string kPowerOn = "Power On";
-        public const string kPowerOff = "Power Off";
+        public const string kPowerOn = "Turn Power On";
+        public const string kPowerOff = "Turn Power Off";
+        public const string kItemSkippedMsg = "One or more inventory items could not be delivered due to insufficient storage space.";
+        public const float kMessageDuration = 5.0f;
         #endregion
 
         #region Transfer capability
         /// <summary>
         /// Toggle to indicate whether or not the endpoint is activated.
         /// </summary>
-        [UI_Toggle(enabledText = "On", disabledText = "Off")]
+        [KSPField(isPersistant = true)]
         public bool IsActivated = false;
 
         /// <summary>
-        /// Can the pipe endpoint send payloads? Example: mass catchers cannot send payloads. Marked persistent so that we can access them from an unloaded vessel.
+        /// Can the pipeline send payloads from orbit to ground?
         /// </summary>
         [KSPField(isPersistant = true)]
-        public bool canSendPayloads = true;
+        public bool allowOrbitToGround = false;
 
         /// <summary>
         /// Unique identifier for resource transfer transactions. Marked persistent so that we can access them from an unloaded vessel.
@@ -62,32 +64,35 @@ namespace WildBlueIndustries
         [KSPField]
         public float activationCostEC = 100.0f;
 
+        /// <summary>
+        /// These resources cannot be transferred.
+        /// </summary>
+        [KSPField]
+        public string blackListedResources = "ElectricCharge;GeoEnergy;ChargedParticles;LabTime;ScopeTime;ExposureTime;SolarReport;Megajoules;ResourceLode;StoredCharge;SolarWind;VacuumPlasma;WasteHeat";
         #endregion
 
         #region Payload capability and costs
         /// <summary>
-        /// Maximum metric tons of payload per delivery. This assumes a total vacuum.
+        /// Maximum amount of kinetic energy that the mass driver can generate
+        /// K.E. = (0.5 * projectile mass) * (velocity^2)
+        /// Calibrated for a 14 metric ton projectile accelerated to 650 m/sec (~Mun orbital velocity)
+        /// Factoring in fuel and container mass, and you can put 10 metric tonnes into munar orbit.
+        /// Marked persistent so that we can access this from an unloaded vessel.
         /// </summary>
-        [KSPField]
-        public float payloadCapacity = 10.0f;
+        [KSPField(isPersistant = true)]
+        public double maxKineticEnergy = 2958978750;
 
         /// <summary>
         /// Multiplied by payloadCapacity to get total fuel mass. The required amount of LiquidFuel and Oxidizer is derived from the total fuel mass.
         /// </summary>
         [KSPField]
-        public float fuelMassFraction = 1.0f;
+        public float fuelMassFraction = 0.334f;
 
         /// <summary>
         /// The dry mass fraction of the delivery vehicle. Multiply the payloadCapacity and fuelMassFraction by this value to get the delivery vehicle's dry mass.
         /// </summary>
         [KSPField]
         public float dryMassFraction = 0.05f;
-
-        /// <summary>
-        /// How much payload capacity to lose per increment of atmospheric pressure.
-        /// </summary>
-        [KSPField]
-        public float payloadAtmosphericLoss = 1.0f;
 
         /// <summary>
         /// How much trajectory data does it cost per kilometer of distance to the destination.
@@ -109,21 +114,27 @@ namespace WildBlueIndustries
         /// </summary>
         [KSPField]
         public float electricityCostPerTonne = 1000.0f;
+
+        /// <summary>
+        /// Name of the MAC trigger
+        /// </summary>
+        [KSPField]
+        public string macTriggerName = "MACTrigger";
         #endregion
 
-        #region Trajectory data accumulation
+        #region Guidance data accumulation
         /// <summary>
         /// Toggle to indicate whether or not to accumulate trajectory data
         /// </summary>
-        [KSPField(guiName = "Collect Trajectory Data", isPersistant = true, guiActiveEditor = true, guiActive = true)]
+        [KSPField(guiName = "Collect Guidance Data", isPersistant = true, guiActiveEditor = true, guiActive = true)]
         [UI_Toggle(enabledText = "Yes", disabledText = "No")]
         public bool accumulateData = true;
 
         /// <summary>
         /// How much trajectory data we have available to spend. Marked persistent so that we can access them from an unloaded vessel.
         /// </summary>
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Trajectory Data", guiUnits = "Mits", guiFormat = "f2")]
-        public float trajectoryDataAmount = 0f;
+        [KSPField(isPersistant = true, guiActive = true, guiName = "Guidance Data", guiUnits = "Mits", guiFormat = "f2")]
+        public float totalGuidanceData = 0f;
 
         /// <summary>
         /// How much trajectory data to generate per second while the endpoint is active. Requires canSendPayloads = true.
@@ -133,7 +144,7 @@ namespace WildBlueIndustries
 
         //Max amount of trajectory data that the computer can hold.
         [KSPField]
-        public float maxTrajectoryData = 1000.0f;
+        public float maxGuidanceData = 1000.0f;
 
         #endregion
 
@@ -167,9 +178,17 @@ namespace WildBlueIndustries
         [KSPField(guiActive = true, guiName = "Status")]
         public string status = "A-OK";
 
+        [KSPField(isPersistant = true)]
+        public double lastUpdateTime = 0f;
+
         protected BaseQualityControl qualityControl;
         PipelineWindow pipelineWidow = new PipelineWindow();
         PartResourceDefinition resourceDef = null;
+        WBIPackingBox packingBox;
+        static GUIStyle opsWindowStyle = null;
+        GUILayoutOption[] opsWindowOptions = new GUILayoutOption[] { GUILayout.Height(480) };
+        Vector2 opsWindowPos = new Vector2();
+        Transform macTriggerTransform = null;
 
         protected void Log(string message)
         {
@@ -179,8 +198,22 @@ namespace WildBlueIndustries
             }
         }
 
+
+        public void onPackingStateChanged(bool isDeployed)
+        {
+            Fields["status"].guiActive = isDeployed;
+            Events["ToggleActivation"].active = isDeployed;
+            this.Events["ToggleSendGUI"].active = isDeployed;
+
+            if (!isDeployed)
+            {
+                IsActivated = false;
+            }
+        }
+
         #endregion
-        [KSPEvent(guiActive = true)]
+
+        [KSPEvent(guiActive = true, guiName = "Power On")]
         public void ToggleActivation()
         {
             IsActivated = !IsActivated;
@@ -188,13 +221,15 @@ namespace WildBlueIndustries
             //Check for shipments.
             if (IsActivated)
             {
-                Fields["ToggleActivation"].guiName = kPowerOff;
+                Events["ToggleActivation"].guiName = kPowerOff;
             }
 
             else
             {
-                Fields["ToggleActivation"].guiName = kPowerOn;
+                Events["ToggleActivation"].guiName = kPowerOn;
             }
+
+            checkAndShowToolTip();
         }
 
         [KSPEvent(guiActive = true, guiName = "Schedule A Delivery")]
@@ -203,10 +238,37 @@ namespace WildBlueIndustries
             pipelineWidow.ToggleVisible();
         }
 
+        public override void OnLoad(ConfigNode node)
+        {
+            base.OnLoad(node);
+            if (node.HasValue("maxKineticEnergy"))
+                maxKineticEnergy = double.Parse(node.GetValue("maxKineticEnergy"));
+        }
+
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
 
+            if (!string.IsNullOrEmpty(macTriggerName))
+                macTriggerTransform = this.part.FindModelTransform(macTriggerName);
+
+            //Generate an identifier if needed. This is used for payload transactions.
+            if (uniqueIdentifier == kNoIdentifier)
+                uniqueIdentifier = Guid.NewGuid().ToString();
+
+            //Setup pipeline window
+            pipelineWidow.part = this.part;
+            pipelineWidow.blackListedResources = this.blackListedResources;
+            pipelineWidow.maxKineticEnergy = this.maxKineticEnergy;
+            pipelineWidow.fuelMassFraction = this.fuelMassFraction;
+            pipelineWidow.dryMassFraction = this.dryMassFraction;
+            pipelineWidow.dataCostPerKm = this.dataCostPerKm;
+            pipelineWidow.orbitalCostMultiplier = this.orbitalCostMultiplier;
+            pipelineWidow.electricityCostPerTonne = this.electricityCostPerTonne;
+            pipelineWidow.allowOrbitToGround = this.allowOrbitToGround;
+            pipelineWidow.totalGuidanceData = this.totalGuidanceData;
+            pipelineWidow.setGuidanceDataAmount = setGuidanceDataAmount;
+             
             //Get resource definition for electric charge
             if (activationCostEC > 0f)
             {
@@ -217,18 +279,23 @@ namespace WildBlueIndustries
                     return;
             }
 
-            //Setup GUI
-            this.Events["ToggleSendGUI"].active = canSendPayloads;
-            if (IsActivated)
-                Fields["ToggleActivation"].guiName = kPowerOff;
-            else
-                Fields["ToggleActivation"].guiName = kPowerOn;
+            //Setup events
+            packingBox = this.part.FindModuleImplementing<WBIPackingBox>();
+            if (packingBox != null)
+            {
+                packingBox.onPackingStateChanged += onPackingStateChanged;
+                onPackingStateChanged(packingBox.isDeployed);
+            }
 
-            //Generate an identifier if needed. This is used for payload transactions.
-            if (uniqueIdentifier == kNoIdentifier)
-                uniqueIdentifier = Guid.NewGuid().ToString();
+            //Setup GUI
+            this.Events["ToggleSendGUI"].active = true;
+            if (IsActivated)
+                Events["ToggleActivation"].guiName = kPowerOff;
+            else
+                Events["ToggleActivation"].guiName = kPowerOn;
 
             //If we have any deliveries then grab them and distribute the resources.
+            processDeliveries();
         }
 
         public override string GetInfo()
@@ -236,9 +303,6 @@ namespace WildBlueIndustries
             StringBuilder infoBuilder = new StringBuilder();
 
             infoBuilder.AppendLine(base.GetInfo());
-
-            //Payload capacity
-            infoBuilder.AppendLine(string.Format("<b>Max Payload:</b> {0:f1} t (vac)", payloadCapacity));
 
             //Data generation rate
             infoBuilder.AppendLine(" ");
@@ -253,12 +317,6 @@ namespace WildBlueIndustries
             //ElectricCharge
             infoBuilder.AppendLine(string.Format("ElectricCharge: {0:f1} E.C./t", electricityCostPerTonne));
 
-            //LFO
-            float fuelAmount = (payloadCapacity * fuelMassFraction * 0.45f) / 0.005f;
-            infoBuilder.AppendLine(string.Format("LiquidFuel: {0:f1} t (Max)", fuelAmount));
-            fuelAmount = (payloadCapacity * fuelMassFraction * 0.55f) / 0.005f;
-            infoBuilder.AppendLine(string.Format("Oxidizer: {0:f1} t (Max)", fuelAmount));
-
             //Trajectory data
             infoBuilder.AppendLine(string.Format("Trajectory data: {0:f3} Mits/km", dataCostPerKm));
             infoBuilder.AppendLine("x10 for orbital shots");
@@ -271,9 +329,9 @@ namespace WildBlueIndustries
             if (!accumulateData)
                 return;
 
-            trajectoryDataAmount += amount;
-            if (trajectoryDataAmount > maxTrajectoryData)
-                trajectoryDataAmount = maxTrajectoryData;
+            totalGuidanceData += amount;
+            if (totalGuidanceData > maxGuidanceData)
+                totalGuidanceData = maxGuidanceData;
 
             //Dirty the GUI
             MonoUtilities.RefreshContextWindows(this.part);
@@ -284,6 +342,9 @@ namespace WildBlueIndustries
             qualityControl.onPartBroken -= OnPartBroken;
             qualityControl.onPartFixed -= OnPartFixed;
             qualityControl.onUpdateSettings -= onUpdateSettings;
+
+            if (packingBox != null)
+                packingBox.onPackingStateChanged -= onPackingStateChanged;
         }
 
         public void FixedUpdate()
@@ -296,6 +357,19 @@ namespace WildBlueIndustries
             {
                 status = Localizer.Format(kOffStatus);
                 return;
+            }
+
+            //Catchup on data generation
+            if (lastUpdateTime > 0f)
+            {
+                double elapsedTime = Planetarium.GetUniversalTime() - lastUpdateTime;
+                if (elapsedTime > 1.0f)
+                {
+                    totalGuidanceData += dataGenerationRate * (float)elapsedTime;
+                    if (totalGuidanceData > maxGuidanceData)
+                        totalGuidanceData = maxGuidanceData;
+                    lastUpdateTime = Planetarium.GetUniversalTime();
+                }
             }
 
             //Request the required electric charge
@@ -311,12 +385,11 @@ namespace WildBlueIndustries
                 this.part.RequestResource(resourceDef.id, ecPerUpdate, ResourceFlowMode.ALL_VESSEL);
 
                 //Generate trajectory data
-                if (canSendPayloads)
-                {
-                    trajectoryDataAmount += dataGenerationRate * TimeWarp.deltaTime;
-                    if (trajectoryDataAmount > maxTrajectoryData)
-                        trajectoryDataAmount = maxTrajectoryData;
-                }                
+                totalGuidanceData += dataGenerationRate * TimeWarp.deltaTime;
+                if (totalGuidanceData > maxGuidanceData)
+                    totalGuidanceData = maxGuidanceData;
+                pipelineWidow.totalGuidanceData = this.totalGuidanceData;
+                lastUpdateTime = Planetarium.GetUniversalTime();
             }
 
             //Not enough EC to run the pipe endpoint
@@ -324,6 +397,58 @@ namespace WildBlueIndustries
             {
                 status = Localizer.Format(kNoECStatus);
             }
+        }
+
+        public void OnTriggerEnter(Collider collider)
+        {
+            if (collider.attachedRigidbody == null || !collider.CompareTag("Untagged"))
+                return;
+            if (!IsActivated)
+                return;
+            if (macTriggerTransform == null)
+                return;
+
+            //Get the part that collided with the trigger
+            Part collidedPart = collider.attachedRigidbody.GetComponent<Part>();
+            if (collidedPart == null)
+                return;
+
+            //Calculate the projectile velocity
+            double projectileVelocity = Math.Sqrt((maxKineticEnergy * 2) / (1000 * collidedPart.vessel.totalMass));
+
+            //Get velocity
+            CelestialBody celestialBody = collidedPart.vessel.mainBody;
+            double orbitalVelocity = Math.Sqrt(celestialBody.gravParameter / celestialBody.minOrbitalDistance);
+            if (projectileVelocity > orbitalVelocity)
+                projectileVelocity = orbitalVelocity;
+
+            //Get accelearation.
+            double time = 1.0f;
+            double acceleration = projectileVelocity / time;
+
+            //Calculate force: f = mass * acceleration
+            double force = (1000 * collidedPart.vessel.totalMass) * acceleration;
+
+            //Account for render frames
+            force *= TimeWarp.fixedDeltaTime;
+
+            //Apply force
+            collidedPart.vessel.IgnoreGForces(250);
+            collidedPart.AddForceAtPosition(macTriggerTransform.forward * (float)force, collidedPart.vessel.CoM);
+
+            //Add recoil
+            if (!this.part.vessel.permanentGroundContact)
+            {
+                force = (1000 * this.part.vessel.totalMass) * acceleration;
+                force *= TimeWarp.fixedDeltaTime * -1.0f;
+                this.part.vessel.IgnoreGForces(250);
+                this.part.AddForceAtPosition(macTriggerTransform.forward * (float)force, this.part.vessel.CoM);
+            }
+        }
+
+        protected void setGuidanceDataAmount(float amount)
+        {
+            totalGuidanceData = amount;
         }
 
         protected void checkAndShowToolTip()
@@ -334,13 +459,149 @@ namespace WildBlueIndustries
                 return;
 
             string toolTip = kToolTipSend;
-            if (!canSendPayloads)
-                toolTip = kTookTipReceive;
             WBIToolTipWindow toolTipWindow = new WBIToolTipWindow(this.part.partInfo.title, toolTip);
             toolTipWindow.SetVisible(true);
 
             //Cleanup
             scenario.SetToolTipShown(this.part.partInfo.title);
+        }
+
+        protected void processDeliveries()
+        {
+            if (!HighLogic.LoadedSceneIsFlight)
+                return;
+            //We're interested in resource and inventory deliveries...
+            List<WBIResourceManifest> resourceManifests = WBIResourceManifest.GetManifestsForDestination(this.uniqueIdentifier);
+            Log("Resource manifests count: " + resourceManifests.Count);
+
+            //Distribute the resources throughout the vessel
+            WBIResourceManifest resourceManifest;
+            int totalManifests = resourceManifests.Count;
+            string[] resourceKeys;
+            string resourceName;
+            double amount;
+            for (int index = 0; index < totalManifests; index++)
+            {
+                //Get the manifest
+                resourceManifest = resourceManifests[index];
+
+                //Go through all the resources and distribute them
+                resourceKeys = resourceManifest.resourceAmounts.Keys.ToArray();
+                for (int keyIndex = 0; keyIndex < resourceKeys.Length; keyIndex++)
+                {
+                    //Get the name
+                    resourceName = resourceKeys[keyIndex];
+
+                    //Get the amount
+                    amount = resourceManifest.resourceAmounts[resourceName];
+
+                    //Distribute the resource
+                    this.part.RequestResource(resourceName, -amount, ResourceFlowMode.ALL_VESSEL);
+                    Log("Added " + amount + " units of " + resourceName);
+                }
+            }
+
+            //Deliver inventory items
+            if (WBIKISWrapper.IsKISInstalled())
+            {
+                //Get the inventory and available volume
+                WBIKISInventoryWrapper inventory = WBIKISInventoryWrapper.GetInventory(this.part);
+                List<WBIKISInventoryWrapper> inventories = WBIKISInventoryWrapper.GetInventories(this.part.vessel);
+                int currentIndex = 0;
+                float contentVolume = 0;
+                float availableVolume = 0;
+
+                //Grab the first available inventory
+                if (inventory == null)
+                {
+                    inventory = inventories[0];
+                    if (inventory == null)
+                        return;
+                }
+
+                //Get available volume
+                inventory.RefreshMassAndVolume();
+                contentVolume = inventory.GetContentVolume();
+                availableVolume = inventory.maxVolume - contentVolume;
+
+                //Get all the manifests
+                List<WBIKISInventoryManifest> inventoryManifests = WBIKISInventoryManifest.GetManifestsForDestination(this.uniqueIdentifier);
+                Log("Inventory manifest count: " + inventoryManifests.Count);
+                WBIKISInventoryManifest inventoryManifest;
+                WBIInventoryManifestItem inventoryItem;
+                totalManifests = inventoryManifests.Count;
+                int totalItems;
+                AvailablePart availablePart = null;
+                int skippedItems = 0;
+                for (int index = 0; index < totalManifests; index++)
+                {
+                    //Get the manifest
+                    inventoryManifest = inventoryManifests[index];
+
+                    //Get the total items in the manifest
+                    totalItems = inventoryManifest.inventoryItems.Count;
+                    for (int itemIndex = 0; itemIndex < totalItems; itemIndex++)
+                    {
+                        //Get the item
+                        inventoryItem = inventoryManifest.inventoryItems[itemIndex];
+                        Log("Looking for enough room for " + inventoryItem.partName);
+
+                        //If the inventory has room, then add it.
+                        if (inventoryItem.volume < availableVolume)
+                        {
+                            Log("Current inventory has room.");
+                            //Decrease the available volume
+                            availableVolume -= inventoryItem.volume;
+
+                            //Get the part info
+                            availablePart = PartLoader.getPartInfoByName(inventoryItem.partName);
+
+                            //Add the part
+                            inventory.AddItem(availablePart, inventoryItem.partConfigNode, inventoryItem.quantity);
+                            Log("Added " + inventoryItem.partName);
+                        }
+
+                        //See if another inventory has room
+                        else
+                        {
+                            while (currentIndex < inventories.Count)
+                            {
+                                currentIndex += 1;
+                                inventory = inventories[currentIndex];
+                                Log("New inventory found");
+
+                                inventory.RefreshMassAndVolume();
+                                contentVolume = inventory.GetContentVolume();
+                                availableVolume = inventory.maxVolume - contentVolume;
+
+                                //If the inventory has room, then add it.
+                                if (inventoryItem.volume < availableVolume)
+                                {
+                                    //Decrease the available volume
+                                    availableVolume -= inventoryItem.volume;
+
+                                    //Get the part info
+                                    availablePart = PartLoader.getPartInfoByName(inventoryItem.partName);
+
+                                    //Add the part
+                                    inventory.AddItem(availablePart, inventoryItem.partConfigNode, inventoryItem.quantity);
+                                    Log("Added " + inventoryItem.partName);
+                                    break;
+                                }
+
+                                else
+                                {
+                                    skippedItems += 1;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Inform the player if we skipped some items
+                if (skippedItems > 0)
+                    ScreenMessages.PostScreenMessage(kItemSkippedMsg, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+            }
         }
 
         #region ICanBreak
@@ -401,6 +662,50 @@ namespace WildBlueIndustries
                 BARISBridge.LogPlayerMessage(message);
             }
             qualityControl.UpdateQualityDisplay(qualityControl.qualityDisplay + Localizer.Format(partBrokenLabel));
+        }
+        #endregion
+
+        #region IOpsView
+        public List<string> GetButtonLabels()
+        {
+            List<string> buttonLabels = new List<string>();
+
+            buttonLabels.Add("Pipeline");
+
+            return buttonLabels;
+        }
+
+        public void DrawOpsWindow(string buttonLabel)
+        {
+            if (opsWindowStyle == null)
+                opsWindowStyle = new GUIStyle(GUI.skin.textArea);
+
+            GUILayout.BeginVertical();
+            GUILayout.BeginScrollView(opsWindowPos, opsWindowStyle, opsWindowOptions);
+
+            pipelineWidow.DrawView();
+
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
+        }
+
+        public void SetParentView(IParentView parentView)
+        {
+        }
+
+        public void SetContextGUIVisible(bool isVisible)
+        {
+            if (packingBox == null)
+                return;
+
+            Fields["status"].guiActive = isVisible & packingBox.isDeployed;
+            Events["ToggleActivation"].active = isVisible & packingBox.isDeployed;
+            this.Events["ToggleSendGUI"].active = isVisible & packingBox.isDeployed;
+        }
+
+        public string GetPartTitle()
+        {
+            return this.part.partInfo.title;
         }
         #endregion
     }

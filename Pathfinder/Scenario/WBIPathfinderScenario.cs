@@ -42,7 +42,7 @@ namespace WildBlueIndustries
         public static WBIPathfinderScenario Instance;
 
         //Debug stuff
-        public static bool showDebugLog = true;
+        public static bool showDebugLog = false;
         public static bool debugProspectAlwaysSuccessful = false;
         public static bool debugGoldStrike = false;
 
@@ -81,7 +81,7 @@ namespace WildBlueIndustries
 
         public void onGameSettingsApplied()
         {
-//            showDebugLog = GoldStrikeSettings.LoggingEnabled;
+            showDebugLog = PathfinderSettings.LoggingEnabled;
         }
 
         public override void OnLoad(ConfigNode node)

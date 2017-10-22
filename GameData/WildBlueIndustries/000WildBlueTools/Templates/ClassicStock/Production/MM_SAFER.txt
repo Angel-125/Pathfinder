@@ -35,7 +35,14 @@
 		INPUT_RESOURCE
 		{
 			ResourceName = NuclearFuel
-			Ratio = 0.00000463
+			Ratio = 0.000001
+			FlowMode = NO_FLOW
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = NuclearWaste
+			Ratio = 0.0000009
 			FlowMode = NO_FLOW
 		}
 
@@ -51,6 +58,13 @@
 	{
 		name = NuclearFuel
 		amount = 100
+		maxAmount = 100
+	}
+
+	RESOURCE
+	{
+		name = NuclearWaste
+		amount = 0
 		maxAmount = 100
 	}
 }

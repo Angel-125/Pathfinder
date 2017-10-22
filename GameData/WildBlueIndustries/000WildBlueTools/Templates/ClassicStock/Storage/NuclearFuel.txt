@@ -6,7 +6,7 @@ RESOURCE_DEFINITION
 	unitCost = 800
 	isTweakable = true
 	isVisible = true
-	flowMode = NO_FLOW
+	flowMode = ALL_VESSEL
 	transfer = NONE
 	volume = 1
 }

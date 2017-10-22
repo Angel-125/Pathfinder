@@ -6,6 +6,13 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.31
+- The S.A.F.E.R. fuel supply will last up to 10.86 years of continuous output.
+- Fix for parts not remembering what template they're using.
+- Blutonium and NuclearFuel are now Flow Mode all vessel. Reactors that use them are still restricted to resources in the part itself.
+- Added NuclearWaste resource.
+- The S.A.F.E.R. now produces NuclearWaste as part of its outputs. With Pathfinder installed, it can be reprocessed into NuclearFuel.
+
 1.28
 - KIS storage volumes now properly calculated.
 - Code cleanup

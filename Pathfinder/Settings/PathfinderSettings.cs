@@ -23,7 +23,19 @@ namespace WildBlueIndustries
         [GameParameters.CustomParameterUI("Confirm scrap operation", toolTip = "If enabled, you'll need to click the scrap button again to confirm the scrap operation.", autoPersistance = true)]
         public bool confirmScrap = true;
 
+        [GameParameters.CustomParameterUI("Enable debug logging", toolTip = "Useful for diagnostics purposes.", autoPersistance = true)]
+        public bool loggingEnabled = false;
+
         #region Properties
+        public static bool LoggingEnabled
+        {
+            get
+            {
+                PathfinderSettings settings = HighLogic.CurrentGame.Parameters.CustomParams<PathfinderSettings>();
+                return settings.loggingEnabled;
+            }
+        }
+
         public static bool ConfirmScrap
         {
             get

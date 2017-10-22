@@ -302,32 +302,34 @@ namespace WildBlueIndustries
 
         protected override bool canAffordReconfigure(string templateName, bool deflatedModulesAutoPass = true)
         {
-            WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
             bool canAfford = base.canAffordReconfigure(templateName, deflatedModulesAutoPass);
-            string requiredName = templateManager[templateName].GetValue(WBIAffordableSwitcher.kRequiredResourceField);
 
             //If the vessel can't afford to reconfigure the module, then maybe the distribution manager can help.
             if (canAfford == false)
             {
+                canAfford = true;
                 ScreenMessages.PostScreenMessage("Checking distributors...", 10.0f);
-                if (string.IsNullOrEmpty(requiredName))
-                    return true;
 
-                double distributedAmount = WBIDistributionManager.Instance.GetDistributedAmount(requiredName);
-                Log("Distributors have " + distributedAmount + " units of " + requiredName);
-                if (distributedAmount >= reconfigureCost)
+                string[] keys = inputList.Keys.ToArray();
+                string resourceName;
+                double distributedAmount;
+                for (int index = 0; index < keys.Length; index++)
                 {
-                    ScreenMessages.PostScreenMessage("Distributors have enough " + requiredName, 10.0f);
-                    return true;
-                }
-                else
-                {
-                    ScreenMessages.PostScreenMessage("No active distributors have " + requiredName + " to share. Make sure resource distribution is turned on, and a distributor is sharing " + requiredName + ".", 10.0f);
-                    canAfford = false;
+                    resourceName = keys[index];
+                    distributedAmount = WBIDistributionManager.Instance.GetDistributedAmount(resourceName);
+                    Log("Distributors have " + distributedAmount + " units of " + resourceName);
+
+                    if (distributedAmount < inputList[resourceName])
+                    {
+                        ScreenMessages.PostScreenMessage("No active distributors have " + resourceName + " to share. Make sure resource distribution is turned on, and a distributor is sharing " + resourceName + ".", 10.0f);
+                        canAfford = false;
+                        break;
+                    }
                 }
             }
 
             //Add first time for redecoration
+            WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
             if (!canAfford && scenario.HasShownToolTip(kSettingsWindow) == false)
             {
                 scenario.SetToolTipShown(kSettingsWindow);
@@ -346,17 +348,19 @@ namespace WildBlueIndustries
             //Maybe the distribution manager can help?
             if (canAffordCost == false)
             {
-                double remodelCost = calculateRemodelCost(templateIndex);
-                string resourceName = templateManager[templateIndex].GetValue(WBIAffordableSwitcher.kRequiredResourceField);
-                if (string.IsNullOrEmpty(resourceName))
-                    return true;
+                string[] keys = inputList.Keys.ToArray();
+                string resourceName;
+                double amountObtained;
 
-                double amountObtained = WBIDistributionManager.Instance.RequestDistributedResource(resourceName, remodelCost, false);
-                if (amountObtained > 0f)
-                    return true;
+                for (int index = 0; index < keys.Length; index++)
+                {
+                    resourceName = keys[index];
+                    amountObtained = WBIDistributionManager.Instance.RequestDistributedResource(resourceName, inputList[resourceName], false);
+                    if (amountObtained <= 0.00001)
+                        return false;
+                }
             }
-
-            return canAffordCost;
+            return true;
         }
 
         protected override void recoverResourceCost(string resourceName, double recycleAmount)
@@ -419,7 +423,6 @@ namespace WildBlueIndustries
         protected override void hideEditorGUI(PartModule.StartState state)
         {
             base.hideEditorGUI(state);
-//            Events["ToggleInflation"].guiActiveEditor = false;
         }
 
         public override string GetInfo()

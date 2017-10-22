@@ -8,6 +8,29 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.13.0 Ranches And Pipelines
+Along with some new parts, this release introduces a new capability: the ability to transfer resources between the active vessel and unloaded vessels, including KIS inventory items! To do this, all you need is to establish a Pipeline at both ends.
+
+New Parts
+- Ranch House (Composites): This large structure is an intermediate step between the inflatable temporary structures and the permanent Sandcastle dwellings that will be in a future release. Instead of having multiple configurations, the Ranch House provides production bonuses to all the parts with converters that are a part of the base. Additionally, it generates data that can be distributed to Doc Science Labs, Mobile Processing Labs, and the new Pipeline Mass Driver. That data can also be collected to provide a prospecting bonus when searching for Gold Strike lodes. The amount of bonuses and data generated depends upon how well staffed the Ranch House is. Finally, the part starts out as a Buckboard-sized packing box that requires copious amounts of Equipment to assemble. Unlike the smaller inflatable structures, the Ranch House cannot be disassembled.
+
+- Pipeline Mass Driver (Nanolathing): The Pipeline lets you transfer resources and KIS inventory items to unloaded vessels in range. The transfers can be ground-to-ground or ground-to-orbit. Each destination must have its own Pipeline. Be sure to check the construction requirements; Pipelines are expensive- they need lots of Equipment and Konkrete. Like the Ranch House, the Pipeline starts out as a Buckboard-sized packing box, and cannot be disassembled.
+
+- Orbital Pipeline (Nanolathing): The orbital variant of the Pipeline can perform orbit-to-orbit transfers and receive deliveries from ground-based Pipelines.
+
+- Rangeland Construction Pad (Advanced Construction): Like the Ranch House, the Rangeland starts out as a Buckboard-sized packing box. once assembled, it forms a large pad from which you can build new vessels if you have Extraplanetary Launchpads installed. It also cannot be disassembled.
+KNOWN ISSUE: The Rangeland allows vessel construction even when compacted.
+
+- Buffalo Recycler Arm (Advanced Construction): This part can recycle parts that come in contact with its blowtorch. It doesn't require a skilled engineer.
+
+- Lasso Aero/Hydro Scoop (Aerodynamic Systems, Advanced Aerodynamics): This specialized atmospheric/oceanic intake contains filters and processing units to retrieve valuable resources from the atmosphere and oceans of a planet. It comes in three sizes.
+
+Bug Fixes And Enhancements
+- Reduced reactor output from the Nukeworks but made it last longer.
+- Nukeworks now produces NuclearWaste as part of its output products in Classic Stock play mode.
+- Added Nuclear Reprocessor to the Nukeworks.
+- WBT update.
+
 1.12.0 Classic Stock
 
 Module Reconfigurations

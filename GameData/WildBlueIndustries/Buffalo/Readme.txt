@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.2.7
+- WBT Update
+
 2.2.6
 - Fixed issues with CompressedAir RCS thrusters that resulted from the latest CRP update.
 - Play mode support added.

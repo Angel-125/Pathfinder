@@ -29,20 +29,7 @@ namespace WildBlueIndustries
         [GameParameters.CustomIntParameterUI("Bonus Per Prospect Skill", maxValue = 10, minValue = 1, stepSize = 1, toolTip = "What are those skill points worth?", autoPersistance = true, gameMode = GameParameters.GameMode.ANY)]
         public int bonusPerSkillPoint = 1;
 
-//        [GameParameters.CustomParameterUI("Enable debug logging", toolTip = "Help a modder out when you get stuck. Enable logging.", autoPersistance = true, gameMode = GameParameters.GameMode.ANY)]
-//        public bool loggingEnabled = true;
-
         #region Properties
-        /*
-        public static bool LoggingEnabled
-        {
-            get
-            {
-                GoldStrikeSettings settings = HighLogic.CurrentGame.Parameters.CustomParams<GoldStrikeSettings>();
-                return settings.loggingEnabled;
-            }
-        }
-         */
 
         public static float ProspectResetCost
         {

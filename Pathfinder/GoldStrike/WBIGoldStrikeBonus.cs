@@ -22,7 +22,7 @@ namespace WildBlueIndustries
     //Provides a bonus to prospecting for Gold Strike nodes. It costs a bit of science data to receive the bonus.
     //Science data comes from a science data source, such as the Ranch House's data generator.
     [KSPModule("Gold Strike Bonus")]
-    public class WBIGoldStrikeBonus : PartModule
+    public class WBIGoldStrikeBonus : PartModule, IOpsView
     {
         //Toggle to indicate whether or not to accumulate prospecting data
         [KSPField(guiName = "Collect Prospecting Data", isPersistant = true, guiActiveEditor = true, guiActive = true)]
@@ -45,6 +45,10 @@ namespace WildBlueIndustries
         //Used for unloaded vessels
         [KSPField(isPersistant = true)]
         public float calculatedBonus = 1.0f;
+
+        static GUIStyle opsWindowStyle = null;
+        GUILayoutOption[] opsWindowOptions = new GUILayoutOption[] { GUILayout.Height(480) };
+        Vector2 opsWindowPos = new Vector2();
 
         public override void OnStart(StartState state)
         {
@@ -90,5 +94,42 @@ namespace WildBlueIndustries
             }
         }
 
+        #region IOpsView
+        public List<string> GetButtonLabels()
+        {
+            List<string> buttonLabels = new List<string>();
+            buttonLabels.Add("Gold Strike");
+            return buttonLabels;
+        }
+
+        public void DrawOpsWindow(string buttonLabel)
+        {
+            if (opsWindowStyle == null)
+                opsWindowStyle = new GUIStyle(GUI.skin.textArea);
+
+            GUILayout.BeginVertical();
+            GUILayout.BeginScrollView(opsWindowPos, opsWindowStyle, opsWindowOptions);
+
+            accumulateData = GUILayout.Toggle(accumulateData, "Accumulate Prospecting Data");
+            GUILayout.Label(string.Format("<color=white>Next prospect bonus: +{0:f2}</color>", (prospectingDataAmount / dataCostPerBonus) * bonusValue));
+
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
+        }
+
+        public void SetParentView(IParentView parentView)
+        {
+        }
+
+        public void SetContextGUIVisible(bool isVisible)
+        {
+            Fields["accumulateData"].guiActive = isVisible;
+        }
+
+        public string GetPartTitle()
+        {
+            return this.part.partInfo.title;
+        }
+        #endregion
     }
 }
