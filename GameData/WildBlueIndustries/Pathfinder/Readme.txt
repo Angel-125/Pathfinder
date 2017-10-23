@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.13.1
+- Fix for Ranch House IVA
+
 1.13.0 Ranches And Pipelines
 Along with some new parts, this release introduces a new capability: the ability to transfer resources between the active vessel and unloaded vessels, including KIS inventory items! To do this, all you need is to establish a Pipeline at both ends.
 
