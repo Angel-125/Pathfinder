@@ -1,0 +1,158 @@
+PART
+{
+	name = WBIStorageFloor2
+	module = Part
+	author = Angel-125
+
+	MODEL
+	{
+		model = WildBlueIndustries/Pathfinder/Parts/Sandcastle/StorageFloor2
+	}
+	rescaleFactor = 1
+
+	node_stack_top = 0, 1.25, 0, 0, 1, 0, 2
+	node_stack_bottom = 0,-1.25, 0, 0, -1, 0, 2
+
+	node_stack_left = -5, 0, 0, -1, 0, 0, 2
+	node_stack_left2 = -5, 0, 2.5, -1, 0, 0, 2
+	node_stack_left3 = -5, 0, -2.5, -1, 0, 0, 2
+
+	node_stack_right = 5, 0, 0, 1, 0, 0, 2
+	node_stack_right2 = 5, 0, 2.5, 1, 0, 0, 2
+	node_stack_right3 = 5, 0, -2.5, 1, 0, 0, 2
+
+	node_stack_front = 0, 0, -5, 0, 0, -1, 2
+	node_stack_front2 = 2.5, 0, -5, 0, 0, -1, 2
+	node_stack_front3 = -2.5, 0, -5, 0, 0, -1, 2
+
+	node_stack_back = 0, 0, 5, 0, 0, 1, 2
+	node_stack_back2 = 2.5, 0, 5, 0, 0, 1, 2
+	node_stack_back3 = -2.5, 0, 5, 0, 0, 1, 2
+
+	NODE
+	{
+		name = top2
+		transform = TopNode2
+		size = 2
+	}
+	NODE
+	{
+		name = top3
+		transform = TopNode3
+		size = 2
+	}
+	NODE
+	{
+		name = top4
+		transform = TopNode4
+		size = 2
+	}
+	NODE
+	{
+		name = top5
+		transform = TopNode5
+		size = 2
+	}
+
+	NODE
+	{
+		name = bottom2
+		transform = BottomNode2
+		size = 2
+	}
+	NODE
+	{
+		name = bottom3
+		transform = BottomNode3
+		size = 2
+	}
+	NODE
+	{
+		name = bottom4
+		transform = BottomNode4
+		size = 2
+	}
+	NODE
+	{
+		name = bottom5
+		transform = BottomNode5
+		size = 2
+	}
+
+
+	TechRequired = metaMaterials
+	entryCost = 12800
+	cost = 4800
+	category = Structural
+	title = Storage Floor 2
+	manufacturer = Wild Blue Industries
+	description = Made from Konkrete, the Storage Floor has lots of space for your stuff.
+
+	// attachment rules: stack, srfAttach, allowStack, allowSrfAttach, allowCollision
+	attachRules = 1,0,1,1,1
+
+	// --- standard part parameters ---
+	mass = 192
+	dragModelType = default
+	maximum_drag = 0.2
+	minimum_drag = 0.2
+	angularDrag = 2
+	crashTolerance = 60
+	maxTemp = 2000
+	breakingForce = 5000
+	breakingTorque = 5000
+	bulkheadProfiles = size1, srf
+//	stackSymmetry = 3
+	vesselType = Base
+	tags = konkrete
+
+	MODULE:NEEDS[KIS]
+	{
+	    name = ModuleKISInventory
+	    maxVolume = 800
+	    externalAccess = true
+	    internalAccess = true
+	    slotsX = 6
+	    slotsY = 6
+	    slotSize = 50
+	    itemIconResolution = 128
+	    selfIconResolution = 128
+	    openSndPath = KIS/Sounds/containerOpen
+	    closeSndPath = KIS/Sounds/containerClose
+	    defaultMoveSndPath = KIS/Sounds/itemMove
+	}
+
+	MODULE
+	{
+	    name = WBIConvertibleStorage
+	    enableLogging = True
+
+	    //Determines whether or not to show the context menu GUI
+	    showGUI = True
+
+	    //Short name of the default module template.
+	    //This is used when selecting the part in the editor.
+	    //User will then right-click on the module to change its type.
+	    defaultTemplate = Storage
+
+	    //name of the template nodes to use
+	    templateNodes = STORAGE_TEMPLATE
+
+	    //Determines if the module allows in-field reconfiguring
+	    fieldReconfigurable = True
+
+	    //Some containers don't hold as much resources as the template specifies, while others hold more.
+	    //Since the resource templates specify base amounts, the capacity factor specifies a multiplier to
+	    //factor into the resource amounts.
+	    capacityFactor = 32
+
+	    //If the part has a KIS container, this is the base and max amount
+	    baseStorage = 800
+	    maxStorage = 147200
+	}	
+
+	MODULE
+	{
+		name = WBIAutoStrut
+	}
+}

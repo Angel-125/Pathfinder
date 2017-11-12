@@ -84,6 +84,7 @@ namespace WildBlueIndustries
         double minTravelDistance = 3f;
         protected string anomalyName = string.Empty;
         protected GoldStrikeVesselModule vesselModule = null;
+        protected float anomalyBonus = 0;
 
         protected void debugLog(string message)
         {
@@ -244,12 +245,53 @@ namespace WildBlueIndustries
             }
 
             //Success! Get the resource name and strike data.
-            strikeResourceKeys = scenario.goldStrikeResources.Keys.ToArray();
-            resourceIndex = UnityEngine.Random.Range(0, strikeResourceKeys.Length - 1);
-            resourceName = strikeResourceKeys[resourceIndex];
-            strikeData = scenario.goldStrikeResources[resourceName];
-            debugLog("strikeResourceKeys count: " + strikeResourceKeys.Length);
-            debugLog("resourceIndex: " + resourceIndex);
+            //If we're near an anomaly then we need a roll table.
+            if (anomalyBonus > 0)
+            {
+                SortedDictionary<int, GoldStrikeData> sortedResources = new SortedDictionary<int, GoldStrikeData>();
+                strikeResourceKeys = scenario.goldStrikeResources.Keys.ToArray();
+
+                //Add any resources that have an anomaly chance into the sorted resources
+                for (int index = 0; index < strikeResourceKeys.Length; index++)
+                {
+                    resourceName = strikeResourceKeys[index];
+                    strikeData = scenario.goldStrikeResources[resourceName];
+                    if (strikeData.anomalyChance > 0)
+                        sortedResources.Add(strikeData.anomalyChance, strikeData);
+                }
+
+                //Roll a 1-100
+                int pressenceRoll = UnityEngine.Random.Range(1, 100);
+
+                //See if we have any strike data
+                strikeData = null;
+                foreach (KeyValuePair<int, GoldStrikeData> pair in sortedResources)
+                {
+                    if (pressenceRoll < pair.Key)
+                    {
+                        strikeData = pair.Value;
+                        break;
+                    }
+                }
+
+                //If we don't have any strike data then pick a random resource
+                if (strikeData == null)
+                {
+                    resourceIndex = UnityEngine.Random.Range(0, strikeResourceKeys.Length - 1);
+                    resourceName = strikeResourceKeys[resourceIndex];
+                    strikeData = scenario.goldStrikeResources[resourceName];
+                }
+            }
+
+            else
+            {
+                strikeResourceKeys = scenario.goldStrikeResources.Keys.ToArray();
+                resourceIndex = UnityEngine.Random.Range(0, strikeResourceKeys.Length - 1);
+                resourceName = strikeResourceKeys[resourceIndex];
+                strikeData = scenario.goldStrikeResources[resourceName];
+                debugLog("strikeResourceKeys count: " + strikeResourceKeys.Length);
+                debugLog("resourceIndex: " + resourceIndex);
+            }
             debugLog("strikeData: " + strikeData.ToString());
 
             //Play the jingle
@@ -422,7 +464,6 @@ namespace WildBlueIndustries
             float skillBonus = GoldStrikeSettings.BonusPerSkillPoint;
             float prospectBonus = 0f;
             float labBonus = 0f;
-            float anomalyBonus = 0f;
             float asteroidBonus = 0f;
             Vessel[] vessels;
             Vessel vessel;
@@ -570,6 +611,7 @@ namespace WildBlueIndustries
             }
 
             //Location bonus
+            anomalyBonus = 0;
             anomalyBonus = getAnomalyBonus();
 
             //Asteroid bonus

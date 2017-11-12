@@ -48,8 +48,8 @@ namespace WildBlueIndustries
         [KSPField(guiName = "Lode abundance", guiFormat = "f2", guiActive = true, guiUnits = "%")]
         public double lodeAbundance;
 
-        protected GoldStrikeLode nearestLode = null;
-        protected ModuleAsteroid asteroid;
+        public GoldStrikeLode nearestLode = null;
+        public ModuleAsteroid asteroid;
 
         public override void StartConverter()
         {

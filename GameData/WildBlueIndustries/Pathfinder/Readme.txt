@@ -8,6 +8,19 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.14
+New Part
+- Micro ISRU (Advanced Science Tech): This Buckboard-sized ISRU is capable of producing only one resource at a time but it comes with its own built-in advanced solar panel to power the conversion process.
+
+Bug Fixes & Enhancements
+- GoldStrike drills now properly catch up after you haven't visited the vessel in awhile.
+- Fixed ground-based extraction rates for GoldStrike resource lodes.
+- Fixed missing power requirements for the Gold Digger drill.
+- Fixed missing power requirements for the Buffalo Drill.
+- Added ability to (slowly) 3D print Equipment from MaterialKits in the Blacksmith and Clockworks.
+- Adjusted recycling rate of Equipment into MaterialKits in the Blacksmith and Clockworks.
+- The Saddle and Switchback 2 now have air park capability to reduce base slippage. USE WITH CAUTION! If you set the parking break, be sure to immediately quick save and reload to make sure the break is set.
+
 1.13.1
 - Fix for Ranch House IVA
 

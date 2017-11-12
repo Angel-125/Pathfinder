@@ -6,11 +6,16 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.35
+- When dumping resources, any resources that are locked won't be dumped.
+- Added resource distribution to the Buckboard 6000.
+- WBISelfDestruct now supports explosions when staged.
+
 1.31
 - The S.A.F.E.R. fuel supply will last up to 10.86 years of continuous output.
 - Fix for parts not remembering what template they're using.
 - Blutonium and NuclearFuel are now Flow Mode all vessel. Reactors that use them are still restricted to resources in the part itself.
-- Added NuclearWaste resource.
+- Added NuclearWaste resource for Classic Stock.
 - The S.A.F.E.R. now produces NuclearWaste as part of its outputs. With Pathfinder installed, it can be reprocessed into NuclearFuel.
 
 1.28

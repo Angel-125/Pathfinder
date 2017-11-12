@@ -193,7 +193,7 @@
 		criticalSuccessBonus = 0.25
 		failureLoss = 0.5
 		repairSkill = ScienceSkill
-		repairResource = RocketParts
+		repairResource = Equipment
 		repairAmount = 50
 
 		INPUT_RESOURCE
@@ -261,7 +261,7 @@
 		criticalSuccessBonus = 0.25
 		failureLoss = 0.5
 		repairSkill = ScienceSkill
-		repairResource = RocketParts
+		repairResource = Equipment
 		repairAmount = 150
 
 		INPUT_RESOURCE
@@ -395,5 +395,71 @@
 		name= Snacks
 		amount = 0
 		maxAmount = 800
+	}
+}
+
+@PART[wbiHogan,wbiRanchHouse]:NEEDS[SnacksUtils]
+{
+	MODULE
+	{
+		name = WBIGreenhouse
+		ConverterName = Greenhouse
+		StartActionName = Start Grenhouse
+		StopActionName = Stop Greenhouse
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		ExperienceEffect = ScienceSkill
+		EfficiencyBonus = 1
+		hoursPerCycle = 540 //Number of hours to grow crops
+		minimumSuccess = 45
+		criticalSuccess = 90
+		criticalFail = 20
+		cropResource = Snacks
+
+		//Calibrated for standard 1 snack per meal, 3 meals per day
+		//Supports 10 kerbals
+		cropYield = 2700
+
+		criticalSuccessBonus = 0.25
+		failureLoss = 0.5
+		repairSkill = ScienceSkill
+		repairResource = Equipment
+		repairAmount = 150
+
+		INPUT_RESOURCE
+		{
+			ResourceName = Water
+			Ratio = 0.001093750
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = Compost
+			Ratio = 0.000364583
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 12
+		}
+	}
+
+	RESOURCE
+	{
+		name = Compost
+		amount = 4000
+		maxAmount = 4000
+		isTweakable = true
+	}
+
+	RESOURCE
+	{
+		name = Water
+		amount = 4000
+		maxAmount = 4000
+		isTweakable = true
 	}
 }

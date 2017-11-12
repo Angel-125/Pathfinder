@@ -25,6 +25,7 @@ namespace WildBlueIndustries
         public float minAmount;
         public float maxAmount;
         public float motherlodeMultiplier;
+        public int anomalyChance;
 
         public void Load(ConfigNode node)
         {
@@ -41,6 +42,9 @@ namespace WildBlueIndustries
 
                 if (node.HasValue("motherlodeMultiplier"))
                     motherlodeMultiplier = float.Parse(node.GetValue("motherlodeMultiplier"));
+
+                if (node.HasValue("anomalyChance"))
+                    anomalyChance = int.Parse(node.GetValue("anomalyChance"));
             }
             catch (Exception ex)
             {
@@ -56,6 +60,7 @@ namespace WildBlueIndustries
             node.AddValue("minAmount", minAmount);
             node.AddValue("maxAmount", maxAmount);
             node.AddValue("motherlodeMultiplier", motherlodeMultiplier);
+            node.AddValue("anomalyChance", anomalyChance);
 
             return node;
         }
@@ -68,6 +73,7 @@ namespace WildBlueIndustries
             sb.AppendLine("minAmount: " + minAmount);
             sb.AppendLine("maxAmount: " + maxAmount);
             sb.AppendLine("motherlodeMultiplier: " + motherlodeMultiplier);
+            sb.AppendLine("anomalyChance: " + anomalyChance);
 
             return sb.ToString();
         }
