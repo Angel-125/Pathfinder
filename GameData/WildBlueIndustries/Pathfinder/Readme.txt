@@ -8,6 +8,11 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.16
+- Fix for Pipeline NRE
+- Hides the Show Resource Requirements buttons for assembled parts.
+- Fix for the Ranch House's mass when unassembled.
+
 1.15
 - Far Future Technologies support: NuclearSaltWater used in place of Explodium.
 - TAC-LS balancing- thanks Space Kadet! :)

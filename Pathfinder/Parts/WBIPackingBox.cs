@@ -188,10 +188,12 @@ namespace WildBlueIndustries
                 {
                     isMoving = false;
                     SetStaticAttach();
+                    Events["showAssemblyRequirements"].active = false;
                 }
                 else if (!anim.isPlaying && staticAttachOnDeploy && isDeployed && !this.part.PermanentGroundContact)
                 {
                     SetStaticAttach();
+                    Events["showAssemblyRequirements"].active = false;
                 }
             }
         }

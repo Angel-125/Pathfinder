@@ -962,7 +962,6 @@ namespace WildBlueIndustries
                         resourceTotals = new WBIResourceTotals();
                         resourceTotals.resourceName = resource.resourceName;
                         resourceTotals.displayName = displayName;
-                        Debug.Log("FRED adding new resource: " + resource.resourceName);
                         resourceMap.Add(displayName, resourceTotals);
                     }
                     resourceTotals = resourceMap[displayName];
