@@ -23,7 +23,7 @@ STORAGE_TEMPLATE
 
 	RESOURCE
 	{
-		name = Minerals
+		name = Minerite
 		amount = 5600
 		maxAmount = 5600
 	}
