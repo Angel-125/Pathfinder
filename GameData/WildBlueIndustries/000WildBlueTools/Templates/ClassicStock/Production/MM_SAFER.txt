@@ -50,7 +50,14 @@
 		{
 			ResourceName = ElectricCharge
 			Ratio = 125
-			DumpExcess = false
+			DumpExcess = true
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = CoreHeat
+			Ratio = 125
+			DumpExcess = true
 		}
 	}
 

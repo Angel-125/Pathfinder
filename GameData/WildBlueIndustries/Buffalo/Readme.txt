@@ -32,6 +32,10 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.3.1
+- WBT Update
+- Fixed missing resource icons
+
 2.3.0
 New Part
 - Micro ISRU (Advanced Science Tech): This Buckboard-sized ISRU is capable of producing only one resource at a time but it comes with its own built-in advanced solar panel to power the conversion process.

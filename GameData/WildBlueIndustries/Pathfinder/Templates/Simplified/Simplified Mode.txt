@@ -55,8 +55,8 @@ PATH_INDUSTRY
 	TechRequired = advElectrics
 	description = The Power Plant consumes liquid fuel and oxidizer to produce electrical charge. Think of it as a giant fuel cell array. It can also burn raw Ore at reduced efficiency.
 	mass = 5
-	logoPanel = WildBlueIndustries/000WildBlueTools/CommonTemplates/Decals/Battery
-	glowPanel = WildBlueIndustries/000WildBlueTools/CommonTemplates/Decals/Battery
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Battery
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Battery
 	toolTip = The Power Plant can provide large amounts of ElectricCharge if you keep it fully fueled.
 	toolTipTitle = Your First Power Plant
 

@@ -52,6 +52,37 @@ namespace WildBlueIndustries
         GameObject staticAttachObject;
         FixedJoint staticAttachJoint;
 
+        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Show Resource Requirements")]
+        public void showAssemblyRequirements()
+        {
+            buildInputList(CurrentTemplateName);
+            StringBuilder requirementsList = new StringBuilder();
+            string templateName = "";
+
+            //Template name
+            if (CurrentTemplate.HasValue("title"))
+                templateName = CurrentTemplate.GetValue("title");
+            else
+                templateName = CurrentTemplate.GetValue("name");
+            requirementsList.AppendLine("Configuration: " + templateName);
+
+            //Resource Requirements.
+            string[] keys = inputList.Keys.ToArray();
+            for (int index = 0; index < keys.Length; index++)
+            {
+                requirementsList.Append(keys[index]);
+                requirementsList.Append(": ");
+                requirementsList.AppendLine(string.Format("{0:f2}", inputList[keys[index]]));
+            }
+
+            if (keys.Length == 0)
+                requirementsList.AppendLine("No resource requirements");
+
+            InfoView infoView = new InfoView();
+            infoView.ModuleInfo = requirementsList.ToString();
+            infoView.SetVisible(true);
+        }
+
         public override void OnStart(StartState state)
         {
             base.OnStart(state);

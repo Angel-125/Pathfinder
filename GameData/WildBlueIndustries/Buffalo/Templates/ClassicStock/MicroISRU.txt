@@ -2,8 +2,8 @@ MICRO_ISRU
 {
 	name = Konkrete
 	author = Angel-125
-	logoPanel = WildBlueIndustries/000WildBlueTools/CommonTemplates/Decals/Konstruction
-	glowPanel = WildBlueIndustries/000WildBlueTools/CommonTemplates/Decals/KonstructionGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Konstruction
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/KonstructionGlow
 	description = This configuration produces konkrete.
 	reconfigureSkill = ConverterSkill
 

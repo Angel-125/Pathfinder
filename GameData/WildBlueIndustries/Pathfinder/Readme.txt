@@ -8,6 +8,13 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.15
+- Far Future Technologies support: NuclearSaltWater used in place of Explodium.
+- TAC-LS balancing- thanks Space Kadet! :)
+- Fixed missing resource icons
+- WBT Update
+- Boxed parts (Ranch House, Rangeland, Pipeline) now have a button to Show Resource Requirements needed to assemble the part.
+
 1.14
 New Part
 - Micro ISRU (Advanced Science Tech): This Buckboard-sized ISRU is capable of producing only one resource at a time but it comes with its own built-in advanced solar panel to power the conversion process.
