@@ -170,6 +170,7 @@ namespace WildBlueIndustries
                 FindPipeEndpoints();
 
                 //Get vessel resources
+                sourceVesselResources.Clear();
                 getVesselResources(this.part.vessel, sourceVesselResources);
                 if (sourceVesselResources.Keys.Count > 0)
                     sourceDisplayNames = sourceVesselResources.Keys.ToArray();
@@ -956,12 +957,13 @@ namespace WildBlueIndustries
                         displayName = resource.resourceName;
 
                     //Fill out the totals
-                    if (!resourceMap.ContainsKey(resource.resourceName))
+                    if (!resourceMap.ContainsKey(displayName))
                     {
                         resourceTotals = new WBIResourceTotals();
                         resourceTotals.resourceName = resource.resourceName;
                         resourceTotals.displayName = displayName;
-                        sourceVesselResources.Add(displayName, resourceTotals);
+                        Debug.Log("FRED adding new resource: " + resource.resourceName);
+                        resourceMap.Add(displayName, resourceTotals);
                     }
                     resourceTotals = resourceMap[displayName];
                     resourceTotals.amount += resource.amount;

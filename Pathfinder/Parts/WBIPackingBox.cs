@@ -108,7 +108,10 @@ namespace WildBlueIndustries
             setManageOpsButtonVisible();
 
             if (isDeployed)
+            {
                 SetStaticAttach();
+                Events["showAssemblyRequirements"].active = false;
+            }
         }
 
         public override void ToggleInflation()
