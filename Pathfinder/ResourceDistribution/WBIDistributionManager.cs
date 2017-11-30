@@ -83,6 +83,8 @@ namespace WildBlueIndustries
             Instance = this;
             cycleStartTime = Planetarium.GetUniversalTime();
             elapsedTime = 0f;
+            if (HighLogic.LoadedSceneIsFlight)
+                debugMode = PathfinderSettings.LoggingEnabled;
         }
 
         public void FixedUpdate()
@@ -355,6 +357,14 @@ namespace WildBlueIndustries
             }
         }
 
+        public void DistributeResourcesImmediately()
+        {
+            cycleStartTime = Planetarium.GetUniversalTime();
+            elapsedTime = 0f;
+            isDirty = true;
+            StartCoroutine(DistributeResources());
+        }
+
         public IEnumerator<YieldInstruction> DistributeResources()
         {
             if (distributionInProgress)
@@ -436,6 +446,7 @@ namespace WildBlueIndustries
 
             //Cleanup
             distributionInProgress = false;
+            isDirty = false;
             yield return new WaitForFixedUpdate();
         }
 

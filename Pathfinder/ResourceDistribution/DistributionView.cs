@@ -47,9 +47,15 @@ namespace WildBlueIndustries
         {
             base.SetVisible(newValue);
             if (!newValue && rebuildCache != null)
+            {
+                WBIDistributionManager.Log("Calling rebuildCache");
                 rebuildCache();
+            }
             if (!newValue)
-                WBIDistributionManager.Instance.isDirty = true;
+            {
+                WBIDistributionManager.Log("Calling distribute resources");
+                WBIDistributionManager.Instance.DistributeResourcesImmediately();
+            }
         }
 
         public void DrawView()

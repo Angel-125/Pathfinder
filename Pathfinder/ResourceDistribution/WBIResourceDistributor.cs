@@ -50,6 +50,12 @@ namespace WildBlueIndustries
         [KSPEvent(guiActiveEditor = true, guiActive = true, guiName = "Setup Distribution")]
         public void SetupDistribution()
         {
+            //Setup view
+            distributionView.part = this.part;
+            distributionView.isParticipating = this.isParticipating;
+            distributionView.distributionMap = this.distributionMap;
+            distributionView.rebuildCache = RebuidDistribtuionCache;
+            distributionView.setParticipation = setParticipation;
             distributionView.SetVisible(!distributionView.IsVisible());
         }
 
@@ -125,17 +131,8 @@ namespace WildBlueIndustries
             }
 
             //if we have an empty list then create a new one.
-            if (distributionMap.Count == 0)
-            {
+            if (distributionMap.Keys.Count == 0)
                 RebuildDistributionList();
-            }
-
-            //Setup view
-            distributionView.part = this.part;
-            distributionView.isParticipating = this.isParticipating;
-            distributionView.distributionMap = this.distributionMap;
-            distributionView.rebuildCache = RebuidDistribtuionCache;
-            distributionView.setParticipation = setParticipation;
 
             if (isConsumer)
             {
