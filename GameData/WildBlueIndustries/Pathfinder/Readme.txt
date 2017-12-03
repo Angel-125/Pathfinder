@@ -8,6 +8,26 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+X
+
+Hogan
+- The Ranch House has been renamed to the Hogan.
+- Adjusted the resource requirements to build the Hogan.
+- Retextured the sides to reflect the Konkrete portion of its construction.
+- You can configure the Hogan into one of three configurations, all of which retain their greenhouse functionality:
+  Community Center: This is the default configuration. It has the same functionality as the original design.
+  Dormatory: This configuration has life support recyclers, and it attracts Tourists who want to experience life as a colonist for a few days.
+  Study Hall: Like the stock MPL, you can train kerbals and increase their ranks. You can also train promising Tourists to become Pilots, Engineers, and Scientists. With the ever-increasing cost to hire new astronauts, the Study Hall gives you an alternative to acquiring new astronauts through rescue contracts.
+
+New Contract
+- Colonial Aspirations: This contract requires a Hogan that's configured as a Dormitory. You'll get paid for delivering one or more Tourists to your base. The contract completes when said Tourists are at the base for the requested time (you don't get paid for returning them). Combined with the Study Hall, you can add new members to your team.
+
+1.18
+- Fixed NRE experienced when setting resource distribution in the VAB/SPH
+
+1.17
+- Fix for resource distribution not working after you change the distribution settings.
+
 1.16
 - Fix for Pipeline NRE
 - Hides the Show Resource Requirements buttons for assembled parts.

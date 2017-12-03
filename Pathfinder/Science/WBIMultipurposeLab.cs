@@ -31,7 +31,8 @@ namespace WildBlueIndustries
             if (sciLab != null)
                 originalCrewsRequired = sciLab.crewsRequired;
             scienceConverter = this.part.FindModuleImplementing<WBIScienceConverter>();
-            scienceConverter.SetGuiVisible(false);
+            if (scienceConverter != null)
+                scienceConverter.SetGuiVisible(false);
             base.OnStart(state);
             if (string.IsNullOrEmpty(resourcesToKeep))
                 resourcesToKeep = "ElectricCharge";

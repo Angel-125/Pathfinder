@@ -116,6 +116,10 @@
     <Compile Include="Parts\WBIPackingBox.cs" />
     <Compile Include="ResourceDistribution\WBIRecyclerArm.cs" />
     <Compile Include="Parts\WBIScoopTurbine.cs" />
+    <Compile Include="Contracts\WBIColonistContract.cs" />
+    <Compile Include="Contracts\WBITouristTrap.cs" />
+    <Compile Include="Contracts\WBIFerryKerbalParam.cs" />
+    <Compile Include="WBIKerbalStayParam.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BARIS\BARISBridge\BARISBridge.csproj">

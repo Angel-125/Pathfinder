@@ -50,12 +50,8 @@ namespace WildBlueIndustries
         [KSPEvent(guiActiveEditor = true, guiActive = true, guiName = "Setup Distribution")]
         public void SetupDistribution()
         {
-            //Setup view
-            distributionView.part = this.part;
             distributionView.isParticipating = this.isParticipating;
             distributionView.distributionMap = this.distributionMap;
-            distributionView.rebuildCache = RebuidDistribtuionCache;
-            distributionView.setParticipation = setParticipation;
             distributionView.SetVisible(!distributionView.IsVisible());
         }
 
@@ -98,7 +94,7 @@ namespace WildBlueIndustries
             {
                 distNode = distributionNodes[index];
                 distributionMap.Add(distNode.GetValue("resourceName"), (EDistributionModes)int.Parse(distNode.GetValue("mode")));
-                RebuidDistribtuionCache();
+                RebuildDistributionCache();
             }
         }
 
@@ -122,6 +118,13 @@ namespace WildBlueIndustries
         {
             base.OnStart(state);
 
+            //Setup view
+            distributionView.part = this.part;
+            distributionView.isParticipating = this.isParticipating;
+            distributionView.distributionMap = this.distributionMap;
+            distributionView.rebuildCache = RebuildDistributionCache;
+            distributionView.setParticipation = setParticipation;
+
             //Tap into the resource switcher's redecoration event
             switcher = this.part.FindModuleImplementing<WBIResourceSwitcher>();
             if (switcher != null)
@@ -139,6 +142,9 @@ namespace WildBlueIndustries
                 Events["SetupDistribution"].guiActive = false;
                 Fields["isParticipating"].guiName = "Acquire Resources";
             }
+
+            //Make sure we initiate resource distribution
+            WBIDistributionManager.Instance.isDirty = true;
         }
 
         protected void setParticipation(bool isEnabled)
@@ -203,10 +209,10 @@ namespace WildBlueIndustries
             }
 
             //Rebuild the cache
-            RebuidDistribtuionCache();
+            RebuildDistributionCache();
         }
 
-        public virtual void RebuidDistribtuionCache()
+        public virtual void RebuildDistributionCache()
         {
             WBIDistributionManager.Log("[WBIResourceDistributor] - Rebuilding distribution cache.");
             List<string> requiredResourceNames = new List<string>();

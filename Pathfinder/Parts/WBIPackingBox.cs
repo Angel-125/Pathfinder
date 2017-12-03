@@ -22,7 +22,7 @@ namespace WildBlueIndustries
     public delegate void OnPackingStateChanged(bool isDeployed);
 
     [KSPModule("Packing Box")]
-    public class WBIPackingBox : WBIMultiConverter, IModuleInfo
+    public class WBIPackingBox : WBIMultipurposeLab, IModuleInfo
     {
         private const string kStaticAttachName = "StaticAttachBody";
         private const string kSettingsWindow = "Settings Window";
@@ -142,35 +142,6 @@ namespace WildBlueIndustries
                 onPackingStateChanged(isDeployed);
         }
 
-        public override List<string> GetButtonLabels()
-        {
-            List<string> buttonLabels = opsManagerView.GetButtonLabels();
-
-            if (!fieldReconfigurable && buttonLabels.Contains("Config"))
-                buttonLabels.Remove("Config");
-
-            return buttonLabels;
-        }
-
-        public override void SetContextGUIVisible(bool isVisible)
-        {
-            base.SetContextGUIVisible(isVisible);
-            setManageOpsButtonVisible();
-        }
-
-        public override void UpdateContentsAndGui(string templateName)
-        {
-            base.UpdateContentsAndGui(templateName);
-
-            //Check to see if we've displayed the tooltip for the template.
-            //First, we're only interested in deployed modules.
-            if (isInflatable && isDeployed == false)
-                return;
-
-            //Now check
-            checkAndShowToolTip();
-        }
-
         public override void OnUpdate()
         {
             base.OnUpdate();
@@ -200,6 +171,8 @@ namespace WildBlueIndustries
 
         public void SetStaticAttach(bool isAttached = true)
         {
+            if (!HighLogic.LoadedSceneIsFlight)
+                return;
             if (!staticAttachOnDeploy)
                 return;
             if (this.part.vessel.situation != Vessel.Situations.LANDED &&
@@ -267,9 +240,9 @@ namespace WildBlueIndustries
                 return;
             }
 
-            Events["ReconfigureStorage"].guiActive = isDeployed;
-            Events["ReconfigureStorage"].guiActiveUnfocused = isDeployed;
-            Events["ReconfigureStorage"].guiActiveEditor = isDeployed;
+            Events["ReconfigureStorage"].guiActive = fieldReconfigurable;
+            Events["ReconfigureStorage"].guiActiveUnfocused = fieldReconfigurable;
+            Events["ReconfigureStorage"].guiActiveEditor = fieldReconfigurable;
 
             //Dirty the GUI
             MonoUtilities.RefreshContextWindows(this.part);
@@ -296,170 +269,6 @@ namespace WildBlueIndustries
                         collider.enabled = !isDeployed;
                 }
             }
-        }
-
-        protected override void notEnoughParts()
-        {
-            base.notEnoughParts();
-
-            WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
-
-            //Add first time for redecoration
-            if (scenario.HasShownToolTip(kSettingsWindow) == false)
-            {
-                scenario.SetToolTipShown(kSettingsWindow);
-
-                WBIToolTipWindow toolTipWindow = new WBIToolTipWindow(kSettingsWindow, kPartsTip);
-                toolTipWindow.SetVisible(true);
-            }
-
-            //Show the unpack button
-            Events["ToggleInflation"].active = true;
-        }
-
-        protected override bool canAffordReconfigure(string templateName, bool deflatedModulesAutoPass = true)
-        {
-            bool canAfford = base.canAffordReconfigure(templateName, deflatedModulesAutoPass);
-
-            //If the vessel can't afford to reconfigure the module, then maybe the distribution manager can help.
-            if (canAfford == false)
-            {
-                canAfford = true;
-                ScreenMessages.PostScreenMessage("Checking distributors...", 10.0f);
-
-                string[] keys = inputList.Keys.ToArray();
-                string resourceName;
-                double distributedAmount;
-                for (int index = 0; index < keys.Length; index++)
-                {
-                    resourceName = keys[index];
-                    distributedAmount = WBIDistributionManager.Instance.GetDistributedAmount(resourceName);
-                    Log("Distributors have " + distributedAmount + " units of " + resourceName);
-
-                    if (distributedAmount < inputList[resourceName])
-                    {
-                        ScreenMessages.PostScreenMessage("No active distributors have " + resourceName + " to share. Make sure resource distribution is turned on, and a distributor is sharing " + resourceName + ".", 10.0f);
-                        canAfford = false;
-                        break;
-                    }
-                }
-            }
-
-            //Add first time for redecoration
-            WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
-            if (!canAfford && scenario.HasShownToolTip(kSettingsWindow) == false)
-            {
-                scenario.SetToolTipShown(kSettingsWindow);
-
-                WBIToolTipWindow toolTipWindow = new WBIToolTipWindow(kSettingsWindow, kPartsTip);
-                toolTipWindow.SetVisible(true);
-            }
-
-            return canAfford;
-        }
-
-        protected override bool payPartsCost(int templateIndex)
-        {
-            bool canAffordCost = base.payPartsCost(templateIndex);
-
-            //Maybe the distribution manager can help?
-            if (canAffordCost == false)
-            {
-                string[] keys = inputList.Keys.ToArray();
-                string resourceName;
-                double amountObtained;
-
-                for (int index = 0; index < keys.Length; index++)
-                {
-                    resourceName = keys[index];
-                    amountObtained = WBIDistributionManager.Instance.RequestDistributedResource(resourceName, inputList[resourceName], false);
-                    if (amountObtained <= 0.00001)
-                        return false;
-                }
-            }
-            return true;
-        }
-
-        protected override void recoverResourceCost(string resourceName, double recycleAmount)
-        {
-            double availableStorage = ResourceHelper.GetTotalResourceSpaceAvailable(resourceName, this.part.vessel);
-
-            //Do we have sufficient space in the vessel to store the recycled parts?
-            //If not, distrubute what we don't have space for.
-            if (availableStorage < recycleAmount)
-            {
-                double amountRemaining = recycleAmount - availableStorage;
-                string recycleMessage;
-
-                //We'll only recycle what we have room to store aboard the vessel.
-                recycleAmount = availableStorage;
-
-                //Distribute the rest.
-                List<DistributedResource> recycledResources = new List<DistributedResource>();
-                recycleMessage = string.Format(kResourceDistributed, amountRemaining, resourceName);
-                recycledResources.Add(new DistributedResource(resourceName, amountRemaining, recycleMessage));
-                WBIDistributionManager.Instance.DistributeResources(recycledResources);
-            }
-
-            //Store what we have space for.
-            this.part.RequestResource(resourceName, -recycleAmount, ResourceFlowMode.ALL_VESSEL);
-        }
-
-        protected void checkAndShowToolTip()
-        {
-            //Now we can check to see if the tooltip for the current template has been shown.
-            WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
-            if (scenario.HasShownToolTip(CurrentTemplateName) && scenario.HasShownToolTip(getMyPartName()))
-                return;
-
-            //Tooltip for the current template has never been shown. Show it now.
-            string toolTipTitle = CurrentTemplate.GetValue("toolTipTitle");
-            string toolTip = CurrentTemplate.GetValue("toolTip");
-
-            if (string.IsNullOrEmpty(toolTipTitle))
-                toolTipTitle = partToolTipTitle;
-
-            //Add the very first part's tool tip.
-            if (scenario.HasShownToolTip(getMyPartName()) == false)
-            {
-                toolTip = partToolTip + "\r\n\r\n" + toolTip;
-
-                scenario.SetToolTipShown(getMyPartName());
-            }
-
-            if (string.IsNullOrEmpty(toolTip) == false)
-            {
-                WBIToolTipWindow toolTipWindow = new WBIToolTipWindow(toolTipTitle, toolTip);
-                toolTipWindow.SetVisible(true);
-
-                //Cleanup
-                scenario.SetToolTipShown(CurrentTemplateName);
-            }
-        }
-
-        protected override void hideEditorGUI(PartModule.StartState state)
-        {
-            base.hideEditorGUI(state);
-        }
-
-        public override string GetInfo()
-        {
-            return "Click the Manage Operations button to change the configuration.";
-        }
-
-        public string GetModuleTitle()
-        {
-            return "Packing Box";
-        }
-
-        public string GetPrimaryField()
-        {
-            return "Inflated Crew Capacity: " + inflatedCrewCapacity.ToString();
-        }
-
-        public Callback<Rect> GetDrawModulePanelCallback()
-        {
-            return null;
         }
     }
 }
