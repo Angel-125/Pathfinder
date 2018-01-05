@@ -6,6 +6,22 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.39
+
+New Props
+- Disco Ball: With spinning lights!
+- Dance Floor: Animated dance floor!
+- Jukebox: Actually plays music! Music files must be in the .ogg format and go in the 000WildBlueTools/Music folder.
+
+ARP Icons
+Added new Alternate Resource Panel icons courtesy of JadeOfMaar. These look great! :)
+
+Bug Fixes And Enhancements
+- Fixed missing resource requirements when templates require multiple resources.
+- Inflatable parts can now be inflated only once.
+- Added new WBICruiseControl part module. WBICruiseControl must be placed after your engine part module and multimode switch modules. It enables you to conduct engine burns during timewarp. NOTE: Heat mechanics don't work during cruise control, this is a known limitation. To use cruise control, be sure to set the desired throttle in the context menu, and set the fuel reserve percentage. Finally turn on Cruise Control. Then engage timewarp. Note that KSP doesn't allow you to adjust the controls in the context menu during timewarp, that's a game limitation.
+
+
 1.38
 - Bug fixes.
 

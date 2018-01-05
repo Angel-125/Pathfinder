@@ -80,6 +80,9 @@ namespace WildBlueIndustries
             }
 
             //Power output
+            if (this.status == null)
+                return;
+
             if (this.status.Contains("load"))
             {
                 //Get the numerical value (*somebody* didn't seem to make this convenient to obtain :( )

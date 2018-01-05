@@ -37,6 +37,8 @@ namespace WildBlueIndustries
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
+            if (!HighLogic.LoadedSceneIsFlight)
+                return;
             bonusValue = Bonus;
 
             //Get our biome, planet, and harvest ID.

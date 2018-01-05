@@ -398,7 +398,7 @@
 	}
 }
 
-@PART[wbiHogan,wbiRanchHouse]:NEEDS[SnacksUtils]
+@PART[wbiRanchHouse]:NEEDS[SnacksUtils]
 {
 	MODULE
 	{

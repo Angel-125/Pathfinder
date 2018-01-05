@@ -6,7 +6,7 @@ using UnityEngine;
 using KSP.IO;
 
 /*
-Source code copyright 2016, by Michael Billard (Angel-125)
+Source code copyright 2018, by Michael Billard (Angel-125)
 License: GNU General Public License Version 3
 License URL: http://www.gnu.org/licenses/
 Wild Blue Industries is trademarked by Michael Billard and may be used for non-commercial purposes. All other rights reserved.
@@ -55,6 +55,8 @@ namespace WildBlueIndustries
 
             //If we want to show the ops view dialog instead of the context buttons,
             //then hide the context buttons.
+            if (opsWindow.converter == null)
+                return;
             if (showOpsView)
             {
                 Events["ShowOpsView"].guiActive = true;

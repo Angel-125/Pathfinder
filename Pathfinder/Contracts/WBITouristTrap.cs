@@ -8,7 +8,7 @@ using Contracts;
 using KSP;
 using KSPAchievements;
 
-namespace WildBlueIndustries
+namespace ContractsPlus.Contracts
 {
     public class WBITouristTrap : PartModule
     {

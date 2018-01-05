@@ -74,7 +74,8 @@ namespace WildBlueIndustries
         {
             node.AddValue("planetID", planetID.ToString());
 
-            node.AddValue("biomeName", biomeName);
+            if (!string.IsNullOrEmpty(biomeName))
+                node.AddValue("biomeName", biomeName);
 
             int harvestValue = (int)harvestType;
             node.AddValue("harvestType", harvestValue.ToString());

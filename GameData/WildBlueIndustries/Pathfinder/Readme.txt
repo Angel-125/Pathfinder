@@ -8,19 +8,28 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
-X
+1.19 Hogan's Tourists
 
 Hogan
 - The Ranch House has been renamed to the Hogan.
 - Adjusted the resource requirements to build the Hogan.
 - Retextured the sides to reflect the Konkrete portion of its construction.
 - You can configure the Hogan into one of three configurations, all of which retain their greenhouse functionality:
-  Community Center: This is the default configuration. It has the same functionality as the original design.
+  Community Center: This is the default configuration. It has the same functionality as the original design. At least for now...
   Dormatory: This configuration has life support recyclers, and it attracts Tourists who want to experience life as a colonist for a few days.
   Study Hall: Like the stock MPL, you can train kerbals and increase their ranks. You can also train promising Tourists to become Pilots, Engineers, and Scientists. With the ever-increasing cost to hire new astronauts, the Study Hall gives you an alternative to acquiring new astronauts through rescue contracts.
 
-New Contract
-- Colonial Aspirations: This contract requires a Hogan that's configured as a Dormitory. You'll get paid for delivering one or more Tourists to your base. The contract completes when said Tourists are at the base for the requested time (you don't get paid for returning them). Combined with the Study Hall, you can add new members to your team.
+New Contracts
+- Touring: This contract requires you to send 1 or more tourists to a specific vessel and return them home safely after a few days stay.
+
+- Colonial Aspirations: This contract requires you to send 1 or more tourists to a specific vessel equipped with a Hogan configured as a Dormatory, and let them stay there for a few days. The tourists are potential colonists; you get paid to deliver the tourists to the vessel but not to return them home. It's a great way to send tourists to a Hogan configured as a Study Hall to train them into a Pilot, Scientist, or Engineer.
+
+ARP Icons
+Added new Alternate Resource Panel icons courtesy of JadeOfMaar. These look great! :)
+
+Bug Fixes & Enhancements
+- Re-exported the models for the Hogan, Pipeline, and Rangeland.
+- The Orbital Pipeline will now send payloads from orbit to ground- my girlfriend had a good argument for it.
 
 1.18
 - Fixed NRE experienced when setting resource distribution in the VAB/SPH

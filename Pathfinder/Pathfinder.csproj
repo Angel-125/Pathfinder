@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\WBITouristTrap.cs" />
     <Compile Include="GoldStrike\GoldStrikeVesselModule.cs" />
     <Compile Include="GoldStrike\GoldStrikeUtils.cs" />
     <Compile Include="GoldStrike\GoldStrikeLode.cs" />
@@ -117,9 +118,8 @@
     <Compile Include="ResourceDistribution\WBIRecyclerArm.cs" />
     <Compile Include="Parts\WBIScoopTurbine.cs" />
     <Compile Include="Contracts\WBIColonistContract.cs" />
-    <Compile Include="Contracts\WBITouristTrap.cs" />
-    <Compile Include="Contracts\WBIFerryKerbalParam.cs" />
-    <Compile Include="WBIKerbalStayParam.cs" />
+    <Compile Include="Habitat\WBIClassConverter.cs" />
+    <Compile Include="WBIClassConverterView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BARIS\BARISBridge\BARISBridge.csproj">

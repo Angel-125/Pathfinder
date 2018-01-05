@@ -112,7 +112,7 @@ namespace WildBlueIndustries
             GUILayout.EndHorizontal();
 
             if (GUILayout.Button("Distribute Resources"))
-                WBIDistributionManager.Instance.DistributeResources();
+                WBIDistributionManager.Instance.DistributeResourcesImmediately();
 
             if (GUILayout.Button("Active Vessel: Opt-In (Distributor)"))
                 WBIDistributionManager.Instance.OptInActiveVessel();

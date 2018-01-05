@@ -39,9 +39,6 @@ namespace WildBlueIndustries
         public string packingBoxTransform = "PackingBox";
 
         [KSPField]
-        public bool isOneShot = true;
-
-        [KSPField]
         public bool showOpsView = true;
 
         [KSPField]
@@ -100,10 +97,6 @@ namespace WildBlueIndustries
 
             //Lights
             setupLightGUI();
-
-            //If this is a one-shot then hide the animation button.
-            if (isOneShot && isDeployed && HighLogic.LoadedSceneIsEditor == false)
-                Events["ToggleInflation"].active = false;
 
             setManageOpsButtonVisible();
 
