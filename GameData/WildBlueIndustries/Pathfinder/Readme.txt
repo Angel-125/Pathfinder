@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.20
+- WBT update
+- Module Manager update
+
 1.19 Hogan's Tourists
 
 Hogan

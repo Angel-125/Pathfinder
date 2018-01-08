@@ -32,6 +32,10 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.3.3
+- WBT update
+- Module Manager update
+
 2.3.2
 - Added new Double-wide Saddle Tank. It's just like its predecessor, but twice the width and storage capacity.
 - WBT Update

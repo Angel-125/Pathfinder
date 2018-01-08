@@ -110,7 +110,6 @@
     <Compile Include="ResourceDistribution\WBIPartScrapper.cs" />
     <Compile Include="GoldStrike\WBIGoldStrikeDrill.cs" />
     <Compile Include="GoldStrike\WBIGoldStrikeAsteroidDrill.cs" />
-    <Compile Include="Utility\WBIAutoStrut.cs" />
     <Compile Include="Utility\WBILoadIconHelper.cs" />
     <Compile Include="Efficiency\WBIEfficiencyBonus.cs" />
     <Compile Include="Science\WBIScienceDataGenerator.cs" />
