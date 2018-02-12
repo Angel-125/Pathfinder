@@ -1,89 +1,5 @@
-@PART[wbiLassoSize1]
+@PART[wbiLassoSize0]
 {
-	MODULE
-	{
-		name = ModuleResourceHarvester
-		HarvesterType = 1 //Oceanic
-		AutoShutdown = true
-		Efficiency = 0.5
-		EfficiencyBonus = 1
-		ResourceName = GrayWater
-		ConverterName = GrayWater Filter
-		StartActionName = Start GrayWater Filter
-		StopActionName = Stop GrayWater Filter
-		ToggleActionName = Start/Stop GrayWater Filter
-		intakeTransformName = Intake
-		intakeSpeed = 10
-		airStaticSpeed = 10
-
-		INPUT_RESOURCE
-		{
-			ResourceName = ElectricCharge
-			Ratio = 0.75
-		}
-		
-		UseSpecialistBonus = true
-		SpecialistEfficiencyFactor = 0.2
-		SpecialistBonusBase = 0.05
-		ExperienceEffect = DrillSkill
-	}
-
-	MODULE
-	{
-		name = ModuleResourceHarvester
-		HarvesterType = 2 //Atmospheric
-		AutoShutdown = true
-		Efficiency = 0.5
-		EfficiencyBonus = 1
-		ResourceName = Hexagen
-		ConverterName = Hexagen Filter
-		StartActionName = Start Hexagen Filter
-		StopActionName = Stop Hexagen Filter
-		ToggleActionName = Start/Stop Hexagen Filter
-		intakeTransformName = Intake
-		intakeSpeed = 10
-		airStaticSpeed = 10
-
-		INPUT_RESOURCE
-		{
-			ResourceName = ElectricCharge
-			Ratio = 0.75
-		}
-		
-		UseSpecialistBonus = true
-		SpecialistEfficiencyFactor = 0.2
-		SpecialistBonusBase = 0.05
-		ExperienceEffect = DrillSkill
-	}
-
-	MODULE
-	{
-		name = ModuleResourceHarvester
-		HarvesterType = 2 //Atmospheric
-		AutoShutdown = true
-		Efficiency = 0.5
-		EfficiencyBonus = 1
-		ResourceName = Zeonium
-		ConverterName = Zeonium Filter
-		StartActionName = Start Zeonium Filter
-		StopActionName = Stop Zeonium Filter
-		ToggleActionName = Start/Stop Zeonium Filter
-		intakeTransformName = Intake
-		intakeSpeed = 10
-		airStaticSpeed = 10
-
-		INPUT_RESOURCE
-		{
-			ResourceName = ElectricCharge
-			Ratio = 0.75
-		}
-		
-		UseSpecialistBonus = true
-		SpecialistEfficiencyFactor = 0.2
-		SpecialistBonusBase = 0.05
-		ExperienceEffect = DrillSkill
-	}
-
 	MODULE
 	{
 		name = ModuleResourceConverter
@@ -123,90 +39,6 @@
 
 @PART[wbiLassoSize1]
 {
-	MODULE
-	{
-		name = ModuleResourceHarvester
-		HarvesterType = 1 //Oceanic
-		AutoShutdown = true
-		Efficiency = 1.0
-		EfficiencyBonus = 1
-		ResourceName = GrayWater
-		ConverterName = GrayWater Filter
-		StartActionName = Start GrayWater Filter
-		StopActionName = Stop GrayWater Filter
-		ToggleActionName = Start/Stop GrayWater Filter
-		intakeTransformName = Intake
-		intakeSpeed = 10
-		airStaticSpeed = 10
-
-		INPUT_RESOURCE
-		{
-			ResourceName = ElectricCharge
-			Ratio = 1.5
-		}
-		
-		UseSpecialistBonus = true
-		SpecialistEfficiencyFactor = 0.2
-		SpecialistBonusBase = 0.05
-		ExperienceEffect = DrillSkill
-	}
-
-	MODULE
-	{
-		name = ModuleResourceHarvester
-		HarvesterType = 2 //Atmospheric
-		AutoShutdown = true
-		Efficiency = 1.0
-		EfficiencyBonus = 1
-		ResourceName = Hexagen
-		ConverterName = Hexagen Filter
-		StartActionName = Start Hexagen Filter
-		StopActionName = Stop Hexagen Filter
-		ToggleActionName = Start/Stop Hexagen Filter
-		intakeTransformName = Intake
-		intakeSpeed = 10
-		airStaticSpeed = 10
-
-		INPUT_RESOURCE
-		{
-			ResourceName = ElectricCharge
-			Ratio = 1.5
-		}
-		
-		UseSpecialistBonus = true
-		SpecialistEfficiencyFactor = 0.2
-		SpecialistBonusBase = 0.05
-		ExperienceEffect = DrillSkill
-	}
-
-	MODULE
-	{
-		name = ModuleResourceHarvester
-		HarvesterType = 2 //Atmospheric
-		AutoShutdown = true
-		Efficiency = 1.0
-		EfficiencyBonus = 1
-		ResourceName = Zeonium
-		ConverterName = Zeonium Filter
-		StartActionName = Start Zeonium Filter
-		StopActionName = Stop Zeonium Filter
-		ToggleActionName = Start/Stop Zeonium Filter
-		intakeTransformName = Intake
-		intakeSpeed = 10
-		airStaticSpeed = 10
-
-		INPUT_RESOURCE
-		{
-			ResourceName = ElectricCharge
-			Ratio = 1.5
-		}
-		
-		UseSpecialistBonus = true
-		SpecialistEfficiencyFactor = 0.2
-		SpecialistBonusBase = 0.05
-		ExperienceEffect = DrillSkill
-	}
-
 	MODULE
 	{
 		name = ModuleResourceConverter
@@ -248,90 +80,6 @@
 {
 	MODULE
 	{
-		name = ModuleResourceHarvester
-		HarvesterType = 1 //Oceanic
-		AutoShutdown = true
-		Efficiency = 1.0
-		EfficiencyBonus = 1
-		ResourceName = GrayWater
-		ConverterName = GrayWater Filter
-		StartActionName = Start GrayWater Filter
-		StopActionName = Stop GrayWater Filter
-		ToggleActionName = Start/Stop GrayWater Filter
-		intakeTransformName = Intake
-		intakeSpeed = 30
-		airStaticSpeed = 30
-
-		INPUT_RESOURCE
-		{
-			ResourceName = ElectricCharge
-			Ratio = 3
-		}
-		
-		UseSpecialistBonus = true
-		SpecialistEfficiencyFactor = 0.2
-		SpecialistBonusBase = 0.05
-		ExperienceEffect = DrillSkill
-	}
-
-	MODULE
-	{
-		name = ModuleResourceHarvester
-		HarvesterType = 2 //Atmospheric
-		AutoShutdown = true
-		Efficiency = 1.0
-		EfficiencyBonus = 1
-		ResourceName = Hexagen
-		ConverterName = Hexagen Filter
-		StartActionName = Start Hexagen Filter
-		StopActionName = Stop Hexagen Filter
-		ToggleActionName = Start/Stop Hexagen Filter
-		intakeTransformName = Intake
-		intakeSpeed = 30
-		airStaticSpeed = 30
-
-		INPUT_RESOURCE
-		{
-			ResourceName = ElectricCharge
-			Ratio = 3
-		}
-		
-		UseSpecialistBonus = true
-		SpecialistEfficiencyFactor = 0.2
-		SpecialistBonusBase = 0.05
-		ExperienceEffect = DrillSkill
-	}
-
-	MODULE
-	{
-		name = ModuleResourceHarvester
-		HarvesterType = 2 //Atmospheric
-		AutoShutdown = true
-		Efficiency = 1.0
-		EfficiencyBonus = 1
-		ResourceName = Zeonium
-		ConverterName = Zeonium Filter
-		StartActionName = Start Zeonium Filter
-		StopActionName = Stop Zeonium Filter
-		ToggleActionName = Start/Stop Zeonium Filter
-		intakeTransformName = Intake
-		intakeSpeed = 30
-		airStaticSpeed = 30
-
-		INPUT_RESOURCE
-		{
-			ResourceName = ElectricCharge
-			Ratio = 3
-		}
-		
-		UseSpecialistBonus = true
-		SpecialistEfficiencyFactor = 0.2
-		SpecialistBonusBase = 0.05
-		ExperienceEffect = DrillSkill
-	}
-
-	MODULE
-	{
 		name = ModuleResourceConverter
 		ConverterName = Oxium Compressor
 		StartActionName = Start Oxium Compressor
@@ -361,6 +109,44 @@
 		{
 			ResourceName = Oxium
 			Ratio = 1
+			DumpExcess = false
+		}
+	}
+}
+
+@PART[wbiLassoSize3]
+{
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = Oxium Compressor
+		StartActionName = Start Oxium Compressor
+		StopActionName = Stop Oxium Compressor
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ConverterSkill
+		EfficiencyBonus = 1.2
+
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = IntakeAir
+			Ratio = 2
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 6
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = Oxium
+			Ratio = 2
 			DumpExcess = false
 		}
 	}

@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.3.4
+- WBI update
+
 2.3.3
 - WBT update
 - Module Manager update

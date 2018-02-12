@@ -47,15 +47,15 @@ namespace WildBlueIndustries
             }
         }
 
-        public override void StartConverter()
+        public override void StartResourceConverter()
         {
-            base.StartConverter();
+            base.StartResourceConverter();
             ShowParticleEffect(IsActivated);
         }
 
-        public override void StopConverter()
+        public override void StopResourceConverter()
         {
-            base.StopConverter();
+            base.StopResourceConverter();
             ShowParticleEffect(IsActivated);
         }
     }

@@ -8,6 +8,16 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.21 Gigawatts
+This release focuses on resource harvesting by making quality of life improvements in the Lasso parts and adding the ability to collect exoatmospheric resources via a new part. Thanks for your help, JadeOfMaar and Rock3tman! :)
+
+Lasso
+- Cleaned up the available converters. Now there is an Atmosphere Processor to extract all available atmospheric resources from intake Atmosphere, and a Liquid Distiller to do the same for oceanic resources.
+- Added a new 3.75m Lasso-300. It can extract both atmospheric and exospheric resources via its Atmosphere Processor in addition to the standard Liquid Distiller. Be sure to start the Exospheric Scoop to gather up resources just above a planet's tangible atmosphere.
+
+Resources Definitions
+- Added exospheric definitions for Atmosphere, Water, Minerite, and Nitronite. With enough time and the proper equipment, you can skim the atmosphere of worlds like Kerbin, Laythe, Duna, Eve, and Jool to make LiquidFuel and Oxidizer!
+
 1.20
 - WBT update
 - Module Manager update

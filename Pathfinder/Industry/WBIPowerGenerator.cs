@@ -106,9 +106,9 @@ namespace WildBlueIndustries
             }
         }
 
-        public override void StopConverter()
+        public override void StopResourceConverter()
         {
-            base.StopConverter();
+            base.StopResourceConverter();
             powerOutputDisplay = "n/a";
         }
 
@@ -152,12 +152,12 @@ namespace WildBlueIndustries
             if (ModuleIsActive())
             {
                 if (GUILayout.Button(StopActionName))
-                    StopConverter();
+                    StopResourceConverter();
             }
 
             else if (GUILayout.Button(StartActionName))
             {
-                StartConverter();
+                StartResourceConverter();
             }
 
             GUILayout.EndVertical();

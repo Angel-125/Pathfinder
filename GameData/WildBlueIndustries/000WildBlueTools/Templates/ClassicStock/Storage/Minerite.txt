@@ -88,3 +88,99 @@ PLANETARY_RESOURCE
 		Dispersal = 0
 	}
 }
+
+//Exospheric
+PLANETARY_RESOURCE
+{
+	ResourceName = Minerite
+	ResourceType = 3
+	PlanetName = Kerbin
+
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = .01
+		MaxAbundance = .5
+		Variance = 0
+		MinAltitude = 0.234 //Should begin right at edge of atmo
+		MaxAltitude = 0.234
+		MinRange = 1
+		MaxRange = 1
+	}
+}
+
+PLANETARY_RESOURCE
+{
+	ResourceName = Minerite
+	ResourceType = 3
+	PlanetName = Laythe
+
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = .01
+		MaxAbundance = .5
+		Variance = 0
+		MinAltitude = .2 //Should begin right at edge of atmo
+		MaxAltitude = .2
+		MinRange = 1
+		MaxRange = 1
+	}
+}
+
+PLANETARY_RESOURCE
+{
+	ResourceName = Minerite
+	ResourceType = 3
+	PlanetName = Eve
+
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = .1
+		MaxAbundance = .5
+		Variance = 0
+		MinAltitude = .257 //Should begin right at edge of atmo
+		MaxAltitude = .257
+		MinRange = 1
+		MaxRange = 1
+	}
+}
+
+PLANETARY_RESOURCE
+{
+	ResourceName = Minerite
+	ResourceType = 3
+	PlanetName = Duna
+
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = .001
+		MaxAbundance = .05
+		Variance = 0
+		MinAltitude = .001 //Should begin right at edge of atmo
+		MaxAltitude = .001
+		MinRange = 1
+		MaxRange = 1
+	}
+}
+
+PLANETARY_RESOURCE
+{
+	ResourceName = Minerite
+	ResourceType = 3
+	PlanetName = Jool
+
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = .1
+		MaxAbundance = .5
+		Variance = 0
+		MinAltitude = 0.0665 //Should begin right at edge of atmo
+		MaxAltitude = 0.0665
+		MinRange = 1
+		MaxRange = 1
+	}
+}
