@@ -619,7 +619,7 @@ namespace WildBlueIndustries
             CelestialBody celestialBody = selectedPipelineNode.vessel.mainBody;
 
             //Get the distance to the target.
-            double distanceToTarget = GoldStrikeUtils.HaversineDistance(this.part.vessel.longitude, this.part.vessel.latitude,
+            double distanceToTarget = Utils.HaversineDistance(this.part.vessel.longitude, this.part.vessel.latitude,
                 selectedPipelineNode.vessel.longitude, selectedPipelineNode.vessel.latitude, celestialBody);
             if (distanceToTarget < 1.0f)
                 distanceToTarget = 1.0f;
@@ -795,7 +795,7 @@ namespace WildBlueIndustries
 
             //We don't meet or exceed orbital velocity, but the target might still be in ballistics range.
             //Get the distance to the target.
-            double distanceToTarget = GoldStrikeUtils.HaversineDistance(this.part.vessel.longitude, this.part.vessel.latitude, 
+            double distanceToTarget = Utils.HaversineDistance(this.part.vessel.longitude, this.part.vessel.latitude, 
                 selectedPipelineNode.vessel.longitude, selectedPipelineNode.vessel.latitude, celestialBody);
 
             //Now we need to compute the ballistic trajectory. We assume a 45 degree angle on the trajectory angle. That gives max distance.

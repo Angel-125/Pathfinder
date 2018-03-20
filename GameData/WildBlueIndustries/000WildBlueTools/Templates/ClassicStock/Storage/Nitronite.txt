@@ -2,11 +2,13 @@ RESOURCE_DEFINITION
 {
 	name = Nitronite
 	displayName = Nitronite
+	abbreviation = NI
 	density = 0.00172 //0.00185
 	flowMode = ALL_VESSEL
 	transfer = PUMP
 	isTweakable = true
   	isVisible = true
+	color = 0.45, 0.9, 1
 	unitCost = 0.01
   	volume = 1
 }
@@ -15,9 +17,9 @@ STORAGE_TEMPLATE
 {
 	name = Nitronite
 	author = Angel-125
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/ExoticMinerals
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/ExoticMineralsGlow
-	description = This kit stores nitronite, a key component of making MonoPropellant and making LiquidFuel and Oxidizer.
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Organics
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/OrganicsGlow
+	description = This kit stores Nitronite, a family of organic Nitro-bearing compounds and an important component of MonoPropellant and LFO, and some distillation processes. It's plentiful here on Kerbin but we're not quite sure about other planets yet...
 	templateTags = stowage
 
 	RESOURCE
@@ -49,10 +51,10 @@ GLOBAL_RESOURCE
 	Distribution
 	{
 		PresenceChance = 70
-		MinAbundance = .001
-		MaxAbundance = 10
-		Variance = 50
-		Dispersal = 3
+		MinAbundance = 0.01
+		MaxAbundance = 4
+		Variance = 30
+		Dispersal = 10
 	}
 }
 
@@ -65,7 +67,7 @@ PLANETARY_RESOURCE
 	Distribution
 	{
 		PresenceChance = 100
-		MinAbundance = .001
+		MinAbundance = 1
 		MaxAbundance = 10
 		Variance = 50
 		Dispersal = 3
@@ -88,98 +90,94 @@ PLANETARY_RESOURCE
 	}
 }
 
-//Exospheric
-PLANETARY_RESOURCE
-{
-	ResourceName = Nitronite
-	ResourceType = 3
-	PlanetName = Kerbin
-
-	Distribution
-	{
-		PresenceChance = 100
-		MinAbundance = .01
-		MaxAbundance = .5
-		Variance = 0
-		MinAltitude = 0.234 //Should begin right at edge of atmo
-		MaxAltitude = 0.234
-		MinRange = 1
-		MaxRange = 1
-	}
-}
-
-PLANETARY_RESOURCE
-{
-	ResourceName = Nitronite
-	ResourceType = 3
-	PlanetName = Laythe
-
-	Distribution
-	{
-		PresenceChance = 100
-		MinAbundance = .01
-		MaxAbundance = .5
-		Variance = 0
-		MinAltitude = .2 //Should begin right at edge of atmo
-		MaxAltitude = .2
-		MinRange = 1
-		MaxRange = 1
-	}
-}
-
+// Exospheric - Slivers of scoopable Nitronite at the real atmo edge
 PLANETARY_RESOURCE
 {
 	ResourceName = Nitronite
 	ResourceType = 3
 	PlanetName = Eve
-
+	
 	Distribution
-	{
-		PresenceChance = 100
-		MinAbundance = .1
-		MaxAbundance = .5
-		Variance = 0
-		MinAltitude = .257 //Should begin right at edge of atmo
-		MaxAltitude = .257
-		MinRange = 1
-		MaxRange = 1
-	}
+    {
+        PresenceChance = 100
+        MinAbundance = 0.1
+        MaxAbundance = 0.5
+        MinAltitude = 0.25
+        MaxAltitude = 0.25
+        MinRange = 0.2
+        MaxRange = 0.2
+        Variance = 0
+    }
 }
-
+PLANETARY_RESOURCE
+{
+	ResourceName = Nitronite
+	ResourceType = 3
+	PlanetName = Kerbin
+	
+	Distribution
+    {
+        PresenceChance = 100
+        MinAbundance = 10
+        MaxAbundance = 10
+        MinAltitude = 0.22
+        MaxAltitude = 0.22
+        MinRange = 0.2
+        MaxRange = 0.2
+        Variance = 0
+    }
+}
 PLANETARY_RESOURCE
 {
 	ResourceName = Nitronite
 	ResourceType = 3
 	PlanetName = Duna
-
+	
 	Distribution
-	{
-		PresenceChance = 100
-		MinAbundance = .001
-		MaxAbundance = .05
-		Variance = 0
-		MinAltitude = .001 //Should begin right at edge of atmo
-		MaxAltitude = .001
-		MinRange = 1
-		MaxRange = 1
-	}
+    {
+        PresenceChance = 100
+        MinAbundance = 0.1
+        MaxAbundance = 0.5
+        MinAltitude = 0.22
+        MaxAltitude = 0.22
+        MinRange = 0.2
+        MaxRange = 0.2
+        Variance = 0
+    }
 }
-
 PLANETARY_RESOURCE
 {
 	ResourceName = Nitronite
 	ResourceType = 3
 	PlanetName = Jool
-
+	
 	Distribution
-	{
-		PresenceChance = 100
-		MinAbundance = .1
-		MaxAbundance = .5
-		Variance = 0
-		MinAltitude = 0.0665 //Should begin right at edge of atmo
-		MaxAltitude = 0.0665
-		MinRange = 1
-		MaxRange = 1
-	}
+    {
+        PresenceChance = 100
+        MinAbundance = 0.1
+        MaxAbundance = 0.5
+        MinAltitude = 0.05
+        MaxAltitude = 0.05
+        MinRange = 0.2
+        MaxRange = 0.2
+        Variance = 0
+    }
+}
+PLANETARY_RESOURCE
+{
+	ResourceName = Nitronite
+	ResourceType = 3
+	PlanetName = Laythe
+	
+	Distribution
+    {
+        PresenceChance = 100
+        MinAbundance = 3
+        MaxAbundance = 5
+        MinAltitude = 0.2
+        MaxAltitude = 0.2
+        MinRange = 0.2
+        MaxRange = 0.2
+        Variance = 0
+    }
 }

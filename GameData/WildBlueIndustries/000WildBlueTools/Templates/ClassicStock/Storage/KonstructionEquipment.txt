@@ -6,7 +6,7 @@ KONSTRUCTION_TEMPLATE
 	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Konstruction
 	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/KonstructionGlow
 	TechRequired = advScienceTech
-	description = This kit stores the resources needed to create equipment. Equipment is used to outfit your modules.
+	description = This kit stores the resources needed to create Equipment. Equipment is used to outfit and repair your modules.
 	templateTags = stowage
 
 	RESOURCE

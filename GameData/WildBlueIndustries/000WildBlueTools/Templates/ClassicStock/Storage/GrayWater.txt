@@ -2,6 +2,7 @@ RESOURCE_DEFINITION
 {
 	name = GrayWater
 	displayName = GrayWater
+	abbreviation = GW
 	density = 0.00105
 	hsp = 4223
 	flowMode = ALL_VESSEL
@@ -9,6 +10,7 @@ RESOURCE_DEFINITION
 	isTweakable = true
 	isVisible = true
 	unitCost = 0
+	color = 0.69, 0.69, 0.78
 	volume = 1
 }
 
@@ -18,7 +20,7 @@ STORAGE_TEMPLATE
 	name = GrayWater
 	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/GrayWater
 	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/GrayWater
-	description = This kit stores gray water, which can be purified into Water.
+	description = This kit stores gray water, which can be purified into usable Water.
 	templateTags = stowage
 
 	RESOURCE
@@ -49,13 +51,12 @@ GLOBAL_RESOURCE
 	Distribution
 	{
 		PresenceChance = 20
-		MinAbundance = .001
+		MinAbundance = 0.001
 		MaxAbundance = 10
 		Variance = 50
 		Dispersal = 3
 	}
 }
-
 GLOBAL_RESOURCE
 {
 	ResourceName = GrayWater
@@ -70,7 +71,6 @@ GLOBAL_RESOURCE
 		Dispersal = 3
 	}
 }
-
 GLOBAL_RESOURCE
 {
 	ResourceName = GrayWater
@@ -79,13 +79,12 @@ GLOBAL_RESOURCE
 	Distribution
 	{
 		PresenceChance = 20
-		MinAbundance = .1
-		MaxAbundance = 50
+		MinAbundance = 0.1
+		MaxAbundance = 5
 		Variance = 20
-		Dispersal = 3
+		Dispersal = 0
 	}
 }
-
 PLANETARY_RESOURCE
 {
 	ResourceName = GrayWater
@@ -101,7 +100,6 @@ PLANETARY_RESOURCE
 		Dispersal = 0
 	}
 }
-
 PLANETARY_RESOURCE
 {
 	ResourceName = GrayWater
@@ -127,7 +125,7 @@ PLANETARY_RESOURCE
 	Distribution
 	{
 		PresenceChance = 100
-		MinAbundance = 90
+		MinAbundance = 80
 		MaxAbundance = 90
 		Variance = 0
 		Dispersal = 3
@@ -143,8 +141,8 @@ PLANETARY_RESOURCE
 	Distribution
 	{
 		PresenceChance = 100
-		MinAbundance = .1
-		MaxAbundance = 20
+		MinAbundance = 1
+		MaxAbundance = 10
 		Variance = 10
 		Dispersal = 3
 	}
@@ -159,7 +157,7 @@ PLANETARY_RESOURCE
 	Distribution
 	{
 		PresenceChance = 100
-		MinAbundance = 1
+		MinAbundance = 5
 		MaxAbundance = 50
 		Variance = 20
 		Dispersal = 3
@@ -175,7 +173,7 @@ PLANETARY_RESOURCE
 	Distribution
 	{
 		PresenceChance = 100
-		MinAbundance = 10
+		MinAbundance = 80
 		MaxAbundance = 90
 		Variance = 0
 		Dispersal = 3
@@ -192,7 +190,37 @@ PLANETARY_RESOURCE
 	{
 		PresenceChance = 100
 		MinAbundance = 1
+		MaxAbundance = 10
+		Variance = 10
+		Dispersal = 3
+	}
+}
+PLANETARY_RESOURCE
+{
+	ResourceName = GrayWater
+	ResourceType = 2
+	PlanetName = Minmus
+	
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = 9
 		MaxAbundance = 20
+		Variance = 10
+		Dispersal = 3
+	}
+}
+PLANETARY_RESOURCE
+{
+	ResourceName = GrayWater
+	ResourceType = 2
+	PlanetName = Eeloo
+	
+	Distribution
+	{
+		PresenceChance = 100
+		MinAbundance = 15
+		MaxAbundance = 25
 		Variance = 10
 		Dispersal = 3
 	}
@@ -221,74 +249,6 @@ BIOME_RESOURCE
 	ResourceType = 0
 	PlanetName = Minmus
 	BiomeName = Poles
-	
-	Distribution
-	{
-		PresenceChance = 100
-		MinAbundance = 5
-		MaxAbundance = 20
-		Variance = 10
-		Dispersal = 3
-	}
-}
-
-BIOME_RESOURCE
-{
-	ResourceName = GrayWater
-	ResourceType = 0
-	PlanetName = Minmus
-	BiomeName = Flats
-	
-	Distribution
-	{
-		PresenceChance = 100
-		MinAbundance = 5
-		MaxAbundance = 20
-		Variance = 10
-		Dispersal = 3
-	}
-}
-
-BIOME_RESOURCE
-{
-	ResourceName = GrayWater
-	ResourceType = 0
-	PlanetName = Minmus
-	BiomeName = Lesser Flats
-	
-	Distribution
-	{
-		PresenceChance = 100
-		MinAbundance = 5
-		MaxAbundance = 20
-		Variance = 10
-		Dispersal = 3
-	}
-}
-
-BIOME_RESOURCE
-{
-	ResourceName = GrayWater
-	ResourceType = 0
-	PlanetName = Minmus
-	BiomeName = Great Flats
-	
-	Distribution
-	{
-		PresenceChance = 100
-		MinAbundance = 5
-		MaxAbundance = 20
-		Variance = 10
-		Dispersal = 3
-	}
-}
-
-BIOME_RESOURCE
-{
-	ResourceName = GrayWater
-	ResourceType = 0
-	PlanetName = Minmus
-	BiomeName = Greater Flats
 	
 	Distribution
 	{

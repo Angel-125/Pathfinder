@@ -653,7 +653,7 @@ namespace WildBlueIndustries
                     latitude = mainBody.GetLatitude(anomalies[index].transform.position);
 
                     //Get the distance (in kilometers) from the anomaly.
-                    distance = GoldStrikeUtils.HaversineDistance(longitude, latitude,
+                    distance = Utils.HaversineDistance(longitude, latitude,
                         this.part.vessel.longitude, this.part.vessel.latitude, this.part.vessel.mainBody);
 
                     //If we're near the anomaly, then we get a big location bonus.
@@ -735,7 +735,7 @@ namespace WildBlueIndustries
                     return 0f;
 
                 //In kilometers
-                distance = GoldStrikeUtils.HaversineDistance(vesselModule.lastProspectLongitude, vesselModule.lastProspectLatitude,
+                distance = Utils.HaversineDistance(vesselModule.lastProspectLongitude, vesselModule.lastProspectLatitude,
                     this.part.vessel.longitude, this.part.vessel.latitude, this.part.vessel.mainBody);
             }
 

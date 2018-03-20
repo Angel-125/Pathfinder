@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.4.0
+- Recompiled for KSP 1.4.1
+
 2.3.4
 - WBI update
 

@@ -63,7 +63,7 @@ namespace WildBlueIndustries
         #region Housekeeping
         protected void debugLog(string message)
         {
-            if (showDebugLog == true)
+            if (showDebugLog)
                 Debug.Log("[WBIPathfinderScenario] - " + message);
         }
 
@@ -72,6 +72,7 @@ namespace WildBlueIndustries
             base.OnAwake();
             Instance = this;
             GameEvents.OnGameSettingsApplied.Add(onGameSettingsApplied);
+            showDebugLog = PathfinderSettings.LoggingEnabled;
         }
 
         public void Destroy()
@@ -390,7 +391,7 @@ namespace WildBlueIndustries
                 return double.MaxValue;
 
             //Calculate the distance
-            distance = GoldStrikeUtils.HaversineDistance(vesselModule.lastProspectLongitude, vesselModule.lastProspectLatitude,
+            distance = Utils.HaversineDistance(vesselModule.lastProspectLongitude, vesselModule.lastProspectLatitude,
                 vessel.longitude, vessel.latitude, vessel.mainBody);
 
             return distance;
@@ -537,7 +538,7 @@ namespace WildBlueIndustries
                 lode = lodes[index];
                 debugLog("checking lode: " + lode.ToString());
 
-                distance = GoldStrikeUtils.HaversineDistance(longitude, latitude, lode.longitude, lode.lattitude, FlightGlobals.Bodies[lode.planetID]);
+                distance = Utils.HaversineDistance(longitude, latitude, lode.longitude, lode.lattitude, FlightGlobals.Bodies[lode.planetID]);
                 debugLog("distance between current location and lode location: " + distance);
                 if ((distance <= searchDistance) && (distance < prevDistance))
                 {

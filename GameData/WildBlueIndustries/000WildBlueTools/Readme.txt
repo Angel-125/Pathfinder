@@ -6,6 +6,46 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.50
+- Recompiled for KSP 1.4.1
+- Gave ElectroPlasma a small amount of density.
+- Fixed an edge case where WBIProspector would generate an NRE.
+- WBIModuleScienceExperiment can now check for proximity to an anomaly as a requirement.
+- New experiment result: WBIUnlockTechResult - You can use this experiment result to flag one or more parts as experimental. Just like with a part test contract, an experimental part can be used even if its tech node is unlocked.
+- Added new Breakthrough Research contract. It makes use of the WBIUnlockTechResult module described above.
+- New WBIModuleAsteroidResource allows you to guarantee that a resource will be available if the asteroid is a magic boulder.
+- New WBIToolTipManager can read PART_TIP config nodes and provide tips to players. It's an alternate way to teach players how to use specific parts and handy for those who don't read the KSPedia, part descriptions, or wiki pages.
+- Many updates for Classic Stock play mode - thanks JadeOfMarr! :)
+
+Refinery
+
+The Refinery is an new app available at the space center and in flight. It lets you produce and/or store resources in limited amounts. Such resources could be rare and not readily available for purchase. In fact, if you try to launch a craft with Refinery resources, those resources will be cleared before pre-launch. Once you launch the craft, you can purchase the Refinery resource, and when you recover the craft, its Refinery resources will be stored in the Refinery up to its maximum capacity.
+
+Refinery nodes specify resources that are produced and/or stored in the Refinery.
+You can specify one or more Refinery nodes with the same resource. Each node will become a production tier and appear in the order that you list them in the config file. Below is an example.
+
+//New tiers appear in the same order as these nodes appear in the config file.
+REFINERY
+{
+	resourceName = Graviolium
+
+	//Optional tech node required to unlock the tier.
+	techRequired = wbiSaucerTechnologies
+
+	//How many units per day of the resource to produce
+	//Set to 0 if you want to just store the resource and not produce it.
+	unitsPerDay = 10
+
+	//Multiplied by the resource's unit cost to determine the cost to produce a unit of the resource.
+	unitCostMultiplier = 1.75
+
+	//Maximum number of units that can be stored at the Refinery.
+	maxAmount = 50000
+
+	//The cost to unlock the production tier
+	unlockCost = 250000
+}
+
 1.40
 - Streamlined the WBIModuleResourceConverter
 - WBIProspector now supports one or more harvest types.
@@ -291,6 +331,10 @@ Science System
 - Adjusted Ore and XenonGas capacities to reflect stock resource volumes.
 
 ---LICENSE---
+Some resource definitions courtesy of Community Resource Pack. License: CC-BY-NC-SA 4.0
+
+Refinery icon by Goran tek-en License: CC-BY-NC-SA 4.0
+
 Art Assets, including .mu, .mbm, and .dds files are copyright 2014-2016 by Michael Billard, All Rights Reserved.
 
 Wild Blue Industries is trademarked by Michael Billard. All rights reserved.

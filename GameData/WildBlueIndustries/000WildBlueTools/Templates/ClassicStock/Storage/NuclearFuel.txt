@@ -18,7 +18,7 @@ STORAGE_TEMPLATE
 	shortName = NuclearFuel
 	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/NuclearFuel
 	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/NuclearFuel
-	description = This kit stores nuclear fuel, used in reactors and some engines. It can be made from Blutonium and Hexagen.
+	description = This kit stores refined nuclear material, used in reactors and as propellant in some engines. It can be made from Blutonium and Hexagen.
 	templateTags = stowage
 
 	RESOURCE
@@ -27,5 +27,4 @@ STORAGE_TEMPLATE
 		amount = 5600
 		maxAmount = 5600
 	}
-
 }

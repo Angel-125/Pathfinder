@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+X
+- Recompiled for KSP 1.4.1
+
 1.21 Gigawatts
 This release focuses on resource harvesting by making quality of life improvements in the Lasso parts and adding the ability to collect exoatmospheric resources via a new part. Thanks for your help, JadeOfMaar and Rock3tman! :)
 
@@ -17,6 +20,9 @@ Lasso
 
 Resources Definitions
 - Added exospheric definitions for Atmosphere, Water, Minerite, and Nitronite. With enough time and the proper equipment, you can skim the atmosphere of worlds like Kerbin, Laythe, Duna, Eve, and Jool to make LiquidFuel and Oxidizer!
+
+1.25
+- Recompiled for KSP 1.4.1
 
 1.20
 - WBT update

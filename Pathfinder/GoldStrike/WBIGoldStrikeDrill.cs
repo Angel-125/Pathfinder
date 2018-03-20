@@ -59,6 +59,12 @@ namespace WildBlueIndustries
         public Vector3d lastLocation = Vector3d.zero;
         public PartResourceDefinition outputDef;
 
+        protected override void debugLog(string message)
+        {
+            if (WBIPathfinderScenario.showDebugLog == true)
+                Debug.Log("[" + this.ClassName + "] - " + message);
+        }
+
         public override void StartConverter()
         {
             //Update the output units
@@ -163,7 +169,7 @@ namespace WildBlueIndustries
                 return;
 
             //If we've traveled too far then trigger a node search.
-            double travelDistance = GoldStrikeUtils.HaversineDistance(this.part.vessel.longitude, this.part.vessel.latitude,
+            double travelDistance = Utils.HaversineDistance(this.part.vessel.longitude, this.part.vessel.latitude,
                 lastLocation.x, lastLocation.y, this.part.vessel.mainBody);
             if (travelDistance > maxHarvestRange)
             {

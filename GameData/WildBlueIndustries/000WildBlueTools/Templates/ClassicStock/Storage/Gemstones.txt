@@ -2,12 +2,14 @@ RESOURCE_DEFINITION
 {
 	name = Gemstones
 	displayName = Gemstones
+	abbreviation = GS
 	density = 0.004625
 	flowMode = ALL_VESSEL
 	transfer = PUMP
 	unitCost = 175
 	isTweakable = true
 	isVisible = true
+	color = 0.87, 0.44, 0.44
 	volume = 1
 }
 
@@ -18,7 +20,7 @@ STORAGE_TEMPLATE
 	shortName = Gemstones
 	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Gemstones
 	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Gemstones
-	description = This kit stores gemstones, good for earning Funds.
+	description = This kit stores Gemstones, good for earning Funds.
 	templateTags = stowage
 
 	RESOURCE
@@ -67,6 +69,51 @@ PLANETARY_RESOURCE
 		PresenceChance = 0
 		MinAbundance = 0
 		MaxAbundance = 0
+		Variance = 0
+		Dispersal = 0
+	}
+}
+PLANETARY_RESOURCE
+{
+	ResourceName = Gemstones
+	ResourceType = 0
+	PlanetName = Gilly
+	
+	Distribution
+	{
+		PresenceChance = 0
+		MinAbundance = 0
+		MaxAbundance = 0
+		Variance = 0
+		Dispersal = 0
+	}
+}
+PLANETARY_RESOURCE
+{
+	ResourceName = Gemstones
+	ResourceType = 0
+	PlanetName = Bop
+	
+	Distribution
+	{
+		PresenceChance = 80
+		MinAbundance = 0.1
+		MaxAbundance = 3
+		Variance = 0
+		Dispersal = 0
+	}
+}
+PLANETARY_RESOURCE
+{
+	ResourceName = Gemstones
+	ResourceType = 0
+	PlanetName = Pol
+	
+	Distribution
+	{
+		PresenceChance = 90
+		MinAbundance = 1
+		MaxAbundance = 10
 		Variance = 0
 		Dispersal = 0
 	}

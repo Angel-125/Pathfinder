@@ -2,11 +2,13 @@ RESOURCE_DEFINITION
 {
 	name = PreciousMetals
 	displayName = PreciousMetals
+	abbreviation = PM
 	density = 0.0027
 	flowMode = ALL_VESSEL
 	transfer = PUMP
 	isTweakable = true
    	isVisible = true
+	color = 0.56, 0.37, 0.88
 	unitCost = 150.0
 	volume = 1
 }
@@ -49,13 +51,57 @@ GLOBAL_RESOURCE
 	Distribution
 	{
 		PresenceChance = 70
-		MinAbundance = .001
+		MinAbundance = 0.1
 		MaxAbundance = 10
 		Variance = 50
-		Dispersal = 3
+		Dispersal = 50
 	}
 }
-
+PLANETARY_RESOURCE
+{
+	ResourceName = PreciousMetals
+	ResourceType = 0
+	PlanetName = Jool
+	
+	Distribution
+	{
+		PresenceChance = 0
+		MinAbundance = 0
+		MaxAbundance = 0
+		Variance = 0
+		Dispersal = 0
+	}
+}
+PLANETARY_RESOURCE
+{
+	ResourceName = PreciousMetals
+	ResourceType = 0
+	PlanetName = Moho
+	
+	Distribution
+	{
+		PresenceChance = 70
+		MinAbundance = 0.4
+		MaxAbundance = 5
+		Variance = 30
+		Dispersal = 10
+	}
+}
+PLANETARY_RESOURCE
+{
+	ResourceName = PreciousMetals
+	ResourceType = 0
+	PlanetName = Eve
+	
+	Distribution
+	{
+		PresenceChance = 70
+		MinAbundance = 4
+		MaxAbundance = 12
+		Variance = 50
+		Dispersal = 50
+	}
+}
 PLANETARY_RESOURCE
 {
 	ResourceName = PreciousMetals
@@ -71,19 +117,33 @@ PLANETARY_RESOURCE
 		Dispersal = 3
 	}
 }
-
 PLANETARY_RESOURCE
 {
 	ResourceName = PreciousMetals
 	ResourceType = 0
-	PlanetName = Jool
+	PlanetName = Laythe
 	
 	Distribution
 	{
-		PresenceChance = 0
-		MinAbundance = 0
-		MaxAbundance = 0
-		Variance = 0
-		Dispersal = 0
+		PresenceChance = 70
+		MinAbundance = 0.4
+		MaxAbundance = 12
+		Variance = 50
+		Dispersal = 50
+	}
+}
+PLANETARY_RESOURCE
+{
+	ResourceName = PreciousMetals
+	ResourceType = 0
+	PlanetName = Eeloo
+	
+	Distribution
+	{
+		PresenceChance = 50
+		MinAbundance = 0.1
+		MaxAbundance = 3
+		Variance = 50
+		Dispersal = 50
 	}
 }

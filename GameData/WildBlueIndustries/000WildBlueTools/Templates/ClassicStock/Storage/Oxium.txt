@@ -1,3 +1,4 @@
+//A.K.A. Liquid oxygen
 RESOURCE_DEFINITION
 {
 	name = Oxium
@@ -8,7 +9,6 @@ RESOURCE_DEFINITION
 	isTweakable = true
    	isVisible = true
 	unitCost = 0.001
-	color = 0,1,0
 	volume = 1
 }
 
@@ -18,7 +18,7 @@ STORAGE_TEMPLATE
 	author = Angel-125
 	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Oxium
 	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/OxiumGlow
-	description = This kit stores oxium, a key component of Oxidizer and MonoPropellant.
+	description = This kit stores Oxium, pure liquid Oxygen, a key component of Oxidizer and MonoPropellant.
 	templateTags = stowage
 
 	RESOURCE
