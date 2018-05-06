@@ -43,13 +43,43 @@ namespace WildBlueIndustries
         public Dictionary<string, EDistributionModes> distributionMap = new Dictionary<string, EDistributionModes>();
         string templateName;
         WBIResourceSwitcher switcher;
-        DistributionView distributionView = new DistributionView();
+        DistributionView distributionView = null;
         List<PartResource> sharedResourcesCache = new List<PartResource>();
         List<PartResource> requiredResourcesCache = new List<PartResource>();
 
         [KSPEvent(guiActiveEditor = true, guiActive = true, guiName = "Setup Distribution")]
         public void SetupDistribution()
         {
+            //Get the resource count
+            int resourceCount = this.part.Resources.Count;
+            if (resourceCount == 0)
+            {
+                ScreenMessages.PostScreenMessage("No resources to distribute.", 5.0f, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
+
+            //Account for blacklisted resources
+            int blacklistCount = 0;
+            if (!string.IsNullOrEmpty(resourceBlacklist))
+            {
+                for (int index = 0; index < resourceCount; index++)
+                {
+                    if (resourceBlacklist.Contains(this.part.Resources[index].resourceName))
+                        blacklistCount += 1;
+                }
+            }
+            resourceCount -= blacklistCount;
+            if (resourceCount <= 0)
+            {
+                ScreenMessages.PostScreenMessage("No resources to distribute.", 5.0f, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
+
+            //If our distribution map doesn't match the resource count then rebuild the map.
+            if (distributionMap.Keys.Count != resourceCount)
+                RebuildDistributionList();
+
+            //Now show the view.
             distributionView.isParticipating = this.isParticipating;
             distributionView.distributionMap = this.distributionMap;
             distributionView.SetVisible(!distributionView.IsVisible());
@@ -94,8 +124,8 @@ namespace WildBlueIndustries
             {
                 distNode = distributionNodes[index];
                 distributionMap.Add(distNode.GetValue("resourceName"), (EDistributionModes)int.Parse(distNode.GetValue("mode")));
-                RebuildDistributionCache();
             }
+            RebuildDistributionCache();
         }
 
         public override void OnSave(ConfigNode node)
@@ -119,6 +149,7 @@ namespace WildBlueIndustries
             base.OnStart(state);
 
             //Setup view
+            distributionView = new DistributionView();
             distributionView.part = this.part;
             distributionView.isParticipating = this.isParticipating;
             distributionView.distributionMap = this.distributionMap;
@@ -136,6 +167,8 @@ namespace WildBlueIndustries
             //if we have an empty list then create a new one.
             if (distributionMap.Keys.Count == 0)
                 RebuildDistributionList();
+            else
+                RebuildDistributionCache();
 
             if (isConsumer)
             {

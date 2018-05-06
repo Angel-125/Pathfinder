@@ -5,6 +5,7 @@ A KSP mod that provides several part modules to manipulate various mesh transfor
 WBIMagnetController: Primarily used by robot arms to grab parts and move them around.
 WBILightController: Controls a light.
 WBIRotationController: Rotates mesh transforms to help animate a robot arm.
+WBITranslationController: Moves a mesh transform back and forth.
 WBIServoManager: Added after all of the above part modules in a config file, the servo manager coordinates all the controllers. It provides GUI controls to manipulate the controllers. You can create, load, and save a series of servo snapshots into a sequence and then play back the snapshots to animate a part.
 
 WBIHoverController: Provides hover management to engines.
@@ -15,11 +16,39 @@ WBIAirParkController: Enables a vessel to "part" in mid air and be treated as if
 
 For a description of the API, go to https://github.com/Angel-125/KerbalActuators/wiki
 
+KerbalActuators comes with two sample parts: SampleArm and SampleCrane. To use these parts, you'll need to rename the config files, found in Parts/Utility from .txt to .cfg.
+
 ---INSTALLATION---
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
 ---REVISION HISORY---
+
+1.3.0.4
+- Minor bug fixes
+
+1.3.0.3
+- Minor fixes for reverse-thrust in WBIPropSpinner.
+
+1.3.0.2
+New Actuators
+- WBITranslationController: This part module lets you move mesh transforms around.
+
+New Sample Parts
+- Mk1 Station Arm (Advanced Construction): This arm can be use to maneuver payloads around. Found in Parts/Utility/SampleArm.
+- Konstruction Krane (Advanced Construction): The ground equivalent to the Mk1 Station Arm, the Konstruction krane is helpful for picking stuff up on the ground and placing them were you want to. Found in Parts/Utility/SampleCrane.
+
+Bug Fixes & Enhancements
+- Added an emergency stop button to halt all servo movement.
+- When your rotation controller is moving in one direction and you rotate in the opposite direction, the controller will now immediately stop and start rotating in the proper direction.
+- Add icons for several servo control buttons.
+- WBILightController now works properly.
+- You can now specify where to find the icons using a KerbalActuators config node:
+KerbalActuators
+{
+	iconsFolder = WildBlueIndustries/001KerbalActuators/Icons
+	VTOLAppButtonIcon = WildBlueIndustries/001KerbalActuators/Icons/VTOLAppButton
+}
 
 1.2.0
 - Added WBIMagnetController and WBILightController.

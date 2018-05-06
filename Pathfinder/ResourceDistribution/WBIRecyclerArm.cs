@@ -26,13 +26,26 @@ namespace WildBlueIndustries
     public class WBIRecyclerArm : ModuleAnimateGeneric
     {
         [KSPField]
-        public string recycleResource = "Equipment";
+        public string primaryRecycleResource = "Equipment";
+
+        [KSPField]
+        public string secondaryRecyceResource = "MaterialKits";
+
+        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Resource Mode")]
+        public string recycleMode = "Equipment";
+
+        [KSPField(isPersistant = true)]
+        public bool usePrimaryResource = true;
+
+        [KSPField]
+        public float recyclePercent = 0.5f;
 
         public bool IsActivated;
 
         protected bool emittersEnabled;
         protected PartResourceDefinition def;
-        BaseEvent toggleEvent;
+        protected BaseEvent toggleEvent;
+        protected string recycleResource = "Equipment";
 
         protected void Log(string message)
         {
@@ -43,14 +56,22 @@ namespace WildBlueIndustries
             }
         }
 
+        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Toggle Recycle Mode")]
+        public void ToggleRecycleMode()
+        {
+            usePrimaryResource = !usePrimaryResource;
+
+            setupRecycleResource();
+        }
+
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
             if (!HighLogic.LoadedSceneIsFlight)
                 return;
 
-            //Find the resource definition
-            def = ResourceHelper.DefinitionForResource(recycleResource);
+            //Setup recycle resource
+            setupRecycleResource();
 
             //Get the toggle event
             toggleEvent = Events["Toggle"];
@@ -117,10 +138,22 @@ namespace WildBlueIndustries
             }
         }
 
+        protected void setupRecycleResource()
+        {
+            if (usePrimaryResource)
+                recycleResource = primaryRecycleResource;
+            else
+                recycleResource = secondaryRecyceResource;
+
+            def = ResourceHelper.DefinitionForResource(recycleResource);
+
+            recycleMode = def.displayName;
+        }
+
         protected void recyclePart(Part doomed)
         {
             //Get the total units of the recycle resource
-            double totalRecycleUnits = doomed.mass / def.density;
+            double totalRecycleUnits = (doomed.mass / def.density) * recyclePercent;
 
             //Shut off any resource distribution
             WBIResourceDistributor distributor = doomed.FindModuleImplementing<WBIResourceDistributor>();
@@ -162,6 +195,20 @@ namespace WildBlueIndustries
                 if (scrappedResource.resourceName == "ElectricCharge")
                     continue;
 
+                //Priority goes to the vessel that owns the recycler arm.
+                currentVessel = this.part.vessel;
+                amountRecycled = currentVessel.rootPart.RequestResource(scrappedResource.resourceName, -scrappedResource.amount);
+                scrappedResource.amount += amountRecycled;
+                Log("Arm owner recycled " + Math.Abs(amountRecycled) + " units of " + scrappedResource.resourceName);
+                Log("Units remaining: " + scrappedResource.amount);
+
+                //Zero out the resource if needed.
+                if (scrappedResource.amount < 0.001f)
+                    scrappedResource.amount = 0f;
+
+                //Record what we recycled.
+                totalAmountRecycled += amountRecycled;
+
                 //Now go through every loaded vessel and hand out the resource.
                 for (int vesselIndex = 0; vesselIndex < totalVessels; vesselIndex++)
                 {
@@ -172,17 +219,22 @@ namespace WildBlueIndustries
                     //Get the vessel that we'll distribute the resource to.
                     currentVessel = FlightGlobals.VesselsLoaded[vesselIndex];
 
+                    //Skip the arm's vessel
+                    if (currentVessel == this.part.vessel)
+                        continue;
+
                     //Skip the vessel if it's not in range
                     if ((Vector3.Distance(vessel.GetWorldPos3D(), FlightGlobals.ActiveVessel.GetWorldPos3D()) / WBIDistributionManager.kDefaultDistributionRange) > 1.0f)
                     {
-                        Debug.Log("Vessel " + currentVessel.vesselName + " not in range");
+                        Log("Vessel " + currentVessel.vesselName + " not in range");
                         continue;
                     }
 
                     //Hand out the resource.
                     amountRecycled = currentVessel.rootPart.RequestResource(scrappedResource.resourceName, -scrappedResource.amount);
-                    scrappedResource.amount = amountRecycled;
-                    Debug.Log("Recycled " + amountRecycled + " units of " + scrappedResource.resourceName);
+                    scrappedResource.amount += amountRecycled;
+                    Log("Nearby vessel recycled " + Math.Abs(amountRecycled) + " units of " + scrappedResource.resourceName);
+                    Log("Units remaining: " + scrappedResource.amount);
 
                     //Zero out the resource if needed.
                     if (scrappedResource.amount < 0.001f)

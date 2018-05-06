@@ -46,15 +46,19 @@ namespace WildBlueIndustries
         public override void SetVisible(bool newValue)
         {
             base.SetVisible(newValue);
-            if (!newValue && rebuildCache != null)
-            {
-                WBIDistributionManager.Log("Calling rebuildCache");
-                rebuildCache();
-            }
             if (!newValue)
             {
-                WBIDistributionManager.Log("Calling distribute resources");
-                WBIDistributionManager.Instance.DistributeResourcesImmediately();
+                if (rebuildCache != null)
+                {
+                    WBIDistributionManager.Log("Calling rebuildCache");
+                    rebuildCache();
+                }
+
+                if (HighLogic.LoadedSceneIsFlight)
+                {
+                    WBIDistributionManager.Log("Calling distribute resources");
+                    WBIDistributionManager.Instance.DistributeResourcesImmediately();
+                }
             }
         }
 

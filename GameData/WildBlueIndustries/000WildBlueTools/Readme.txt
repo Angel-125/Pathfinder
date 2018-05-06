@@ -6,6 +6,15 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.55
+- Improved resource summary in the geology lab.
+- Fixed NRE issues with the WBIProspector.
+- Classic Stock play mode now provides a new storage template: Omni Storage. This template lets you add and configure any number of resources up to the container's maximum storage volume. The part module that handles the capability is the new WBIOmniStorage.
+- Added the new WBIOmniConverter. It lets you configure individual converters from a set of converter templates. There are a number of pre-defined templates for Classic Stock play mode.
+- Adjusted Classic Stock resource densities to reflect the 5-liter standard used by most stock resources.
+- Adjusted Classic Stock storage capacities to reflect the 5-liter standard used by most stock resources. These changes will affect new parts and when you reconfigure an existing part.
+- Classic Stock is now the default Play Mode for new installs of WBI mods. Existing games are unchanged.
+
 1.50
 - Recompiled for KSP 1.4.1
 - Gave ElectroPlasma a small amount of density.

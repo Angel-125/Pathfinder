@@ -49,6 +49,9 @@ namespace WildBlueIndustries
         public int minimumVesselRecycleSkill = 5;
 
         [KSPField]
+        public float recyclePercent = 0.5f;
+
+        [KSPField]
         public string recycleResource = "Equipment";
 
         bool scrapConfirmed;
@@ -240,7 +243,7 @@ namespace WildBlueIndustries
         protected void recyclePart(Part doomed, PartResourceDefinition def, ProtoCrewMember astronaut)
         {
             //Get the total units of the recycle resource
-            double totalRecycleUnits = doomed.mass / def.density;
+            double totalRecycleUnits = (doomed.mass / def.density) * recyclePercent;
 
             //Adjust the units recycled based upon experience level.
             totalRecycleUnits *= (astronaut.experienceLevel * (recyclePercentPerSkill / 100.0f));
