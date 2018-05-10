@@ -1,0 +1,322 @@
+PART
+{
+	name = WBI_Tipi
+	module = Part
+	author = Angel-125
+
+	MODEL
+	{
+		model = WildBlueIndustries/Pathfinder/Assets/Tipi
+	}
+	rescaleFactor = 1
+
+	NODE
+	{
+		name = front
+		transform = nodeFront
+	}
+
+	NODE
+	{
+		name = back
+		transform = nodeBack
+	}
+
+	NODE
+	{
+		name = left
+		transform = nodeLeft
+	}
+
+	NODE
+	{
+		name = right
+		transform = nodeRight
+	}
+
+	TechRequired = spaceExploration
+	entryCost = 18000
+	cost = 8000
+	category = Utility
+	subcategory = 0
+	title = (EXPERIMENTAL) Tipi
+	manufacturer = Wild Blue Industries
+	description = This is an experimental part. Use at your own risk.
+
+	// attachment rules: stack, srfAttach, allowStack, allowSrfAttach, allowCollision
+	attachRules = 1,0,1,1,1
+
+	// --- standard part parameters ---
+	mass = 5.25
+	dragModelType = default
+	maximum_drag = 0.2
+	minimum_drag = 0.2
+	angularDrag = 2
+	crashTolerance = 15
+	maxTemp = 900
+	breakingForce = 5000
+	breakingTorque = 5000
+	bulkheadProfiles = size1, srf
+	vesselType = Base
+	CrewCapacity = 4
+
+	INTERNAL
+	{
+		name = WBI_CasaSpace
+	}
+
+	MODULE
+	{
+		name = WBIPartPrinter
+	}
+
+	MODULE
+	{
+		name = ModuleScienceContainer
+		reviewActionName = Review Data
+		storeActionName = Store Experiments
+		collectActionName = Take Data
+		evaOnlyStorage = True
+		storageRange = 2
+		allowRepeatedSubjects = True
+	}
+
+	MODULE
+	{
+		name = ModuleCommand
+		minimumCrew = 0
+	}
+
+	MODULE:NEEDS[Workshop] 
+	{
+		name = OseModuleWorkshop
+		ConversionRate = 1 // How much of a parts mass needs to be processed until it is done
+		ProductivityFactor = 0.25 // How much units of the resource a processed per second
+		UpkeepResource = ElectricCharge // This resource will be consumed 1 per second during processing
+		InputResource = MaterialKits // This resource will be used to process the items
+		MinimumCrew = 2 // Amount of Kerbals needed for the Workshop to work
+	}
+
+	MODULE:NEEDS[Workshop]
+	{
+		name = OseModuleRecycler
+		ConversionRate = 0.15 // How much of a parts mass will be recycled
+		ProductivityFactor = 0.25 // How much units of the resource a processed per second
+		UpkeepResource = ElectricCharge // This resource will be consumed 1 per second during processing
+		OutputResource = MaterialKits // This resource will be created 
+		MinimumCrew = 2 // Amount of Kerbals needed for the Recycler to work
+	}
+
+	MODULE:NEEDS[Workshop]
+	{
+		name = OseModuleCategoryAddon
+		Category = Pods
+		IconPath = Squad/PartList/SimpleIcons/RDicon_commandmodules
+	}
+
+	MODULE:NEEDS[Workshop]
+	{
+		name = OseModuleCategoryAddon
+		Category = FuelTank
+		IconPath = Squad/PartList/SimpleIcons/RDicon_fuelSystems-advanced
+	}
+
+	MODULE:NEEDS[Workshop]
+	{
+		name = OseModuleCategoryAddon
+		Category = Engine
+		IconPath = Squad/PartList/SimpleIcons/RDicon_propulsionSystems
+	}
+
+	MODULE:NEEDS[Workshop]
+	{
+		name = OseModuleCategoryAddon
+		Category = Control
+		IconPath = Squad/PartList/SimpleIcons/R&D_node_icon_largecontrol
+	}
+
+	MODULE:NEEDS[Workshop]
+	{
+		name = OseModuleCategoryAddon
+		Category = Structural
+		IconPath = Squad/PartList/SimpleIcons/R&D_node_icon_generalconstruction
+	}
+
+	MODULE:NEEDS[Workshop]
+	{
+		name = OseModuleCategoryAddon
+		Category = Aero
+		IconPath = Squad/PartList/SimpleIcons/R&D_node_icon_advaerodynamics
+	}
+
+	MODULE:NEEDS[Workshop]
+	{
+		name = OseModuleCategoryAddon
+		Category = Utility
+		IconPath = Squad/PartList/SimpleIcons/R&D_node_icon_generic
+	}
+
+	MODULE:NEEDS[Workshop]
+	{
+		name = OseModuleCategoryAddon
+		Category = Science
+		IconPath = Squad/PartList/SimpleIcons/R&D_node_icon_advsciencetech
+	}
+
+	MODULE
+	{
+		name = ModuleKISItemEvaTweaker
+		editorItemsCategory = false
+		carriable = true
+		equipMode = part
+		equipSlot = jetpack
+		equipMeshName = jetpack_base01
+		equipBoneName = bn_jetpack01
+		equipPos = (0,0.45,0)
+		equipDir = (0,0,0)
+		runSpeed = 0.8
+	}
+
+	MODULE
+	{
+		name = WBIMultipurposeHab
+		enableLogging = True
+
+		//Determines whether or not to show the context menu GUI
+		showGUI = True
+
+		//Some containers don't hold as much resources as the template specifies, while others hold more.
+		//Since the resource templates specify base amounts, the capacity factor specifies a multiplier to
+		//factor into the resource amounts.
+		capacityFactor = 1.0
+
+		//Crew capacity when inflated
+		inflatedCrewCapacity = 4
+
+		//Determines if the part can be reconfigured out in the field.
+		fieldReconfigurable = true
+
+		//name of the template nodes to use
+		templateNodes = PATH_HABITATION
+		resourcesToKeep = Snacks;Food;Oxygen;Water;CarbonDioxide;Waste;WasteWater;PlasmaShielding;Supplies;Mulch;ReplacementParts
+
+		//Short name of the default module template.
+		//This is used when selecting the part in the editor.
+		//User will then right-click on the module to change its type.
+		defaultTemplate = Geology Lab
+
+		//Name of the logo panel transforms
+		logoPanelTransform = logoPanel001, logoPanel002, logoPanel003
+		decalsVisible = true
+
+		//If the part has a KIS container, this is the base and max amount
+		baseStorage = 2000
+		maxStorage = 8000
+
+		partToolTipTitle = Your First Habitat
+		partToolTip = Want to use the Ponderosa for more than one purpose? With a feat of engineering, you can change it in the field. For a price... The cornerstone of your habitation needs, resources created in one of the module's many configurations will benefit from soil analysis.
+opsViewTitle = Ponderosa Operations
+	}
+
+	MODULE
+	{
+		name = WBIResourceDistributor
+	}
+
+	MODULE
+	{
+		name = ModuleKISInventory
+		maxVolume = 8000
+		externalAccess = true
+		internalAccess = true
+		slotsX = 5
+		slotsY = 5
+		slotSize = 50
+		itemIconResolution = 128
+		selfIconResolution = 128
+		openSndPath = KIS/Sounds/containerOpen
+		closeSndPath = KIS/Sounds/containerClose
+		defaultMoveSndPath = KIS/Sounds/itemMove
+	}
+
+	//Seat inventories are added manually.
+	MODULE
+	{
+		name = ModuleKISInventory
+		maxVolume = 0.001
+		slotsX = 2
+		slotsY = 4
+		slotSize = 50
+		itemIconResolution = 128
+		selfIconResolution = 128
+		openSndPath = KIS/Sounds/inventoryOpen
+		closeSndPath = KIS/Sounds/inventoryClose
+	}
+
+	MODULE
+	{
+		name = ModuleKISInventory
+		maxVolume = 0.001
+		slotsX = 2
+		slotsY = 4
+		slotSize = 50
+		itemIconResolution = 128
+		selfIconResolution = 128
+		openSndPath = KIS/Sounds/inventoryOpen
+		closeSndPath = KIS/Sounds/inventoryClose
+	}
+
+	MODULE
+	{
+		name = ModuleKISInventory
+		maxVolume = 0.001
+		slotsX = 2
+		slotsY = 4
+		slotSize = 50
+		itemIconResolution = 128
+		selfIconResolution = 128
+		openSndPath = KIS/Sounds/inventoryOpen
+		closeSndPath = KIS/Sounds/inventoryClose
+	}
+
+	MODULE
+	{
+		name = ModuleKISInventory
+		maxVolume = 0.001
+		slotsX = 2
+		slotsY = 4
+		slotSize = 50
+		itemIconResolution = 128
+		selfIconResolution = 128
+		openSndPath = KIS/Sounds/inventoryOpen
+		closeSndPath = KIS/Sounds/inventoryClose
+	}
+
+	MODULE
+	{
+		name = FlagDecal
+		textureQuadName = flagTransform
+	}
+
+
+	MODULE
+	{
+		//This module is used to change the screens of any monitor props in your IVA. The prop needs to have an InternalScreenSwitcher.
+		name = WBIScreenPropHelper
+
+		//Number of seconds to wait before changing the screens
+		//Set to 0 to keep the images static.
+		screenChangeSeconds = 30.0
+
+		//Separate your paths with a semicolon. Don't forget to add a "/" at the end of your path!
+		screenImagePaths = WildBlueIndustries/Pathfinder/Spaces/Screens/
+	}
+
+	RESOURCE
+	{
+		name = ElectricCharge
+		amount = 200
+		maxAmount = 200
+		isTweakable = false
+	}
+}

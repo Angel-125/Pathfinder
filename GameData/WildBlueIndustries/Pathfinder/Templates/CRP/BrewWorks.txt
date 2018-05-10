@@ -1,0 +1,314 @@
+PATH_INDUSTRY
+{
+	author = Angel-125
+	name = BrewWorks
+	title = Brew Works ISRU
+	shortName = Brew Works
+	TechRequired = advScienceTech
+	description = In-Situ Resource Utilization enables you to live off the land like the settlers of old. The Brew Works is especially useful because it gives you the ability to refine Ore into LiquidFuel and Oxidizer as well as Monopropellant and Xenon. It's also good for making "hydrazine."
+	mass = 5
+	requiredResource = Equipment
+	requiredAmount = 2000
+	templateTags = orbitalWorkshop
+	reconfigureSkill = ConverterSkill
+	logoPanel = WildBlueIndustries/Pathfinder/Decals/BrewWorks
+	glowPanel = WildBlueIndustries/Pathfinder/Decals/BrewWorksGlow
+	toolTip = If you're tired of hauling rocket parts around, why not build them out of the local resources?
+	toolTipTitle = Your First Brew Works
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = LiquidFuel & Oxidizer
+		StartActionName = Start LFO
+		StopActionName = Stop LFO	 
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ConverterSkill
+		EfficiencyBonus = 1.2
+
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Ore
+			Ratio = 0.5
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 30
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = LiquidFuel
+			Ratio = 0.45
+			DumpExcess = false
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = Oxidizer
+			Ratio = 0.55
+			DumpExcess = false
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = MonoPropellant
+		StartActionName = Start MonoPropellant
+		StopActionName = Stop MonoPropellant
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ConverterSkill
+		EfficiencyBonus = 1.2
+
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Ore
+			Ratio = 0.5
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 30
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = MonoPropellant
+			Ratio = 1
+			DumpExcess = false
+		}
+	}
+
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = Distill LiquidFuel
+		StartActionName = Start LiquidFuel
+		StopActionName = Stop LiquidFuel
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ConverterSkill
+		EfficiencyBonus = 1.2
+
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Ore
+			Ratio = 0.45
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 30
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = LiquidFuel
+			Ratio = 0.9
+			DumpExcess = false
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+	}
+
+	
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = Distill Oxidizer
+		StartActionName = Start Oxidizer
+		StopActionName = Stop Oxidizer
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ConverterSkill
+		EfficiencyBonus = 1.2
+
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Ore
+			Ratio = 0.55
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 30
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = Oxidizer
+			Ratio = 1.1
+			DumpExcess = false
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = Crack Xenon Gas
+		StartActionName = Start Xenon
+		StopActionName = Stop Xenon
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ConverterSkill
+		EfficiencyBonus = 1.2
+
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Ore
+			Ratio = 2.25
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 30
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = XenonGas
+			Ratio = 0.1
+			DumpExcess = false
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleBreakableConverter
+		ConverterName = Konkrete
+		StartActionName = Start Konkrete
+		StopActionName = Stop Konkrete
+		AutoShutdown = true
+
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ConverterSkill
+		EfficiencyBonus = 1
+
+		 
+		 INPUT_RESOURCE
+		 {
+			ResourceName = Water
+			Ratio = 0.5
+			FlowMode = STAGE_PRIORITY_FLOW
+  		 }
+		 INPUT_RESOURCE
+		 {
+			ResourceName = Minerals
+			Ratio = 0.1
+			FlowMode = STAGE_PRIORITY_FLOW
+  		 }
+		 INPUT_RESOURCE
+		 {
+			ResourceName = Slag
+			Ratio = 0.1
+			FlowMode = STAGE_PRIORITY_FLOW
+  		 }
+		 INPUT_RESOURCE
+		 {
+			ResourceName = ElectricCharge
+			Ratio = 30
+		 }
+		 OUTPUT_RESOURCE
+		 {
+			ResourceName = Konkrete
+			Ratio = 0.25
+			DumpExcess = false
+			FlowMode = STAGE_PRIORITY_FLOW
+		 }
+	}
+
+	MODULE
+	{
+		name = WBIEfficiencyMonitor
+		efficiencyType = industry
+		harvestType = 0
+	}
+
+	RESOURCE
+	{
+		name = ElectricCharge
+		amount = 200
+		maxAmount = 200
+		isTweakable = true
+	}
+
+	RESOURCE
+	{
+		name = XenonGas
+		amount = 8000
+		maxAmount = 8000
+		isTweakable = true
+	}
+
+	RESOURCE
+	{
+		name = LiquidFuel
+		amount = 800
+		maxAmount = 800
+		isTweakable = true
+	}
+
+	RESOURCE
+	{
+		name = Oxidizer
+		amount = 800
+		maxAmount = 800
+		isTweakable = true
+	}
+
+	RESOURCE
+	{
+		name = MonoPropellant
+		amount = 800
+		maxAmount = 800
+		isTweakable = true
+	}
+
+	RESOURCE
+	{
+		name = Ore
+		amount = 800
+		maxAmount = 800
+		isTweakable = true
+	}
+
+}

@@ -58,6 +58,9 @@ namespace WildBlueIndustries
         public GoldStrikeLode nearestLode = null;
         public Vector3d lastLocation = Vector3d.zero;
         public PartResourceDefinition outputDef;
+        IEnumerable<ResourceCache.AbundanceSummary> abundanceCache;
+        string currentBiome = string.Empty;
+        List<ResourceRatio> resourceRatios;
 
         protected override void debugLog(string message)
         {
@@ -79,6 +82,9 @@ namespace WildBlueIndustries
 
             //Make sure our lode is up to date
             UpdateLode();
+
+            //Setup the resource ratio list
+            resourceRatios = new List<ResourceRatio>();
         }
 
         public bool UpdateLode()
@@ -167,6 +173,24 @@ namespace WildBlueIndustries
             //Make sure our conditions are met.
             if (this.part.vessel.situation != Vessel.Situations.PRELAUNCH && this.part.vessel.situation != Vessel.Situations.LANDED)
                 return;
+
+            //Check the biome
+            string biomeName = string.Empty;
+            if (this.part.vessel.situation == Vessel.Situations.LANDED ||
+                this.part.vessel.situation == Vessel.Situations.SPLASHED ||
+                this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
+            {
+                biomeName = Utils.GetCurrentBiome(this.part.vessel).name;
+                if (currentBiome != biomeName)
+                {
+                    currentBiome = biomeName;
+                    rebuildResourceRatios();
+                }
+
+                //And make sure our abundance summary is up to date
+                else if (resourceRatios.Count == 0)
+                    rebuildResourceRatios();
+            }
 
             //If we've traveled too far then trigger a node search.
             double travelDistance = Utils.HaversineDistance(this.part.vessel.longitude, this.part.vessel.latitude,
@@ -291,6 +315,93 @@ namespace WildBlueIndustries
 
             //Status update
             lodeStatus = Localizer.Format(statusOKName);
+        }
+
+        protected void rebuildResourceRatios()
+        {
+            PartResourceDefinition resourceDef = null;
+            float abundance = 0f;
+            float harvestEfficiency;
+            ResourceRatio ratio;
+
+            if (!ResourceMap.Instance.IsPlanetScanned(this.part.vessel.mainBody.flightGlobalsIndex) && !ResourceMap.Instance.IsBiomeUnlocked(this.part.vessel.mainBody.flightGlobalsIndex, currentBiome))
+                return;
+            currentBiome = Utils.GetCurrentBiome(this.part.vessel).name;
+            abundanceCache = ResourceCache.Instance.AbundanceCache.
+                Where(a => a.HarvestType == HarvestTypes.Planetary && a.BodyId == this.part.vessel.mainBody.flightGlobalsIndex && a.BiomeName == currentBiome);
+
+            debugLog("Rebuilding resource ratios... ");
+            debugLog("abundanceCache count: " + abundanceCache.ToArray().Length);
+            resourceRatios.Clear();
+            this.recipe.Outputs.Clear();
+            foreach (ResourceCache.AbundanceSummary summary in abundanceCache)
+            {
+                //Skip primary resource
+                if (summary.ResourceName == ResourceName)
+                    continue;
+
+                //Get the resource definition
+                debugLog("Getting abundance for " + summary.ResourceName);
+                resourceDef = ResourceHelper.DefinitionForResource(summary.ResourceName);
+                if (resourceDef == null)
+                    continue;
+
+                //Get the abundance
+                abundance = ResourceMap.Instance.GetAbundance(new AbundanceRequest()
+                {
+                    Altitude = this.vessel.altitude,
+                    BodyId = FlightGlobals.currentMainBody.flightGlobalsIndex,
+                    CheckForLock = true,
+                    Latitude = this.vessel.latitude,
+                    Longitude = this.vessel.longitude,
+                    ResourceType = HarvestTypes.Planetary,
+                    ResourceName = summary.ResourceName
+                });
+                if (abundance < HarvestThreshold || abundance < 0.001f)
+                    continue;
+
+                //Now determine the harvest efficiency
+                harvestEfficiency = abundance * Efficiency;
+
+                //Setup the resource ratio
+                ratio = new ResourceRatio();
+                ratio.ResourceName = summary.ResourceName;
+                ratio.Ratio = harvestEfficiency;
+                ratio.DumpExcess = true;
+                ratio.FlowMode = ResourceFlowMode.NULL;
+
+                resourceRatios.Add(ratio);
+                debugLog("Added resource ratio for " + summary.ResourceName + " abundance: " + abundance);
+            }
+            debugLog("Found abundances for " + resourceRatios.Count + " resources");
+        }
+
+        protected override void LoadRecipe(double harvestRate)
+        {
+            base.LoadRecipe(harvestRate);
+            if (!HighLogic.LoadedSceneIsFlight)
+                return;
+            if (!IsActivated)
+                return;
+
+            //No abundance summary? Then we're done.
+            if (resourceRatios.Count == 0)
+                return;
+
+            //Set dump excess flag
+            ResourceRatio ratio;
+            int ratioCount = this.recipe.Outputs.Count;
+            for (int index = 0; index < ratioCount; index++)
+            {
+                ratio = this.recipe.Outputs[index];
+                ratio.DumpExcess = true;
+                this.recipe.Outputs[index] = ratio;
+            }
+
+            //Add our resource ratios to the output list
+            ratioCount = resourceRatios.Count;
+            for (int index = 0; index < ratioCount; index++)
+                this.recipe.Outputs.Add(resourceRatios[index]);
         }
     }
 }

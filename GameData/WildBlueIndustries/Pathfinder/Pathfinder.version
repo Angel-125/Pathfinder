@@ -1,0 +1,29 @@
+{
+    "NAME":"Pathfinder",
+    "URL":"https://raw.githubusercontent.com/Angel-125/Pathfinder/master/GameData/WildBlueIndustries/Pathfinder/Pathfinder.version",
+    "DOWNLOAD":"https://github.com/Angel-125/Pathfinder/releases",
+    "GITHUB":
+    {
+        "USERNAME":"Angel-125",
+        "REPOSITORY":"Pathfinder",
+        "ALLOW_PRE_RELEASE":false,
+    },
+    "VERSION":
+    {
+	"MAJOR":1,
+	"MINOR":26,
+	"PATCH":3,
+	"BUILD":0
+    },
+    "KSP_VERSION":
+    {
+        "MAJOR":1,
+        "MINOR":4,
+        "PATCH":2
+    },
+     "KSP_VERSION_MIN":{
+         "MAJOR":1,
+         "MINOR":4,
+         "PATCH":1
+     },
+}
