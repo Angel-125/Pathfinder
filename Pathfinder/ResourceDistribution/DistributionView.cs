@@ -46,6 +46,11 @@ namespace WildBlueIndustries
         public override void SetVisible(bool newValue)
         {
             base.SetVisible(newValue);
+            if (distributionMap == null)
+            {
+                Debug.Log("[DistributionView] - distributionMap is null!!");
+                distributionMap = new Dictionary<string, EDistributionModes>();
+            }
             if (!newValue)
             {
                 if (rebuildCache != null)
@@ -67,6 +72,13 @@ namespace WildBlueIndustries
             int buttonIndex;
             PartResourceDefinition definition;
             GUILayout.BeginVertical();
+
+            if (distributionMap == null)
+            {
+                GUILayout.Label("WARNING! distributionMap is null!");
+                GUILayout.EndVertical();
+                return;
+            }
 
             if (scrollStyle == null)
                 scrollStyle = new GUIStyle(GUI.skin.textArea);

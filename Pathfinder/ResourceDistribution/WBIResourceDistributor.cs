@@ -18,6 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
+    public delegate void ResourcesAcquiredDelegate(string resourceName, double amount);
+
     public enum EDistributionModes
     {
         DistributionModeOff,
@@ -39,6 +41,12 @@ namespace WildBlueIndustries
         [UI_Toggle(enabledText = "Yes", disabledText = "No")]
         public bool isParticipating;
 
+        [KSPField(isPersistant = true, guiName = "Share resources with vessel")]
+        [UI_Toggle(enabledText = "Yes", disabledText = "No")]
+        public bool sharesWithVessel;
+
+        public event ResourcesAcquiredDelegate onResourceDistributed;
+
         public EDistributionModes distribution;
         public Dictionary<string, EDistributionModes> distributionMap = new Dictionary<string, EDistributionModes>();
         string templateName;
@@ -58,26 +66,9 @@ namespace WildBlueIndustries
                 return;
             }
 
-            //Account for blacklisted resources
-            int blacklistCount = 0;
-            if (!string.IsNullOrEmpty(resourceBlacklist))
-            {
-                for (int index = 0; index < resourceCount; index++)
-                {
-                    if (resourceBlacklist.Contains(this.part.Resources[index].resourceName))
-                        blacklistCount += 1;
-                }
-            }
-            resourceCount -= blacklistCount;
-            if (resourceCount <= 0)
-            {
-                ScreenMessages.PostScreenMessage("No resources to distribute.", 5.0f, ScreenMessageStyle.UPPER_CENTER);
+            //Check distribution list
+            if (!checkDistributionList())
                 return;
-            }
-
-            //If our distribution map doesn't match the resource count then rebuild the map.
-            if (distributionMap.Keys.Count != resourceCount)
-                RebuildDistributionList();
 
             //Now show the view.
             distributionView.isParticipating = this.isParticipating;
@@ -317,6 +308,7 @@ namespace WildBlueIndustries
             //Log info
             WBIDistributionManager.Log("[WBIResourceDistributor] - " + this.part.partInfo.title + " is gathering resources to distribute.");
 
+            RebuildDistributionCache();
             sharedList = this.sharedResourcesCache;
             requiredList = this.requiredResourcesCache;
         }
@@ -342,6 +334,17 @@ namespace WildBlueIndustries
             if (resource.amount + grandTotal <= resource.maxAmount)
             {
                 resource.amount += grandTotal;
+                if (onResourceDistributed != null)
+                    onResourceDistributed(resourceName, grandTotal);
+
+                //Share with vessel
+                if (sharesWithVessel)
+                {
+                    double amount = this.part.Resources[resourceName].amount;
+                    this.part.Resources[resourceName].amount = 0.0f;
+                    this.part.RequestResource(resourceName, -amount, ResourceFlowMode.ALL_VESSEL);
+                }
+
                 return 0f;
             }
 
@@ -350,6 +353,18 @@ namespace WildBlueIndustries
 
             //Set amount to max.
             resource.amount = resource.maxAmount;
+
+            //Share with vessel
+            if (sharesWithVessel)
+            {
+                double amount = this.part.Resources[resourceName].amount;
+                this.part.Resources[resourceName].amount = 0.0f;
+                this.part.RequestResource(resourceName, -amount, ResourceFlowMode.ALL_VESSEL);
+            }
+
+            //Fire event
+            if (onResourceDistributed != null)
+                onResourceDistributed(resourceName, resource.amount);
 
             return amountRemaining;
         }
@@ -364,6 +379,49 @@ namespace WildBlueIndustries
 
             //Set our share amount
             this.part.Resources[resourceName].amount = this.part.Resources[resourceName].maxAmount * sharePercent;
+
+            //Share with vessel
+            if (sharesWithVessel)
+            {
+                double amount = this.part.Resources[resourceName].amount;
+                this.part.Resources[resourceName].amount = 0.0f;
+                this.part.RequestResource(resourceName, -amount, ResourceFlowMode.ALL_VESSEL);
+            }
+
+            //Fire event
+            if (onResourceDistributed != null)
+                onResourceDistributed(resourceName, this.part.Resources[resourceName].amount);
+        }
+
+        protected bool checkDistributionList()
+        {
+            //Get the resource count
+            int resourceCount = this.part.Resources.Count;
+            if (resourceCount == 0)
+                return false;
+
+            //Account for blacklisted resources
+            int blacklistCount = 0;
+            if (!string.IsNullOrEmpty(resourceBlacklist))
+            {
+                for (int index = 0; index < resourceCount; index++)
+                {
+                    if (resourceBlacklist.Contains(this.part.Resources[index].resourceName))
+                        blacklistCount += 1;
+                }
+            }
+            resourceCount -= blacklistCount;
+            if (resourceCount <= 0)
+            {
+                ScreenMessages.PostScreenMessage("No resources to distribute.", 5.0f, ScreenMessageStyle.UPPER_CENTER);
+                return false;
+            }
+
+            //If our distribution map doesn't match the resource count then rebuild the map.
+            if (distributionMap.Keys.Count != resourceCount)
+                RebuildDistributionList();
+
+            return true;
         }
 
         public void SetGUIVisible(bool isVisible)
@@ -387,6 +445,7 @@ namespace WildBlueIndustries
         {
             if (!isConsumer)
             {
+                checkDistributionList();
                 distributionView.DrawView();
                 isParticipating = distributionView.isParticipating;
             }

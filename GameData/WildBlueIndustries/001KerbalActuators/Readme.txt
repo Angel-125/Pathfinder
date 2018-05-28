@@ -24,6 +24,9 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 ---REVISION HISORY---
 
+1.3.0.5
+- Minor edits to support VTOL ops.
+
 1.3.0.4
 - Minor bug fixes
 

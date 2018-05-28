@@ -10,6 +10,9 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 --RELEASE NOTES---
 
+1.0.1
+- Updated resource definitions - thanks JadeOfMaar! :)
+
 X Initial Release
 
 ---LICENSE---

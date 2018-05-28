@@ -118,7 +118,8 @@
     <Compile Include="Parts\WBIScoopTurbine.cs" />
     <Compile Include="Contracts\WBIColonistContract.cs" />
     <Compile Include="Habitat\WBIClassConverter.cs" />
-    <Compile Include="WBIClassConverterView.cs" />
+    <Compile Include="Habitat\WBIClassConverterView.cs" />
+    <Compile Include="Parts\WBIRangelandHeat.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BARIS\BARISBridge\BARISBridge.csproj">

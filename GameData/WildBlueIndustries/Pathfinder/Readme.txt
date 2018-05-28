@@ -8,6 +8,20 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+X Sandcastle Lives!
+This update sorts through more issues with resource distribution, adds a new distribution feature, and introduces a new Sandcastle part!
+
+Sandcastle
+- Buffalo Bulldozer (Advanced Exploration): Tired of building bases on a hill? Need a level landing pad? Then the Buffalo Bulldozer is for you! The bulldozer lets you create regolith mounds on which you to place your bases and vessels. These regolith mounds aren't parts; they're static meshes attached to the terrain itself. Regolith mounds can be created without kerbal intervention, but those with the RepairSkill (stock Engineers have it) can reduce the time it takes to create a regolith mound. The more skilled the kerbal, and the more kerbals working on the project, the less time it takes.
+
+1.26.4
+- WBT Update
+- Classic Stock templates update - thanks JadeOfMaar! :)
+- You now have the option to distribute shared resources with the vessel during each distribution cycle. You can enable it by setting the "Shares resources with vessel" option.
+
+Templates
+- Power Distributor: Available for the Chuckwagon and Conestoga, the Power Distributor takes ElectricCharge stored in the part and distributes it throughout the vessel. It works best with resource distribution turned on, the distributor set to consume ElectricCharge, and the "Shares resources with vessel" option set to Yes. This allows a remote power station to generate power and spread it throughout vessels and bases in the vicinity.
+
 1.26.3
 - Updated BARIS support dll.
 - Gold Strike drills can now extract all resources in the biome as if they had a built-in Prospector.
