@@ -32,6 +32,12 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.5.5
+- Recompiled for KSP 1.4.4
+
+2.5.4
+- WBT, KerbalActuators, and Classic Stock resources update.
+
 2.5.3
 - WBT and BARIS bridge update.
 

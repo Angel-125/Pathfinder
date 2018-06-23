@@ -8,11 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
-X Sandcastle Lives!
-This update sorts through more issues with resource distribution, adds a new distribution feature, and introduces a new Sandcastle part!
-
-Sandcastle
-- Buffalo Bulldozer (Advanced Exploration): Tired of building bases on a hill? Need a level landing pad? Then the Buffalo Bulldozer is for you! The bulldozer lets you create regolith mounds on which you to place your bases and vessels. These regolith mounds aren't parts; they're static meshes attached to the terrain itself. Regolith mounds can be created without kerbal intervention, but those with the RepairSkill (stock Engineers have it) can reduce the time it takes to create a regolith mound. The more skilled the kerbal, and the more kerbals working on the project, the less time it takes.
+1.26.5
+- Recompiled for KSP 1.4.4
+- Updated support for Extraplanetary Launchpads.
 
 1.26.4
 - WBT Update

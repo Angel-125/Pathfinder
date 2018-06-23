@@ -36,7 +36,7 @@ namespace WildBlueIndustries
 
         protected List<ModuleResourceHarvester> groundDrills;
         protected string[] drillResources;
-        protected DrillSwitchWindow drillSwitchWindow = new DrillSwitchWindow();
+        protected DrillSwitchWindow drillSwitchWindow;
 
         [KSPEvent(guiActive = true, guiName = "Reset Drill GUI")]
         public void ResetDrillGUI()
@@ -72,6 +72,7 @@ namespace WildBlueIndustries
         {
             ModuleResourceHarvester harvester;
             base.OnStart(state);
+            drillSwitchWindow = new DrillSwitchWindow();
 
             //Get the drills
             groundDrills = this.part.FindModulesImplementing<ModuleResourceHarvester>();

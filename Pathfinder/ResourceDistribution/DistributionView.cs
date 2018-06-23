@@ -20,13 +20,16 @@ namespace WildBlueIndustries
 {
     public delegate void RebuildCacheDelegate();
     public delegate void SetParticipationDelegate(bool isEnabled);
+    public delegate void SetSharesDelegate(bool isEnabled);
 
     public class DistributionView : Dialog<DistributionView>
     {
         public RebuildCacheDelegate rebuildCache;
         public SetParticipationDelegate setParticipation;
+        public SetSharesDelegate setSharesWithVessel;
 
         public bool isParticipating;
+        public bool isSharingWithVessel;
         public Dictionary<string, EDistributionModes> distributionMap = null;
         Vector2 scrollPos = new Vector2();
         public Part part;
@@ -87,6 +90,9 @@ namespace WildBlueIndustries
             //Do we participate?
             isParticipating = GUILayout.Toggle(isParticipating, "Participate in resource distribution");
 
+            //Do we share?
+            isSharingWithVessel = GUILayout.Toggle(isSharingWithVessel, "Share resources with vessel");
+
             //Participation level of individual resources
             scrollPos = GUILayout.BeginScrollView(scrollPos);
             string[] resourceKeys = distributionMap.Keys.ToArray<string>();
@@ -120,6 +126,8 @@ namespace WildBlueIndustries
             DrawView();
             if (setParticipation != null)
                 setParticipation(isParticipating);
+            if (setSharesWithVessel != null)
+                setSharesWithVessel(isSharingWithVessel);
         }
     }
 }

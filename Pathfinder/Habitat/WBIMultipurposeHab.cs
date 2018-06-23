@@ -341,7 +341,7 @@ namespace WildBlueIndustries
             return canAfford;
         }
 
-        protected override bool payPartsCost(int templateIndex)
+        protected override bool payPartsCost(int templateIndex, bool deflatedModulesAutoPass = true)
         {
             bool canAffordCost = base.payPartsCost(templateIndex);
 

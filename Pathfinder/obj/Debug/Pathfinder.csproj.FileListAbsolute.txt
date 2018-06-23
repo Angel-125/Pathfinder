@@ -16,8 +16,10 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\KSPTrackIR.dl
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\Mono.Cecil.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\Ionic.Zip.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\TDx.TDxInput.dll
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\RedShellSDK.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\BARISBridge.pdb
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\WildBlueTools.pdb
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csprojAssemblyReference.cache
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csproj.CoreCompileInputs.cache
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csproj.CopyComplete
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.pdb

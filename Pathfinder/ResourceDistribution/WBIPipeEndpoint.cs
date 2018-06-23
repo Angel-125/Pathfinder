@@ -182,7 +182,7 @@ namespace WildBlueIndustries
         public double lastUpdateTime = 0f;
 
         protected BaseQualityControl qualityControl;
-        PipelineWindow pipelineWidow = new PipelineWindow();
+        PipelineWindow pipelineWidow;
         PartResourceDefinition resourceDef = null;
         WBIPackingBox packingBox;
         static GUIStyle opsWindowStyle = null;
@@ -257,6 +257,7 @@ namespace WildBlueIndustries
                 uniqueIdentifier = Guid.NewGuid().ToString();
 
             //Setup pipeline window
+            pipelineWidow = new PipelineWindow();
             pipelineWidow.part = this.part;
             pipelineWidow.blackListedResources = this.blackListedResources;
             pipelineWidow.maxKineticEnergy = this.maxKineticEnergy;

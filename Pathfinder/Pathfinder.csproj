@@ -120,6 +120,7 @@
     <Compile Include="Habitat\WBIClassConverter.cs" />
     <Compile Include="Habitat\WBIClassConverterView.cs" />
     <Compile Include="Parts\WBIRangelandHeat.cs" />
+    <Compile Include="Sandcastle\WBIStaticMesh.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BARIS\BARISBridge\BARISBridge.csproj">
@@ -133,6 +134,13 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"C:\Projects\KSP\WildBlueIndustries\pdb2mdb\pdb2mdb.exe" "$(TargetFileName)"
+xcopy /Y "$(TargetPath)" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"﻿
+xcopy /Y "$(TargetDir)$(TargetName).pdb" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"
+xcopy /Y "$(TargetDir)$(TargetName).dll.mdb" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"
+xcopy /Y "$(TargetDir)$(TargetName).dll" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

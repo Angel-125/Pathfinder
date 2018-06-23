@@ -65,9 +65,12 @@ namespace WildBlueIndustries
             {
                 CBAttributeMapSO.MapAttribute biome = Utils.GetCurrentBiome(this.part.vessel);
 
-                biomeName = biome.name;
-                harvestID = (HarvestTypes)harvestType;
-                planetID = this.part.vessel.mainBody.flightGlobalsIndex;
+                if (biome != null)
+                {
+                    biomeName = biome.name;
+                    harvestID = (HarvestTypes)harvestType;
+                    planetID = this.part.vessel.mainBody.flightGlobalsIndex;
+                }
             }
 
             //Get our converters
@@ -86,8 +89,11 @@ namespace WildBlueIndustries
             WBIPathfinderScenario.Instance.onEfficiencyUpdate += onEfficiencyUpdate;
 
             //Make sure that we set up efficiency
-            onEfficiencyUpdate(planetID, biomeName, harvestID, efficiencyType, 
-                WBIPathfinderScenario.Instance.GetEfficiencyModifier(planetID, biomeName, harvestID, efficiencyType));
+            if (!string.IsNullOrEmpty(biomeName))
+            {
+                onEfficiencyUpdate(planetID, biomeName, harvestID, efficiencyType,
+                    WBIPathfinderScenario.Instance.GetEfficiencyModifier(planetID, biomeName, harvestID, efficiencyType));
+            }
         }
 
         void switcher_onModuleRedecorated(ConfigNode templateNode)

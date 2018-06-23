@@ -377,7 +377,7 @@ namespace ContractsPlus.Contracts
 
         protected void getDestinationCandidates()
         {
-            Log("Looking for destination candidates");
+            Log("Looking for destination candidates for colonist contracts");
             destinationCandidates.Clear();
             partGUIDs.Clear();
 
@@ -388,46 +388,60 @@ namespace ContractsPlus.Contracts
             Vessel vessel;
             int totalModules;
             WBITouristTrap touristTrap;
-            for (int index = 0; index < vesselCount; index++)
+            if (vesselCount > 0)
             {
-                vessel = FlightGlobals.VesselsLoaded[index];
-                if (vessel.vesselType == VesselType.Debris || vessel.vesselType == VesselType.Flag || vessel.vesselType == VesselType.SpaceObject || vessel.vesselType == VesselType.Unknown)
-                    continue;
-                if (vessel.mainBody.isHomeWorld && prestige != ContractPrestige.Trivial)
-                    continue;
-                touristTrap = vessel.FindPartModuleImplementing<WBITouristTrap>();
-                if (touristTrap != null)
+                Log("There are " + vesselCount + " loaded vessels.");
+                for (int index = 0; index < vesselCount; index++)
                 {
-                    destinationCandidates.Add(vessel);
+                    vessel = FlightGlobals.VesselsLoaded[index];
+                    if (vessel.vesselType == VesselType.Debris || vessel.vesselType == VesselType.Flag || vessel.vesselType == VesselType.SpaceObject || vessel.vesselType == VesselType.Unknown || vessel.vesselType == VesselType.EVA)
+                    {
+                        Log("Skipping vessel " + vessel.vesselName + " of type " + vessel.vesselType);
+                        continue;
+                    }
+                    if (vessel.mainBody.isHomeWorld && prestige != ContractPrestige.Trivial)
+                        continue;
+                    touristTrap = vessel.FindPartModuleImplementing<WBITouristTrap>();
+                    if (touristTrap != null)
+                    {
+                        destinationCandidates.Add(vessel);
+                    }
                 }
             }
 
             //Unloaded vessels
             //Only parts with a WBITouristTrap will be considered for the contract.
             vesselCount = FlightGlobals.VesselsUnloaded.Count;
-            ProtoPartSnapshot partSnapshot;
-            ProtoPartModuleSnapshot moduleSnapshot;
-            for (int index = 0; index < vesselCount; index++)
+            if (vesselCount > 0)
             {
-                vessel = FlightGlobals.VesselsUnloaded[index];
-                if (vessel.vesselType == VesselType.Debris || vessel.vesselType == VesselType.Flag || vessel.vesselType == VesselType.SpaceObject || vessel.vesselType == VesselType.Unknown)
-                    continue;
-                if (vessel.mainBody.isHomeWorld && prestige != ContractPrestige.Trivial)
-                    continue;
-                partCount = vessel.protoVessel.protoPartSnapshots.Count;
-                for (int partIndex = 0; partIndex < partCount; partIndex++)
+                ProtoPartSnapshot partSnapshot;
+                ProtoPartModuleSnapshot moduleSnapshot;
+                Log("There are " + vesselCount + " unloaded vessels.");
+                for (int index = 0; index < vesselCount; index++)
                 {
-                    partSnapshot = vessel.protoVessel.protoPartSnapshots[partIndex];
-                    totalModules = partSnapshot.modules.Count;
-                    for (int moduleIndex = 0; moduleIndex < totalModules; moduleIndex++)
+                    vessel = FlightGlobals.VesselsUnloaded[index];
+                    if (vessel.vesselType == VesselType.Debris || vessel.vesselType == VesselType.Flag || vessel.vesselType == VesselType.SpaceObject || vessel.vesselType == VesselType.Unknown || vessel.vesselType == VesselType.EVA)
                     {
-                        moduleSnapshot = partSnapshot.modules[moduleIndex];
-
-                        //Find the tourist trap
-                        if (moduleSnapshot.moduleName == "WBITouristTrap")
+                        Log("Skipping vessel " + vessel.vesselName + " of type " + vessel.vesselType);
+                        continue;
+                    }
+                    if (vessel.mainBody.isHomeWorld && prestige != ContractPrestige.Trivial)
+                        continue;
+                    partCount = vessel.protoVessel.protoPartSnapshots.Count;
+                    for (int partIndex = 0; partIndex < partCount; partIndex++)
+                    {
+                        partSnapshot = vessel.protoVessel.protoPartSnapshots[partIndex];
+                        totalModules = partSnapshot.modules.Count;
+                        for (int moduleIndex = 0; moduleIndex < totalModules; moduleIndex++)
                         {
-                            destinationCandidates.Add(vessel);
-                            break;
+                            moduleSnapshot = partSnapshot.modules[moduleIndex];
+
+                            //Find the tourist trap
+                            if (moduleSnapshot.moduleName == "WBITouristTrap")
+                            {
+                                destinationCandidates.Add(vessel);
+                                break;
+                            }
                         }
                     }
                 }

@@ -61,6 +61,8 @@ namespace WildBlueIndustries
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
+            if (!HighLogic.LoadedSceneIsFlight && !HighLogic.LoadedSceneIsEditor)
+                return;
 
             //Get the science lab and hide its transmit button. We'll use our own buttons.
             sciLab = this.part.FindModuleImplementing<ModuleScienceLab>();

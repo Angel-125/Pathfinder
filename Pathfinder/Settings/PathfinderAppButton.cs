@@ -25,11 +25,13 @@ namespace WildBlueIndustries
     {
         static protected Texture2D appIcon = null;
         static protected ApplicationLauncherButton appLauncherButton = null;
-        static protected PathfinderAppView appView = new PathfinderAppView();
-        static public LocalOpsManager localOpsManager = new LocalOpsManager();
+        static protected PathfinderAppView appView;
+        static public LocalOpsManager localOpsManager;
 
         public void Awake()
         {
+            appView = new PathfinderAppView();
+            localOpsManager = new LocalOpsManager();
             appIcon = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/PathfinderApp", false);
             GameEvents.onGUIApplicationLauncherReady.Add(SetupGUI);
             appView.localOpsManager = localOpsManager;

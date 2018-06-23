@@ -41,7 +41,7 @@ namespace WildBlueIndustries
         [UI_Toggle(enabledText = "Yes", disabledText = "No")]
         public bool isParticipating;
 
-        [KSPField(isPersistant = true, guiName = "Share resources with vessel")]
+        [KSPField(isPersistant = true, guiName = "Share resources with vessel", guiActive = true)]
         [UI_Toggle(enabledText = "Yes", disabledText = "No")]
         public bool sharesWithVessel;
 
@@ -146,6 +146,7 @@ namespace WildBlueIndustries
             distributionView.distributionMap = this.distributionMap;
             distributionView.rebuildCache = RebuildDistributionCache;
             distributionView.setParticipation = setParticipation;
+            distributionView.setSharesWithVessel = setSharesWithVessel;
 
             //Tap into the resource switcher's redecoration event
             switcher = this.part.FindModuleImplementing<WBIResourceSwitcher>();
@@ -175,6 +176,11 @@ namespace WildBlueIndustries
         protected void setParticipation(bool isEnabled)
         {
             isParticipating = isEnabled;
+        }
+
+        protected void setSharesWithVessel(bool isEnabled)
+        {
+            sharesWithVessel = isEnabled;
         }
 
         void switcher_onModuleRedecorated(ConfigNode templateNode)
@@ -428,6 +434,7 @@ namespace WildBlueIndustries
         {
             Events["SetupDistribution"].guiActive = false;
             Events["SetupDistribution"].guiActiveEditor = false;
+            Fields["sharesWithVessel"].guiActive = false;
         }
 
         #region IOpsView
