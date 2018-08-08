@@ -10,6 +10,9 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 --RELEASE NOTES---
 
+1.0.3
+- Fixed Play Mode folder definitions.
+
 1.0.2
 - Moved IntakeLqd definition to Common; needed by KFS.
 

@@ -13,7 +13,7 @@ namespace WildBlueIndustries
         protected ModuleKerbNetAccess kerbNetAccess;
         protected PartModule impactSeismometer;
         protected IScienceDataContainer impactSensor;
-        protected TerainUplinkView terrainUplinkView = new TerainUplinkView();
+        protected TerainUplinkView terrainUplinkView;
         protected ModuleScienceContainer scienceContainer;
         protected IParentView parentView = null;
         protected WBIExperimentLab experimentLab;
@@ -21,6 +21,7 @@ namespace WildBlueIndustries
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
+            terrainUplinkView = new TerainUplinkView();
             this.geoLabView.drawView = this.drawView;
 
             if (HighLogic.LoadedSceneIsFlight == false)

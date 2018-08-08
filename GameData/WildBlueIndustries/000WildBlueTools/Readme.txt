@@ -6,6 +6,12 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.55.11
+- Bug fixes
+
+1.55.9
+- Un-broke the template managers.
+
 1.55.7
 - Recompiled for KSP 1.4.4
 

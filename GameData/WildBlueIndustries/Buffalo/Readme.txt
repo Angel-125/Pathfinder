@@ -32,6 +32,34 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.6.0 Water Buffalo
+
+When I created the Buffalo back in 2015, I had the notion that the Modular Space Exploration Vehicle system would have parts for land, sea, air, and space. Various updates including Buffalo Wings enabled the craft to operate in 3 of the 4 environments- until now. With this release, you can turn the Buffalo into a submarine with its new ballast tanks and aquatic engines and aquatic RCS thrusters. For more automatic control of the ballast tanks, the new Guppy Submersible Cab has a dive computer that can trim the boat and work the ballast tank vents and pumps. There's also some quality of life part updates too.
+
+Finally, I'm happy to say that the Buffalo MSEV mod is feature complete!
+
+At this point, the Buffalo will receive maintennace updates and maybe an occasional part or two (I'd like to figure out how to make a docking port freely pivot so I can have trailer hitches), so it won't be quietly going away.
+
+New Parts
+- Guppy Submersible Cab (Specialized Control): The aquatic version of the iconic Buffalo Command Cab, the Guppy is optimized for the aquatic environment. It comes with a dive computer that can trim the boat (level it in the water if the vessel has trim tanks) and dive or surface the boat (if the vessel has ballast tanks).
+- Tundra 100 (Advanced Construction): Half the length of a Tundra 200, the 100 provides a small amount of storage.
+- Buffalo Ballast Tank (Specialized Control): Designed to help your vessels submerge and surface, the Ballast Tank can pump intake liquid in and out of the tank- both over time and rapidly. It can also be set up as a forward or aft trim tank to help level your craft in the water.
+- External Ballast Tank (Specialized Control): This Size 0 ballast tank can can be used to both dive or suface the boat and can serve as a trim tank to help level out the craft.
+- Ballast Vent (Specialized Control): Attach this vent to any part that has IntakeLqd in it to use said part as a ballast tank.
+- Ballast Cone (Advance Construction): This cone contains a small amount of Lead for ballast. It comes in Type 1 and Type 2 variants.
+- Equipment Pylon (Advanced Construction): This decoupler serves as a mounting point for parts like the External Ballast Tank.
+- Buffalo Type 5 Cone (Advanced Construction): This new cone comes equipped with Lead ballast, KIS storage, and has two spots in the back for Size 0 parts.
+- WB-24 "EbbTide" Aquatic Engine (Precision Propulsion): This combined electric motor and diving plane is specially designed for the aquatic environment. In addition to generating thrust, it can pivot up and down like an aircraft control surface to aid in navigation.
+- WB-25 "NeapTide" Aquatic Engine (Precision Propulsion): This powerful electric motor is specially designed for the aquatic environment.
+- Aquatic RCS Thruster (Precision Propulsion): This RCS thruster is specially designed for the aquatic environment.
+
+Part Updates
+- Updated the Flex Fuel Power Pack to reflect its role as a multi-fueled diesel-electric portable generator and adjusted its fuel consumption types and values. It also fixes issues with setting up action groups.
+- The JetWing finally has a seat! It was originally designed to be worn as a backpack accessory for the Outback and you would walk around with it, but that never panned out...
+- Remodeled the Outback to reflect that it's not longer a pack that has accessories (that were never successfully made). 
+- Redesigned the Outback: it now has OmniStorage in place of its older template system as well as a small ballast system for diving. 
+- Moved the Buffalo Drill to Advanced Exploration, and gave it drill effects.
+
 2.5.5
 - Recompiled for KSP 1.4.4
 
@@ -603,6 +631,7 @@ Portions of this codebase include source by Snjo and Swamp-IG, used under CC BY-
 Icons by icons8: https://icons8.com/license/
 Buffalo icon by flaticon
 Eve: Order Zero graphic courtesy of Kuzztler and used with permission.
+Sound Effects by Pond 5 used with permission and may NOT be distributed without this mod.
 
 ---LICENSE---
 Art Assets, including .mu, .mbm, and .dds files are copyright 2014-2016 by Michael Billard, All Rights Reserved.

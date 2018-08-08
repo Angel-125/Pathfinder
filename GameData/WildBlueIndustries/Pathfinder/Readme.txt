@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.26.6
+- WildBlueTools update.
+
 1.26.5
 - Recompiled for KSP 1.4.4
 - Updated support for Extraplanetary Launchpads.
