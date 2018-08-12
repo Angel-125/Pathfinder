@@ -32,6 +32,11 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.6.1
+- Reshaped and resized the WB-24 "EbbTide" radial aquatic engine.
+- The WB-24 "EbbTide" and WB-25 "NeapTide" aquatic engines now have thrust reversers.
+- The Guppy cab's dive computer now provides improvements to structural integrity, enabling your boats to dive up to 600 meters below the surface of Kerbin's oceans. Diving depth varies with planet.
+
 2.6.0 Water Buffalo
 
 When I created the Buffalo back in 2015, I had the notion that the Modular Space Exploration Vehicle system would have parts for land, sea, air, and space. Various updates including Buffalo Wings enabled the craft to operate in 3 of the 4 environments- until now. With this release, you can turn the Buffalo into a submarine with its new ballast tanks and aquatic engines and aquatic RCS thrusters. For more automatic control of the ballast tanks, the new Guppy Submersible Cab has a dive computer that can trim the boat and work the ballast tank vents and pumps. There's also some quality of life part updates too.
