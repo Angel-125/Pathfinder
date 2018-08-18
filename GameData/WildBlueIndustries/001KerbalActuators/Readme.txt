@@ -24,6 +24,9 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 ---REVISION HISORY---
 
+1.6.0
+- You can now add custom drawing controllers via reflection.
+
 1.5.1
 - Bug fixes
 

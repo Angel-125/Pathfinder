@@ -6,6 +6,13 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.56.0
+- ARP icons updates courtesy of JadeOfMaar
+- Updated OmniCoverters and OmniStorage courtesy of JadeOfMaar
+- Duplicate convertible storage items fixed courtesy of JadeOfMaar
+- Vessel can now handle multiple diving computers on the same vessel.
+- New WBIModuleResourceHarvester can harvest all the resources in the biome, and can support multiple harvest types.
+
 1.55.12
 - Bug fixes
 

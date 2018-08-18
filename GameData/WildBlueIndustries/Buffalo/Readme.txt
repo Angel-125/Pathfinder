@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.6.2
+- You can now have multiple Guppy command cabs on the same vessel and they'll work with each other to control the dive.
+
 2.6.1
 - Reshaped and resized the WB-24 "EbbTide" radial aquatic engine.
 - The WB-24 "EbbTide" and WB-25 "NeapTide" aquatic engines now have thrust reversers.

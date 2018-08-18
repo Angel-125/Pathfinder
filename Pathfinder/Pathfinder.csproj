@@ -67,6 +67,7 @@
     <Compile Include="GoldStrike\GoldStrikeData.cs" />
     <Compile Include="GoldStrike\WBIGoldStrikeBonus.cs" />
     <Compile Include="GUI\PipelineWindow.cs" />
+    <Compile Include="Sandcastle\KKWrapper.cs" />
     <Compile Include="Settings\PathfinderSettings.cs" />
     <Compile Include="ResourceDistribution\DistributionView.cs" />
     <Compile Include="GUI\DrillSwitchWindow.cs" />
@@ -121,6 +122,9 @@
     <Compile Include="Habitat\WBIClassConverterView.cs" />
     <Compile Include="Parts\WBIRangelandHeat.cs" />
     <Compile Include="Sandcastle\WBIStaticMesh.cs" />
+    <Compile Include="Sandcastle\WBIStaticBuilder.cs" />
+    <Compile Include="Sandcastle\WBIPlatformBuildView.cs" />
+    <Compile Include="Sandcastle\WBIBuildResource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BARIS\BARISBridge\BARISBridge.csproj">

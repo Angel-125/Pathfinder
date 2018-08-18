@@ -8,6 +8,21 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.27 Sandcastle: Bulldozing
+
+Tired of building bases on a slanted slope? This release introduces the ability to create static regolith mounds upon which you can build your bases! These mounds are level to the ground and nice and flat. To build them, all it takes is the latest version of Kerbal Konstructs and the new Buffalo Bulldozer part.
+
+New Part
+
+- Buffalo Bulldozer (Genral Construction): Specially designed for the Buffalo rover system included in Pathfinder, the bulldozer won't be available unless you have Kerbal Konstructs installed. Use this part to create a small, medium, or large regolith mound. These statics take time to make! Once done, you'll be able to place the regolith mound as any other Kerbal Konstructs static.
+
+Bug Fixes
+
+- Fixed missing converters not showing up in the operations manager.
+- Fixed operations manager click-through in the editor.
+- You can now have multiple Guppy command cabs on the same vessel and they'll work with each other to control the dive.
+- The Lasso's numerous intakes have been consolidated.
+
 1.26.7
 - Buffalo update
 - Bug fixes for OmniConverters and experiments
