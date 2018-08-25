@@ -32,6 +32,10 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.6.3
+- The Gas Turbine Generator no longer works underwater.
+- The Buffalo Drill now produces Slag in addition to whatever resources the biome has if Classic Stock play mode is active.
+
 2.6.2
 - You can now have multiple Guppy command cabs on the same vessel and they'll work with each other to control the dive.
 

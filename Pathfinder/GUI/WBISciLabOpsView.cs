@@ -23,7 +23,7 @@ namespace WildBlueIndustries
         [KSPField]
         public bool showOpsView;
 
-        SciLabOpsWindow opsWindow = new SciLabOpsWindow("Science Lab");
+        SciLabOpsWindow opsWindow;
 
         [KSPEvent(guiName = "Show Lab GUI", active = true, guiActive = false)]
         public void ShowOpsView()
@@ -49,6 +49,7 @@ namespace WildBlueIndustries
             base.OnStart(state);
 
             //Set up the ops window
+            opsWindow = new SciLabOpsWindow("Science Lab");
             opsWindow.part = this.part;
             opsWindow.WindowTitle = this.part.partInfo.title;
             opsWindow.FindPartModules();

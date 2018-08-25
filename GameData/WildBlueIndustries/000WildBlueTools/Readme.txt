@@ -6,6 +6,12 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.57
+- On a first-time install of Wild Blue Tools, if you have Community Resource Pack installed then the play mode will default to CRP.
+- Fixed resource collection issues with the WBIModuleResourceHarvester.
+- Ops Manager won't show converter controls in the VAB/SPH.
+- Some OmniConverter templates are now available outside of Classic Stock play mode.
+
 1.56.0
 - ARP icons updates courtesy of JadeOfMaar
 - Updated OmniCoverters and OmniStorage courtesy of JadeOfMaar

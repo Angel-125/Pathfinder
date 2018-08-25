@@ -8,6 +8,12 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.27.1
+- Fix for resource collection with the Lasso.
+- Prospector fixes
+- Converters are unavailable in the VAB/SPH.
+- Fixes related to resource abundance changes in KSP 1.4.5
+
 1.27 Sandcastle: Bulldozing
 
 Tired of building bases on a slanted slope? This release introduces the ability to create static regolith mounds upon which you can build your bases! These mounds are level to the ground and nice and flat. To build them, all it takes is the latest version of Kerbal Konstructs and the new Buffalo Bulldozer part.
