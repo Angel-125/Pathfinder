@@ -6,6 +6,10 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.57.1
+- Fixes issue in WBIModuleResourceHarvester where, if you don't specify any harvest types with harvestType, the harvester will default back to its singular HarvesterType field.
+- Fix for OmniStorage resources on the restricted list not being added during flight.
+
 1.57
 - On a first-time install of Wild Blue Tools, if you have Community Resource Pack installed then the play mode will default to CRP.
 - Fixed resource collection issues with the WBIModuleResourceHarvester.

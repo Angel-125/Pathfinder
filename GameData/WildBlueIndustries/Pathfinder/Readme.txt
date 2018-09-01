@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.27.2
+- Removed MM patch adding GoldStrike drills to every resource harvester part found in the game; it was creating issues.
+
 1.27.1
 - Fix for resource collection with the Lasso.
 - Prospector fixes
