@@ -218,13 +218,6 @@ namespace WildBlueIndustries
                 coreHeat.isEnabled = enableDrill;
             }
 
-            WBIDrillSwitcher drillSwitcher = this.part.FindModuleImplementing<WBIDrillSwitcher>();
-            if (drillSwitcher != null)
-            {
-                drillSwitcher.enabled = enableDrill;
-                drillSwitcher.isEnabled = enableDrill;
-            }
-
             WBIEfficiencyMonitor extractionMonitor = this.part.FindModuleImplementing<WBIEfficiencyMonitor>();
             if (extractionMonitor != null)
             {
@@ -233,10 +226,10 @@ namespace WildBlueIndustries
             }
 
             //Update the drill
-            if (enableDrill)
-                harvester.EnableModule();
-            else
-                harvester.DisableModule();
+            harvester.enabled = enableDrill;
+            harvester.isEnabled = enableDrill;
+            if (harvester.IsActivated && !enableDrill)
+                harvester.StopResourceConverter();
 
             //Setup drill parameters
             if (enableDrill)

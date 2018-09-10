@@ -6,7 +6,10 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
-1.57.1
+1.57.3
+- Fixes Play Mode failing to rename certain files. NOTE: You might need to reset your current play mode. Simply open the WBT app from the Space Center, choose another mode, press OK, and again open the app, selecting your original play mode. Then be sure to restart KSP.
+
+1.57.2
 - Fixes issue in WBIModuleResourceHarvester where, if you don't specify any harvest types with harvestType, the harvester will default back to its singular HarvesterType field.
 - Fix for OmniStorage resources on the restricted list not being added during flight.
 
