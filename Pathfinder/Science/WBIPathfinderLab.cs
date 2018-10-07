@@ -61,6 +61,9 @@ namespace WildBlueIndustries
 
             if (result == true)
             {
+                if (experimentLab == null)
+                    setupPartModules();
+
                 experimentLab.isAvailable = true;
                 ScreenMessages.PostScreenMessage("Experiments that can improve production efficiency in this biome are now available.", 5.0f, ScreenMessageStyle.UPPER_CENTER);
             }
@@ -71,6 +74,12 @@ namespace WildBlueIndustries
         protected override void setupPartModules()
         {
             base.setupPartModules();
+
+            //Get the experiment lab
+            experimentLab = this.part.FindModuleImplementing<WBIExperimentLab>();
+            if (experimentLab == null)
+                return;
+            experimentLab.unavailableMessage = kUnavailableMessage;
 
             //Setup the science container
             if (scienceContainer == null)

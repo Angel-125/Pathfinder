@@ -6,6 +6,23 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.58
+
+Omni Converters & Storage
+- Added search functions to OmniStorage and OmniConverter GUI.
+- Play Mode now lists which mods support a particular mode.
+
+Classic Stock
+- Added new Classic Stock omni converters: Propellium Distiller, Oxium Distiller, Snack Grinder (requres Snacks), Soil Dehydrator (requires Snacks).
+
+1.57.5
+- Fixed an issue where drills would generate an NRE upon startup when BARIS isn't installed.
+
+1.57.4
+- Fixed situation where the geology lab could generate a NullReferenceException while performing a biome analysis and the local biome hasn't been unlocked.
+- Fixed an issue where drills would generate an NRE upon startup when BARIS isn't installed.
+- Fixed a situation where drills don't realize that the biome has been unlocked.
+
 1.57.3
 - Fixes Play Mode failing to rename certain files. NOTE: You might need to reset your current play mode. Simply open the WBT app from the Space Center, choose another mode, press OK, and again open the app, selecting your original play mode. Then be sure to restart KSP.
 

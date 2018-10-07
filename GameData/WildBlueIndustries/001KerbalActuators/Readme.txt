@@ -24,6 +24,9 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 ---REVISION HISORY---
 
+1.6.2
+- WBIHoverController now handles hover state updates instead of WBIVTOLManager. This allows multiple craft within physics range of each other to independently hover.
+
 1.6.0
 - You can now add custom drawing controllers via reflection.
 

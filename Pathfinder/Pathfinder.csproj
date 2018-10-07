@@ -145,12 +145,12 @@ xcopy /Y "$(TargetDir)$(TargetName).pdb" "C:\KSPDev\GameData\WildBlueIndustries\
 xcopy /Y "$(TargetDir)$(TargetName).dll.mdb" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"
 xcopy /Y "$(TargetDir)$(TargetName).dll" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"
 
-xcopy /Y  "C:\KSPDev\GameData\WildBlueIndustries\000WildBlueTools\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\000WildBlueTools\"
-xcopy /Y  "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\Pathfinder\"
-xcopy /Y  "C:\KSPDev\GameData\WildBlueIndustries\Buffalo\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\Buffalo\"
-xcopy /Y  "C:\KSPDev\GameData\WildBlueIndustries\ClassicStockResources\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\ClassicStockResources\"
-xcopy /Y  "C:\KSPDev\GameData\WildBlueIndustries\001KerbalActuators\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\001KerbalActuators\"
-xcopy /Y  "C:\KSPDev\GameData\WildBlueIndustries\000ABARISBridgeDoNotDelete\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\000ABARISBridgeDoNotDelete\"
+xcopy /Y /E  "C:\KSPDev\GameData\WildBlueIndustries\000WildBlueTools\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\000WildBlueTools\"
+xcopy /Y /E  "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\Pathfinder\"
+xcopy /Y /E  "C:\KSPDev\GameData\WildBlueIndustries\Buffalo\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\Buffalo\"
+xcopy /Y /E  "C:\KSPDev\GameData\WildBlueIndustries\ClassicStockResources\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\ClassicStockResources\"
+xcopy /Y /E  "C:\KSPDev\GameData\WildBlueIndustries\001KerbalActuators\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\001KerbalActuators\"
+xcopy /Y /E  "C:\KSPDev\GameData\WildBlueIndustries\000ABARISBridgeDoNotDelete\*.*" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\000ABARISBridgeDoNotDelete\"
 xcopy /Y  "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Pathfinder.version" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\Notes\"
 
 del "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\000WildBlueTools\MiniAVC.xml"

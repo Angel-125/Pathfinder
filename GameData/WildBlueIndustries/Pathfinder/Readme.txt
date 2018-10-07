@@ -8,6 +8,20 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.28
+Omni Converters & Storage
+- Added search functions to OmniStorage and OmniConverter GUI.
+- Play Mode now lists which mods support a particular mode.
+
+Classic Stock
+- Added new Classic Stock omni converters: Propellium Distiller, Oxium Distiller, Snack Grinder (requres Snacks), Soil Dehydrator (requires Snacks).
+- Changed the default template to OmniShop and OmniWorks for the Casa/Ponderosa and Hacienda, respectively.
+- The Mule's default template is now OmniStorage.
+
+1.27.4
+- Fixed NRE produced by converters when BARIS isn't installed.
+- WBIHoverController now handles hover state updates instead of WBIVTOLManager. This allows multiple craft within physics range of each other to independently hover.
+
 1.27.3
 - Fixes Play Mode failing to rename certain files. NOTE: You might need to reset your current play mode. Simply open the WBT app from the Space Center, choose another mode, press OK, and again open the app, selecting your original play mode. Then be sure to restart KSP.
 
