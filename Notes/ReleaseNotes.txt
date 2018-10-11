@@ -1,8 +1,18 @@
-Omni Converters & Storage
-- Added search functions to OmniStorage and OmniConverter GUI.
-- Play Mode now lists which mods support a particular mode.
+Hogan
+- Rebuilt the part so that the center of the dome is no longer offset with respect to the center of its packing box. This will fix center of mass issues that caused the part
+to flip when assembled. BE SURE TO USE RESOURCE DISTRIBUTION TO ASSEMBLE THE PART! Existing Hogans won't be affected.
+- Removed KIS attachment port due to adjustments to the 3D model. Existing Hogans won't be affected.
+- Added additional tool tip text.
+
+Claimjumper
+- Removed Prospector; its functionality is incoprorated into drills.
+- Removed drill switcher; its functionality is incorporated into drills.
+- Added list of resources mined from the current biome.
 
 Classic Stock
-- Added new Classic Stock omni converters: Propellium Distiller, Oxium Distiller, Snack Grinder (requres Snacks), Soil Dehydrator (requires Snacks).
-- Changed the default template to OmniShop and OmniWorks for the Casa/Ponderosa and Hacienda, respectively.
-- The Mule's default template is now OmniStorage.
+- Fixed issue with OmniConverters incorrectly displaying "missing" status after changing the recipie.
+- OmniConverters will now properly prepare their conversion recipie after you change what they convert.
+- Fixed OPAL Processor not being able to produce Water when the part lacks the Water resource.
+
+Bug Fixes & Enhancements
+- The Ops Manager will again update its button tabs when you change configurations.

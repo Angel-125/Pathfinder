@@ -6,6 +6,18 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.59
+WBIOmniStorage
+- Added new MAX_AMOUNT_MODIFIER node that can be used to increase the storage capacity of a particular resource. See the new OmniStorageModifiers.cfg file located in Templates/Common for details.
+
+Classic Stock
+- Fixed issue with OmniConverters incorrectly displaying "missing" status after changing the recipie.
+- OmniConverters will now properly prepare their conversion recipie after you change what they convert.
+- Fixed OPAL Processor not being able to produce Water when the part lacks the Water resource.
+
+Bug Fixes & Enhancements
+- The Ops Manager will again update its button tabs when you change configurations.
+
 1.58
 
 Omni Converters & Storage

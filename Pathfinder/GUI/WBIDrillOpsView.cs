@@ -21,18 +21,16 @@ namespace WildBlueIndustries
 {
     public class WBIDrillOpsView : PartModule, IOpsView
     {
-        ModuleResourceHarvester harvester;
+        WBIGoldStrikeDrill harvester;
         WBIDrillSwitcher drillSwitcher;
         WBIEfficiencyMonitor efficiencyMonitor;
         ModuleOverheatDisplay overheatDisplay;
-        WBIProspector prospector;
-        WBIAsteroidProspector asteroidProspector;
 
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
 
-            harvester = this.part.FindModuleImplementing<ModuleResourceHarvester>();
+            harvester = this.part.FindModuleImplementing<WBIGoldStrikeDrill>();
 
             drillSwitcher = this.part.FindModuleImplementing<WBIDrillSwitcher>();
             if (drillSwitcher != null)
@@ -44,9 +42,6 @@ namespace WildBlueIndustries
             efficiencyMonitor = this.part.FindModuleImplementing<WBIEfficiencyMonitor>();
             if (efficiencyMonitor != null)
                 efficiencyMonitor.Fields["efficiencyDisplayString"].guiActive = false;
-
-            prospector = this.part.FindModuleImplementing<WBIProspector>();
-            asteroidProspector = this.part.FindModuleImplementing<WBIAsteroidProspector>();
 
             overheatDisplay = this.part.FindModuleImplementing<ModuleOverheatDisplay>();
         }
@@ -81,7 +76,6 @@ namespace WildBlueIndustries
             GUILayout.BeginScrollView(new Vector2(), new GUIStyle(GUI.skin.textArea), new GUILayoutOption[] { GUILayout.Height(480) });
 
             //Status
-            GUILayout.Label("<color=white>Drilling For: " + harvester.ResourceName + "</color>");
             GUILayout.Label("<color=white>Status: " + harvester.ResourceStatus + "</color>");
 
             //Efficiency Monitor
@@ -102,23 +96,12 @@ namespace WildBlueIndustries
                 GUILayout.Label("<color=white>Thermal Efficiency: " + overheatDisplay.heatDisplay + "</color>");
             }
 
-            //Drill switch
-            if (drillSwitcher != null)
-            {
-                if (GUILayout.Button("Modify Drill"))
-                    drillSwitcher.ShowDrillSwitchWindow();
-            }
-
             //Ops buttons
             if (harvester.IsActivated)
             {
                 if (GUILayout.Button(harvester.StopActionName))
                 {
                     harvester.StopResourceConverter();
-                    if (prospector != null)
-                        prospector.StopResourceConverter();
-                    if (asteroidProspector != null)
-                        asteroidProspector.StopResourceConverter();
                 }
             }
             else
@@ -126,12 +109,12 @@ namespace WildBlueIndustries
                 if (GUILayout.Button(harvester.StartActionName))
                 {
                     harvester.StartResourceConverter();
-                    if (prospector != null)
-                        prospector.StartResourceConverter();
-                    if (asteroidProspector != null)
-                        asteroidProspector.StartResourceConverter();
                 }
             }
+
+            //Mined resources
+            GUILayout.Label("<color=white><b>Mined resources</b></color>");
+            GUILayout.Label(harvester.GetMinedResources());
 
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
