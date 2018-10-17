@@ -32,6 +32,13 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.6.8
+Last release for KSP 1.4.5!
+
+Bug Fixes & Enhancements
+- Fixed issue where switching Play Modes would cause some files to not be renamed and cause all kinds of fun for players...
+NOTE: For the changes to take effect, you'll need to switch your Play Mode to some mode other than the current one, then switch it to the desired mode.
+
 2.6.7
 - Wild Blue Tools Update
 

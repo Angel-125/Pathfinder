@@ -6,6 +6,28 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.60
+Last release for KSP 1.4.5!
+
+WBIOmniStorage
+- You can now specify a maxAmountMultiplier on individual resources within an OMNIRESOURCECOMBO. Just add the field to a RESOURCE node. It defaults to 1.0. This field will take the final amount of units that a part can hold for the given combo resource and multiply it by maxAmountMultiplier.
+- You now have the ability to decouple resources within a resource combo and adjust their amounts individually.
+
+WBIOmniConverter
+- Converters can now produce one or more resources that are specified by a YIELD_RESOURCE node after a set amount of time has passed. Check out the Greenhouse converter template in Templates/ClassicStock/OmniConverters.cfg for an example.
+- Converters have the option to require a die roll to determine if the resource yield succeeds, fails, critically succeeds, or critically fails. This only applies to resources defined by YIELD_RESOURCE nodes. To enable, set minimumSuccess, criticalSuccess, and criticalFailure to values greater than 0 on an OMNICONVERTER template.
+- Converters can now support background processing (They run even when the vessel is unloaded). USE SPARINGLY! Too much background processing will slow the game down. For performance reasons, converters are run in the background once every six in-game hours. To enable, set enableBackgroundProcessing = true in an OMNICONVERTER template node.
+- Converters now support effects. You can specify a startEffect, stopEffect, and runningEffect.
+
+PROTIP: If you don't specify any templateNodes, then you can still set up an OmniConverter to work like a regular ModuleResourceConverter, but with the extra benefits of playing Effects, timed resource production with optional success checks, and background processing (yes, you can set it at the part module's config node if you don't use omni converter templates).
+
+Classic Stock
+- Added new Greenhouse OmniCoverter template. It's only available if Snacks is installed. It will produce Snacks after 180 hours. There's a chance that the yield will be higher than normal, lower than normal, or fail completely. It also runs in the background.
+- The Haber Process, Composter, Snack Grinder, and Organic Chips Omni Converters will now convert their resources even when the vessel is unloaded and out of physics range.
+
+Bug fixes
+- Fixed issue where switching Play Modes would cause some files to not be renamed and cause all kinds of fun for players...
+
 1.59
 WBIOmniStorage
 - Added new MAX_AMOUNT_MODIFIER node that can be used to increase the storage capacity of a particular resource. See the new OmniStorageModifiers.cfg file located in Templates/Common for details.

@@ -1,0 +1,265 @@
+PATH_SCIENCE
+{
+	author = Angel-125
+	name = GasLab
+	title = Gasdynamics Laboratory
+	description = The Gasdynamics Laboratory is dedicated to researching different types of gasses and the products that result from their different combinations.
+	mass = 3
+	requiredResource = Equipment
+	requiredAmount = 1200
+	reconfigureSkill = ConverterSkill
+	logoPanel = WildBlueIndustries/Pathfinder/Decals/Watney
+	glowPanel = WildBlueIndustries/Pathfinder/Decals/WatneyGlow
+	toolTip = You can make rocket fuels in the lab!
+	toolTipTitle = Your First Gasdynamics Lab
+	templateTags = orbitalWorkshop;moleLab;dsevLab;airshipLab
+
+	//Density of hydrogen: 0.0899 g/l
+	//Density of oxygen: 1.429 g/l
+	//LH2 density: 0.0000708 l/mt
+	//LOX density: 0.001141 l/mt
+	//1L of water produces 1235L of hydrogen and 622L of oxygen
+	//hydrogen mass: 1235 * 0.0899 = 111.0265g = 0.0001110265mt
+	//oxygen mass: 622 * 1.429 = 888.838g = 0.000888838mt
+	//LH2 units: 0.0001110265 / 0.0000708 = 1.56
+	//LOX units: 0.000888838 / 0.001141 = 0.779
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = Water Splitter
+		StartActionName = Start Electrolysis
+		StopActionName = Stop Electrolysis
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ScienceSkill
+		EfficiencyBonus = 1
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Water
+			Ratio = 1
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 22
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = Oxium
+			Ratio = 0.779
+			DumpExcess = true
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = Propellium
+			Ratio = 1.56
+			DumpExcess = true
+		}
+
+	}
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = Fuel Processor
+		StartActionName = Start Fuel Processor
+		StopActionName = Stop Fuel Processor
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ScienceSkill
+		EfficiencyBonus = 1
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Propellium
+			Ratio = 5
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = Oxium
+			Ratio = 2.5
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = Minerite
+			Ratio = 1.8
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = Nitronite
+			Ratio = 1.15
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 5
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = LiquidFuel
+			Ratio = 0.45
+			DumpExcess = false
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = Oxidizer
+			Ratio = 0.55
+			DumpExcess = false
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = Combustor
+		StartActionName = Start Combustor
+		StopActionName = Stop Combustor
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ScienceSkill
+		EfficiencyBonus = 1
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Propellium
+			Ratio = 1.56
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = Oxium
+			Ratio = 0.78
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 8.5
+			DumpExcess = true
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = Water
+			Ratio = 1.0000428
+			DumpExcess = false
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = Gasifier
+		StartActionName = Start Gasifier
+		StopActionName = Stop Gasifier
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ScienceSkill
+		EfficiencyBonus = 1
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Oxium
+			Ratio = 1
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = Nitronite
+			Ratio = 0.5
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 5
+			DumpExcess = false
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = MonoPropellant
+			Ratio = 0.5
+			DumpExcess = true
+		}
+	}
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = Xenon Separator
+		StartActionName = Start Xenon Separator
+		StopActionName = Stop Xenon Separator
+		AutoShutdown = false
+		GeneratesHeat = false
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ScienceSkill
+		EfficiencyBonus = 1
+		 
+		INPUT_RESOURCE
+		{
+			ResourceName = Zeonium
+			Ratio = 0.1
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 5
+			DumpExcess = false
+		}
+
+		OUTPUT_RESOURCE
+		{
+			ResourceName = XenonGas
+			Ratio = 5
+			DumpExcess = true
+		}
+	}
+
+	MODULE
+	{
+		name = WBIEfficiencyMonitor
+		efficiencyType = science
+		harvestType = 0
+	}
+
+	MODULE
+	{
+		name = WBIPowerMonitor
+	}
+
+	RESOURCE
+	{
+		name = ElectricCharge
+		amount = 200
+		maxAmount = 200
+		isTweakable = true
+	}
+}

@@ -8,6 +8,17 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.30
+Last release for KSP 1.4.5!
+
+Classic Stock
+- Added new Greenhouse OmniCoverter template. It's only available if Snacks is installed. It will produce Snacks after 180 hours. There's a chance that the yield will be higher than normal, lower than normal, or fail completely. It also runs in the background.
+- The Haber Process, Composter, Snack Grinder, and Organic Chips Omni Converters will all now convert their resources even when the vessel is unloaded and out of physics range.
+
+Bug Fixes & Enhancements
+- Fixed issue where switching Play Modes would cause some files to not be renamed and cause all kinds of fun for players...
+NOTE: For the changes to take effect, you'll need to switch your Play Mode to some mode other than the current one, then switch it to the desired mode.
+
 1.29
 Hogan
 - Rebuilt the part so that the center of the dome is no longer offset with respect to the center of its packing box. This will fix center of mass issues that caused the part
