@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.30.1
+- Fixed duplicate Hogan
+
 1.30
 Last release for KSP 1.4.5!
 
