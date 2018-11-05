@@ -22,15 +22,11 @@ namespace WildBlueIndustries
     [KSPModule("Buckboard Generator")]
     public class WBIBuckboardGenerator : WBIPowerGenerator
     {
-        [KSPField]
-        public string smokeTransform;
-
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
 
-            if (string.IsNullOrEmpty(smokeTransform) == false)
-                ShowParticleEffect(IsActivated);
+            ShowParticleEffect(IsActivated);
 
             PartModule inventory = this.part.Modules["ModuleKISInventory"];
             if (inventory != null)
@@ -39,12 +35,9 @@ namespace WildBlueIndustries
 
         public void ShowParticleEffect(bool isVisible)
         {
-            KSPParticleEmitter emitter = this.part.GetComponentInChildren<KSPParticleEmitter>();
-            if (emitter != null)
-            {
-                emitter.emit = isVisible;
-                emitter.enabled = isVisible;
-            }
+            WBIEmitterHelper helper = this.part.FindModuleImplementing<WBIEmitterHelper>();
+            if (helper != null)
+                helper.ShowParticleEffect(isVisible);
         }
 
         public override void StartResourceConverter()

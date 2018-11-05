@@ -11,8 +11,6 @@ namespace WildBlueIndustries
     {
         const string kUnavailableMessage = "Experiments are currently unavailable. Perform a biome analysis first.";
         protected ModuleKerbNetAccess kerbNetAccess;
-        protected PartModule impactSeismometer;
-        protected IScienceDataContainer impactSensor;
         protected TerainUplinkView terrainUplinkView;
         protected ModuleScienceContainer scienceContainer;
         protected IParentView parentView = null;
@@ -97,23 +95,6 @@ namespace WildBlueIndustries
             kerbNetAccess = this.part.FindModuleImplementing<ModuleKerbNetAccess>();
             if (kerbNetAccess != null)
             {
-            }
-
-            //Grab the seismometer (if any)
-            foreach (PartModule mod in this.part.Modules)
-            {
-                if (mod.moduleName == "Seismometer")
-                {
-                    impactSeismometer = mod;
-                    impactSensor = (IScienceDataContainer)impactSeismometer;
-                    ScienceData[] impactData = impactSensor.GetData();
-
-                    foreach (ScienceData data in impactData)
-                        scienceContainer.AddData(data);
-                    foreach (ScienceData doomed in impactData)
-                        impactSensor.DumpData(doomed);
-                    break;
-                }
             }
         }
 

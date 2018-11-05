@@ -115,7 +115,7 @@
     <Compile Include="Efficiency\WBIEfficiencyBonus.cs" />
     <Compile Include="Science\WBIScienceDataGenerator.cs" />
     <Compile Include="Parts\WBIPackingBox.cs" />
-    <Compile Include="ResourceDistribution\WBIRecyclerArm.cs" />
+    <Compile Include="ResourceDistribution\WBIRecycler.cs" />
     <Compile Include="Parts\WBIScoopTurbine.cs" />
     <Compile Include="Contracts\WBIColonistContract.cs" />
     <Compile Include="Habitat\WBIClassConverter.cs" />

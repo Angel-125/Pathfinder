@@ -43,7 +43,7 @@ namespace WildBlueIndustries
         [KSPField]
         public bool resetExperience = true;
 
-        WBIClassConverterView converterView = new WBIClassConverterView();
+        WBIClassConverterView converterView;
 
         [KSPEvent(guiActive = true, guiName = "Retrain Kerbals")]
         public void retrainKerbals()
@@ -56,6 +56,7 @@ namespace WildBlueIndustries
             }
 
             //Show the view
+            converterView = new WBIClassConverterView();
             converterView.part = this.part;
             converterView.traitsAllowedToConvert = traitsAllowedToConvert;
             converterView.blacklistedTraits = blacklistedTraits;

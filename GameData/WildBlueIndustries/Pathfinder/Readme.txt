@@ -8,6 +8,36 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.31
+New Part
+- Accessory Mount (Space Exploration). The Accessory Mount can be radially attached and provides a hardpoint for accessories like the Gaslight, Sombrero, and Telegraph.
+
+Bug Fixes & Enhancements
+- Recompled for KSP 1.5.X.
+- Updated KIS MM patches to KIS 1.16.
+- Updated KAS MM patches to KAS 1.1.
+- Updated OSE Workshop MM patches to OSE Workshop 1.3.
+IMPORTANT NOTE: The latest KAS update is potentially save breaking to Pathfinder. It is Strongly recommended that you de-link any parts attached via pipes and any vessels connected via Mineshaft.
+- Added rack mounts to the crew tunnels on the Chuckwagon, Casa, Doc, and Hacienda.
+- The Gaslight, Sombrero, and Telegraph can now be surface mounted in addition to stack mounted.
+- Removed ThermalEfficiency and TemperatureModifier nodes from stock drills in the MM_Drills.cfg patch. Thanks haelon! :)
+- Part decals now default to hidden.
+- Renamed the Hogan to the Castillo.
+- Added resource distribution and Omni Converters to the Castillo.
+- Consolidated the Castillo's Community Center, Dormitory, and Classroom template functionalities into a single template.
+- Removed KAS attachment fixtures from a variety of parts. You'll need to use the KAS pipe connector or better yet, Pathfinder's resource distribution.
+- Added OmniStorage to the ground-based Pipeline as well as a resource distributor.
+- In Classic Stock Play Mode, OSE Workshop now uses Equipment instead of MaterialKits for its default resource.
+- Added Classic Stock recipes to OSE Workshop.
+- Added new ElectricCharge + Rock = Konkrete OmniConverter to Classic Stock. This is similar to the real-world LavaHive regolith melter.
+- Omni converters will automatically shut down if the vessel's Electric Charge falls below 5%.
+- Streamlined feedback messages related to using resource distribution to pull resoures needed to assemble parts.
+- Fixed some issues around the boxed parts and their deployment.
+- Fixed some issues related to the Operations Manager not showing up properly.
+- Fixed emitters on the Buckboards producing smoke when they shouldn't.
+- Fixed issue where assembling parts with resource costs didn't actually spend the required resources.
+- Fixed issue with heavy parts causing physics and collider problems during assembly.
+
 1.30.1
 - Fixed duplicate Hogan
 
@@ -33,7 +63,6 @@ Claimjumper
 - Removed Prospector; its functionality is incoprorated into drills.
 - Removed drill switcher; its functionality is incorporated into drills.
 - Added list of resources mined from the current biome.
-
 Classic Stock
 - Fixed issue with OmniConverters incorrectly displaying "missing" status after changing the recipie.
 - OmniConverters will now properly prepare their conversion recipie after you change what they convert.

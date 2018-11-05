@@ -248,7 +248,7 @@ namespace WildBlueIndustries
                 {
                     float amount = converter.Lab.dataStored;
                     converter.Lab.dataStored = 0f;
-                    float amountDistributed = WBIPathfinderScenario.Instance.DistributeData(amount, this.part.vessel, true);
+                    float amountDistributed = WBIPathfinderScenario.Instance.DistributeData(amount, this.part.vessel, true, true, true);
                     if (amountDistributed < amount)
                         converter.Lab.dataStored += (amount - amountDistributed);
                 }

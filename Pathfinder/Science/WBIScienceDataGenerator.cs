@@ -26,10 +26,32 @@ namespace WildBlueIndustries
     [KSPModule("Science Data Generator")]
     public class WBIScienceDataGenerator : WBIResourceConverter
     {
+        ///Indicates whether or not the generator can distribute data to labs.
+        [KSPField]
+        public bool canDistributeToLabs = true;
+
         //Toggle to indicate whether or not to distribute data to science labs
         [KSPField(guiName = "Distribute data to labs", isPersistant = true, guiActiveEditor = true, guiActive = true)]
         [UI_Toggle(enabledText = "Yes", disabledText = "No")]
-        public bool distributeDataToLabs = true;
+        public bool addToLabs = true;
+
+        ///Indicates whether or not the generator can distribute data to Gold Strike prospectors.
+        [KSPField]
+        public bool canDistributeToGoldStrike = true;
+
+        //Toggle to indicate whether or not to distribute data to Gold Strike bonuses
+        [KSPField(guiName = "Distribute data to Gold Strike prospectors", isPersistant = true, guiActiveEditor = true, guiActive = true)]
+        [UI_Toggle(enabledText = "Yes", disabledText = "No")]
+        public bool addToGoldStrike = true;
+
+        ///Indicates whether or not the generator can distribute data to Pipeline endpoints.
+        [KSPField]
+        public bool canDistributeToPipeline = true;
+
+        //Toggle to indicate whether or not to distribute data to Pipeline endpoints
+        [KSPField(guiName = "Distribute data to Pipeline Endpoints", isPersistant = true, guiActiveEditor = true, guiActive = true)]
+        [UI_Toggle(enabledText = "Yes", disabledText = "No")]
+        public bool addToPipeline = true;
 
         [KSPField]
         public float dataPerCycle = 50f;
@@ -51,6 +73,15 @@ namespace WildBlueIndustries
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
+
+            Fields["addToLabs"].guiActive = canDistributeToLabs;
+            Fields["addToLabs"].guiActiveEditor = canDistributeToLabs;
+
+            Fields["addToGoldStrike"].guiActive = canDistributeToGoldStrike;
+            Fields["addToGoldStrike"].guiActiveEditor = canDistributeToGoldStrike;
+
+            Fields["addToPipeline"].guiActive = canDistributeToPipeline;
+            Fields["addToPipeline"].guiActiveEditor = canDistributeToPipeline;
         }
 
         public override string GetInfo()
@@ -75,7 +106,7 @@ namespace WildBlueIndustries
             if (requiresFullCrew)
                 amount *= this.part.protoModuleCrew.Count / this.part.CrewCapacity;
 
-            WBIPathfinderScenario.Instance.DistributeData(amount, this.part.vessel, distributeDataToLabs);
+            WBIPathfinderScenario.Instance.DistributeData(amount, this.part.vessel, addToLabs, addToPipeline, addToGoldStrike);
         }
 
         protected override void onCriticalSuccess()
@@ -86,7 +117,7 @@ namespace WildBlueIndustries
             if (requiresFullCrew)
                 amount *= this.part.protoModuleCrew.Count / this.part.CrewCapacity;
 
-            WBIPathfinderScenario.Instance.DistributeData(amount, this.part.vessel, distributeDataToLabs);
+            WBIPathfinderScenario.Instance.DistributeData(amount, this.part.vessel, addToLabs, addToPipeline, addToGoldStrike);
         }
     }
 }

@@ -6,6 +6,20 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.61
+- Fixed issues with resetting and rerunning science experiments that still claimed to be completed.
+- Fixed issue with science experiments requiring twice as many resources to complete when checkPartResources is set to true.
+- The Breakthrough Research experiment will (at long last!) unlock unresearched tech nodes in the event of a breakthrough.
+- WBIOmniConverter will stop processing if the vessel's ElectricCharge falls below minimumVesselPercentEC. Default is 5.
+- Consolidated the functionality of WBIEnhancedExperiment with WBIModuleScienceExperiment.
+- Removed WBIEnhancedExperiment.
+- Added new ElectricCharge + Rock = Konkrete OmniConverter to Classic Stock. This is similar to the real-world LavaHive regolith melter.
+- Omni converters will automatically shut down if the vessel's Electric Charge falls below 5%.
+- Fixed some issues related to the Operations Manager not showing up properly.
+- Fixed emitters on the Buckboards producing smoke when they shouldn't.
+- Fixed issue where assembling parts with resource costs didn't actually spend the required resources.
+- Fixed issue with heavy parts causing physics and collider problems during assembly.
+
 1.60
 Last release for KSP 1.4.5!
 

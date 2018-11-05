@@ -39,31 +39,30 @@ namespace WildBlueIndustries
         public string packingBoxTransform = "PackingBox";
 
         [KSPField]
-        public bool showOpsView = true;
-
-        [KSPField]
         public bool staticAttachOnDeploy = true;
 
+        public string managedPartModules = string.Empty;
         public event OnPackingStateChanged onPackingStateChanged;
-        protected bool isMoving = false;
         GameObject staticAttachObject;
         FixedJoint staticAttachJoint;
 
         [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Show Resource Requirements")]
         public void showAssemblyRequirements()
         {
-            buildInputList(CurrentTemplateName);
             StringBuilder requirementsList = new StringBuilder();
             string templateName = "";
 
+            //If we have a template then be sure to list its requirements.
             //Template name
             if (CurrentTemplate.HasValue("title"))
                 templateName = CurrentTemplate.GetValue("title");
             else
                 templateName = CurrentTemplate.GetValue("name");
-            requirementsList.AppendLine("Configuration: " + templateName);
+            if (templateName.ToLower() != "empty")
+                requirementsList.AppendLine("Configuration: " + templateName);
 
             //Resource Requirements.
+            buildInputList(templateName);
             string[] keys = inputList.Keys.ToArray();
             for (int index = 0; index < keys.Length; index++)
             {
@@ -84,6 +83,8 @@ namespace WildBlueIndustries
         {
             base.OnStart(state);
 
+            getManagedModuleNames();
+
             if (HighLogic.LoadedSceneIsEditor)
                 this.part.CrewCapacity = 0;
 
@@ -91,9 +92,6 @@ namespace WildBlueIndustries
 
             if (string.IsNullOrEmpty(resourcesToKeep))
                 resourcesToKeep = "ElectricCharge";
-
-            //Hide/show the packing box if needed.
-            setPackingBoxVisible();
 
             //Lights
             setupLightGUI();
@@ -105,6 +103,39 @@ namespace WildBlueIndustries
                 SetStaticAttach();
                 Events["showAssemblyRequirements"].active = false;
             }
+
+            updateManagedModules();
+        }
+
+        protected void updateManagedModules()
+        {
+            if (!this.isInflatable)
+                return;
+
+            //Update the template modules
+            int count = this.addedPartModules.Count;
+            for (int index = 0; index < count; index++)
+            {
+                this.addedPartModules[index].moduleIsEnabled = this.isDeployed;
+                this.addedPartModules[index].enabled = this.isDeployed;
+                this.addedPartModules[index].isEnabled = this.isDeployed;
+            }
+
+            //Now update modules that are permanently part of the part config.
+            if (string.IsNullOrEmpty(managedPartModules))
+                return;
+
+            count = this.part.Modules.Count;
+            PartModule module;
+            for (int index = 0; index < count; index ++)
+            {
+                module = this.part.Modules[index];
+                if (managedPartModules.Contains(module.ClassName))
+                {
+                    module.enabled = this.isDeployed;
+                    module.isEnabled = this.isDeployed;
+                }
+            }
         }
 
         public override void ToggleInflation()
@@ -112,7 +143,6 @@ namespace WildBlueIndustries
             base.ToggleInflation();
             if (!canDeploy)
                 return;
-            isMoving = true;
 
             //Tooltip
             checkAndShowToolTip();
@@ -124,42 +154,25 @@ namespace WildBlueIndustries
             if (isOneShot && HighLogic.LoadedSceneIsEditor == false)
                 Events["ToggleInflation"].active = false;
 
-            //Hide/show the packing box if needed.
-            setPackingBoxVisible();
+            //Resources required event
+            Events["showAssemblyRequirements"].active = false;
 
             //Lights
             setupLightGUI();
+
+            updateManagedModules();
 
             //Fire events
             if (onPackingStateChanged != null)
                 onPackingStateChanged(isDeployed);
         }
 
-        public override void OnUpdate()
+        public override void OnToggleStateCompleted()
         {
-            base.OnUpdate();
+            base.OnToggleStateCompleted();
 
-            //Static attach
-            if (!staticAttachOnDeploy)
-                return;
-            if (HighLogic.LoadedSceneIsFlight == false)
-                return;
-            if (!isMoving)
-                return;
-            if (anim != null)
-            {
-                if (!anim.isPlaying && isMoving)
-                {
-                    isMoving = false;
-                    SetStaticAttach();
-                    Events["showAssemblyRequirements"].active = false;
-                }
-                else if (!anim.isPlaying && staticAttachOnDeploy && isDeployed && !this.part.PermanentGroundContact)
-                {
-                    SetStaticAttach();
-                    Events["showAssemblyRequirements"].active = false;
-                }
-            }
+            if (staticAttachOnDeploy && isDeployed && !this.part.PermanentGroundContact)
+                SetStaticAttach();
         }
 
         public void SetStaticAttach(bool isAttached = true)
@@ -174,7 +187,6 @@ namespace WildBlueIndustries
 
             //Set ground contact
             this.part.PermanentGroundContact = true;
-//            this.part.vessel.permanentGroundContact = true;
 
             //Zero velocity
             int partCount = this.part.vessel.parts.Count;
@@ -209,6 +221,38 @@ namespace WildBlueIndustries
             staticAttachJoint.breakTorque = float.MaxValue;
         }
 
+        protected void getManagedModuleNames()
+        {
+            if (this.part.partInfo.partConfig == null)
+                return;
+            ConfigNode[] nodes = this.part.partInfo.partConfig.GetNodes("MODULE");
+            ConfigNode node = null;
+            string moduleName;
+            List<string> optionNamesList = new List<string>();
+
+            //Get the config node.
+            for (int index = 0; index < nodes.Length; index++)
+            {
+                node = nodes[index];
+                if (node.HasValue("name"))
+                {
+                    moduleName = node.GetValue("name");
+                    if (moduleName == this.ClassName)
+                    {
+                        if (node.HasNode("MANAGED_MODULES"))
+                        {
+                            node = node.GetNode("MANAGED_MODULES");
+                            string[] moduleNames = node.GetValues("moduleName");
+                            managedPartModules = "";
+                            for (int nameIndex = 0; nameIndex < moduleNames.Length; nameIndex++)
+                                managedPartModules += moduleNames[nameIndex] + ";";
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
         protected void setupLightGUI()
         {
             WBILight light = this.part.FindModuleImplementing<WBILight>();
@@ -225,43 +269,24 @@ namespace WildBlueIndustries
 
         protected void setManageOpsButtonVisible()
         {
-            if (!showOpsView)
-            {
-                Events["ReconfigureStorage"].guiActive = false;
-                Events["ReconfigureStorage"].guiActiveUnfocused = false;
-                Events["ReconfigureStorage"].guiActiveEditor = false;
-                return;
-            }
-
-            Events["ReconfigureStorage"].guiActive = fieldReconfigurable;
-            Events["ReconfigureStorage"].guiActiveUnfocused = fieldReconfigurable;
-            Events["ReconfigureStorage"].guiActiveEditor = fieldReconfigurable;
+            Events["ReconfigureStorage"].guiActive = fieldReconfigurable || ShowGUI;
+            Events["ReconfigureStorage"].guiActiveUnfocused = fieldReconfigurable || ShowGUI;
+            Events["ReconfigureStorage"].guiActiveEditor = fieldReconfigurable || ShowGUI;
 
             //Dirty the GUI
             MonoUtilities.RefreshContextWindows(this.part);
         }
 
-        protected void setPackingBoxVisible()
+        public override void SetGUIVisible(bool isVisible)
         {
-            if (!string.IsNullOrEmpty(packingBoxTransform))
-            {
-                //Get the targets
-                Transform[] targets;
-                targets = part.FindModelTransforms(packingBoxTransform);
-                if (targets == null)
-                {
-                    Debug.Log("No targets found for " + packingBoxTransform);
-                    return;
-                }
+            base.SetGUIVisible(isVisible);
+            setManageOpsButtonVisible();
+        }
 
-                foreach (Transform target in targets)
-                {
-                    target.gameObject.SetActive(!isDeployed);
-                    Collider collider = target.gameObject.GetComponent<Collider>();
-                    if (collider != null)
-                        collider.enabled = !isDeployed;
-                }
-            }
+        public override void SetContextGUIVisible(bool isVisible)
+        {
+            base.SetContextGUIVisible(isVisible);
+            setManageOpsButtonVisible();
         }
     }
 }

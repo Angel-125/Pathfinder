@@ -36,24 +36,12 @@ namespace WildBlueIndustries
         [KSPField]
         public string opsViewTitle;
 
-        protected Animation anim;
-        protected PartModule impactSeismometer;
-        protected PartModule exWorkshop;
-
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
 
             if (HighLogic.LoadedSceneIsEditor)
                 this.part.CrewCapacity = 0;
-
-            foreach (PartModule mod in this.part.Modules)
-            {
-                if (mod.moduleName == "Seismometer")
-                    impactSeismometer = mod;
-                else if (mod.moduleName == "ExWorkshop")
-                    exWorkshop = mod;
-            }
 
             opsManagerView.WindowTitle = this.part.partInfo.title + " Operations";
 
@@ -67,57 +55,9 @@ namespace WildBlueIndustries
             anim = this.part.FindModelAnimators(animationName)[0];
         }
 
-        public override void OnUpdate()
+        public override void OnToggleStateCompleted()
         {
-            base.OnUpdate();
-
-            if (anim == null)
-            {
-                checkAndShowToolTip();
-                return;
-            }
-
-            //We're only interested in the act of inflating the module.
-            if (isDeployed == false)
-            {
-                animationStarted = false;
-                return;
-            }
-
-            //If we've completed the animation then we are done.
-            if (animationStarted == false)
-                return;
-
-            //Animation may not be done yet.
-            if (anim.isPlaying)
-                return;
-
-            //At this point we know that the animation was playing but has now stopped.
-            //We also know that the animation was started. Now reset the flag.
-            animationStarted = false;
-
-            //Hide seismometer
-            if (impactSeismometer != null)
-            {
-                IScienceDataContainer container = (IScienceDataContainer)impactSeismometer;
-
-                BaseEvent reviewEvent = impactSeismometer.Events["reviewEvent"];
-                if (reviewEvent != null)
-                {
-                    reviewEvent.guiActive = false;
-                    reviewEvent.guiActiveUnfocused = false;
-                }
-
-                //clear out the impact data if the current template isn't a geology lab
-                if (CurrentTemplateName != "Geology Lab")
-                {
-                    ScienceData[] dataItems = container.GetData();
-                    if (dataItems != null)
-                        foreach (ScienceData doomed in dataItems)
-                            container.DumpData(doomed);
-                }
-            }
-
+            base.OnToggleStateCompleted();
             checkAndShowToolTip();
         }
 
@@ -295,13 +235,13 @@ namespace WildBlueIndustries
 
         protected override bool canAffordReconfigure(string templateName, bool deflatedModulesAutoPass = true)
         {
+            showInsufficientResourcesMsg = false;
             bool canAfford = base.canAffordReconfigure(templateName, deflatedModulesAutoPass);
 
             //If the vessel can't afford to reconfigure the module, then maybe the distribution manager can help.
             if (canAfford == false)
             {
                 canAfford = true;
-                ScreenMessages.PostScreenMessage("Checking distributors...", 10.0f);
 
                 string[] keys = inputList.Keys.ToArray();
                 string resourceName;
@@ -314,6 +254,8 @@ namespace WildBlueIndustries
 
                     if (distributedAmount < inputList[resourceName])
                     {
+                        string notEnoughPartsMsg = string.Format(kInsufficientParts, inputList[resourceName], resourceName);
+                        ScreenMessages.PostScreenMessage(notEnoughPartsMsg, 5.0f, ScreenMessageStyle.UPPER_CENTER);
                         ScreenMessages.PostScreenMessage("No active distributors have " + resourceName + " to share. Make sure resource distribution is turned on, and a distributor is sharing " + resourceName + ".", 10.0f);
                         canAfford = false;
                         break;
@@ -336,7 +278,7 @@ namespace WildBlueIndustries
 
         protected override bool payPartsCost(int templateIndex, bool deflatedModulesAutoPass = true)
         {
-            bool canAffordCost = base.payPartsCost(templateIndex);
+            bool canAffordCost = base.payPartsCost(templateIndex, deflatedModulesAutoPass);
 
             //Maybe the distribution manager can help?
             if (canAffordCost == false)
@@ -386,6 +328,8 @@ namespace WildBlueIndustries
             //Now we can check to see if the tooltip for the current template has been shown.
             WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
             if (scenario.HasShownToolTip(CurrentTemplateName) && scenario.HasShownToolTip(getMyPartName()))
+                return;
+            if (!CurrentTemplate.HasValue("toolTipTitle") && !CurrentTemplate.HasValue("toolTip"))
                 return;
 
             //Tooltip for the current template has never been shown. Show it now.

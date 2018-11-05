@@ -37,11 +37,11 @@ namespace WildBlueIndustries
         [KSPField()]
         public string resourceBlacklist = string.Empty;
 
-        [KSPField(isPersistant = true, guiName = "Shares resources")]
+        [KSPField(isPersistant = true, guiName = "Shares resources", guiActive = true, guiActiveEditor = false)]
         [UI_Toggle(enabledText = "Yes", disabledText = "No")]
         public bool isParticipating;
 
-        [KSPField(isPersistant = true, guiName = "Share resources with vessel", guiActive = true)]
+        [KSPField(isPersistant = true, guiName = "Share resources with vessel", guiActive = true, guiActiveEditor = false)]
         [UI_Toggle(enabledText = "Yes", disabledText = "No")]
         public bool sharesWithVessel;
 
@@ -435,6 +435,7 @@ namespace WildBlueIndustries
             Events["SetupDistribution"].guiActive = false;
             Events["SetupDistribution"].guiActiveEditor = false;
             Fields["sharesWithVessel"].guiActive = false;
+            Fields["sharesWithVessel"].guiActiveEditor = false;
         }
 
         #region IOpsView

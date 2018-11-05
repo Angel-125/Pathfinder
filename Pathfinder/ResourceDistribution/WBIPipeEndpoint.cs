@@ -287,9 +287,12 @@ namespace WildBlueIndustries
                 packingBox.onPackingStateChanged += onPackingStateChanged;
                 onPackingStateChanged(packingBox.isDeployed);
             }
+            else
+            {
+                this.Events["ToggleSendGUI"].active = true;
+            }
 
             //Setup GUI
-            this.Events["ToggleSendGUI"].active = true;
             if (IsActivated)
                 Events["ToggleActivation"].guiName = kPowerOff;
             else
@@ -698,10 +701,6 @@ namespace WildBlueIndustries
         {
             if (packingBox == null)
                 return;
-
-            Fields["status"].guiActive = isVisible & packingBox.isDeployed;
-            Events["ToggleActivation"].active = isVisible & packingBox.isDeployed;
-            this.Events["ToggleSendGUI"].active = isVisible & packingBox.isDeployed;
         }
 
         public string GetPartTitle()

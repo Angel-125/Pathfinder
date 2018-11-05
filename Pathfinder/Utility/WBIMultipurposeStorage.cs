@@ -59,39 +59,9 @@ namespace WildBlueIndustries
             opsManagerView.WindowTitle = this.part.partInfo.title + " Operations";
         }
 
-        public override void OnUpdate()
+        public override void OnToggleStateCompleted()
         {
-            base.OnUpdate();
-
-            if (HighLogic.LoadedSceneIsFlight == false)
-                return;
-
-            if (CurrentTemplateName != prevTemplateName && isDeployed)
-            {
-                prevTemplateName = CurrentTemplateName;
-                checkAndShowToolTip();
-                return;
-            }
-
-            //We're only interested in the act of inflating the module.
-            if (isDeployed == false)
-            {
-                animationStarted = false;
-                return;
-            }
-
-            //If we've completed the animation then we are done.
-            if (animationStarted == false)
-                return;
-
-            //Animation may not be done yet.
-            if (anim.isPlaying)
-                return;
-
-            //At this point we know that the animation was playing but has now stopped.
-            //We also know that the animation was started. Now reset the flag.
-            animationStarted = false;
-
+            base.OnToggleStateCompleted();
             checkAndShowToolTip();
         }
 
@@ -100,6 +70,8 @@ namespace WildBlueIndustries
             //Now we can check to see if the tooltip for the current template has been shown.
             WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
             if (scenario.HasShownToolTip(CurrentTemplateName))
+                return;
+            if (!CurrentTemplate.HasValue("toolTipTitle") && !CurrentTemplate.HasValue("toolTip"))
                 return;
 
             //Tooltip for the current template has never been shown. Show it now.

@@ -32,6 +32,11 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.6.9
+- Updated to KSP 1.5
+- Updated to KAS 1.0
+WARNING! The switch to KAS 1.0 is potentially game breaking. De-link any craft attached via KAS pipes or the Mineshaft.
+
 2.6.8
 Last release for KSP 1.4.5!
 

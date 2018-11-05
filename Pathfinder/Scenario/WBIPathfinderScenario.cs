@@ -195,7 +195,7 @@ namespace WildBlueIndustries
         #endregion
 
         #region Data science
-        public float DistributeData(float amount, Vessel vessel, bool distributeDataToLabs)
+        public float DistributeData(float amount, Vessel vessel, bool addToLabs, bool addToPipeline, bool addToGoldStrike)
         {
             debugLog("DistributeData: " + amount + " to distribute.");
             float amountPerModule;
@@ -204,16 +204,20 @@ namespace WildBlueIndustries
             WBIPipeEndpoint pipeEndpoint;
             WBIGoldStrikeBonus goldStrikeBonus;
             int totalCount;
+
+            //List of labs, bonus modules, and pipeline endpoints that are actively processing data.
             List<WBIGoldStrikeBonus> activeBonuses = new List<WBIGoldStrikeBonus>();
             List<WBIPipeEndpoint> activeEndpoints = new List<WBIPipeEndpoint>();
             List<ModuleScienceLab> activeLabs = new List<ModuleScienceLab>();
+
+            //List of labs, bonus modules, and pipeline endpoint to process
             List<ModuleScienceLab> scienceLabs = vessel.FindPartModulesImplementing<ModuleScienceLab>();
             List<WBIGoldStrikeBonus> goldStrikeBonuses = vessel.FindPartModulesImplementing<WBIGoldStrikeBonus>();
             List<WBIPipeEndpoint> pipeEndpoints = vessel.FindPartModulesImplementing<WBIPipeEndpoint>();
 
 
             //If we're allowed to distribute data to labs, then get the active labs.
-            if (distributeDataToLabs && scienceLabs != null)
+            if (scienceLabs != null && addToLabs)
             {
                 totalCount = scienceLabs.Count;
                 for (int index = 0; index < totalCount; index++)
@@ -222,11 +226,11 @@ namespace WildBlueIndustries
                     if (lab.processingData)
                         activeLabs.Add(lab);
                 }
+                debugLog("Active Labs: " + activeLabs.Count);
             }
-            debugLog("Active Labs: " + activeLabs.Count);
 
             //Get the active pipe endpoints
-            if (pipeEndpoints != null)
+            if (pipeEndpoints != null && addToPipeline)
             {
                 totalCount = pipeEndpoints.Count;
                 for (int index = 0; index < totalCount; index++)
@@ -235,11 +239,11 @@ namespace WildBlueIndustries
                     if (pipeEndpoint.accumulateData)
                         activeEndpoints.Add(pipeEndpoint);
                 }
+                debugLog("Active Endpoints: " + activeEndpoints.Count);
             }
-            debugLog("Active Endpoints: " + activeEndpoints.Count);
 
             //Get the active gold strike bonuses
-            if (goldStrikeBonuses != null)
+            if (goldStrikeBonuses != null && addToGoldStrike)
             {
                 totalCount = goldStrikeBonuses.Count;
                 for (int index = 0; index < totalCount; index++)
@@ -248,51 +252,60 @@ namespace WildBlueIndustries
                     if (goldStrikeBonus.accumulateData)
                         activeBonuses.Add(goldStrikeBonus);
                 }
+                debugLog("Active Bonuses: " + activeBonuses.Count);
             }
-            debugLog("Active Bonuses: " + activeBonuses.Count);
 
-            //Divide up the remaining data between the active modules.
+            //Divide up the data between the active modules.
             if (activeLabs.Count == 0 && activeBonuses.Count == 0 && activeEndpoints.Count == 0)
                 return 0f;
             amountPerModule = amount / (activeBonuses.Count + activeEndpoints.Count + activeLabs.Count);
             debugLog("amountPerModule: " + amountPerModule);
 
             //Labs
-            totalCount = activeLabs.Count;
-            for (int index = 0; index < totalCount; index++)
+            if (addToLabs)
             {
-                lab = activeLabs[index];
-
-                //Add data to the lab
-                if (lab.dataStored + amountPerModule <= lab.dataStorage)
+                totalCount = activeLabs.Count;
+                for (int index = 0; index < totalCount; index++)
                 {
-                    lab.dataStored += amountPerModule;
-                    amountDistributed += amountDistributed;
-                }
+                    lab = activeLabs[index];
 
-                else
-                {
-                    amountDistributed += lab.dataStorage - lab.dataStored;
-                    lab.dataStored = lab.dataStorage;
+                    //Add data to the lab
+                    if (lab.dataStored + amountPerModule <= lab.dataStorage)
+                    {
+                        lab.dataStored += amountPerModule;
+                        amountDistributed += amountDistributed;
+                    }
+
+                    else
+                    {
+                        amountDistributed += lab.dataStorage - lab.dataStored;
+                        lab.dataStored = lab.dataStorage;
+                    }
                 }
             }
 
             //Endpoints
-            totalCount = activeEndpoints.Count;
-            for (int index = 0; index < totalCount; index++)
+            if (addToPipeline)
             {
-                pipeEndpoint = pipeEndpoints[index];
-                pipeEndpoint.AddData(amountPerModule);
-                amountDistributed += amountDistributed;
+                totalCount = activeEndpoints.Count;
+                for (int index = 0; index < totalCount; index++)
+                {
+                    pipeEndpoint = pipeEndpoints[index];
+                    pipeEndpoint.AddData(amountPerModule);
+                    amountDistributed += amountDistributed;
+                }
             }
 
             //GoldStrike
-            totalCount = activeBonuses.Count;
-            for (int index = 0; index < totalCount; index++)
+            if (addToGoldStrike)
             {
-                goldStrikeBonus = goldStrikeBonuses[index];
-                goldStrikeBonus.AddData(amountPerModule);
-                amountDistributed += amountDistributed;
+                totalCount = activeBonuses.Count;
+                for (int index = 0; index < totalCount; index++)
+                {
+                    goldStrikeBonus = goldStrikeBonuses[index];
+                    goldStrikeBonus.AddData(amountPerModule);
+                    amountDistributed += amountDistributed;
+                }
             }
 
             return amountDistributed;
