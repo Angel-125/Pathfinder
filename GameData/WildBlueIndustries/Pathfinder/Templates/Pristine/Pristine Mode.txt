@@ -1,0 +1,92 @@
+@PART[WBI_Conestoga]
+{
+	!MODULE[WBIConvertibleStorage]{}
+}
+
+@PART[WBI_DocSciLab]:FINAL
+{
+	!MODULE[WBIMultipurposeLab] {}
+
+	MODULE
+	{
+		name = WBIMeshToggle
+		guiVisible = false
+		showMeshesName = Show
+		hideMeshesName = Hide
+		objects = logoPanel002, logoPanel003, logoPanel004
+	}
+
+	MODULE
+	{
+		name = ModuleAnimateGeneric
+		animationName = Deploy
+		startEventGUIName = Inflate
+		endEventGUIName = Deflate
+	}
+}
+
+@PART[WBI_Hacienda]:FINAL
+{
+	!MODULE[WBIMultipurposeHab]{}
+
+	MODULE
+	{
+		name = ModuleAnimateGeneric
+		animationName = Deploy
+		startEventGUIName = Inflate
+		endEventGUIName = Deflate
+	}
+
+	MODULE
+	{
+		name = WBIMeshToggle
+		guiVisible = false
+		showMeshesName = Show
+		hideMeshesName = Hide
+		objects = logoPanel001, logoPanel002, logoPanel003
+	}
+}
+
+@PART[WBI_Ponderosa]:FINAL
+{
+	!MODULE[WBIMultipurposeHab]{}
+
+	MODULE
+	{
+		name = ModuleAnimateGeneric
+		animationName = Deploy
+		startEventGUIName = Inflate
+		endEventGUIName = Deflate
+	}
+
+	MODULE
+	{
+		name = WBIMeshToggle
+		guiVisible = false
+		showMeshesName = Show
+		hideMeshesName = Hide
+		objects = logoPanel001, logoPanel002, logoPanel003, logoPanel004
+	}
+}
+
+@PART[WBI_Ponderosa2]:FINAL
+{
+	!MODULE[WBIMultipurposeHab]{}
+
+	MODULE
+	{
+		name = ModuleAnimateGeneric
+		animationName = Deploy
+		startEventGUIName = Inflate
+		endEventGUIName = Deflate
+	}
+
+	MODULE
+	{
+		name = WBIMeshToggle
+		guiVisible = false
+		showMeshesName = Show
+		hideMeshesName = Hide
+		objects = logoPanel001, logoPanel002, logoPanel003
+	}
+}
