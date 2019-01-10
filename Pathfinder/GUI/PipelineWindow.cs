@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using KerbalActuators;
 using KSP.IO;
 using KSP.Localization;
 
@@ -99,6 +100,9 @@ namespace WildBlueIndustries
         const string kNoOrbitToGroundMsg = "Cannot send to destination, orbit-to-ground transfers aren't possible.";
         const string kLaunchIssuesMsg = "Cannot send to destination, one or more issues remain.";
         const string kShipmentLaunched = "Shipment in flight to ";
+        const string kLaunchAzimuthGo = "<color=white>Launch Azimuth: {0:f2} </color><b>GO!</b>";
+        const string kLaunchAzimuthNoGo = "<color=white>Launch Azimuth: {0:f2} </color><color=red><b>NO-GO!</b></color>";
+        const string kLaunchAzimuthNoGoAlert = "Cannot deliver to target. Wait for better launch window.";
         #endregion
 
         public Part part;
@@ -111,6 +115,7 @@ namespace WildBlueIndustries
         public float electricityCostPerTonne = 1000.0f;
         public bool allowOrbitToGround = false;
         public float totalGuidanceData = 0f;
+        public float maxLaunchAzimuth = 15.0f;
         public setGuidanceDataAmountDelegate setGuidanceDataAmount;
 
         PipeEndpointNode[] pipeEndpoints;
@@ -119,11 +124,15 @@ namespace WildBlueIndustries
         Vector2 scrollPos = new Vector2();
         Vector2 scrollPosResources = new Vector2();
         Vector2 panelPos = new Vector2();
+        Vector2 targetPanel = new Vector2();
+        Vector2 targetPane = new Vector2();
         GUILayoutOption[] vesselSelectionLayoutOption = new GUILayoutOption[] { GUILayout.Width(375) };
         GUILayoutOption[] resourcePaneOptions = new GUILayoutOption[] { GUILayout.Height(windowHeight), GUILayout.Width(250) };
         GUILayoutOption[] inventoryButtonOptions = new GUILayoutOption[] { GUILayout.Width(250) };
         GUILayoutOption[] buttonOptions = new GUILayoutOption[] { GUILayout.Width(80) };
         GUILayoutOption[] resourcePanelOptions = new GUILayoutOption[] { GUILayout.Height(75) };
+        GUILayoutOption[] targetPanelOptions = new GUILayoutOption[] { GUILayout.Height(windowHeight), GUILayout.Width(250) };
+        GUILayoutOption[] targetPaneOptions = new GUILayoutOption[] { GUILayout.Height(windowHeight), GUILayout.Width(150) };
         string[] vesselNames;
         string[] sourceDisplayNames;
         Dictionary<string, WBIResourceTotals> sourceVesselResources = new Dictionary<string, WBIResourceTotals>();
@@ -140,6 +149,7 @@ namespace WildBlueIndustries
         List<WBIPackingItem> packingList = new List<WBIPackingItem>();
         int inventoryItemCount = 0;
         float packingListMass = 0f;
+        bool enableAzimuthRestriction;
 
         public PipelineWindow(string title = "Pipelines") :
             base(title, windowWidth, windowHeight)
@@ -180,6 +190,9 @@ namespace WildBlueIndustries
                 //Get inventory if any
                 if (WBIKISWrapper.IsKISInstalled())
                     inventory = WBIKISInventoryWrapper.GetInventory(this.part);
+
+                //Launch azimuth restriction
+                enableAzimuthRestriction = PathfinderSettings.EnableAzimuthRestriction;
             }
         }
 
@@ -187,6 +200,7 @@ namespace WildBlueIndustries
         {
             //We're only interested in vessels outside of physics range.
             Vessel[] vessels = FlightGlobals.VesselsUnloaded.ToArray();
+//            Vessel[] vessels = FlightGlobals.VesselsLoaded.ToArray();
             Vessel vessel;
             PipeEndpointNode endpointNode;
             List<PipeEndpointNode> endpoints = new List<PipeEndpointNode>();
@@ -201,6 +215,8 @@ namespace WildBlueIndustries
 
                 //If the vessel is not on or orbiting the active vessel's celestial body, then we're done.
                 if (vessel.mainBody != FlightGlobals.ActiveVessel.mainBody)
+                    continue;
+                if (vessel == this.part.vessel)
                     continue;
 
                 //See if the vessel has an active pipeline. If so, add it to the list.
@@ -1021,6 +1037,26 @@ namespace WildBlueIndustries
             return WBITransferTypes.Unknown;
         }
 
+        protected bool canReceiveTransfers(Vessel vessel, WBIPipeEndpoint pipeEndpoint)
+        {
+            if (!pipeEndpoint.IsActivated)
+                return false;
+
+            if (string.IsNullOrEmpty(pipeEndpoint.uniqueIdentifier))
+                return false;
+
+            //If this is an orbit-to-ground transfer, then it might not be allowed.
+            if ((FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING) &&
+                (vessel.situation == Vessel.Situations.LANDED ||
+                vessel.situation == Vessel.Situations.PRELAUNCH ||
+                vessel.situation == Vessel.Situations.SPLASHED))
+                return allowOrbitToGround;
+
+            //We're good
+            Log("canReceiveTransfers: Pipeline found on " + vessel.vesselName);
+            return true;
+        }
+
         protected bool canReceiveTransfers(Vessel vessel, ProtoPartModuleSnapshot protoModule)
         {
             //Is the pipeline activated?
@@ -1060,35 +1096,96 @@ namespace WildBlueIndustries
                 return;
             }
 
-            GUILayout.BeginVertical();
-
             //Directions
             GUILayout.Label(kSelectVessel);
 
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical();
+
             //Selection list
-            scrollPos = GUILayout.BeginScrollView(scrollPos);
+            targetPanel = GUILayout.BeginScrollView(targetPanel);
 
             selectedIndex = GUILayout.SelectionGrid(selectedIndex, vesselNames, 1);
             selectedPipelineNode = pipeEndpoints[selectedIndex];
 
             GUILayout.EndScrollView();
 
-            //Next button
-            if (GUILayout.Button(kNextLabel))
+            //If the part has a WBITrackingController then point at the target.
+            WBITrackingController controller = this.part.FindModuleImplementing<WBITrackingController>();
+            if (controller != null && controller.targetVessel != selectedPipelineNode.vessel)
             {
-                //Get transfer type
-                transferType = getTransferType();
-
-                //Make sure that the transfer is allowed
-                if (transferType == WBITransferTypes.OrbitToGround && !allowOrbitToGround)
-                    ScreenMessages.PostScreenMessage(kNoOrbitToGroundMsg, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
-
-                //Set next page
-                else
-                    pageID = PipelineViewPages.ChooseResources;
+                controller.ClearTarget();
+                controller.targetVessel = selectedPipelineNode.vessel;
+                controller.UpdateTarget();
             }
 
             GUILayout.EndVertical();
+
+            //Go/NO-GO
+            bool launchAzimuthIsGo = true;
+            if (enableAzimuthRestriction)
+            {
+                GUILayout.BeginVertical();
+                targetPane = GUILayout.BeginScrollView(targetPane, targetPaneOptions);
+
+                //Check launch azimuth
+                Vector3 inversePosition = this.part.transform.InverseTransformPoint(selectedPipelineNode.vessel.vesselTransform.position);
+                float azimuth = Mathf.Atan2(inversePosition.x, inversePosition.z) * Mathf.Rad2Deg;
+                if (azimuth <= 0)
+                    azimuth = 360 + azimuth;
+                if (azimuth >= 0 && azimuth <= maxLaunchAzimuth)
+                {
+                    GUILayout.Label(string.Format(kLaunchAzimuthGo, Mathf.Abs(azimuth)));
+                }
+                else if (azimuth <= 180 && azimuth >= 180 - maxLaunchAzimuth)
+                {
+                    GUILayout.Label(string.Format(kLaunchAzimuthGo, Mathf.Abs(azimuth)));
+                }
+                else if (azimuth > 180 && azimuth <= 180 + maxLaunchAzimuth)
+                {
+                    GUILayout.Label(string.Format(kLaunchAzimuthGo, Mathf.Abs(azimuth)));
+                }
+                else if (azimuth >= 360 - maxLaunchAzimuth)
+                {
+                    GUILayout.Label(string.Format(kLaunchAzimuthGo, Mathf.Abs(azimuth)));
+                }
+                else
+                {
+                    GUILayout.Label(string.Format(kLaunchAzimuthNoGo, Mathf.Abs(azimuth)));
+                    launchAzimuthIsGo = false;
+                }
+
+                GUILayout.EndScrollView();
+                GUILayout.EndVertical();
+            }
+
+            GUILayout.EndHorizontal();
+
+            //Next button
+            if (GUILayout.Button(kNextLabel))
+            {
+                if (launchAzimuthIsGo)
+                {
+                    //Get transfer type
+                    transferType = getTransferType();
+
+                    //Make sure that the transfer is allowed
+                    if (transferType == WBITransferTypes.OrbitToGround && !allowOrbitToGround)
+                    {
+                        ScreenMessages.PostScreenMessage(kNoOrbitToGroundMsg, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+                    }
+
+                    //Set next page
+                    else
+                    {
+                        pageID = PipelineViewPages.ChooseResources;
+                    }
+                }
+                else
+                {
+                    ScreenMessages.PostScreenMessage(kLaunchAzimuthNoGoAlert, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+                }
+            }
         }
 
         protected override void DrawWindowContents(int windowId)

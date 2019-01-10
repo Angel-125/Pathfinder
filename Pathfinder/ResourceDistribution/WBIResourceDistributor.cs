@@ -41,9 +41,12 @@ namespace WildBlueIndustries
         [UI_Toggle(enabledText = "Yes", disabledText = "No")]
         public bool isParticipating;
 
-        [KSPField(isPersistant = true, guiName = "Share resources with vessel", guiActive = true, guiActiveEditor = false)]
+        [KSPField(isPersistant = true, guiName = "Shares with vessel", guiActive = true, guiActiveEditor = false)]
         [UI_Toggle(enabledText = "Yes", disabledText = "No")]
         public bool sharesWithVessel;
+
+        [KSPField]
+        public bool showGUIOverride = false;
 
         public event ResourcesAcquiredDelegate onResourceDistributed;
 
@@ -432,10 +435,10 @@ namespace WildBlueIndustries
 
         public void SetGUIVisible(bool isVisible)
         {
-            Events["SetupDistribution"].guiActive = false;
-            Events["SetupDistribution"].guiActiveEditor = false;
-            Fields["sharesWithVessel"].guiActive = false;
-            Fields["sharesWithVessel"].guiActiveEditor = false;
+            Events["SetupDistribution"].guiActive = isVisible || showGUIOverride;
+            Events["SetupDistribution"].guiActiveEditor = isVisible || showGUIOverride;
+            Fields["sharesWithVessel"].guiActive = isVisible || showGUIOverride;
+            Fields["sharesWithVessel"].guiActiveEditor = isVisible || showGUIOverride;
         }
 
         #region IOpsView

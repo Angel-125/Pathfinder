@@ -45,6 +45,7 @@ namespace WildBlueIndustries
         public event OnPackingStateChanged onPackingStateChanged;
         GameObject staticAttachObject;
         FixedJoint staticAttachJoint;
+        Dictionary<string, double> resourceMaxAmounts = new Dictionary<string, double>();
 
         [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "Show Resource Requirements")]
         public void showAssemblyRequirements()
@@ -84,6 +85,8 @@ namespace WildBlueIndustries
             base.OnStart(state);
 
             getManagedModuleNames();
+            getPartResources();
+            updateManagedResources();
 
             if (HighLogic.LoadedSceneIsEditor)
                 this.part.CrewCapacity = 0;
@@ -105,6 +108,33 @@ namespace WildBlueIndustries
             }
 
             updateManagedModules();
+        }
+
+        protected void updateManagedResources()
+        {
+            if (!this.isInflatable)
+                return;
+            if (resourceMaxAmounts.Keys.Count == 0)
+                return;
+
+            int count = resourceMaxAmounts.Keys.Count;
+            string resourceName;
+            string[] resourceKeys = resourceMaxAmounts.Keys.ToArray();
+            double maxAmount = 0;
+            for (int index = 0; index < count; index++)
+            {
+                resourceName = resourceKeys[index];
+                maxAmount = resourceMaxAmounts[resourceName];
+
+                if (!this.part.Resources.Contains(resourceName) && isDeployed)
+                {
+                    this.part.Resources.Add(resourceName, 0, maxAmount, true, true, false, true, PartResource.FlowMode.Both);
+                }
+                else if (this.part.Resources.Contains(resourceName) && !isDeployed)
+                {
+                    this.part.Resources.Remove(resourceName);
+                }
+            }
         }
 
         protected void updateManagedModules()
@@ -161,6 +191,7 @@ namespace WildBlueIndustries
             setupLightGUI();
 
             updateManagedModules();
+            updateManagedResources();
 
             //Fire events
             if (onPackingStateChanged != null)
@@ -253,6 +284,31 @@ namespace WildBlueIndustries
             }
         }
 
+        protected void getPartResources()
+        {
+            if (this.part.partInfo.partConfig == null)
+                return;
+            if (templateNodes != "EMPTY")
+                return;
+            ConfigNode[] nodes = this.part.partInfo.partConfig.GetNodes("RESOURCE");
+            ConfigNode node = null;
+            string resourceName = string.Empty;
+            double maxAmount = 0;
+
+            resourceMaxAmounts.Clear();
+            for (int index = 0; index < nodes.Length; index++)
+            {
+                node = nodes[index];
+                if (node.HasValue("name"))
+                    resourceName = node.GetValue("name");
+                maxAmount = 0;
+                if (node.HasValue("maxAmount"))
+                    double.TryParse(node.GetValue("maxAmount"), out maxAmount);
+                if (!resourceMaxAmounts.ContainsKey(resourceName))
+                    resourceMaxAmounts.Add(resourceName, maxAmount);
+            }
+        }
+
         protected void setupLightGUI()
         {
             WBILight light = this.part.FindModuleImplementing<WBILight>();
@@ -287,6 +343,12 @@ namespace WildBlueIndustries
         {
             base.SetContextGUIVisible(isVisible);
             setManageOpsButtonVisible();
+        }
+
+        protected override void runHeadless(ModuleResourceConverter converter)
+        {
+            if (ShowGUI)
+                base.runHeadless(converter);
         }
     }
 }

@@ -18,8 +18,8 @@ namespace WildBlueIndustries
 
         public override void OnStart(StartState state)
         {
-            base.OnStart(state);
             terrainUplinkView = new TerainUplinkView();
+            base.OnStart(state);
             this.geoLabView.drawView = this.drawView;
 
             if (HighLogic.LoadedSceneIsFlight == false)

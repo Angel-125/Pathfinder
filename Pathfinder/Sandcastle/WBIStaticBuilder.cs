@@ -87,6 +87,7 @@ namespace WildBlueIndustries
         public List<WBIBuildResource> requiredResources = new List<WBIBuildResource>();
         public ConfigNode spawnStaticNode;
         protected WBIPlatformBuildView builderView;
+        protected int vesselCount = 0;
         #endregion
 
         #region Events
@@ -154,6 +155,33 @@ namespace WildBlueIndustries
             double elapsedTime = currentTime - lastUpdatedTime;
             lastUpdatedTime = currentTime;
 
+            //Get vessel bonus
+            //Additional builders not currently working on a project can contribute to this builder's project.
+            double vesselBonus = 1.0f;
+            int moduleCount = 0;
+            double activeBuilders = 0;
+            if (FlightGlobals.VesselsLoaded.Count != vesselCount)
+            {
+                vesselCount = FlightGlobals.VesselsLoaded.Count;
+                List<WBIStaticBuilder> staticBuilders = null;
+                for (int index = 0; index < vesselCount; index++)
+                {
+                    FlightGlobals.VesselsLoaded[index].FindPartModulesImplementing<WBIStaticBuilder>();
+                    if (staticBuilders == null || staticBuilders.Count == 0)
+                        continue;
+
+                    moduleCount = staticBuilders.Count;
+                    vesselBonus = (double)moduleCount;
+                    for (int moduleIndex = 0; moduleIndex < moduleCount; moduleIndex++)
+                    {
+                        if (staticBuilders[moduleIndex].isBuilding)
+                            activeBuilders += 1.0f;
+                    }
+                }
+            }
+            if (activeBuilders > 1.0f)
+                vesselBonus = vesselBonus / activeBuilders;
+            
             //Get crewBonus
             double crewBonus = getCrewSkill() * SpecialistBonus;
             builderView.crewBonus = crewBonus;
@@ -164,14 +192,14 @@ namespace WildBlueIndustries
             while (elapsedTime > kCatchupTime)
             {
                 for (int index = 0; index < resourceCount; index++)
-                    allResourcesAcquired = requiredResources[index].hasAcquiredResource(kCatchupTime, crewBonus);
+                    allResourcesAcquired = requiredResources[index].hasAcquiredResource(kCatchupTime * vesselBonus, crewBonus);
 
                 elapsedTime -= kCatchupTime;
             }
 
             //Handle the remainder of elapsed time
             for (int index = 0; index < resourceCount; index++)
-                allResourcesAcquired = requiredResources[index].hasAcquiredResource(elapsedTime, crewBonus);
+                allResourcesAcquired = requiredResources[index].hasAcquiredResource(elapsedTime * vesselBonus, crewBonus);
 
             //If not all of the resources have been acquired then we're done.
             if (!allResourcesAcquired)
@@ -194,7 +222,8 @@ namespace WildBlueIndustries
         {
             this.isEnabled = false;
             isBuilding = false;
-            builderView.isBuilding = false;
+            if (builderView != null)
+                builderView.isBuilding = false;
         }
 
         public void EnableModule()

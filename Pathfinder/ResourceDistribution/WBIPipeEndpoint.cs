@@ -146,6 +146,11 @@ namespace WildBlueIndustries
         [KSPField]
         public float maxGuidanceData = 1000.0f;
 
+        /// <summary>
+        /// Max launch angle between the target and the pipeline.
+        /// </summary>
+        [KSPField]
+        public float maxLaunchAzimuth = 15.0f;
         #endregion
 
         #region ICanBreak fields
@@ -269,7 +274,8 @@ namespace WildBlueIndustries
             pipelineWidow.allowOrbitToGround = this.allowOrbitToGround;
             pipelineWidow.totalGuidanceData = this.totalGuidanceData;
             pipelineWidow.setGuidanceDataAmount = setGuidanceDataAmount;
-             
+            pipelineWidow.maxLaunchAzimuth = this.maxLaunchAzimuth;
+
             //Get resource definition for electric charge
             if (activationCostEC > 0f)
             {
@@ -453,6 +459,7 @@ namespace WildBlueIndustries
         protected void setGuidanceDataAmount(float amount)
         {
             totalGuidanceData = amount;
+            MonoUtilities.RefreshContextWindows(this.part);
         }
 
         protected void checkAndShowToolTip()

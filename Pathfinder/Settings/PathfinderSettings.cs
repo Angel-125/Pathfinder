@@ -23,10 +23,22 @@ namespace WildBlueIndustries
         [GameParameters.CustomParameterUI("Confirm scrap operation", toolTip = "If enabled, you'll need to click the scrap button again to confirm the scrap operation.", autoPersistance = true)]
         public bool confirmScrap = true;
 
+        [GameParameters.CustomParameterUI("Restrict Pipeline launch azimuth", toolTip = "If enabled, Pipelines cannot deliver payloads in any direction.", autoPersistance = true)]
+        public bool enableAzimuthRestriction = false;
+
         [GameParameters.CustomParameterUI("Enable debug logging", toolTip = "Useful for diagnostics purposes.", autoPersistance = true)]
         public bool loggingEnabled = false;
 
         #region Properties
+        public static bool EnableAzimuthRestriction
+        {
+            get
+            {
+                PathfinderSettings settings = HighLogic.CurrentGame.Parameters.CustomParams<PathfinderSettings>();
+                return settings.enableAzimuthRestriction;
+            }
+        }
+
         public static bool LoggingEnabled
         {
             get
