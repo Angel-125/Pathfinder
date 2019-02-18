@@ -6,6 +6,12 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.72.0
+- Fixed overchange of Equipment costs for OmniConverter templates.
+- Fixed incorrect display of Equipment costs in the Operations Manager.
+- Fixed duplicate OmniConverter and OmniStorage loadouts that happen when you revert a flight back to the editor and create a new part.
+- Added ARP icons- thanks JadeOfMaar!
+
 1.71.0
 - Fixed duplicate Extraplanetary Launchpad OmniConverter templates.
 - Fixed ability to reconfigure deflated parts.

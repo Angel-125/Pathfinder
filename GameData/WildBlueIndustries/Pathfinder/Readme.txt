@@ -8,6 +8,14 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.32.3
+- Fixed invalid harvest types in the Prospector.
+- Fixed shrunken packing box on the Drilling Rig.
+- Fixed overchange of Equipment costs for OmniConverter templates.
+- Fixed incorrect display of Equipment costs in the Operations Manager.
+- Fixed duplicate OmniConverter and OmniStorage loadouts that happen when you revert a flight back to the editor and create a new part.
+- Added KIS volume override for Golddigger.
+
 1.32.2
 - Fixed duplicate Extraplanetary Launchpad OmniConverter templates.
 - Fixed portraits not updating when Tourists are retrained. NOTE: KIS might not notice the update.
