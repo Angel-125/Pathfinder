@@ -25,13 +25,15 @@ namespace WildBlueIndustries
         NotEnoughDistance,
         AsteroidProspected,
         LodeAlreadyExists,
-        InvalidVesselSituation
+        InvalidVesselSituation,
+        NoResourcesToProspect
     }
 
     public class GoldStrikeLode
     {
         public double longitude;
         public double lattitude;
+        public double altitude;
         public int planetID;
         public string biome;
         public string resourceName;
@@ -51,6 +53,9 @@ namespace WildBlueIndustries
 
                 if (node.HasValue("lattitude"))
                     lattitude = double.Parse(node.GetValue("lattitude"));
+
+                if (node.HasValue("altitude"))
+                    altitude = double.Parse(node.GetValue("altitude"));
 
                 if (node.HasValue("planetID"))
                     planetID = int.Parse(node.GetValue("planetID"));
@@ -79,6 +84,7 @@ namespace WildBlueIndustries
 
             node.AddValue("longitude", longitude);
             node.AddValue("lattitude", lattitude);
+            node.AddValue("altitude", altitude);
             node.AddValue("planetID", planetID);
             node.AddValue("biome", biome);
             if (string.IsNullOrEmpty(navigationID) == false)
@@ -96,6 +102,7 @@ namespace WildBlueIndustries
 
             sb.AppendLine("longitude: " + longitude);
             sb.AppendLine("lattitude: " + lattitude);
+            sb.AppendLine("altitude: " + altitude);
             sb.AppendLine("planetID: " + planetID);
             sb.AppendLine("biome: " + biome);
             if (string.IsNullOrEmpty(navigationID) == false)

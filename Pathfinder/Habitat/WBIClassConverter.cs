@@ -61,7 +61,7 @@ namespace WildBlueIndustries
             converterView.traitsAllowedToConvert = traitsAllowedToConvert;
             converterView.blacklistedTraits = blacklistedTraits;
             converterView.resetExperience = resetExperience;
-            converterView.SetVisible(!converterView.IsVisible());
+            converterView.SetVisible(true);
         }
     }
 }

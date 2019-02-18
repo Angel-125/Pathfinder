@@ -211,6 +211,7 @@ namespace WildBlueIndustries
                 KerbalRoster.SetExperienceTrait(trainee, newProfessions[kerbalName]);
                 KerbalPortraitGallery.Instance.RegisterActiveCrew(trainee.KerbalRef);
                 KerbalPortraitGallery.Instance.UpdatePortrait(trainee.KerbalRef);
+                KerbalPortraitGallery.Instance.StartReset(this.part.vessel);
 
                 //Reset experience
                 if (resetExperience)

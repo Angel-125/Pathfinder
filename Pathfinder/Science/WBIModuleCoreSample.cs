@@ -488,7 +488,7 @@ namespace WildBlueIndustries
                 return data;
             }
 
-            //No biome data. Look in the planetary map.
+            //No biome data. Look in the Planetary map.
             key = bodyName + resourceName + resourceTypeStr;
             if (resourceDataMap.ContainsKey(key))
             {
@@ -518,7 +518,7 @@ namespace WildBlueIndustries
                 return data;
             }
 
-            //No planetary data. Look in the global map.
+            //No Planetary data. Look in the global map.
             key = resourceName + resourceTypeStr;
             if (resourceDataMap.ContainsKey(key))
             {

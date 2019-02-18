@@ -8,6 +8,20 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.32.2
+- Fixed duplicate Extraplanetary Launchpad OmniConverter templates.
+- Fixed portraits not updating when Tourists are retrained. NOTE: KIS might not notice the update.
+- Fixed KIS-attached inflatables starting off being attached inverted. Be sure to use the KISMount attachment node (the first in the list).
+- Fixed ability to reconfigure deflated parts.
+- Updated stack nodes on the Patio.
+- You can now prospect at any time, but some resources won't be found unless you travel a certain minimum distance (hint: 3km is typical).
+
+1.32.1 Sandcastle Part 2
+
+New Boxed Parts
+- Walkway 2x (Advanced Exploration): This boxed part assembles into a walkway that adds space between base parts. It also has a roof rack for attaching accessories.
+- Drilling Rig (Composites): Once assembled, this large drilling rig extracts a large number of resources at a time; it's 4x faster than the Claimjumper.
+
 1.32 Sandcastle Part 1
 At long last Project Sandcastle is here! Part 1 contains a new line of 12.5-meter diameter parts and associated accessories designed for more permanent bases. The first part, the Castillo, is one you're already familiar with. It has undergone many revisions to find the right look and feel. This release builds upon the Castillo by delivering a factory, storage depot, and observatory- with working telescope if you install Tarsier or CactEye! In addition, there are new support buildings including the Ground Station and A.R.C. Fusion Reactor, as well as a new walkway. All of these parts start out as standard shipping crates that are then assembled with resources- be sure to turn on resource distribution.
 

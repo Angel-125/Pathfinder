@@ -6,6 +6,55 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.71.0
+- Fixed duplicate Extraplanetary Launchpad OmniConverter templates.
+- Fixed ability to reconfigure deflated parts.
+- Misc. Bug fixes
+- Moved Pathfinder's GoldStrike to Wild Blue Tools.
+- You can now prospect at any time, but some resources won't be found unless you travel a certain minimum distance (hint: 3km is typical).
+- Sample GOLDSTRIKE config node:
+GOLDSTRIKE
+{
+	resourceName = Aurum
+
+	//Restricts where the resource can be found. Separate multiple types by semicolon. Options: Planetary;Oceanic;Atmospheric;Exospheric. Planetary is default.
+	resourceTypes = Planetary
+
+	//List of planet names, separated by semicolon, where the resource can be found. Default: Any, which means any planet can have the resource.
+	planetsFound = Any
+
+	//List of biome names, separated by semicolon, where the resource can be found. Default: Any, which means any biome can have the resource.
+	biomesFound = Any
+
+	//The minimum distance in kilometers between prospect attempts required in order to include the resource among the possible prospected resources.
+	//Default is 3 kilometers.
+	//Ex: Aurum, Gemstones, and PreciousMetals all require you to travel at least 3 kilometers before they become available. Assume that Blutonium could be found every 5km.
+	//If you only travel 2km before making a prospect attempt, then none of the resources will be found. If you travel 6km, then Aurum, Gemstones, PreciousMetals, and Blutonium
+	//will all be potential candidates for prospecting. You still need to make a successful prospecting check to obtain a node.
+	minProspectDistance = 3
+
+	//Minimum required altitude in order for the resource to be a prospecting candidate. Can be negative for below sea level. Default is a double.MinValue.
+	//minAltitude = 0
+
+	//Maxiumum required altitude in order for the resource to be a prospecting candidate. Can be negative for below sea level. Default is double.MaxValue.
+	//maxAltitude = -1000
+
+	//If near an anomaly, some resources are more likely to occur than others. This parameter indicates how likely the resource will be found near an anomaly.
+	//anomalyChance = 65
+
+	//Minimum units in the lode
+	minAmount = 200
+
+	//Maximum units in the lode
+	maxAmount = 4000
+
+	//Roll well enough, and multiply the lode size by this multiplier
+	motherlodeMultiplier = 1.5
+}
+
+1.70.0
+- Bug fixes
+
 1.7
 - Recompiled for KSP 1.6
 - Bug fixes.

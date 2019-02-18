@@ -23,9 +23,6 @@ namespace WildBlueIndustries
         [GameParameters.CustomFloatParameterUI("Prospect Reset Cost", maxValue = 500.0f, minValue = 10.0f, toolTip = "How much for extra prospects?", autoPersistance = true, gameMode = GameParameters.GameMode.SCIENCE | GameParameters.GameMode.CAREER)]
         public float prospectResetCost = 100.0f;
 
-        [GameParameters.CustomIntParameterUI("Distance Between Prospects (KM)", maxValue = 20, minValue = 3, stepSize = 1, toolTip = "How far to travel between prospects", autoPersistance = true, gameMode = GameParameters.GameMode.ANY)]
-        public int distanceBetweenProspects = 3;
-
         [GameParameters.CustomIntParameterUI("Bonus Per Prospect Skill", maxValue = 10, minValue = 1, stepSize = 1, toolTip = "What are those skill points worth?", autoPersistance = true, gameMode = GameParameters.GameMode.ANY)]
         public int bonusPerSkillPoint = 1;
 
@@ -37,15 +34,6 @@ namespace WildBlueIndustries
             {
                 GoldStrikeSettings settings = HighLogic.CurrentGame.Parameters.CustomParams<GoldStrikeSettings>();
                 return settings.prospectResetCost;
-            }
-        }
-
-        public static float DistanceBetweenProspects
-        {
-            get
-            {
-                GoldStrikeSettings settings = HighLogic.CurrentGame.Parameters.CustomParams<GoldStrikeSettings>();
-                return settings.distanceBetweenProspects;
             }
         }
 

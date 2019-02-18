@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.6.12
+- Bug fixes
+
 2.6.11
 - Recompiled for KSP 1.6.
 
