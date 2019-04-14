@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    //Asteroid drills work differently than planetary drills.
+    //Asteroid drills work differently than Land drills.
     //They will drill for every resource that an asteroid has.
     public class WBIGoldStrikeAsteroidDrill : ModuleBreakableAsteroidDrill
     {
@@ -102,7 +102,7 @@ namespace WildBlueIndustries
 
             //Find the nearest lode (if any)
             debugLog("Looking for a prospect lode for asteroid " + asteroid.AsteroidName);
-            nearestLode = WBIPathfinderScenario.Instance.FindNearestLode(asteroid);
+            nearestLode = WBIGoldStrikeScenario.Instance.FindNearestLode(asteroid);
 
             if (nearestLode != null)
             {
@@ -141,7 +141,7 @@ namespace WildBlueIndustries
             }
 
             //Has asteroid been prospected?
-            else if (WBIPathfinderScenario.Instance.IsAsteroidProspected(asteroid))
+            else if (WBIGoldStrikeScenario.Instance.IsAsteroidProspected(asteroid))
             {
                 lodeStatus = Localizer.Format(statusAlreadyProspectedName);
             }

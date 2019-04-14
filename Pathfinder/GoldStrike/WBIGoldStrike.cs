@@ -25,6 +25,13 @@ namespace WildBlueIndustries
     {
         private const string kAnomalyBlacklist = "KSC;KSC2;IslandAirfield;Harvester Massif;Nye Island;Mesa South;Crater Rim;North Station One";
         private const string kAnomalyBlacklistNode = "ANOMALY_BLACKLIST";
+        private const string statusReadyName = "Can prospect";
+        private const string statusAlreadyProspectedName = "Already prospected";
+        private const string statusInsufficientCrewName = "Insufficient crew";
+        private const string statusNoAsteroidName = "Land or get asteroid";
+        private const string statusNoResources = "No resources to prospect";
+        private const string statusNAName = "N/A";
+        private const string kLastProspectDist = "Last prospect dist: {0:f2}km";
         private const float kMessageDisplayTime = 10.0f;
         private const float kMotherlodeFactor = 0.05f;
         private const float kLabSkillBonus = 0.5f;
@@ -57,49 +64,19 @@ namespace WildBlueIndustries
         [KSPField(guiActive = true, guiName = "Prospecting")]
         public string status = "N/A";
 
-        [KSPField()]
-        public string statusReadyName = "Can prospect";
-
-        [KSPField()]
-        public string statusGoFartherName = "Travel farther";
-
-        [KSPField()]
-        public string statusAlreadyProspectedName = "Already prospected";
-
-        [KSPField()]
-        public string statusInsufficientCrewName = "Insufficient crew";
-
-        [KSPField()]
-        public string statusNoAsteroidName = "Land or get asteroid";
-
-        [KSPField()]
-        public string statusNAName = "N/A";
-
-        [KSPField(guiName = "Next prospect", guiFormat = "f2", guiUnits = "km", guiActive = true)]
-        public double nextProspectDistance = 0f;
-
         protected ModuleAsteroid asteroid = null;
         protected ModuleAsteroidInfo asteroidInfo = null;
         protected AudioSource jingle = null;
-        double minTravelDistance = 3f;
         protected string anomalyName = string.Empty;
         protected GoldStrikeVesselModule vesselModule = null;
         protected float anomalyBonus = 0;
+        protected List<GoldStrikeData> prospectResources = null;
+        protected double travelDistance;
 
         protected void debugLog(string message)
         {
             if (WBIPathfinderScenario.showDebugLog == true)
                 Debug.Log("[WBIGoldStrike] - " + message);
-        }
-
-        public void onGameSettingsApplied()
-        {
-            minTravelDistance = GoldStrikeSettings.DistanceBetweenProspects;
-        }
-
-        public void Destroy()
-        {
-            GameEvents.OnGameSettingsApplied.Remove(onGameSettingsApplied);
         }
 
         public override void OnStart(StartState state)
@@ -111,10 +88,6 @@ namespace WildBlueIndustries
 
             if (HighLogic.LoadedSceneIsFlight == false)
                 return;
-
-            //Minimum travel distance
-            minTravelDistance = GoldStrikeSettings.DistanceBetweenProspects;
-            GameEvents.OnGameSettingsApplied.Add(onGameSettingsApplied);
 
             //Vessel Module
             foreach (VesselModule module in this.part.vessel.vesselModules)
@@ -136,60 +109,36 @@ namespace WildBlueIndustries
             if (HighLogic.LoadedSceneIsFlight == false)
                 return;
 
-            //If we don't have a last prospect location then the distance is zero.
-            if (vesselModule.HasLastProspectLocation() == false)
+            //Check situation
+            if (WBIGoldStrikeScenario.Instance.VesselSituationValid(this.part.vessel))
             {
-                status = Localizer.Format(statusReadyName);
-                nextProspectDistance = 0f;
-                return;
+                travelDistance = getDistanceFromLastLocation();
+                if (travelDistance > 0.001f)
+                    status = Localizer.Format(string.Format(kLastProspectDist, travelDistance));
+                else
+                    status = Localizer.Format(statusReadyName);
             }
 
-            //If we have an asteroid, then check its prospect status.
+            //Check asteroid status
             //Priority is to check for captured asteroids before checking to see if we've prospected a particular planetary biome.
-            if (asteroid != null)
+            else if (asteroid != null)
             {
-                if (WBIPathfinderScenario.Instance.IsAsteroidProspected(asteroid))
+                if (WBIGoldStrikeScenario.Instance.IsAsteroidProspected(asteroid))
                 {
                     status = Localizer.Format(statusAlreadyProspectedName);
-                    nextProspectDistance = 0;
-                    return;
                 }
 
                 //Ready to be prospected.
                 else
                 {
                     status = Localizer.Format(statusReadyName);
-                    nextProspectDistance = 0;
-                }
-
-                //Done
-                return;
-            }
-
-            //No asteroid, check prospect distance if we're landed
-            if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
-            {
-                double distance = getDistanceFromLastLocation();
-
-                //Update distance to next prospect
-                nextProspectDistance = (minTravelDistance - distance);
-                if (nextProspectDistance <= 0.00001f)
-                {
-                    nextProspectDistance = 0f;
-                    status = Localizer.Format(statusReadyName);
-                }
-
-                else
-                {
-                    status = Localizer.Format(statusGoFartherName);
                 }
             }
 
-            //No asteroid and not landed.
+            //No asteroid
             else
             {
                 status = Localizer.Format(statusNoAsteroidName);
-                nextProspectDistance = 0;
             }
         }
 
@@ -199,7 +148,7 @@ namespace WildBlueIndustries
             string[] strikeResourceKeys = null;
             int resourceIndex;
             GoldStrikeData strikeData = null;
-            WBIPathfinderScenario scenario = WBIPathfinderScenario.Instance;
+            WBIGoldStrikeScenario scenario = WBIGoldStrikeScenario.Instance;
             string resourceName = string.Empty;
             double resourceAmount = 0f;
             float analysisRoll = 0f;
@@ -208,14 +157,6 @@ namespace WildBlueIndustries
             GoldStrikeLode lode = null;
             string biomeName = string.Empty;
             int planetID = -1;
-
-            //Do we have gold strike resources?
-            if (scenario.goldStrikeResources.Count() == 0)
-            {
-                ScreenMessages.PostScreenMessage("There are no Gold Strike resources to prospect!", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-                debugLog("No resources to prospect");
-                return;
-            }
 
             //Do we have a valid situation?
             if (SituationIsValid() == false)
@@ -237,7 +178,7 @@ namespace WildBlueIndustries
             debugLog("analysisRoll: " + analysisRoll);
 
             //If we didn't succeed then we're done.
-            if (analysisRoll < successTargetNumber && !WBIPathfinderScenario.debugProspectAlwaysSuccessful)
+            if (analysisRoll < successTargetNumber && !WBIGoldStrikeScenario.debugProspectAlwaysSuccessful)
             {
                 debugLog("Prospect failed; didn't roll high enough.");
                 ScreenMessages.PostScreenMessage("Nothing of value here, try another location. ", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
@@ -249,13 +190,12 @@ namespace WildBlueIndustries
             if (anomalyBonus > 0)
             {
                 SortedDictionary<int, GoldStrikeData> sortedResources = new SortedDictionary<int, GoldStrikeData>();
-                strikeResourceKeys = scenario.goldStrikeResources.Keys.ToArray();
+                int resourceCount = prospectResources.Count;
 
                 //Add any resources that have an anomaly chance into the sorted resources
-                for (int index = 0; index < strikeResourceKeys.Length; index++)
+                for (int index = 0; index < resourceCount; index++)
                 {
-                    resourceName = strikeResourceKeys[index];
-                    strikeData = scenario.goldStrikeResources[resourceName];
+                    strikeData = prospectResources[index];
                     if (strikeData.anomalyChance > 0)
                         sortedResources.Add(strikeData.anomalyChance, strikeData);
                 }
@@ -277,19 +217,18 @@ namespace WildBlueIndustries
                 //If we don't have any strike data then pick a random resource
                 if (strikeData == null)
                 {
-                    resourceIndex = UnityEngine.Random.Range(0, strikeResourceKeys.Length - 1);
-                    resourceName = strikeResourceKeys[resourceIndex];
-                    strikeData = scenario.goldStrikeResources[resourceName];
+                    resourceIndex = UnityEngine.Random.Range(0, resourceCount - 1);
+                    strikeData = prospectResources[resourceIndex];
+                    resourceName = strikeData.resourceName;
                 }
             }
 
             else
             {
-                strikeResourceKeys = scenario.goldStrikeResources.Keys.ToArray();
-                resourceIndex = UnityEngine.Random.Range(0, strikeResourceKeys.Length - 1);
-                resourceName = strikeResourceKeys[resourceIndex];
-                strikeData = scenario.goldStrikeResources[resourceName];
-                debugLog("strikeResourceKeys count: " + strikeResourceKeys.Length);
+                resourceIndex = UnityEngine.Random.Range(0, prospectResources.Count - 1);
+                strikeData = prospectResources[resourceIndex];
+                resourceName = strikeData.resourceName;
+                debugLog("prospectResources count: " + prospectResources.Count);
                 debugLog("resourceIndex: " + resourceIndex);
             }
             debugLog("strikeData: " + strikeData.ToString());
@@ -327,7 +266,7 @@ namespace WildBlueIndustries
                 debugLog("Biome: " + biomeName);
                 debugLog("Lon/Lat: " + this.part.vessel.longitude + "/" + this.part.vessel.latitude);
                 lode = scenario.AddLode(planetID, biomeName,
-                    this.part.vessel.longitude, this.part.vessel.latitude, resourceName, resourceAmount);
+                    this.part.vessel.longitude, this.part.vessel.latitude, this.part.vessel.altitude, resourceName, resourceAmount);
             }
 
             //Setup an asteroid lode
@@ -398,11 +337,16 @@ namespace WildBlueIndustries
             }
 
             //Can we prospect the location?
-            switch (WBIPathfinderScenario.Instance.GetProspectSituation(this.part.vessel, out lode))
+            switch (WBIGoldStrikeScenario.Instance.GetProspectSituation(this.part.vessel, out lode, out prospectResources))
             {
+                case ProspectSituations.NoResourcesToProspect:
+                    status = Localizer.Format(statusNoResources);
+                    ScreenMessages.PostScreenMessage("No resource lodes detected here. Try traveling further.", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+                    return false;
+
                 case ProspectSituations.InvalidVesselSituation:
                     debugLog("Vessel situation not valid");
-                    ScreenMessages.PostScreenMessage("Vessel must be landed or in orbit/docked with an asteroid attached", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
+                    ScreenMessages.PostScreenMessage("Vessel must be landed, splashed, or in orbit/docked with an asteroid attached", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
                     status = Localizer.Format(statusNAName);
                     return false;
 
@@ -416,25 +360,11 @@ namespace WildBlueIndustries
                     }
                     return false;
 
-                case ProspectSituations.NotEnoughDistance:
-                    debugLog("Vessel has not traveled enough distance between prospects");
-                    ScreenMessages.PostScreenMessage("Vessel must travel further before prospecting again.", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
-                    status = Localizer.Format(statusGoFartherName);
-                    if (!WBIPathfinderScenario.debugProspectAlwaysSuccessful)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        debugLog("Debug: Prospect is guaranteed");
-                        return true;
-                    }
-
                 case ProspectSituations.AsteroidProspected:
                     debugLog("Asteroid has already been prospected");
                     ScreenMessages.PostScreenMessage("Asteroid has already been prospected.", kMessageDisplayTime, ScreenMessageStyle.UPPER_CENTER);
                     status = Localizer.Format(statusAlreadyProspectedName);
-                    if (!WBIPathfinderScenario.debugProspectAlwaysSuccessful)
+                    if (!WBIGoldStrikeScenario.debugProspectAlwaysSuccessful)
                     {
                         return false;
                     }
@@ -689,7 +619,7 @@ namespace WildBlueIndustries
             if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
             {
                 debugLog("Trying to set waypoint");
-                string location = string.Format("Lon: {0:f2} Lat: {1:f2}", this.part.vessel.longitude, this.part.vessel.latitude);
+                string location = string.Format("Lon: {0:f2} Lat: {1:f2} Alt: {2:f2}", this.part.vessel.longitude, this.part.vessel.latitude, this.part.vessel.altitude);
 
                 Waypoint waypoint = new Waypoint();
                 waypoint.name = resourceName + " Lode";
@@ -699,6 +629,7 @@ namespace WildBlueIndustries
                 waypoint.celestialName = this.part.vessel.mainBody.name;
                 waypoint.longitude = this.part.vessel.longitude;
                 waypoint.latitude = this.part.vessel.latitude;
+                waypoint.altitude = this.part.vessel.altitude;
                 waypoint.seed = UnityEngine.Random.Range(0, int.MaxValue);
                 waypoint.navigationId = Guid.NewGuid();
 
@@ -707,7 +638,7 @@ namespace WildBlueIndustries
                 
                 //Our icon is not correct, do a quick remove, reset the icon, and add
                 WaypointManager.RemoveWaypoint(waypoint);
-                waypoint.id = WBIPathfinderScenario.kLodeIcon;
+                waypoint.id = WBIGoldStrikeScenario.kLodeIcon;
                 waypoint.nodeCaption1 = location;
                 WaypointManager.AddWaypoint(waypoint);
 
@@ -728,16 +659,19 @@ namespace WildBlueIndustries
         {
             double distance = 0f;
 
-            if (this.part.vessel.situation == Vessel.Situations.LANDED || this.part.vessel.situation == Vessel.Situations.PRELAUNCH)
-            {
-                //If we have no last prospect then the distance is zero.
-                if (!vesselModule.HasLastProspectLocation())
-                    return 0f;
+            if (vesselModule == null)
+                return 0f;
 
-                //In kilometers
-                distance = Utils.HaversineDistance(vesselModule.lastProspectLongitude, vesselModule.lastProspectLatitude,
-                    this.part.vessel.longitude, this.part.vessel.latitude, this.part.vessel.mainBody);
+            //If we have no last prospect then the distance is zero.
+            if (!vesselModule.HasLastProspectLocation())
+            {
+                vesselModule.UpdateLastProspectLocation();
+                return 0f;
             }
+
+            //In kilometers
+            distance = Utils.HaversineDistance(vesselModule.lastProspectLongitude, vesselModule.lastProspectLatitude,
+                this.part.vessel.longitude, this.part.vessel.latitude, this.part.vessel.mainBody);
 
             return distance;
         }
@@ -763,7 +697,7 @@ namespace WildBlueIndustries
                 return;
             }
 
-            GUILayout.Label(string.Format("Next Prospect: {0:f2}km", nextProspectDistance));
+            GUILayout.Label(string.Format("Last location: {0:f2}km", travelDistance));
 
             if (GUILayout.Button("Prospect for resources"))
                 CheckGoldStrike();

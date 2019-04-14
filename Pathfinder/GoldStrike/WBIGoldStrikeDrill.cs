@@ -58,7 +58,6 @@ namespace WildBlueIndustries
 
         public GoldStrikeLode nearestLode = null;
         public Vector3d lastLocation = Vector3d.zero;
-        public PartResourceDefinition outputDef;
         string currentBiome = string.Empty;
 
         protected override void debugLog(string message)
@@ -154,7 +153,7 @@ namespace WildBlueIndustries
 
                 //Find the nearest lode (if any)
                 GoldStrikeUtils.GetBiomeAndPlanet(out biomeName, out planetID, this.part.vessel);
-                nearestLode = WBIPathfinderScenario.Instance.FindNearestLode(planetID, biomeName, longitude, latitude, maxHarvestRange);
+                nearestLode = WBIGoldStrikeScenario.Instance.FindNearestLode(planetID, biomeName, longitude, latitude, maxHarvestRange);
 
                 if (nearestLode != null)
                 {

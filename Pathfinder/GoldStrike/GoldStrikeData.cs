@@ -26,6 +26,22 @@ namespace WildBlueIndustries
         public float maxAmount;
         public float motherlodeMultiplier;
         public int anomalyChance;
+        public float minProspectDistance;
+        public string planetsFound;
+        public string biomesFound;
+        public float minAltitude;
+        public float maxAltitude;
+        public string resourceTypes;
+
+        public GoldStrikeData()
+        {
+            minProspectDistance = 3.0f;
+            planetsFound = "Any";
+            biomesFound = "Any";
+            resourceTypes = "Planetary";
+            minAltitude = float.MinValue;
+            maxAltitude = float.MaxValue;
+        }
 
         public void Load(ConfigNode node)
         {
@@ -45,6 +61,24 @@ namespace WildBlueIndustries
 
                 if (node.HasValue("anomalyChance"))
                     anomalyChance = int.Parse(node.GetValue("anomalyChance"));
+
+                if (node.HasValue("minProspectDistance"))
+                    minProspectDistance = float.Parse(node.GetValue("minProspectDistance"));
+
+                if (node.HasValue("minAltitude"))
+                    minAltitude = float.Parse(node.GetValue("minAltitude"));
+
+                if (node.HasValue("maxAltitude"))
+                    maxAltitude = float.Parse(node.GetValue("maxAltitude"));
+
+                if (node.HasValue("resourceTypes"))
+                    resourceTypes = node.GetValue("resourceTypes");
+
+                if (node.HasValue("planetsFound"))
+                    planetsFound = node.GetValue("planetsFound");
+
+                if (node.HasValue("biomesFound"))
+                    biomesFound = node.GetValue("biomesFound");
             }
             catch (Exception ex)
             {
@@ -61,6 +95,12 @@ namespace WildBlueIndustries
             node.AddValue("maxAmount", maxAmount);
             node.AddValue("motherlodeMultiplier", motherlodeMultiplier);
             node.AddValue("anomalyChance", anomalyChance);
+            node.AddValue("minProspectDistance", minProspectDistance);
+            node.AddValue("minAltitude", minAltitude);
+            node.AddValue("maxAltitude", maxAltitude);
+            node.AddValue("resourceTypes", resourceTypes);
+            node.AddValue("planetsFound", planetsFound);
+            node.AddValue("biomesFound", biomesFound);
 
             return node;
         }
@@ -70,12 +110,56 @@ namespace WildBlueIndustries
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("resourceName: " + resourceName);
+            sb.AppendLine("resourceTypes: " + resourceTypes);
+            sb.AppendLine("minProspectDistance: " + minProspectDistance);
+            sb.AppendLine("planetsFound: " + planetsFound);
+            sb.AppendLine("biomesFound: " + biomesFound);
+            sb.AppendLine("minAltitude: " + minAltitude);
+            sb.AppendLine("maxAltitude: " + maxAltitude);
             sb.AppendLine("minAmount: " + minAmount);
             sb.AppendLine("maxAmount: " + maxAmount);
             sb.AppendLine("motherlodeMultiplier: " + motherlodeMultiplier);
             sb.AppendLine("anomalyChance: " + anomalyChance);
 
             return sb.ToString();
+        }
+
+        public bool MatchesProspectCriteria(Vessel.Situations situation, string planetName, string biomeName, double altitude, double travelDistance)
+        {
+            //Check planet
+            if (planetsFound != "Any")
+            {
+                if (!planetsFound.Contains(planetName))
+                    return false;
+            }
+
+            //Check biome
+            if (biomesFound != "Any")
+            {
+                if (!biomesFound.Contains(biomeName))
+                    return false;
+            }
+
+            //Check situation
+            if ((situation == Vessel.Situations.LANDED || situation == Vessel.Situations.PRELAUNCH) && !resourceTypes.Contains("Planetary"))
+                return false;
+            else if (situation == Vessel.Situations.SPLASHED && !resourceTypes.Contains("Oceanic"))
+                return false;
+            else if (situation == Vessel.Situations.FLYING && !resourceTypes.Contains("Atmospheric"))
+                return false;
+            else if ((situation == Vessel.Situations.ORBITING || situation == Vessel.Situations.SUB_ORBITAL) && !resourceTypes.Contains("Exospheric"))
+                return false;
+
+            //Check altitude
+            if (altitude > maxAltitude)
+                return false;
+            else if (altitude < minAltitude)
+                return false;
+
+            //Check travel distance
+            if (travelDistance < minProspectDistance)
+                return false;
+            return true;
         }
     }
 }

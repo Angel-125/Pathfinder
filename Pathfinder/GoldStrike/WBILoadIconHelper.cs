@@ -37,9 +37,9 @@ namespace WildBlueIndustries
             ConfigNode node = fta.to;
             string location = string.Format("Lon: {0:f2} Lat: {1:f2}", waypoint.longitude, waypoint.latitude);
 
-            if (WBIPathfinderScenario.Instance.IsLodeWaypoint(waypoint.navigationId.ToString()))
+            if (WBIGoldStrikeScenario.Instance.IsLodeWaypoint(waypoint.navigationId.ToString()))
             {
-                waypoint.id = WBIPathfinderScenario.kLodeIcon;
+                waypoint.id = WBIGoldStrikeScenario.kLodeIcon;
                 waypoint.nodeCaption1 = location;
             }
         }
@@ -48,7 +48,7 @@ namespace WildBlueIndustries
         {
             try
             {
-                Dictionary<string, Dictionary<string, GoldStrikeLode>> goldStrikeLodes = WBIPathfinderScenario.Instance.goldStrikeLodes;
+                Dictionary<string, Dictionary<string, GoldStrikeLode>> goldStrikeLodes = WBIGoldStrikeScenario.Instance.goldStrikeLodes;
                 Dictionary<string, GoldStrikeLode>[] lodeMaps = null;
                 Dictionary<string, GoldStrikeLode> lodeMap = null;
                 GoldStrikeLode[] lodes = null;
@@ -72,7 +72,7 @@ namespace WildBlueIndustries
                         if (waypoint != null)
                         {
                             WaypointManager.RemoveWaypoint(waypoint);
-                            waypoint.id = WBIPathfinderScenario.kLodeIcon;
+                            waypoint.id = WBIGoldStrikeScenario.kLodeIcon;
                             waypoint.nodeCaption1 = location;
                             WaypointManager.AddWaypoint(waypoint);
                         }

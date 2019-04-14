@@ -71,11 +71,11 @@ namespace WildBlueIndustries
             //In flight, switch between resources and settings
             if (HighLogic.LoadedSceneIsFlight)
             {
-                if (WBIPathfinderScenario.debugGoldStrike)
+                if (WBIGoldStrikeScenario.debugGoldStrike)
                 {
                     if (GUILayout.Button("Clear Prospects"))
                     {
-                        WBIPathfinderScenario.Instance.ClearProspects();
+                        WBIGoldStrikeScenario.Instance.ClearProspects();
                     }
                 }
 

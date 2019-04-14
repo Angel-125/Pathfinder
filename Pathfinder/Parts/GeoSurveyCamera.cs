@@ -23,7 +23,7 @@ namespace WildBlueIndustries
     {
         private const string kSafeMode = " has suffered a malfunction and is now in safe mode. It needs maintennance to resume operations.";
         private const string kToolTip = "Now that you’ve performed a basic scan for resources, why not continue to monitor them? You can monitor resources from orbit for Science!";
-        private const string kToolTipTitle = "Your first planetary scan";
+        private const string kToolTipTitle = "Your first Planetary scan";
         private const string kInfoRepairSkill = "Required to conduct repairs: ";
         private const string kInfoRepairAmount = "Requires {0:f1} {1} to repair";
         private const string kExperimentTitle = "Dirt Watch Report orbiting ";

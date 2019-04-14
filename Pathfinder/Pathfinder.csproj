@@ -61,11 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\WBITouristTrap.cs" />
-    <Compile Include="GoldStrike\GoldStrikeVesselModule.cs" />
-    <Compile Include="GoldStrike\GoldStrikeUtils.cs" />
-    <Compile Include="GoldStrike\GoldStrikeLode.cs" />
-    <Compile Include="GoldStrike\GoldStrikeData.cs" />
-    <Compile Include="GoldStrike\WBIGoldStrikeBonus.cs" />
     <Compile Include="GUI\PipelineWindow.cs" />
     <Compile Include="Sandcastle\KKWrapper.cs" />
     <Compile Include="Settings\PathfinderSettings.cs" />
@@ -104,14 +99,9 @@
     <Compile Include="Parts\WBISpyglassOpsView.cs" />
     <Compile Include="Industry\WBIPowerGenerator.cs" />
     <Compile Include="ResourceDistribution\WBIPipeEndpoint.cs" />
-    <Compile Include="GoldStrike\WBIGoldStrike.cs" />
-    <Compile Include="GoldStrike\GoldStrikeSettings.cs" />
     <Compile Include="Science\WBIPathfinderLab.cs" />
     <Compile Include="Science\WBIPathfinderResults.cs" />
     <Compile Include="ResourceDistribution\WBIPartScrapper.cs" />
-    <Compile Include="GoldStrike\WBIGoldStrikeDrill.cs" />
-    <Compile Include="GoldStrike\WBIGoldStrikeAsteroidDrill.cs" />
-    <Compile Include="Utility\WBILoadIconHelper.cs" />
     <Compile Include="Efficiency\WBIEfficiencyBonus.cs" />
     <Compile Include="Science\WBIScienceDataGenerator.cs" />
     <Compile Include="Parts\WBIPackingBox.cs" />

@@ -10,6 +10,9 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 --RELEASE NOTES---
 
+1.0.5
+- Recompiled for KSP 1.6
+
 1.0.4
 - Updated Raptium template - thanks JadeOfMaar! :)
 

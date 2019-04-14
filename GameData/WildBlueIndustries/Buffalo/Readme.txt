@@ -32,6 +32,13 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.6.13
+- Fixed min/max version requirements
+- Buffalo ISRU transformed into an OmniConverter. It has twice the efficiency of the Micro ISRU.
+
+2.6.12
+- Bug fixes
+
 2.6.11
 - Recompiled for KSP 1.6.
 
