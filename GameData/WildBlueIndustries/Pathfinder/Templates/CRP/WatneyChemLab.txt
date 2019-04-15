@@ -9,8 +9,8 @@ PATH_SCIENCE
 	requiredResource = Equipment
 	requiredAmount = 1200
 	reconfigureSkill = ConverterSkill
-	logoPanel = WildBlueIndustries/Pathfinder/Decals/Watney
-	glowPanel = WildBlueIndustries/Pathfinder/Decals/WatneyGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Watney
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/WatneyGlow
 	toolTip = The Watney Chemistry Lab gives you a place for all your chemistry experiments. In addition to making ResearchKits, the lab offers a way to produce water, liquid hydrogen, and oxygen
 	toolTipTitle = Your First Chemistry Lab!
 	templateTags = orbitalWorkshop;moleLab;dsevLab;airshipLab

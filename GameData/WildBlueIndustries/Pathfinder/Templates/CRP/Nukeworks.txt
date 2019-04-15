@@ -10,8 +10,8 @@ PATH_INDUSTRY
 	requiredAmount = 2000
 	reconfigureSkill = ConverterSkill
 	templateTags = orbitalWorkshop
-	logoPanel = WildBlueIndustries/Pathfinder/Decals/SolarFlare
-	glowPanel = WildBlueIndustries/Pathfinder/Decals/SolarFlareGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_NukeWorks
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_NukeWorksGlow
 	toolTip = Need to create or reprocess nuclear fuel? Nuke 'em!
 	toolTipTitle = Your First Nukeworks
 
