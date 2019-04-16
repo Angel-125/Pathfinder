@@ -11,8 +11,8 @@ PATH_INDUSTRY
 	requiredAmount = 2000
 	templateTags = orbitalWorkshop
 	reconfigureSkill = ConverterSkill
-	logoPanel = WildBlueIndustries/Pathfinder/Decals/BrewWorks
-	glowPanel = WildBlueIndustries/Pathfinder/Decals/BrewWorksGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_BrewWorks
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_BrewWorksGlow
 	toolTip = If you're tired of hauling rocket parts around, why not build them out of the local resources?
 	toolTipTitle = Your First Brew Works
 

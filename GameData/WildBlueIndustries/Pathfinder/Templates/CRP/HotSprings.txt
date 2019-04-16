@@ -10,8 +10,8 @@ HOTSPRINGS
 	requiredResource = Equipment
 	requiredAmount = 3000
 	reconfigureSkill = ConverterSkill
-	logoPanel = WildBlueIndustries/Pathfinder/Decals/HotSprings
-	glowPanel = WildBlueIndustries/Pathfinder/Decals/HotSpringsGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/HotSprings
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/HotSpringsGlow
 	toolTip = The Hot Springs Geothermal Plant taps into the celestial body's geothermal gradient. It might need to dig deep, which is why it's maintennance intensive. And if it breaks you'll lose power and have to do an EVA to effect repairs.
 	toolTipTitle = Your First Hot Springs!
 	enableDrill = true

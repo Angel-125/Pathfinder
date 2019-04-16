@@ -11,8 +11,8 @@ PATH_INDUSTRY
 	requiredAmount = 2000
 	reconfigureSkill = ConverterSkill
 	templateTags = orbitalWorkshop
-	logoPanel = WildBlueIndustries/Pathfinder/Decals/HotMetal
-	glowPanel = WildBlueIndustries/Pathfinder/Decals/HotMetalGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_IronWorks
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_IronWorksGlow
 	toolTip = If you're tired of hauling rocket parts around, why not build them out of the local resources?
 	toolTipTitle = Your First Ironworks Foundry
 
