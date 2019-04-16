@@ -6,6 +6,9 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.72.1
+- Fixed editor issue with OmniStorage.
+
 1.72.0
 - Fixed overchange of Equipment costs for OmniConverter templates.
 - Fixed incorrect display of Equipment costs in the Operations Manager.

@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.32.4
+- Removed specialty bonus from the Drilling Rig; it has no crew capacity
+- Added WBIEfficiencyMonitor to the Drilling Rig; it will now benefit from productivity gains from efficiency improvement experiments. Don't expect miracles, these gains are small...
+
 1.32.3
 - Fixed invalid harvest types in the Prospector.
 - Fixed shrunken packing box on the Drilling Rig.

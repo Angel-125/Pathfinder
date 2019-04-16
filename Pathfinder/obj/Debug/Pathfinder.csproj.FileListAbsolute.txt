@@ -22,6 +22,6 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.cs
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csproj.CopyComplete
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.pdb
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\Ionic.Zip.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\KerbalActuators.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\KerbalActuators.pdb
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\Ionic.Zip.dll
