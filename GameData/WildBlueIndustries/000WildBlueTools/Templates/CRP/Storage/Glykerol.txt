@@ -17,8 +17,8 @@ STORAGE_TEMPLATE
 {
 	name = Glykerol
 	author = Angel-125
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Coolant
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/CoolantGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Glykerol
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/GlykerolGlow
 	description = This kit stores Glykerol, good for freezing kerbals.
 	templateTags = stowage
 

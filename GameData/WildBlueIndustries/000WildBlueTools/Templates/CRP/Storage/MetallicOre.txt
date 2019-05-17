@@ -2,8 +2,8 @@ STORAGE_TEMPLATE
 {
 	author = Angel-125
 	name = MetallicOre
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/MetallicOre
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/MetallicOreGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/MetalOre
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/MetalOreGlow
 	description = This kit stores metallic ore.
 	templateTags = stowage
 

@@ -17,8 +17,8 @@ STORAGE_TEMPLATE:NEEDS[!CommunityResourcePack]
 {
 	author = Angel-125
 	name = Rock
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Dirt
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/DirtGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Rock
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/RockGlow
 	description = This kit stores Rock. It's not as rich as Ore but is more fine and can be scooped while orbiting, particularly from planetary rings.
 	templateTags = stowage
 

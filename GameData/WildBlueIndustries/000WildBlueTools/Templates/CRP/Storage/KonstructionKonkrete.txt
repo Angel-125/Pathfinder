@@ -3,8 +3,9 @@ KONSTRUCTION_TEMPLATE
 	author = Angel-125
 	name = Konstruction (Konkrete)
 	shortName = Konstruction (Konkrete)
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Konstruction
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/KonstructionGlow
+	
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_Konstruction
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_KonstructionGlow
 	TechRequired = advScienceTech
 	description = This kit stores the resources needed to create konkrete. Konkrete is used to 3D print permanent dwellings.
 	templateTags = stowage

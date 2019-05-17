@@ -3,8 +3,8 @@ STORAGE_TEMPLATE
 	name = LiquidHydrogen
 	author = Angel-125
 	shortName = Liquid Hydrogen
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/LiquidHydrogen
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/LiquidHydrogenGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/PropCryoLight
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/PropCryoLightGlow
 	description = This kit stores liquid hydrogen.
 	templateTags = stowage
 

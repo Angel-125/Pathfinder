@@ -8,6 +8,11 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.33.1
+- Fixed crew requirements for experiment labs.
+- Fixed inability to reverse-thrust with propeller engines.
+- Updated KAS configs for flexible docking tunnels. Thanks Igor! :)
+
 1.33
 - KSP 1.7 updates
 - Decal updates courtesy of JadeOfMaar

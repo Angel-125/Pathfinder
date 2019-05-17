@@ -3,8 +3,8 @@ STORAGE_TEMPLATE
 	author = Angel-125
 	name = RareMetals
 	shortName = Rare Metals
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/RareMetals
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/RareMetalsGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/PreciousMetals
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/PreciousMetalsGlow
 	description = This kit stores rare metals.
 	templateTags = stowage
 

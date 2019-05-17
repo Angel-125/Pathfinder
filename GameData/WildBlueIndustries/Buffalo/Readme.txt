@@ -32,6 +32,14 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.7.1
+- Fixed inability to reverse-thrust with propeller engines.
+- Updated KAS configs for flexible docking tunnels. Thanks Igor! :)
+
+2.7
+- Updated for KSP 1.7
+- Decal updates courtesy of JadeOfMaar
+
 2.6.13
 - Fixed min/max version requirements
 - Buffalo ISRU transformed into an OmniConverter. It has twice the efficiency of the Micro ISRU.

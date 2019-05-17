@@ -16,8 +16,8 @@ STORAGE_TEMPLATE
 	author = Angel-125
 	shortName = Fusion Pellets
 	title = Fusion Pellets
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/FusionPellets
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/FusionPelletsGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/PropFusionPellets
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/PropFusionPelletsGlow
 	description = This kit stores fusion pellets to power your fusion reactors
 	templateTags = stowage
 
