@@ -49,7 +49,7 @@ namespace WildBlueIndustries
         public void retrainKerbals()
         {
             //Make sure we have a connection back to KSC.
-            if (CommNet.CommNetScenario.CommNetEnabled && !this.part.vessel.connection.IsConnectedHome)
+            if (CommNet.CommNetScenario.CommNetEnabled && (this.part.vessel.connection == null || !this.part.vessel.connection.IsConnectedHome))
             {
                 ScreenMessages.PostScreenMessage("Retraining kerbals requires a connection back to Kerbal Space Center, which is currently unavailable.", 5.0f, ScreenMessageStyle.UPPER_CENTER);
                 return;

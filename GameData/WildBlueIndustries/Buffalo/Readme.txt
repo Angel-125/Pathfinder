@@ -32,6 +32,13 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.7.3
+- Fix for drills breaking.
+- New OmniConverter templates for when Air and Stress are enabled from Snacks.
+
+2.7.2
+- Updated Snacks support.
+
 2.7.1
 - Fixed inability to reverse-thrust with propeller engines.
 - Updated KAS configs for flexible docking tunnels. Thanks Igor! :)

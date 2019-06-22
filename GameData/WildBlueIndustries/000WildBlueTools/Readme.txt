@@ -6,6 +6,12 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.73.4
+- Fix for drills breaking.
+- New OmniConverter templates for when Air and Stress are enabled from Snacks.
+
+1.73.3
+- Updated Snacks support.
 
 1.73.2
 - Fixed crew requirements for experiment labs.

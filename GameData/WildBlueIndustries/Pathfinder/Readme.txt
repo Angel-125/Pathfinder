@@ -8,6 +8,14 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.33.4
+- Fix for drills breaking.
+- Fix for kerbal retraining.
+- New OmniConverter templates for when Air and Stress are enabled from Snacks.
+
+1.33.2
+- Updated Snacks support.
+
 1.33.1
 - Fixed crew requirements for experiment labs.
 - Fixed inability to reverse-thrust with propeller engines.
