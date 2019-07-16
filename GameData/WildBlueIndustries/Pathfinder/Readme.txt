@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.33.5
+- Fix drill NREs.
+
 1.33.4
 - Fix for drills breaking.
 - Fix for kerbal retraining.
