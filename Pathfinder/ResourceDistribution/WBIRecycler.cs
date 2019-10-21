@@ -112,10 +112,13 @@ namespace WildBlueIndustries
                     return;
 
                 //Get activation state
-                if (toggleEvent.guiName == animationModule.startEventGUIName)
-                    IsActivated = false;
-                else
-                    IsActivated = true;
+                if (toggleEvent != null)
+                {
+                    if (toggleEvent.guiName == animationModule.startEventGUIName)
+                        IsActivated = false;
+                    else
+                        IsActivated = true;
+                }
             }
             else
             {

@@ -24,6 +24,9 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 ---REVISION HISORY---
 
+1.8
+- Updated to KSP 1.8
+
 1.7.4
 - Fixed inability to reverse thrust on the electric fans.
 

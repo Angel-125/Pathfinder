@@ -10,6 +10,9 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 --RELEASE NOTES---
 
+1.1.0
+- Updated to KSP 1.8
+
 1.0.7
 - Module Manager magic to help mods determine when Classic Stock is enabled.
 

@@ -32,6 +32,12 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.8.0
+- Updated to KSP 1.8
+
+2.7.5
+- Fix for Guppy part upgrades.
+
 2.7.4
 - Fix drill NREs.
 
