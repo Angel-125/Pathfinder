@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.8.1
+ - Updated Mineshaft tube extension limit to 50m.
+
 2.8.0
 - Updated to KSP 1.8
 

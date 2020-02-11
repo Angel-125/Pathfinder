@@ -1,5 +1,3 @@
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csproj.CoreCompileInputs.cache
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csprojAssemblyReference.cache
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\MarkdownSeparator.exe
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\xmldoc2md.xsl
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\RunMDSeparator.bat
@@ -14,7 +12,6 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\KerbalActuato
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\KSPAssets.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.AnimationModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.CoreModule.dll
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.ImageConversionModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.IMGUIModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.InputLegacyModule.dll
@@ -43,6 +40,9 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\TDx.TDxInput.
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.Physics2DModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.UnityWebRequestAssetBundleModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.SharedInternalsModule.dll
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.JSONSerializeModule.dll
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.dll
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.XRModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.AccessibilityModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.AIModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.AndroidJNIModule.dll
@@ -50,7 +50,6 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.C
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.DirectorModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.DSPGraphModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.GridModule.dll
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.JSONSerializeModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.LocalizationModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.SpriteMaskModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.SpriteShapeModule.dll
@@ -68,7 +67,6 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.G
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.InputModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.TextCoreModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.UNETModule.dll
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.XRModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.ARModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.ClusterRendererModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.CrashReportingModule.dll
@@ -77,6 +75,8 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\BARISBridge.p
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\KerbalActuators.pdb
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\WildBlueTools.pdb
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\KSPAssets.XmlSerializers.dll
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csprojAssemblyReference.cache
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csproj.CoreCompileInputs.cache
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csproj.CopyComplete
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.pdb
