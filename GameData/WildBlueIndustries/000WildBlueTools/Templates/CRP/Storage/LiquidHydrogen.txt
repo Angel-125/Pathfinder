@@ -37,3 +37,18 @@ STORAGE_TEMPLATE
 		}
 	}
 }
+
+OMNIRESOURCECOMBO
+{
+    RESOURCE
+    {
+        name = LqdHydrogen
+        ratio = 0.9375
+    }
+
+    RESOURCE
+    {
+        name = Oxidizer
+        ratio = 0.0625
+    }
+}

@@ -6,6 +6,23 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.78
+- Bug fixes
+
+1.77
+OmniConverter Templates
+- Templates can now specify a minimumCrew as a requirement to run. The part must have a crew equal to or greater than the specified minimum in order to run. If the template also specifies an ExperienceEffect then each minimum crew member needs the ExperienceEffect.
+- Templates can now list requiresCommNet as a requirement to run.
+- Templates can now list one of: requiresSplashed, requiresSubmerged, or requiresOrbiting as requirements to run.
+- Templates can now produce Science as a YIELD_RESOURCE if in career or science sandbox mode.
+
+New OmniConverter templates
+- Lab Time - produces LabTime. It requires that the part have a minimum crew of 2.
+- Science! - produces Science as a yield resource. It requires that the part has a minimum crew of 2 and requires a CommNet connection back to the home world.
+
+1.76.1
+- More bug fixes
+
 1.75
 - Bug fixes
 
