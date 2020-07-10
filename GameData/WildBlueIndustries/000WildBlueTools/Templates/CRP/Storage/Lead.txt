@@ -31,8 +31,8 @@ STORAGE_TEMPLATE
 	name = Lead
 	author = Angel-125
 	shortName = Lead
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Ore
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/OreGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Lead
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/LeadGlow
 	description = This kit stores lead, good for ballast.
 	templateTags = stowage
 

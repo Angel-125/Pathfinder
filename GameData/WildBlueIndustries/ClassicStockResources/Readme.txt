@@ -10,6 +10,18 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 --RELEASE NOTES---
 
+1.1.1
+- Compatibility update
+
+1.1.0
+- Updated to KSP 1.8
+
+1.0.7
+- Module Manager magic to help mods determine when Classic Stock is enabled.
+
+1.0.6
+- Minor update
+
 1.0.5
 - Recompiled for KSP 1.6
 

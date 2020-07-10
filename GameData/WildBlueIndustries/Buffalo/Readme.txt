@@ -32,6 +32,33 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.8.1
+ - Updated Mineshaft tube extension limit to 50m.
+
+2.8.0
+- Updated to KSP 1.8
+
+2.7.5
+- Fix for Guppy part upgrades.
+
+2.7.4
+- Fix drill NREs.
+
+2.7.3
+- Fix for drills breaking.
+- New OmniConverter templates for when Air and Stress are enabled from Snacks.
+
+2.7.2
+- Updated Snacks support.
+
+2.7.1
+- Fixed inability to reverse-thrust with propeller engines.
+- Updated KAS configs for flexible docking tunnels. Thanks Igor! :)
+
+2.7
+- Updated for KSP 1.7
+- Decal updates courtesy of JadeOfMaar
+
 2.6.13
 - Fixed min/max version requirements
 - Buffalo ISRU transformed into an OmniConverter. It has twice the efficiency of the Micro ISRU.

@@ -208,7 +208,13 @@ namespace WildBlueIndustries
 
                 //Set the new trait
                 KerbalPortraitGallery.Instance.UnregisterActiveCrew(trainee.KerbalRef);
+
+                trainee.UnregisterExperienceTraits(trainee.KerbalRef.InPart);
+                trainee.KerbalRef.InVessel.CrewListSetDirty();
                 KerbalRoster.SetExperienceTrait(trainee, newProfessions[kerbalName]);
+                trainee.RegisterExperienceTraits(trainee.KerbalRef.InPart);
+                trainee.KerbalRef.InVessel.CrewListSetDirty();
+
                 KerbalPortraitGallery.Instance.RegisterActiveCrew(trainee.KerbalRef);
                 KerbalPortraitGallery.Instance.UpdatePortrait(trainee.KerbalRef);
                 KerbalPortraitGallery.Instance.StartReset(this.part.vessel);
@@ -216,6 +222,9 @@ namespace WildBlueIndustries
                 //Reset experience
                 if (resetExperience)
                     KerbalRoster.SetExperienceLevel(trainee, 0);
+
+                Vessel.CrewWasModified(trainee.KerbalRef.InVessel);
+                FlightInputHandler.ResumeVesselCtrlState(trainee.KerbalRef.InVessel);
             }
         }
     }

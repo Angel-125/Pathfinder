@@ -6,6 +6,61 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.78
+- Bug fixes
+
+1.77
+OmniConverter Templates
+- Templates can now specify a minimumCrew as a requirement to run. The part must have a crew equal to or greater than the specified minimum in order to run. If the template also specifies an ExperienceEffect then each minimum crew member needs the ExperienceEffect.
+- Templates can now list requiresCommNet as a requirement to run.
+- Templates can now list one of: requiresSplashed, requiresSubmerged, or requiresOrbiting as requirements to run.
+- Templates can now produce Science as a YIELD_RESOURCE if in career or science sandbox mode.
+
+New OmniConverter templates
+- Lab Time - produces LabTime. It requires that the part have a minimum crew of 2.
+- Science! - produces Science as a yield resource. It requires that the part has a minimum crew of 2 and requires a CommNet connection back to the home world.
+
+1.76.1
+- More bug fixes
+
+1.75
+- Bug fixes
+
+1.74
+- Updated to KSP 1.8
+
+1.73.5
+- Fix drill NREs
+
+1.73.4
+- Fix for drills breaking.
+- New OmniConverter templates for when Air and Stress are enabled from Snacks.
+
+1.73.3
+- Updated Snacks support.
+
+1.73.2
+- Fixed crew requirements for experiment labs.
+
+1.73.1
+- Removed part restrictions on several experiments.
+
+1.73.0
+- Updated to KSP 1.7
+
+Jade's awesome updates:
+- Nearly all decal files contained in WBT and no longer hosted in the other WBI mods. All 80+ total decals have been redrawn from scratch.
+- Support for TAC LS provided in the decals. Templates not included.
+- Resource templates updated descriptions to give them personality and make their roles clear.
+- Omniconverters: added MonoPropellant power (MPU) option.
+- Omniconverters: added Nitronite options.
+- Omniconverters: re-balanced to appear in appropriate tech nodes (basic science, science tech row, fusion power...)
+- Omniconverters: re-balanced for better power production rates and more opportunities to acquire Slag for base-building, and for power producers to not require kerbal skill.
+- Make OmniStorage available in Lite Blue play mode. Recently some players have been trying to get OmniStorage available without Classic Stock around it.
+
+1.72.1
+- Fixed editor issue with OmniStorage.
+
 1.72.0
 - Fixed overchange of Equipment costs for OmniConverter templates.
 - Fixed incorrect display of Equipment costs in the Operations Manager.

@@ -2,8 +2,8 @@ STORAGE_TEMPLATE
 {
 	author = Angel-125
 	name = Metals
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Metal
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/MetalGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Iron
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/IronGlow
 	description = This kit stores metals.
 	templateTags = stowage
 
@@ -31,8 +31,8 @@ STORAGE_TEMPLATE:NEEDS[ExtraplanetaryLaunchpads]
 {
 	author = Angel-125
 	name = Scrap Metal
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Metal
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/MetalGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/ScrapMetal
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/ScrapMetalGlow
 	description = This kit stores scrap metas.
 
 	RESOURCE

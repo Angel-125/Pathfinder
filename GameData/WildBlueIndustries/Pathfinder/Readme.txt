@@ -8,6 +8,38 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.35.0
+- Added rack mount node to the Chuckwagon.
+- Updated packed volumes for several parts.
+- Fixed texture issues on the Castillo parts.
+
+1.34.0
+- Updated to KSP 1.8
+
+1.33.5
+- Fix drill NREs.
+
+1.33.4
+- Fix for drills breaking.
+- Fix for kerbal retraining.
+- New OmniConverter templates for when Air and Stress are enabled from Snacks.
+
+1.33.2
+- Updated Snacks support.
+
+1.33.1
+- Fixed crew requirements for experiment labs.
+- Fixed inability to reverse-thrust with propeller engines.
+- Updated KAS configs for flexible docking tunnels. Thanks Igor! :)
+
+1.33
+- KSP 1.7 updates
+- Decal updates courtesy of JadeOfMaar
+
+1.32.4
+- Removed specialty bonus from the Drilling Rig; it has no crew capacity
+- Added WBIEfficiencyMonitor to the Drilling Rig; it will now benefit from productivity gains from efficiency improvement experiments. Don't expect miracles, these gains are small...
+
 1.32.3
 - Fixed invalid harvest types in the Prospector.
 - Fixed shrunken packing box on the Drilling Rig.

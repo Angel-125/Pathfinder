@@ -3,8 +3,8 @@ KONSTRUCTION_TEMPLATE
 	author = Angel-125
 	name = Konstruction (Equipment)
 	shortName = Konstruction (Equipment)
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Konstruction
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/KonstructionGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_ClockWorks
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_ClockWorksGlow
 	TechRequired = advScienceTech
 	description = This kit stores the resources needed to create equipment. Equipment is used to outfit your modules.
 	templateTags = stowage

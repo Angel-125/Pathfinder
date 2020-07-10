@@ -3,8 +3,8 @@ STORAGE_TEMPLATE
 	name = Uraninite
 	author = Angel-125
 	shortName = Uraninite
-	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Nuclear
-	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Nuclear
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Uranium
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/UraniumGlow
 	description = This kit stores uraninite.
 	templateTags = stowage
 
