@@ -4,7 +4,7 @@ PATH_SCIENCE
 	name = Sunburn
 	title = Sunburn Fusion Lab
 	shortName = Sunburn Lab
-	description = The Sunburn lab is configured to produce fusion pellets for fusion reactors and engines as well as coolan for radiators.
+	description = The Sunburn lab is configured to produce fusion pellets for fusion reactors and engines as well as coolant for radiators.
 	mass = 3
 	requiredResource = Equipment
 	requiredAmount = 1200
@@ -39,15 +39,8 @@ PATH_SCIENCE
 
 		INPUT_RESOURCE
 		{
-			ResourceName = Ore
-			Ratio = 5
-			FlowMode = STAGE_PRIORITY_FLOW
-		}
-
-		INPUT_RESOURCE
-		{
 			ResourceName = Minerals
-			Ratio = 3
+			Ratio = 0.02
 			FlowMode = STAGE_PRIORITY_FLOW
 		}
 
@@ -60,7 +53,7 @@ PATH_SCIENCE
 		OUTPUT_RESOURCE
 		{
 			ResourceName = Coolant
-			Ratio = 0.21
+			Ratio = 0.288
 			DumpExcess = false
 			FlowMode = STAGE_PRIORITY_FLOW
 		}
@@ -69,9 +62,9 @@ PATH_SCIENCE
 	MODULE
 	{
 		name = ModuleResourceConverter
-		ConverterName = FusionPellets
-		StartActionName = Start Fusion Pellets
-		StopActionName = Stop Fusion Pellets
+		ConverterName = FusionPellets H2O
+		StartActionName = Start Fusion Pellets H2O
+		StopActionName = Stop Fusion Pellets H2O
 		AutoShutdown = true
 		GeneratesHeat = false
 		DefaultShutoffTemp = .8
@@ -101,46 +94,79 @@ PATH_SCIENCE
 	 
 		INPUT_RESOURCE
 		{
-			ResourceName = Ore
-			Ratio = 15
-			FlowMode = STAGE_PRIORITY_FLOW
-  		}
-		INPUT_RESOURCE
-		{
 			ResourceName = Water
-			Ratio = 1.5
-			FlowMode = STAGE_PRIORITY_FLOW
-  		}
-		INPUT_RESOURCE
-		{
-			ResourceName = Minerals
-			Ratio = 0.01
+			Ratio = 1.08
 			FlowMode = STAGE_PRIORITY_FLOW
   		}
 		INPUT_RESOURCE
 		{
 			ResourceName = ElectricCharge
-			Ratio = 30
+			Ratio = 75
 		}
 		OUTPUT_RESOURCE
 		{
 			ResourceName = FusionPellets
-			Ratio = 0.00045
+			Ratio = 0.5
 			DumpExcess = false
 			FlowMode = STAGE_PRIORITY_FLOW
 		}
-		OUTPUT_RESOURCE
+	}
+
+	MODULE
+	{
+		name = ModuleResourceConverter
+		ConverterName = FusionPellets D-He3
+		StartActionName = Start Fusion Pellets D-He3
+		StopActionName = Stop Fusion Pellets D-He3
+		AutoShutdown = true
+		GeneratesHeat = false
+		DefaultShutoffTemp = .8
+		UseSpecialistBonus = true
+		SpecialistEfficiencyFactor = 0.2
+		SpecialistBonusBase = 0.05
+		ExperienceEffect = ConverterSkill
+		EfficiencyBonus = 1
+
+		TemperatureModifier
 		{
-			ResourceName = Oxygen
-			Ratio = 27.78
-			DumpExcess = true
+			key = 0 100000
+			key = 750 50000
+			key = 1000 10000
+			key = 1250 500	
+			key = 2000 50	
+			key = 4000 0
+		}				
+		ThermalEfficiency 
+		{
+			key = 0 0 0 0
+			key = 500 0.1 0 0
+			key = 1000 1.0 0 0
+			key = 1250 0.1 0 0
+			key = 3000 0 0 0 
+		}
+	 
+		INPUT_RESOURCE
+		{
+			ResourceName = LqdDeuterium
+			Ratio = 0.5
 			FlowMode = STAGE_PRIORITY_FLOW
+		}
+		INPUT_RESOURCE
+		{
+			ResourceName = LqdHe3
+			Ratio = 0.75
+			FlowMode = STAGE_PRIORITY_FLOW
+		}
+		INPUT_RESOURCE
+		{
+			ResourceName = ElectricCharge
+			Ratio = 75
 		}
 		OUTPUT_RESOURCE
 		{
-			ResourceName = LqdHydrogen
-			Ratio = 0.78455
-			DumpExcess = true
+			ResourceName = FusionPellets
+			Ratio = 0.525
+			DumpExcess = false
 			FlowMode = STAGE_PRIORITY_FLOW
 		}
 	}
@@ -221,29 +247,21 @@ PATH_SCIENCE
 		 
 		INPUT_RESOURCE
 		{
-			ResourceName = Water
-			Ratio = 13.2
-			FlowMode = STAGE_PRIORITY_FLOW
-		}
-
-		INPUT_RESOURCE
-		{
-			ResourceName = XenonGas
-			Ratio = 6
+			ResourceName = Hydrates
+			Ratio = 0.3
 			FlowMode = STAGE_PRIORITY_FLOW
 		}
 
 		INPUT_RESOURCE
 		{
 			ResourceName = ElectricCharge
-			Ratio = 24.4
+			Ratio = 13.5
 		}
 
 		OUTPUT_RESOURCE
 		{
 			ResourceName = Glykerol
-			Ratio = .006
-			DumpExcess = false
+			Ratio = 0.0375
 			FlowMode = STAGE_PRIORITY_FLOW
 		}
 	}
