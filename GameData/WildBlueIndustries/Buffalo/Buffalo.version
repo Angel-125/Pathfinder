@@ -6,13 +6,13 @@
     {
         "USERNAME":"Angel-125",
         "REPOSITORY":"Buffalo",
-        "ALLOW_PRE_RELEASE":false,
+        "ALLOW_PRE_RELEASE":false
     },
     "VERSION":
     {
 	"MAJOR":2,
 	"MINOR":8,
-	"PATCH":1
+	"PATCH":2
     },
     "KSP_VERSION_MIN":
     {

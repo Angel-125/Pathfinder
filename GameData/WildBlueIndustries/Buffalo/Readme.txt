@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.8.2
+- Bug fixes
+
 2.8.1
  - Updated Mineshaft tube extension limit to 50m.
 
