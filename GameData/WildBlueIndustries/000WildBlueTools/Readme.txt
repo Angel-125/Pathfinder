@@ -6,8 +6,11 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.81.4
+- Bug fixes
+
 1.81.3
-- Raptium balance changes.
+- Bug fixes
 
 1.81.2
 - Fix WBIOmniConverter yield resources being produced when required conditions weren't met.
