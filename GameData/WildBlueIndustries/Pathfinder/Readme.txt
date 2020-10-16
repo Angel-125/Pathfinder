@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.35.2
+- Bug fixes
+
 1.35.0
 - Added rack mount node to the Chuckwagon.
 - Updated packed volumes for several parts.
