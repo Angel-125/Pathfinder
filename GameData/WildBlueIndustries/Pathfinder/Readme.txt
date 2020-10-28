@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.36.1
+- Buffalo update
+
 1.36.0
 
 Thanks to JadeOfMaar:
