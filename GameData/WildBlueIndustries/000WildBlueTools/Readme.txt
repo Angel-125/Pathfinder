@@ -1,10 +1,14 @@
-Wild Blue Tools
+WWild Blue Tools
 
 A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 ---INSTALLATION---
 
 Copy the contents of the mod's GameData directory into your GameData folder.
+
+1.81.5
+- New WBIModuleColorChanger.
+- ModuleAnimateGenericSFX can now enable/disable part modules in its enabledModules list. Separate names of part modules of using a ";" character. ModuleAnimateGenericSFX needs to go after all the part modules that it enables/disables.
 
 1.81.4
 - Bug fixes

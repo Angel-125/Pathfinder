@@ -32,6 +32,16 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.9.0
+
+- Updated lighted window color.
+
+New Parts
+
+- Wagon Hab: A converted Wagon, the Wagon Hab provides living space for up to 4 kerbals when expanded. It has two small omni-converters built in, and support for Snacks out of the box.
+
+- If you have the Breaking Ground DLC installed, then you'll get two new parts: The M1-A1-R Omni Wheel Mount and the M1-A1-R Mountain Goat. Combine these two parts and you'll have the equivalent of the venerable M1-A1, BUT at long last, the wheel can pivot 360 degrees!
+
 2.8.3
 - Moved MicroISRU to Wild Blue Tools.
 
