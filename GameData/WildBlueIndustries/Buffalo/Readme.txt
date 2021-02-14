@@ -32,6 +32,14 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.10.1
+- Bug fixes
+
+2.10.0
+- Updated for KSP 1.11 support
+- Storage containers updated to use OmniStorage and support stock inventory system.
+- Added stock inventory to all parts with crew capacity.
+
 2.9.0
 
 - Updated lighted window color.

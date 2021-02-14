@@ -8,6 +8,13 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.37
+- KSP 1.11 update
+- Add stock inventory support to several parts.
+
+KNOWN ISSUES
+- Stack mounting the inflatable parts isn't working with the boxed parts using stock EVA construction. You'll need to surface-attach them instead.
+
 1.36.1
 - Buffalo update
 

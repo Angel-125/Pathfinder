@@ -1,10 +1,18 @@
-WWild Blue Tools
+Wild Blue Tools
 
 A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 ---INSTALLATION---
 
 Copy the contents of the mod's GameData directory into your GameData folder.
+
+1.82.1
+- Bug fixes
+
+1.82.0
+- Add stock inventory support to several parts.
+- Bug fixes for OmniStorage.
+- OmniStorage now supports stock inventory.
 
 1.81.5
 - New WBIModuleColorChanger.

@@ -36,9 +36,6 @@ namespace WildBlueIndustries
         public string partToolTipTitle;
 
         [KSPField]
-        public string packingBoxTransform = "PackingBox";
-
-        [KSPField]
         public bool staticAttachOnDeploy = true;
 
         public string managedPartModules = string.Empty;

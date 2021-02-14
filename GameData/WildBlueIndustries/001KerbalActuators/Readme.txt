@@ -24,6 +24,12 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 ---REVISION HISORY---
 
+1.8.3
+- Bug fixes
+
+1.8.2
+- WBIPropSpinner can now be controlled via throttle setting via isThrottleControlled flag. Default is false. If set to true, then when the engine is running and operational, the spinning is controlled by throttle instead of thrust. For RCS, RCS must be activated.
+
 1.8
 - Updated to KSP 1.8
 
