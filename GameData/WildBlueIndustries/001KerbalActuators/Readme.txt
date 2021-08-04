@@ -24,6 +24,9 @@ Copy the contents of the mod's GameData directory into your GameData folder.
 
 ---REVISION HISORY---
 
+1.8.4
+- Recompiled for KSP 1.12.2.
+
 1.8.3
 - Bug fixes
 

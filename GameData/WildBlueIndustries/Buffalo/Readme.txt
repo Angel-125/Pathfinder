@@ -32,6 +32,14 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+2.11.0
+- Recompiled for KSP 1.12.2.
+- Aquatic parts use the SunkWorks plugin instead of Wild Blue Tools when SunkWorks is installed.
+- If you have DockRotate installed, then the Buffalo Wing Root can pivot for compact storage of the aircraft.
+- Fixed NRE generated when the gas generators are running.
+- Fixed FLEX Fuel Power Pack constantly generating smoke even when powered off.
+- Fixed issues preventing kerbals from boarding parts with ladders.
+
 2.10.1
 - Bug fixes
 

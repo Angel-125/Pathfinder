@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.37.1
+- Recompiled for KSP 1.12.2.
+
 1.37
 - KSP 1.11 update
 - Add stock inventory support to several parts.
