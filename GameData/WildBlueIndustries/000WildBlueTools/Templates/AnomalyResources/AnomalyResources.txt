@@ -1,0 +1,26 @@
+// You can specify one or more resources that are associated with an anomaly (a static game object marked as an anomaly, like a monolith).
+// WBIModuleResourceHarvester will mine the resources if in close proximity to the anomaly.
+ANOMALY_RESOURCE
+{
+	// Name of the anomaly
+	name = Monolith00
+
+	// Name of the resource that the anomaly has.
+	resourceName = Graviolium
+
+	// Optional. Minimum abundance of the anomaly's resource. The actual abundance depends upon this value and maxAbundance.
+	// If specified, then the anomaly has an unlimited amount of the resournce.
+	minAbundance = 0.001
+
+	// Optional. The maximum abundance of the anomaly's resource. The actual value is between minAbundance and maxAbundance.
+	// If specified, then the anomaly has an unlimited amount of the resournce.
+	maxAbundance = 0.1
+
+	// Optional. The minimum amount of resource that the anomaly has. The actual amount depends upon this value and maxAmount.
+	// If specified, then the anomaly has a limited supply of the resource. Once exhausted the resource will no longer be harvested unless the node contains minAbundance/maxAbundance.	
+	minAmount = 1000
+
+	// Optional. The maximum amount of resource that the anomaly has. The actual amount is between minAmount and maxAmount.
+	// If specified, then the anomaly has a limited supply of the resource. Once exhausted the resource will no longer be harvested unless the node contains minAbundance/maxAbundance.	
+	maxAmount = 5000
+}

@@ -6,8 +6,65 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.87.0
+- Sandcastle compatibility update.
+
+1.86.0
+
+WBIModuleResourceHarvester has new configurable parameters:
+
+- solarOrbitRequired: if set to true, then the harvester can only work when in solar orbit.
+- requiredAnomalies: set to the names of one or more PQSCity anomalies (ex: Monolith00), with multiple names separated by semicolon, the harvester will only work when in proximity to an anomaly on the list.
+- minAnomalyRange: in meters, what is the minimum distance required from an anomaly that is requred in order for the harvester to work.
+- ANOMALY_RESOURCE: the harvester supports the new ANOMALY_RESOURCE configuration node, which lets it harvest special resources that are associated with anomalies. The harvester does NOT need its requiredAnomalies field to be filled out in order to harvest this special resource. If the harvester is in range of the anomaly, then it will harvest the resource. See below for an example.
+
+NOTE: These changes also apply to WBIGoldStrikeDrill.
+
+WBIOmniConverter has new configurable parameters.
+
+- solarOrbitRequired: if set to true, then the harvester can only work when in solar orbit.
+- requiredAnomalies: set to the names of one or more PQSCity anomalies (ex: Monolith00), with multiple names separated by semicolon, the harvester will only work when in proximity to an anomaly on the list.
+- minAnomalyRange: in meters, what is the minimum distance required from an anomaly that is requred in order for the harvester to work.
+
+Sample ANOMALY_RESOURCE config
+You can find this in 000WildBlueTools/Templates/AnomalyResources.
+
+// You can specify one or more resources that are associated with an anomaly (a static game object marked as an anomaly, like a monolith).
+// WBIModuleResourceHarvester will mine the resources if in close proximity to the anomaly.
+// You do NOT need to set requiredAnomalies on WBIModuleResourceHarvester.
+ANOMALY_RESOURCE
+{
+	// Name of the anomaly
+	name = Monolith00
+
+	// Name of the resource that the anomaly has.
+	resourceName = Graviolium
+
+	// Optional. Minimum abundance of the anomaly's resource. The actual abundance depends upon this value and maxAbundance.
+	// If specified, then the anomaly has an unlimited amount of the resournce.
+	minAbundance = 0.001
+
+	// Optional. The maximum abundance of the anomaly's resource. The actual value is between minAbundance and maxAbundance.
+	// If specified, then the anomaly has an unlimited amount of the resournce.
+	maxAbundance = 0.1
+
+	// Optional. The minimum amount of resource that the anomaly has. The actual amount depends upon this value and maxAmount.
+	// If specified, then the anomaly has a limited supply of the resource. Once exhausted the resource will no longer be harvested unless the node contains minAbundance/maxAbundance.	
+	minAmount = 1000
+
+	// Optional. The maximum amount of resource that the anomaly has. The actual amount is between minAmount and maxAmount.
+	// If specified, then the anomaly has a limited supply of the resource. Once exhausted the resource will no longer be harvested unless the node contains minAbundance/maxAbundance.	
+	maxAmount = 5000
+}
+
+1.85.2
+- Bug fixes
+
+1.85.0
+- Bug fixes
+
 1.83.0
-- Bug fixes & KSP 1.12.2 update
+- Recompiled for KSP 1.12.2.
 
 1.82.1
 - Bug fixes

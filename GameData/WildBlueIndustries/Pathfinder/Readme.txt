@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.38.0
+- Sandcastle compatibility update.
+
 1.37.1
 - Recompiled for KSP 1.12.2.
 

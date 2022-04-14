@@ -1,0 +1,17 @@
+@PART[wbiRanchHouse2,wbiCastilloFactory,wbiCastilloObservatory,wbiStorageDepot]:NEEDS[Sandcastle]
+{
+	MODULE
+	{
+		name = WBIPrinterRequirements
+	}
+
+	// Parts aren't allowed to have both ModuleInventoryPart and ModuleCargoPart in the same part.
+	// If they do, then ModuleCargoPart will be removed. To get around the problem, Sandcastle
+	// introduces ModuleStorablePart, which is a direct descendant of ModuleCargoPart. Because
+	// the Part class specifically looks for "ModuleCargoPart" we essentially rename the part module
+	// to sidestep the checks.
+	@MODULE[ModuleGroundPart]
+	{
+		@name = ModuleStorablePart
+	}
+}

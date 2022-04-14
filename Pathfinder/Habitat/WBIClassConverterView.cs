@@ -63,9 +63,8 @@ namespace WildBlueIndustries
                 newProfessions.Clear();
 
                 //Get a list of available traits
-                expSysConfig = new ExperienceSystemConfig();
-                expSysConfig.LoadTraitConfigs();
-                traitNames = expSysConfig.TraitNames.ToArray();
+                traitNames = GameDatabase.Instance.ExperienceConfigs.TraitNames.ToArray();
+
 
                 //Filter the list if we have any blacklisted traits
                 List<string> names = new List<string>();
