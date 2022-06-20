@@ -142,10 +142,6 @@
     <Compile Include="Sandcastle\WBIBuildResource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BARIS\BARISBridge\BARISBridge.csproj">
-      <Project>{8D46364B-4F22-403D-84E3-C2DCA8E49A4A}</Project>
-      <Name>BARISBridge</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\KerbalActuators\KerbalActuators\KerbalActuators.csproj">
       <Project>{691f7d23-82fa-4194-8357-0ef40092c050}</Project>
       <Name>KerbalActuators</Name>

@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.39.0
+- Removed BARIS dependency dll.
+
 1.38.0
 - Sandcastle compatibility update.
 

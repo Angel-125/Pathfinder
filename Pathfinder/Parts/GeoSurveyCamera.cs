@@ -50,12 +50,6 @@ namespace WildBlueIndustries
             orbitalSurveyer.PerformSurvey();
         }
 
-        public override void OnPartFixed(BaseQualityControl qualityControl)
-        {
-            base.OnPartFixed(qualityControl);
-            SetupGUI();
-        }
-
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
@@ -222,22 +216,6 @@ namespace WildBlueIndustries
                 return;
 
             bool planetUnlocked = ResourceMap.Instance.IsPlanetScanned(FlightGlobals.currentMainBody.flightGlobalsIndex);
-
-            //Is the telescope broken? if so, show the repair scope button
-            //and don't allow any research
-            if (isBroken)
-            {
-                //Cannot perform an orbital survey...
-                Events["PerformOrbitalSurvey"].active = false;
-
-                //Hide survey scanner GUI
-                if (orbitalScanner != null)
-                    orbitalScanner.DisableModule();
-
-                //No research can be performed.
-                SetGuiVisible(false);
-                return;
-            }
 
             //Show scanner GUI?
             if (planetUnlocked && orbitalScanner != null)

@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    public class WBIPowerGenerator : ModuleBreakableConverter, IOpsView
+    public class WBIPowerGenerator : ModuleResourceConverter, IOpsView
     {
         [KSPField(guiName = "Power Output", guiActive = true)]
         public string powerOutputDisplay = string.Empty;

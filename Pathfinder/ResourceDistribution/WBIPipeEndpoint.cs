@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 namespace WildBlueIndustries
 {
     [KSPModule("Pipe Endpoint")]
-    public class WBIPipeEndpoint : PartModule, ICanBreak//, IOpsView
+    public class WBIPipeEndpoint : PartModule
     {
         #region Constants
         public const string kNoIdentifier = "kNoIdentifier";
@@ -153,32 +153,6 @@ namespace WildBlueIndustries
         public float maxLaunchAzimuth = 15.0f;
         #endregion
 
-        #region ICanBreak fields
-        /// <summary>
-        /// What skill to use when performing the quality check. This is not always the same skill required to repair or maintain the part.
-        /// </summary>
-        [KSPField()]
-        public string qualityCheckSkill = "RepairSkill";
-
-        /// <summary>
-        /// Flag to indicate that the part module is broken. If broken, then it can't be declared broken again by the ModuleQualityControl.
-        /// </summary>
-        [KSPField(isPersistant = true)]
-        public bool isBroken;
-
-        /// <summary>
-        /// Message to indicate that the part has broken
-        /// </summary>
-        [KSPField]
-        public string partBrokenMessage = " has failed!";
-
-        /// <summary>
-        /// Label for the part to identify what done broke
-        /// </summary>
-        [KSPField]
-        public string partBrokenLabel = "Mass Driver";
-        #endregion
-
         #region Housekeeping
         [KSPField(guiActive = true, guiName = "Status")]
         public string status = "A-OK";
@@ -186,7 +160,6 @@ namespace WildBlueIndustries
         [KSPField(isPersistant = true)]
         public double lastUpdateTime = 0f;
 
-        protected BaseQualityControl qualityControl;
         PipelineWindow pipelineWidow;
         PartResourceDefinition resourceDef = null;
         WBIPackingBox packingBox;
@@ -349,10 +322,6 @@ namespace WildBlueIndustries
 
         public virtual void Destroy()
         {
-            qualityControl.onPartBroken -= OnPartBroken;
-            qualityControl.onPartFixed -= OnPartFixed;
-            qualityControl.onUpdateSettings -= onUpdateSettings;
-
             if (packingBox != null)
                 packingBox.onPackingStateChanged -= onPackingStateChanged;
         }
@@ -614,67 +583,6 @@ namespace WildBlueIndustries
                     ScreenMessages.PostScreenMessage(kItemSkippedMsg, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
             }
         }
-
-        #region ICanBreak
-        protected void onUpdateSettings(BaseQualityControl moduleQualityControl)
-        {
-            if (!BARISBridge.ConvertersCanFail)
-                isBroken = false;
-        }
-
-        public string GetCheckSkill()
-        {
-            return qualityCheckSkill;
-        }
-
-        public bool ModuleIsActivated()
-        {
-            if (!BARISBridge.CrewedPartsCanFail && this.part.CrewCapacity > 0)
-                return false;
-            if (!BARISBridge.CommandPodsCanFail && this.part.FindModuleImplementing<ModuleCommand>() != null)
-                return false;
-
-            if (!BARISBridge.PartsCanBreak || !BARISBridge.ConvertersCanFail)
-                return false;
-
-            return IsActivated;
-        }
-
-        public void SubscribeToEvents(BaseQualityControl moduleQualityControl)
-        {
-            qualityControl = moduleQualityControl;
-            qualityControl.onPartBroken += OnPartBroken;
-            qualityControl.onPartFixed += OnPartFixed;
-            qualityControl.onUpdateSettings += onUpdateSettings;
-
-            //Make sure we're broken
-            if (isBroken)
-                OnPartBroken(qualityControl);
-        }
-
-        public virtual void OnPartFixed(BaseQualityControl moduleQualityControl)
-        {
-            isBroken = false;
-        }
-
-        public virtual void OnPartBroken(BaseQualityControl moduleQualityControl)
-        {
-            if (!BARISBridge.ConvertersCanFail)
-                return;
-
-            isBroken = true;
-            IsActivated = false;
-
-            //Generate a failure mode
-
-            if (this.part.vessel == FlightGlobals.ActiveVessel)
-            {
-                string message = Localizer.Format(this.part.partInfo.title + partBrokenMessage);
-                BARISBridge.LogPlayerMessage(message);
-            }
-            qualityControl.UpdateQualityDisplay(qualityControl.qualityDisplay + Localizer.Format(partBrokenLabel));
-        }
-        #endregion
 
         #region IOpsView
         public List<string> GetButtonLabels()
