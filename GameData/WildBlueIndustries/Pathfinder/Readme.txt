@@ -8,6 +8,9 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.39.1
+- Removes Buffalo from the mod install. Use Buffalo 2 instead.
+
 1.39.0
 - Removed BARIS dependency dll.
 
