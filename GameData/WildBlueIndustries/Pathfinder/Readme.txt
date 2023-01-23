@@ -8,6 +8,14 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.40
+- All parts that have Resource Distribution will now also have a Fuel Pump if Wild Blue Core is installed.
+- All Castillo parts now have a built-in probe core.
+- Added Sandcastle support to the Castillo Factory.
+- Added Ability to assign seats and change outfits to all crewed modules when Buffalo 2 is installed.
+- Fixed issue where the Castillo Depot had crew capacity; it's not supposed to hold crew.
+- Fixed issue where the Sandcastle and Sand Works templates wouldn't show any parts in their 3D print shops. NOTE: You'll need to update to the latest Sandcastle.
+
 1.39.1
 - Removes Buffalo from the mod install. Use Buffalo 2 instead.
 

@@ -158,14 +158,7 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y "$(TargetPath)" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"﻿
 xcopy /Y "$(TargetDir)$(TargetName).pdb" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"
-xcopy /Y "$(TargetDir)$(TargetName).dll" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"
-
-xcopy /Y  "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Pathfinder.version" "C:\Projects\KSP\WildBlueIndustries\Pathfinder\Notes\"
-
-del "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\000WildBlueTools\MiniAVC.xml"
-del "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\001KerbalActuators\MiniAVC.xml"
-del "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\Pathfinder\MiniAVC.xml"
-del "C:\Projects\KSP\WildBlueIndustries\Pathfinder\GameData\WildBlueIndustries\Buffalo\MiniAVC.xml"</PostBuildEvent>
+xcopy /Y "$(TargetDir)$(TargetName).dll" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
