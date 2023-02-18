@@ -8,6 +8,10 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.40.4
+- Increased the Drilling Rig's production output.
+- Fixed issue where the Drilling rig would stop working whenever you returned to the vessel.
+
 1.40
 - All parts that have Resource Distribution will now also have a Fuel Pump if Wild Blue Core is installed.
 - All Castillo parts now have a built-in probe core.
