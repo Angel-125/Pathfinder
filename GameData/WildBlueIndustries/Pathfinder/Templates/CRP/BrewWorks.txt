@@ -211,7 +211,7 @@ PATH_INDUSTRY
 
 	MODULE
 	{
-		name = ModuleBreakableConverter
+		name = ModuleResourceConverter
 		ConverterName = Konkrete
 		StartActionName = Start Konkrete
 		StopActionName = Stop Konkrete
