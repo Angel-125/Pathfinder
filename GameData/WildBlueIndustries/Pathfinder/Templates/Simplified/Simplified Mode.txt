@@ -158,8 +158,8 @@ PATH_INDUSTRY
 	TechRequired = advScienceTech
 	description = In-Situ Resource Utilization enables you to live off the land like the settlers of old. The ISRU is especially useful because it gives you the ability to refine Ore into LiquidFuel and Oxidizer as well as Monopropellant and Xenon. You can also create MaterialKits.
 	mass = 5
-	logoPanel = WildBlueIndustries/Pathfinder/Decals/HotMetal
-	glowPanel = WildBlueIndustries/Pathfinder/Decals/HotMetalGlow
+	logoPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_IronWorks
+	glowPanel = WildBlueIndustries/000WildBlueTools/Decals/Factory_IronWorksGlow
 	toolTip = You can convert Ore into a variety of different resources!
 	toolTipTitle = Your First ISRU
 	enableDrill = true
