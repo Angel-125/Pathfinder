@@ -6,6 +6,9 @@ A KSP mod that provides common functionality for mods by Wild Blue Industries.
 
 Copy the contents of the mod's GameData directory into your GameData folder.
 
+1.88.2
+- Bug fixes
+
 1.88.0
 - Removed BARIS dependency dll.
 

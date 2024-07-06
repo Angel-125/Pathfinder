@@ -201,6 +201,8 @@ namespace WildBlueIndustries
 
             if (staticAttachOnDeploy && isDeployed && !this.part.PermanentGroundContact)
                 SetStaticAttach();
+            else if (!isDeployed)
+                part.PermanentGroundContact = false;
         }
 
         public void SetStaticAttach(bool isAttached = true)

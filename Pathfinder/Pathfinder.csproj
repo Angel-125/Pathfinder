@@ -85,7 +85,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\WBITouristTrap.cs" />
     <Compile Include="GUI\PipelineWindow.cs" />
     <Compile Include="Sandcastle\KKWrapper.cs" />
     <Compile Include="Settings\PathfinderSettings.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="Parts\WBIPackingBox.cs" />
     <Compile Include="ResourceDistribution\WBIRecycler.cs" />
     <Compile Include="Parts\WBIScoopTurbine.cs" />
-    <Compile Include="Contracts\WBIColonistContract.cs" />
     <Compile Include="Habitat\WBIClassConverter.cs" />
     <Compile Include="Habitat\WBIClassConverterView.cs" />
     <Compile Include="Parts\WBIRangelandHeat.cs" />

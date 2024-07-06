@@ -5,7 +5,6 @@ using System.Text;
 using UnityEngine;
 using KSP.IO;
 using Experience;
-using ContractsPlus.Contracts;
 using KSP.UI.Screens;
 using KSP.UI.Screens.Flight;
 
@@ -200,10 +199,6 @@ namespace WildBlueIndustries
             foreach (string kerbalName in newProfessions.Keys)
             {
                 trainee = trainees[kerbalName];
-
-                //If the kerbal is currently a tourist, then unregister the kerbal from any tourism contracts.
-                if (trainee.trait == "Tourist")
-                    WBIContractScenario.Instance.unregisterKerbal(kerbalName);
 
                 //Set the new trait
                 KerbalPortraitGallery.Instance.UnregisterActiveCrew(trainee.KerbalRef);
