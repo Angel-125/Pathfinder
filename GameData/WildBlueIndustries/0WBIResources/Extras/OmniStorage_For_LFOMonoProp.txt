@@ -1,0 +1,56 @@
+// This Module Manager patch will find all parts that have LiquidFuel, LiquidFuel & Oxidizer, or MonoPropellant and give them OmniStorage instead.
+
+@PART:HAS[@RESOURCE[LiquidFuel],!RESOURCE[Oxidizer]!MODULE[WBIOmniStorage],!MODULE[ModuleCommand]]
+{
+    refVolume = #$RESOURCE[LiquidFuel]/maxAmount$
+    @refVolume *= 5 // unit conversion
+
+    MODULE
+    {
+        name = WBIOmniStorage
+        storageVolume = #$../refVolume$
+        accountForSwitcherCapacity = true
+        reconfigureSkill = ConverterSkill
+        reconfigureRank = 1
+        requiredResource = Equipment
+        requiredAmount = 0
+        resourceBlacklist = GeoEnergy;ElectroPlasma;CoreHeat;Atmosphere;CompressedAtmosphere;LabTime;ExposureTime;ScopeTime;SolarReports;SimulatorTime;GravityWaves;IntakeAir;StaticCharge;EVA Propellant;Plants
+    }
+}
+
+@PART:HAS[@RESOURCE[LiquidFuel],@RESOURCE[Oxidizer],!MODULE[WBIOmniStorage],!MODULE[ModuleCommand]]
+{
+    refVolume = #$RESOURCE[LiquidFuel]/maxAmount$
+    @refVolume += #$RESOURCE[Oxidizer]/maxAmount$
+    @refVolume *= 5 // unit conversion
+
+    MODULE
+    {
+        name = WBIOmniStorage
+        storageVolume = #$../refVolume$
+        accountForSwitcherCapacity = true
+        reconfigureSkill = ConverterSkill
+        reconfigureRank = 1
+        requiredResource = Equipment
+        requiredAmount = 0
+        resourceBlacklist = GeoEnergy;ElectroPlasma;CoreHeat;Atmosphere;CompressedAtmosphere;LabTime;ExposureTime;ScopeTime;SolarReports;SimulatorTime;GravityWaves;IntakeAir;StaticCharge;EVA Propellant;Plants
+    }
+}
+
+@PART:HAS[@RESOURCE[MonoPropellant],!MODULE[WBIOmniStorage],!MODULE[ModuleCommand]]
+{
+    refVolume = #$RESOURCE[MonoPropellant]/maxAmount$
+    @refVolume *= 5 // unit conversion
+
+    MODULE
+    {
+        name = WBIOmniStorage
+        storageVolume = #$../refVolume$
+        accountForSwitcherCapacity = true
+        reconfigureSkill = ConverterSkill
+        reconfigureRank = 1
+        requiredResource = Equipment
+        requiredAmount = 0
+        resourceBlacklist = GeoEnergy;ElectroPlasma;CoreHeat;Atmosphere;CompressedAtmosphere;LabTime;ExposureTime;ScopeTime;SolarReports;SimulatorTime;GravityWaves;IntakeAir;StaticCharge;EVA Propellant;Lead;Plants
+    }
+}

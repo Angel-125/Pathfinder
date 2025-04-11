@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -17,7 +18,7 @@ Any similarity to a real entity is purely coincidental.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     [KSPModule("Multipurpose Hab")]
     public class WBIMultipurposeHab : WBIMultiConverter, IModuleInfo
@@ -94,39 +95,6 @@ namespace WildBlueIndustries
         {
             base.RedecorateModule(loadTemplateResources);
             updateDrill();
-            updateWorkshop();
-        }
-
-        protected void updateWorkshop()
-        {
-            PartModule oseWorkshop = null;
-            PartModule oseRecycler = null;
-            bool enableWorkshop = false;
-
-            //See if the drill is enabled.
-            if (CurrentTemplate.HasValue("enableWorkshop"))
-                enableWorkshop = bool.Parse(CurrentTemplate.GetValue("enableWorkshop"));
-
-            //Find the workshop modules
-            foreach (PartModule pm in this.part.Modules)
-            {
-                if (pm.moduleName == "OseModuleWorkshop")
-                    oseWorkshop = pm;
-                else if (pm.moduleName == "OseModuleRecycler")
-                    oseRecycler = pm;
-            }
-
-            if (oseWorkshop != null)
-            {
-                oseWorkshop.enabled = enableWorkshop;
-                oseWorkshop.isEnabled = enableWorkshop;
-            }
-
-            if (oseRecycler != null)
-            {
-                oseRecycler.enabled = enableWorkshop;
-                oseRecycler.isEnabled = enableWorkshop;
-            }
         }
 
         protected void updateDrill()

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2017, by Michael Billard (Angel-125)
@@ -17,7 +18,7 @@ Any similarity to a real entity is purely coincidental.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     public delegate void OnPackingStateChanged(bool isDeployed);
 
@@ -92,9 +93,6 @@ namespace WildBlueIndustries
 
             if (string.IsNullOrEmpty(resourcesToKeep))
                 resourcesToKeep = "ElectricCharge";
-
-            //Lights
-            setupLightGUI();
 
             setManageOpsButtonVisible();
 
@@ -183,9 +181,6 @@ namespace WildBlueIndustries
 
             //Resources required event
             Events["showAssemblyRequirements"].active = false;
-
-            //Lights
-            setupLightGUI();
 
             updateManagedModules();
             updateManagedResources();
@@ -306,20 +301,6 @@ namespace WildBlueIndustries
                 if (!resourceMaxAmounts.ContainsKey(resourceName))
                     resourceMaxAmounts.Add(resourceName, maxAmount);
             }
-        }
-
-        protected void setupLightGUI()
-        {
-            WBILight light = this.part.FindModuleImplementing<WBILight>();
-            if (light != null)
-                light.Events["ToggleAnimation"].active = isDeployed;
-
-            ModuleColorChanger colorChanger = this.part.FindModuleImplementing<ModuleColorChanger>();
-            if (colorChanger != null)
-                colorChanger.Events["ToggleEvent"].active = isDeployed;
-
-            //Dirty the GUI
-            MonoUtilities.RefreshContextWindows(this.part);
         }
 
         protected void setManageOpsButtonVisible()

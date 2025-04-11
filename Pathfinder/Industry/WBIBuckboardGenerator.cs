@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -17,7 +18,7 @@ Any similarity to a real entity is purely coincidental.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     [KSPModule("Buckboard Generator")]
     public class WBIBuckboardGenerator : WBIPowerGenerator
@@ -26,30 +27,19 @@ namespace WildBlueIndustries
         {
             base.OnStart(state);
 
-            ShowParticleEffect(IsActivated);
-
             PartModule inventory = this.part.Modules["ModuleKISInventory"];
             if (inventory != null)
                 Utils.SetField("maxVolume", 0.001f, inventory);
         }
 
-        public void ShowParticleEffect(bool isVisible)
-        {
-            WBIEmitterHelper helper = this.part.FindModuleImplementing<WBIEmitterHelper>();
-            if (helper != null)
-                helper.ShowParticleEffect(isVisible);
-        }
-
         public override void StartResourceConverter()
         {
             base.StartResourceConverter();
-            ShowParticleEffect(IsActivated);
         }
 
         public override void StopResourceConverter()
         {
             base.StopResourceConverter();
-            ShowParticleEffect(IsActivated);
         }
     }
 }

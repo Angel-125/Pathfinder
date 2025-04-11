@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     public class TestData : PartModule
     {

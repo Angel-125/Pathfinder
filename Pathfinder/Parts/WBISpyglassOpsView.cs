@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyright 2018, by Michael Billard (Angel-125)
@@ -16,13 +17,12 @@ Any similarity to a real entity is purely coincidental.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     public class WBISpyglassOpsView : PartModule, IOpsView
     {
         PartModule exSurveyStation;
         bool isGUIVisible;
-        WBILight light;
 
         public override void OnStart(StartState state)
         {
@@ -36,8 +36,6 @@ namespace WildBlueIndustries
                     break;
                 }
             }
-
-            light = this.part.FindModuleImplementing<WBILight>();
         }
 
         public string GetPartTitle()
@@ -65,17 +63,6 @@ namespace WildBlueIndustries
                 else
                     exSurveyStation.Events["HideUI"].Invoke();
             }
-
-            if (light == null)
-                return;
-
-            if (GUILayout.Button(light.Events["ToggleAnimation"].guiName))
-                light.ToggleAnimation();
-
-            light.red = GUILayout.HorizontalSlider(light.red, 0f, 1f);
-            light.green = GUILayout.HorizontalSlider(light.green, 0f, 1f);
-            light.blue = GUILayout.HorizontalSlider(light.blue, 0f, 1f);
-            light.level = GUILayout.HorizontalSlider(light.level, 0f, 1f);
 
             GUILayout.EndVertical();
         }

@@ -86,6 +86,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\PipelineWindow.cs" />
+    <Compile Include="GUI\WBIResultsDialogSwizzler.cs" />
+    <Compile Include="Manifest\WBIManifest.cs" />
+    <Compile Include="Manifest\WBIManifestScenario.cs" />
+    <Compile Include="Manifest\WBIResourceManifest.cs" />
     <Compile Include="Sandcastle\KKWrapper.cs" />
     <Compile Include="Settings\PathfinderSettings.cs" />
     <Compile Include="ResourceDistribution\DistributionView.cs" />
@@ -94,14 +98,11 @@
     <Compile Include="Settings\PathfinderAppButton.cs" />
     <Compile Include="GUI\SciLabOpsWindow.cs" />
     <Compile Include="GUI\WBIDrillOpsView.cs" />
-    <Compile Include="Habitat\WBIGreenhouse.cs" />
     <Compile Include="Settings\PathfinderAppView.cs" />
     <Compile Include="GUI\TerainUplinkView.cs" />
     <Compile Include="Industry\WBIDrillSwitcher.cs" />
-    <Compile Include="Parts\WBIGaslight.cs" />
     <Compile Include="Parts\GeoSurveyCamera.cs" />
     <Compile Include="Science\WBIMultipurposeLab.cs" />
-    <Compile Include="Habitat\WBIOSEWorkshop.cs" />
     <Compile Include="Habitat\WBIMultipurposeHab.cs" />
     <Compile Include="Science\WBIScienceConverter.cs" />
     <Compile Include="GUI\WBISciLabOpsView.cs" />
@@ -119,7 +120,6 @@
     <Compile Include="Parts\WBICoolingTower.cs" />
     <Compile Include="Industry\WBIBuckboardGenerator.cs" />
     <Compile Include="ResourceDistribution\WBIResourceDistributor.cs" />
-    <Compile Include="Parts\WBIConestoga.cs" />
     <Compile Include="Parts\WBISpyglassOpsView.cs" />
     <Compile Include="Industry\WBIPowerGenerator.cs" />
     <Compile Include="ResourceDistribution\WBIPipeEndpoint.cs" />
@@ -144,9 +144,13 @@
       <Project>{691f7d23-82fa-4194-8357-0ef40092c050}</Project>
       <Name>KerbalActuators</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">
-      <Project>{CC0BDF1A-9641-4628-9F0F-3500DDC99534}</Project>
-      <Name>WildBlueTools</Name>
+    <ProjectReference Include="..\..\WBIResources\Source\WBIResources.csproj">
+      <Project>{9e6c131f-3161-486a-84f3-9f16768b4d4b}</Project>
+      <Name>WBIResources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WBIScience\Source\WBIScience\WBIScience.csproj">
+      <Project>{cca4cc8e-adb8-4572-8b65-ad67ecf48e5f}</Project>
+      <Name>WBIScience</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

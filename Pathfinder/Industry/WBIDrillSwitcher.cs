@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -17,7 +18,7 @@ Any similarity to a real entity is purely coincidental.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     public class WBIDrillSwitcher : ExtendedPartModule
     {
@@ -122,7 +123,7 @@ namespace WildBlueIndustries
                 Vessel vessel = FlightGlobals.ActiveVessel;
                 ProtoCrewMember astronaut = vessel.GetVesselCrew()[0];
 
-                if (astronaut.HasEffect(requiredSkill) && WBIMainSettings.RequiresSkillCheck)
+                if (astronaut.HasEffect(requiredSkill) && WBIResourcesSettings.RequiresSkillCheck)
                 {
                     ScreenMessages.PostScreenMessage(kEngineerNeeded, 5.0f, ScreenMessageStyle.UPPER_CENTER);
                     return;

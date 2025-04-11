@@ -7,6 +7,7 @@ using KSP.IO;
 using FinePrint;
 using KSP.UI.Screens;
 using KSP.Localization;
+using WBIResources;
 
 
 /*
@@ -21,7 +22,7 @@ Any similarity to a real entity is purely coincidental.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     [KSPModule("Pipe Endpoint")]
     public class WBIPipeEndpoint : PartModule
@@ -479,108 +480,6 @@ namespace WildBlueIndustries
                     this.part.RequestResource(resourceName, -amount, ResourceFlowMode.ALL_VESSEL);
                     Log("Added " + amount + " units of " + resourceName);
                 }
-            }
-
-            //Deliver inventory items
-            if (WBIKISWrapper.IsKISInstalled())
-            {
-                //Get the inventory and available volume
-                WBIKISInventoryWrapper inventory = WBIKISInventoryWrapper.GetInventory(this.part);
-                List<WBIKISInventoryWrapper> inventories = WBIKISInventoryWrapper.GetInventories(this.part.vessel);
-                int currentIndex = 0;
-                float contentVolume = 0;
-                float availableVolume = 0;
-
-                //Grab the first available inventory
-                if (inventory == null)
-                {
-                    inventory = inventories[0];
-                    if (inventory == null)
-                        return;
-                }
-
-                //Get available volume
-                inventory.RefreshMassAndVolume();
-                contentVolume = inventory.GetContentVolume();
-                availableVolume = inventory.maxVolume - contentVolume;
-
-                //Get all the manifests
-                List<WBIKISInventoryManifest> inventoryManifests = WBIKISInventoryManifest.GetManifestsForDestination(this.uniqueIdentifier);
-                Log("Inventory manifest count: " + inventoryManifests.Count);
-                WBIKISInventoryManifest inventoryManifest;
-                WBIInventoryManifestItem inventoryItem;
-                totalManifests = inventoryManifests.Count;
-                int totalItems;
-                AvailablePart availablePart = null;
-                int skippedItems = 0;
-                for (int index = 0; index < totalManifests; index++)
-                {
-                    //Get the manifest
-                    inventoryManifest = inventoryManifests[index];
-
-                    //Get the total items in the manifest
-                    totalItems = inventoryManifest.inventoryItems.Count;
-                    for (int itemIndex = 0; itemIndex < totalItems; itemIndex++)
-                    {
-                        //Get the item
-                        inventoryItem = inventoryManifest.inventoryItems[itemIndex];
-                        Log("Looking for enough room for " + inventoryItem.partName);
-
-                        //If the inventory has room, then add it.
-                        if (inventoryItem.volume < availableVolume)
-                        {
-                            Log("Current inventory has room.");
-                            //Decrease the available volume
-                            availableVolume -= inventoryItem.volume;
-
-                            //Get the part info
-                            availablePart = PartLoader.getPartInfoByName(inventoryItem.partName);
-
-                            //Add the part
-                            inventory.AddItem(availablePart, inventoryItem.partConfigNode, inventoryItem.quantity);
-                            Log("Added " + inventoryItem.partName);
-                        }
-
-                        //See if another inventory has room
-                        else
-                        {
-                            while (currentIndex < inventories.Count)
-                            {
-                                currentIndex += 1;
-                                inventory = inventories[currentIndex];
-                                Log("New inventory found");
-
-                                inventory.RefreshMassAndVolume();
-                                contentVolume = inventory.GetContentVolume();
-                                availableVolume = inventory.maxVolume - contentVolume;
-
-                                //If the inventory has room, then add it.
-                                if (inventoryItem.volume < availableVolume)
-                                {
-                                    //Decrease the available volume
-                                    availableVolume -= inventoryItem.volume;
-
-                                    //Get the part info
-                                    availablePart = PartLoader.getPartInfoByName(inventoryItem.partName);
-
-                                    //Add the part
-                                    inventory.AddItem(availablePart, inventoryItem.partConfigNode, inventoryItem.quantity);
-                                    Log("Added " + inventoryItem.partName);
-                                    break;
-                                }
-
-                                else
-                                {
-                                    skippedItems += 1;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                //Inform the player if we skipped some items
-                if (skippedItems > 0)
-                    ScreenMessages.PostScreenMessage(kItemSkippedMsg, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
             }
         }
 

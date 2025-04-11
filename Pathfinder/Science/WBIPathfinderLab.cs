@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
+using WBIScience;
 
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     public class WBIPathfinderLab : WBIGeoLab
     {
@@ -32,7 +34,7 @@ namespace WildBlueIndustries
             experimentLab.unavailableMessage = kUnavailableMessage;
 
             //Hide the experiment lab if the
-            if (Utils.IsBiomeUnlocked(this.part.vessel) == false)
+            if (WBIResources.Utils.IsBiomeUnlocked(this.part.vessel) == false)
                 experimentLab.isAvailable = false;
         }
 

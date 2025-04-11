@@ -6,6 +6,7 @@ using UnityEngine;
 using KerbalActuators;
 using KSP.IO;
 using KSP.Localization;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -19,7 +20,7 @@ Any similarity to a real entity is purely coincidental.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     public struct PipeEndpointNode
     {
@@ -46,7 +47,6 @@ namespace WildBlueIndustries
         public float mass;
         public float volume;
         public bool isSelected;
-        public WBIKISItem kisItem;
         public int quantity;
         public int slot;
     }
@@ -144,7 +144,6 @@ namespace WildBlueIndustries
         int selectedIndex = 0;
         double liquidFuelUnits;
         double oxidizerUnits;
-        WBIKISInventoryWrapper inventory = null;
         bool showInventory = false;
         List<WBIPackingItem> packingList = new List<WBIPackingItem>();
         int inventoryItemCount = 0;
@@ -186,10 +185,6 @@ namespace WildBlueIndustries
                     sourceDisplayNames = sourceVesselResources.Keys.ToArray();
                 else
                     sourceDisplayNames = null;
-
-                //Get inventory if any
-                if (WBIKISWrapper.IsKISInstalled())
-                    inventory = WBIKISInventoryWrapper.GetInventory(this.part);
 
                 //Launch azimuth restriction
                 enableAzimuthRestriction = PathfinderSettings.EnableAzimuthRestriction;
@@ -377,42 +372,6 @@ namespace WildBlueIndustries
                 if (manifest.resourceAmounts.Count > 0)
                     WBIManifestScenario.Instance.AddManifest(manifest);
 
-                //Create the Inventory manifest
-                if (packingList.Count > 0)
-                {
-                    int totalItems = packingList.Count;
-
-                    WBIKISInventoryManifest inventoryManifest = new WBIKISInventoryManifest();
-                    inventoryManifest.destinationID = selectedPipelineNode.moduleValues.GetValue("uniqueIdentifier");
-
-                    WBIPackingItem packingItem;
-                    WBIInventoryManifestItem manifestItem;
-                    for (int index = 0; index < totalItems; index++)
-                    {
-                        //Get the packing item
-                        packingItem = packingList[index];
-                        if (!packingItem.isSelected)
-                            continue;
-
-                        //Fill out the manifest
-                        manifestItem = new WBIInventoryManifestItem();
-                        manifestItem.partName = packingItem.kisItem.availablePart.name;
-                        manifestItem.quantity = packingItem.quantity;
-                        manifestItem.volume = packingItem.volume;
-                        ConfigNode partNode = new ConfigNode(WBIKISInventoryManifest.kPartNode);
-                        packingItem.kisItem.availablePart.partConfig.CopyTo(partNode);
-                        ConfigNode partConfigNode = new ConfigNode(WBIKISInventoryManifest.kPartConfig);
-                        partConfigNode.AddNode(partNode);
-                        manifestItem.partConfigNode = partConfigNode;
-                        inventoryManifest.inventoryItems.Add(manifestItem);
-
-                        //Remove the item from the inventory
-                        inventory.DeleteItem(packingItem.slot);
-                    }
-                    WBIManifestScenario.Instance.AddManifest(inventoryManifest);
-                    packingList.Clear();
-                }
-
                 //Play launch effects and inform user.
                 ScreenMessages.PostScreenMessage(kShipmentLaunched + selectedPipelineNode.vesselName, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
 
@@ -522,85 +481,9 @@ namespace WildBlueIndustries
         {
             scrollPosResources = GUILayout.BeginScrollView(scrollPosResources, resourcePaneOptions);
 
-            //Inventory button
-            if (inventory != null)
-            {
-                if (showInventory)
-                {
-                    if (GUILayout.Button(kResourcesLabel))
-                        showInventory = false;
-                }
-                else if (GUILayout.Button(kInventoryLabel))
-                {
-                    showInventory = true;
-                }
-            }
-
-            //Inventory
-            if (showInventory)
-                drawPackingList();
-
             //Resources
-            else
-                drawResourceList();
+            drawResourceList();
             GUILayout.EndScrollView();
-        }
-
-        protected void drawPackingList()
-        {
-            inventory.RefreshMassAndVolume();
-            Dictionary<int, WBIKISItem> items = inventory.items;
-
-            //Rebuild the packing list if the item count has changed.
-            WBIPackingItem packingItem;
-            WBIKISItem item;
-            if (inventoryItemCount != items.Count)
-            {
-                inventoryItemCount = items.Count;
-                packingList.Clear();
-                packingListMass = 0;
-                foreach (int key in items.Keys)
-                {
-                    item = items[key];
-
-                    packingItem = new WBIPackingItem();
-                    packingItem.kisItem = item;
-                    packingItem.isSelected = false;
-                    packingItem.partTitle = item.availablePart.title;
-                    packingItem.mass = item.totalMass;
-                    packingItem.volume = item.volume;
-                    packingItem.quantity = item.quantity;
-                    packingItem.slot = key;
-                    packingList.Add(packingItem);
-                }
-            }
-
-            //Inventory mass
-            GUILayout.Label(string.Format("<color=white><b>Package Mass: </b>{0:f3}tonnes</color>", packingListMass));
-
-            //Now go through all the inventory items and let the player select the desired
-            //items for the shipment.
-            packingListMass = 0f;
-            int totalItems = packingList.Count;
-            string toggleText;
-            for (int index = 0; index < totalItems; index++)
-            {
-                //Get the packing item
-                packingItem = packingList[index];
-
-                //Get toggle text
-                toggleText = packingItem.partTitle;
-                if (packingItem.quantity > 1)
-                    toggleText = toggleText + " (" + Mathf.RoundToInt(packingItem.quantity).ToString() + ")";
-
-                //Draw toggle
-                packingItem.isSelected = GUILayout.Toggle(packingItem.isSelected, toggleText);
-                packingList[index] = packingItem;
-
-                //Update packing list mass
-                if (packingItem.isSelected)
-                    packingListMass += packingItem.mass;
-            }
         }
 
         protected void drawResourceList()

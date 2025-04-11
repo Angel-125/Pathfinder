@@ -8,6 +8,22 @@ Copy the contents of the mod's GameData directory into your KSP's GameData folde
 
 ---REVISION HISTORY---
 
+1.42.0
+This has been a long time coming, but the 10+ year-old template system, which was a holdover from the earliest days of Multipurpose Colony Modules, is being retired in favor of the more flexible Omni Converter and Omni Storage system.
+Existing parts are deprecated, so your existing bases are safe. But new bases will use the new Omni system instead.
+
+BE SURE TO DELETE YOUR WildBlueIndustries/000WildBlueTools folder if you have one!
+
+- All convertible storage and template modules have been replaced with OmniStorage and OmniConverters.
+NOTE: This may affect vessels in flight, but you can easily reconfigure your modules by turning off resource and skill requirements in Game Settings -> WBIResources.
+- Play Mode is no longer a factor; if you have Community Resource Pack installed, you get CRP converters. If you have Classic Stock Resources installed, you get Classic Stock converters. If you have both installed, you get both.
+- Deprecated the Ponderosa, Casa, Chuckwagon, Conestoga, Hacienda, Mule, AKI Power Strip, and Doc Science Lab.
+- The Ponderosa, Casa, Chuckwagon, Conestoga, Hacienda, Mule, and Doc Science Lab all have new versions.
+- With the latest DSEV installed, the Mule V2 won't be available; use DSEV's S2 Logistics Module instead.
+- The geology functions of the Pathfinder template have been moved to the new Doc Science Lab.
+- The new Chuckwagon has an integrated greenhouse when Snacks is installed.
+- The new Conestoga gains an omniconverter in place of its dedicated Monopropellant Power Unit.
+
 1.40.4
 - Increased the Drilling Rig's production output.
 - Fixed issue where the Drilling rig would stop working whenever you returned to the vessel.
@@ -990,7 +1006,7 @@ KNOWN ISSUES
 
 This release updates Pathfinder to KSP 1.1!
 
-eberkain had a request to have a conversion chain similar to Simple Construction’s Ore->Metal->Rocketparts. That got me thinking about dusting off some old plans I had for Pathfinder and rethinking them. Among other things, this update implements those plans. Thanks eberkain! :)
+eberkain had a request to have a conversion chain similar to Simple Construction s Ore->Metal->Rocketparts. That got me thinking about dusting off some old plans I had for Pathfinder and rethinking them. Among other things, this update implements those plans. Thanks eberkain! :)
 
 New Parts
 - Added the Tunnel Extender, a part designed to put some space between between modules to make it easier to use the airlocks. It also has a solar panel on the roof and can serve as an attachment location for your stuff.
@@ -1000,8 +1016,8 @@ M1A1 Mountain Goat
 - M1A1 Mountain Goats now have an eject feature. They're particularly useful for moving a starter base into position before discarding the wheels.
 
 Pathfinder Settings Window
-- Added a Play Mode indicator and a button to change the play mode. This is only available at the Space Center. Pathfinder now offers three different play modes: Default, with all the bells and whistles enabled; Simplified, which reduces the number of resources and configurations you need to keep track of (which has a simplified Ore->RocketParts converter among other things); and Pristine, which just gives you nice looking modules to assemble without the hassle of things like resource extraction and conversion. You can find detailed descriptions of these play modes on the Pathfinder Wiki. To use a play mode, simply open the Pathfinder Settings Window from the Space Center, choose the mode you want, and then restart KSP. Pathfinder’s existing parts and plugin code will adjust accordingly. 
-Warning: changing Pathfinder’s play mode WILL affect your currently deployed bases. Custom play modes are possible, just consult the wiki.
+- Added a Play Mode indicator and a button to change the play mode. This is only available at the Space Center. Pathfinder now offers three different play modes: Default, with all the bells and whistles enabled; Simplified, which reduces the number of resources and configurations you need to keep track of (which has a simplified Ore->RocketParts converter among other things); and Pristine, which just gives you nice looking modules to assemble without the hassle of things like resource extraction and conversion. You can find detailed descriptions of these play modes on the Pathfinder Wiki. To use a play mode, simply open the Pathfinder Settings Window from the Space Center, choose the mode you want, and then restart KSP. Pathfinder s existing parts and plugin code will adjust accordingly. 
+Warning: changing Pathfinder s play mode WILL affect your currently deployed bases. Custom play modes are possible, just consult the wiki.
 
 - Added the ability to evenly redistribute resources to all vessels within physics range. This happens automatically, but you can manually initiate a resource distribution from the Pathfinder Settings window. The Ponderosa, Casa, Doc, Hacienda, Chuckwagon, and Conestoga can all distribute their resources automatically if you opt-in. To enable an individual part, simply right-click on the part and make sure that the Distributor is set to "ON." To enable resource distribution on all parts that have the capability on the currently focused vessel, go to the Pathfinder Settings window and press the Distribution button until it says "ON." If you want to prevent a part's individual resource from being distributed, then be sure to lock the resource.
 NOTE: Resource distribution favors parts with converters that have required resources (such as the greenhouse's Dirt). Resources will fill parts that have converters with required resources first before distributing the remainder to other parts. For more information, consult the wiki.
@@ -1039,7 +1055,7 @@ Switchback
 
 Resources
 - Added Equipment resource and template.
-- Refactored RocketParts storage template to reflect that it’s actually a 5-liter resource instead of a 1-liter resource. Whoops!
+- Refactored RocketParts storage template to reflect that it s actually a 5-liter resource instead of a 1-liter resource. Whoops!
 - Inflating and reconfiguring modules now uses Equipment instead of RocketParts. Repairs still require RocketParts.
 
 Other
@@ -1313,7 +1329,7 @@ Bug Fixes
 
 0.9.0
 
-The Buffalo gets new wheels! The stock-based RoveMax M1A1 wheels were always interim placeholders, but now the Buffalo has its real wheels. The new M1A1 Mountain Goat is inspired by the wheels found on NASA’s MMSEV but they have been brought inline with the KSP art style. The current stock-based wheel will be going away. They are deprecated in this release (existing craft won’t break but you won’t find the wheels in the catalog) and it will be removed at a later date, so be sure to retrofit or retire your rovers that have the older wheels.
+The Buffalo gets new wheels! The stock-based RoveMax M1A1 wheels were always interim placeholders, but now the Buffalo has its real wheels. The new M1A1 Mountain Goat is inspired by the wheels found on NASA s MMSEV but they have been brought inline with the KSP art style. The current stock-based wheel will be going away. They are deprecated in this release (existing craft won t break but you won t find the wheels in the catalog) and it will be removed at a later date, so be sure to retrofit or retire your rovers that have the older wheels.
 
 New Parts
 - Added the Patio, a 3.75m muncrete slab that's useful for making landing pads and foundations for bases on uneven terrain. You can clip slabs together to form larger areas. To use it, bolt it into the ground NOTE: This is an experimental part, use at your own risk.
@@ -1690,7 +1706,7 @@ youtube: Magnificent Seven Theme
 NOTE: Please pack up your base before applying this update, there were a lot of changes under the hood.
 NOTE: Please be sure to update your OSEWorkshop to the very latest version.
 
-For science! The Gold Digger generates experiment results while taking core samples. Those results are now worth more than just their Science value; you can use them to improve the efficiency of your habitation, science, and industry processors. In other words, creating RocketParts, MaterialKits, ResearchKits, Water, and others will be improved if you have good results when performing your soil analysis, metallurgic analysis, or chemical analysis in the Geology Lab. And with the Geology Lab’s new Biome Analysis, you can either use the research to improve your production abilities within the biome, or transfer the data to the new Doc Commercial Science Lab. It will cost you Science to perform a Biome Analysis, but you stand to gain much more.
+For science! The Gold Digger generates experiment results while taking core samples. Those results are now worth more than just their Science value; you can use them to improve the efficiency of your habitation, science, and industry processors. In other words, creating RocketParts, MaterialKits, ResearchKits, Water, and others will be improved if you have good results when performing your soil analysis, metallurgic analysis, or chemical analysis in the Geology Lab. And with the Geology Lab s new Biome Analysis, you can either use the research to improve your production abilities within the biome, or transfer the data to the new Doc Commercial Science Lab. It will cost you Science to perform a Biome Analysis, but you stand to gain much more.
 
 New Parts
 - Added the Doc Commercial Science Lab. This is a new multipurpose laboratory. With the Doc Commercial Science Lab, developed in partnership with the Rasta Engineering Group (thanks rasta013 for the lab configs!), you get a Mobile Processing Lab equivalent that can do more than just process experiments for Science over time; you can publish the research for Reputation, or sell the research for Funds. You can also reconfigure the lab into the Sunburn pellet lab, and produce FusionPellets and Coolant for your fusion needs. And finally, you can retool it into the Watney Chemistry Lab, named after a fictional character that finds creative survival solutions through chemistry.
@@ -1730,13 +1746,13 @@ Extraplanetary Launchpads: http://forum.kerbalspaceprogram.com/threads/59545-1-0
 
 0.1.6: Neon Light
 
-Need a light? The Gaslight Telescopic Lamppost has you covered. Plant it in the ground (if you can run into it and move it, it’s not planted properly), extend the pole, and turn on the lights. It has a small battery built in, but for continual use, be sure to plug it into your base using its built-in KAS ports. It even serves as a short-range omnidirectional antenna- thanks for the suggestion, MeCripp, hope you like the MC-16 communications link. :) Don’t like the color? Are the lights too bright? You can change them in the field through the light’s right-click menu. 
+Need a light? The Gaslight Telescopic Lamppost has you covered. Plant it in the ground (if you can run into it and move it, it s not planted properly), extend the pole, and turn on the lights. It has a small battery built in, but for continual use, be sure to plug it into your base using its built-in KAS ports. It even serves as a short-range omnidirectional antenna- thanks for the suggestion, MeCripp, hope you like the MC-16 communications link. :) Don t like the color? Are the lights too bright? You can change them in the field through the light s right-click menu. 
 
-This update supports the OSE Workshop as a new template for the Ponderosa, and adds a new MaterialKits storage template as well. OSEWorkshop lets you 3D print individual parts like hammers, the Mk1 command pod, and even another Ponderosa. If you download OSE Workshop (I recommended the mod), you’ll be able to 3D print parts if you have enough MaterialKits.
+This update supports the OSE Workshop as a new template for the Ponderosa, and adds a new MaterialKits storage template as well. OSEWorkshop lets you 3D print individual parts like hammers, the Mk1 command pod, and even another Ponderosa. If you download OSE Workshop (I recommended the mod), you ll be able to 3D print parts if you have enough MaterialKits.
 
 In keeping with the mod's spirit of jurry-rigging what you need, you can now re-engineer the Buckboard and Outback into batteries. This is a revision to the battery template added last update. Additionally, you can now reconfigure drills to drill for different resources. You'll see this concept of jurry-rigging in other parts in the future.
 
-Finally, there are some bug fixes, infrastructure changes, and integrated standard KAS ports to help keep your base’s part count down.
+Finally, there are some bug fixes, infrastructure changes, and integrated standard KAS ports to help keep your base s part count down.
 
 NOTE: Please retire your existing TERRAIN scanners (unless you're savy enough to open your save file and replace PhotoSupplies with ResearchKits).
 
@@ -1804,13 +1820,13 @@ Impact: http://forum.kerbalspaceprogram.com/threads/114087-1-0-Impact!-impact-sc
 
 Developer Notes: When I started working on Multipurpose Colony Modules, I always intended to have the player spend resources to reconfigure the module. Its successor, Pathfinder, finally realizes that vision. Similarly, certain templates require a specific skill to reconfigure the module into its new configuration.
 
-The new requirements add a new challenge to the gameplay without overly complicating the system. But as always, it’s your game, your choice, so you can disable these requirements if you prefer not to play with them. Simply press Alt P to bring up the Pathfinder settings window, and uncheck the box next to “requires resources to reconfigure.” If you uncheck the box, the Ponderosa won’t require resources to inflate and outfit the module either. Similarly, you can disable the skill requirement.
+The new requirements add a new challenge to the gameplay without overly complicating the system. But as always, it s your game, your choice, so you can disable these requirements if you prefer not to play with them. Simply press Alt P to bring up the Pathfinder settings window, and uncheck the box next to  requires resources to reconfigure.  If you uncheck the box, the Ponderosa won t require resources to inflate and outfit the module either. Similarly, you can disable the skill requirement.
 
 IMPORTANT NOTE: The directory structure has changed. Please delete the WildBlueIndustries folder before installing this update.
 NOTE: Please pack up your Ponderosas before applying this patch.
 
 - The Ponderosa now requires RocketParts to inflate the module and to reconfigure it. Be sure to have an ample supply of RocketParts on your vessel. If you prefer to not use this feature, simply press Alt P to bring up the Pathfinder Settings window to disable it.
-- Added the Conestoga Multipurpose Logistics Module (MLM). The Conestoga holds a lot more stuff than the Buckboard, but it’s not very hand-portable.
+- Added the Conestoga Multipurpose Logistics Module (MLM). The Conestoga holds a lot more stuff than the Buckboard, but it s not very hand-portable.
 - Added the Mineshaft Portable Crew Tube (PCT). Mount one on each Ponderosa that you want to connect to, and then link them together, just like the KAS pipe.
 - Added the Ponderosa Habitat template to the Ponderosa. It will be helpful in the future, but right now it's decorative.
 

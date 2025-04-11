@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using KSP.IO;
 using ModuleWheels;
+using WBIResources;
+
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
 License: GNU General Public License Version 3
@@ -18,7 +20,7 @@ Any similarity to a real entity is purely coincidental.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-namespace WildBlueIndustries
+namespace WBIPathfinder
 {
     public class PathfinderAppViewAppHelper : MonoBehaviour
     {
@@ -71,7 +73,7 @@ namespace WildBlueIndustries
             //In flight, switch between resources and settings
             if (HighLogic.LoadedSceneIsFlight)
             {
-                if (WBIGoldStrikeScenario.debugGoldStrike)
+                if (WBIGoldStrikeScenario.debugMode)
                 {
                     if (GUILayout.Button("Clear Prospects"))
                     {
