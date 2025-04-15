@@ -14,7 +14,6 @@
         reconfigureRank = 1
         requiredResource = Equipment
         requiredAmount = 0
-        resourceBlacklist = GeoEnergy;ElectroPlasma;CoreHeat;Atmosphere;CompressedAtmosphere;LabTime;ExposureTime;ScopeTime;SolarReports;SimulatorTime;GravityWaves;IntakeAir;StaticCharge;EVA Propellant;Plants
     }
 }
 
@@ -33,7 +32,6 @@
         reconfigureRank = 1
         requiredResource = Equipment
         requiredAmount = 0
-        resourceBlacklist = GeoEnergy;ElectroPlasma;CoreHeat;Atmosphere;CompressedAtmosphere;LabTime;ExposureTime;ScopeTime;SolarReports;SimulatorTime;GravityWaves;IntakeAir;StaticCharge;EVA Propellant;Plants
     }
 }
 
@@ -51,6 +49,5 @@
         reconfigureRank = 1
         requiredResource = Equipment
         requiredAmount = 0
-        resourceBlacklist = GeoEnergy;ElectroPlasma;CoreHeat;Atmosphere;CompressedAtmosphere;LabTime;ExposureTime;ScopeTime;SolarReports;SimulatorTime;GravityWaves;IntakeAir;StaticCharge;EVA Propellant;Lead;Plants
     }
 }

@@ -61,7 +61,7 @@ KNOWN ISSUES
 1.36.0
 
 Thanks to JadeOfMaar:
-- Added EPS Transformer to Arc Reactor. This down-converts ElectroPlasma to ElectricCharge in 1:6 ratio.
+- Added EPS Transformer to Arc Reactor. This down-converts wbiElectroPlasma to ElectricCharge in 1:6 ratio.
 - Removed resource ignore lists from (Castillo) Storage Depot so that resources added/used by LS mods can be tweakable in it.
 - Updated Sunburn Fusion Lab (CRP) template to have FusionPellets production from D-He3 and from H2O.
 - Updated Sunburn Fusion Lab (CRP) template's ISRU Chain (Coolant, Glykerol).

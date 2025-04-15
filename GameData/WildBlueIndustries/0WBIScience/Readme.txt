@@ -1,4 +1,4 @@
-WBIWidgets
+WBIScience
 
 A KSP mod that provides a collection of parts formerly found in Wild Blue Tools.
 
@@ -7,7 +7,7 @@ A KSP mod that provides a collection of parts formerly found in Wild Blue Tools.
 Copy the contents of the mod's GameData directory into your GameData folder.
 It should look like:
 
-GameData/WildBlueIndustries/WBIWidgets
+GameData/WildBlueIndustries/WBIScience
 
 ---LICENSE---
 Some resource definitions courtesy of Community Resource Pack. License: CC-BY-NC-SA 4.0
