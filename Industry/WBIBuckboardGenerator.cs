@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -47,15 +48,15 @@ namespace WildBlueIndustries
             }
         }
 
-        public override void StartConverter()
+        public override void StartResourceConverter()
         {
-            base.StartConverter();
+            base.StartResourceConverter();
             ShowParticleEffect(IsActivated);
         }
 
-        public override void StopConverter()
+        public override void StopResourceConverter()
         {
-            base.StopConverter();
+            base.StopResourceConverter();
             ShowParticleEffect(IsActivated);
         }
     }

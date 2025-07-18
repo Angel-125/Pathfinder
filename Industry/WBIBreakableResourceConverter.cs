@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -66,24 +67,6 @@ namespace WildBlueIndustries
         [KSPEvent(guiActiveUnfocused = true, externalToEVAOnly = true, unfocusedRange = 3f, guiName = "Perform repairs", guiActiveEditor = false)]
         public void PerformRepairs()
         {
-            //Do we require resources to fix the scope?
-            //If so, make sure the kerbal on EVA has enough resources.
-            if (WBIMainSettings.RepairsRequireResources)
-            {
-                float repairUnits = calculateRepairCost();
-
-                //Not enough resources to effect repairs? Tell the player.
-                if (repairUnits < 0.0f)
-                {
-                    string message = string.Format(kNotEnoughResourcesToRepair, repairAmount) + repairResource;
-                    ScreenMessages.PostScreenMessage(message, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
-                    return;
-                }
-
-                //We have enough, deduct the repair cost
-                FlightGlobals.ActiveVessel.rootPart.RequestResource(repairResource, repairUnits, ResourceFlowMode.ALL_VESSEL);
-            }
-
             //Finally, unset broken.
             criticalFail = originalCriticalFail;
             currentCriticalFail = criticalFail;
@@ -126,7 +109,7 @@ namespace WildBlueIndustries
 
             if (ModuleIsActive() && isBroken)
             {
-                StopConverter();
+                StopResourceConverter();
                 status = kNeedsRepairs;
             }
 
@@ -136,10 +119,6 @@ namespace WildBlueIndustries
         public override string GetInfo()
         {
             string info = base.GetInfo();
-
-            if (WBIMainSettings.RepairsRequireResources)
-                info += kInfoRepairSkill + repairSkill + "\r\n";
-            info += string.Format(kInfoRepairAmount, repairAmount, repairResource);
 
             return info;
         }
@@ -196,7 +175,7 @@ namespace WildBlueIndustries
             //The chances of a critical failure increase
             criticalFail += criticalFailModifier;
             currentCriticalFail = criticalFail;
-            StopConverter();
+            StopResourceConverter();
         }
 
         protected override void onSuccess()
@@ -215,13 +194,10 @@ namespace WildBlueIndustries
 
         protected override void onCriticalFailure()
         {
-            if (!WBIMainSettings.PartsCanBreak)
-                return;
-
             base.onCriticalFailure();
 
             isBroken = true;
-            StopConverter();
+            StopResourceConverter();
             SetupGUI();
 
             status = kNeedsRepairs;
@@ -267,12 +243,12 @@ namespace WildBlueIndustries
             if (ModuleIsActive())
             {
                 if (GUILayout.Button(StopActionName))
-                    StopConverter();
+                    StopResourceConverter();
             }
 
             else if (GUILayout.Button(StartActionName))
             {
-                StartConverter();
+                StartResourceConverter();
             }
 
             GUILayout.EndVertical();

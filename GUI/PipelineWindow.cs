@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -26,7 +27,7 @@ namespace WildBlueIndustries
         public ConfigNode moduleValues;
     }
 
-    public class PipelineWindow : Window<PipelineWindow>
+    public class PipelineWindow : Dialog<PipelineWindow>
     {
         PipeEndpointNode[] pipeEndpoints;
 

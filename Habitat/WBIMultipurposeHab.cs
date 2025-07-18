@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -38,6 +39,7 @@ namespace WildBlueIndustries
         protected Animation anim;
         protected PartModule impactSeismometer;
         protected PartModule exWorkshop;
+        protected bool animationStarted;
 
         public override void OnStart(StartState state)
         {
@@ -330,22 +332,9 @@ namespace WildBlueIndustries
             return canAfford;
         }
 
-        protected override bool payPartsCost(int templateIndex)
+        protected override bool payPartsCost(int templateIndex, bool deflatedModulesAutoPass = true)
         {
             bool canAffordCost = base.payPartsCost(templateIndex);
-
-            //Maybe the distribution manager can help?
-            if (canAffordCost == false)
-            {
-                double remodelCost = calculateRemodelCost(templateIndex);
-                string resourceName = templateManager[templateIndex].GetValue("requiredResource");
-                if (string.IsNullOrEmpty(resourceName))
-                    return true;
-
-                double amountObtained = WBIDistributionManager.Instance.RequestDistributedResource(resourceName, remodelCost, false);
-                if (amountObtained > 0f)
-                    return true;
-            }
 
             return canAffordCost;
         }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)

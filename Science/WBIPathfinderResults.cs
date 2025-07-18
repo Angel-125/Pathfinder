@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
+using WBIScience;
 
 /*
 Source code copyrighgt 2017, by Michael Billard (Angel-125)
@@ -33,7 +35,7 @@ namespace WildBlueIndustries
             float efficiencyModifier = 0.1f;
             int planetID = this.part.vessel.mainBody.flightGlobalsIndex;
             HarvestTypes harvestType = HarvestTypes.Planetary;
-            CBAttributeMapSO.MapAttribute biome = Utils.GetCurrentBiome(this.part.vessel);
+            CBAttributeMapSO.MapAttribute biome = WBIResources.Utils.GetCurrentBiome(this.part.vessel);
             string biomeName = biome.name;
             string modifierName = "";
             string processChanged = "";

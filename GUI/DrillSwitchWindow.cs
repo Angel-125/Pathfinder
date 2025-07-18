@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -19,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    public class DrillSwitchWindow : Window<DrillSwitchWindow>
+    public class DrillSwitchWindow : Dialog<DrillSwitchWindow>
     {
         private const string insufficientResourcesMsg = "Unable to reconfigure the drill. You need {0:f2} {1:s} to reconfigure it.";
         private const string kInsufficientSkill = "Unable to reconfigure the drill. You need a skilled {0:s}. to reconfigure it.";
@@ -114,7 +115,7 @@ namespace WildBlueIndustries
         protected void reconfigureDrill()
         {
             //If required, make sure we have the proper skill
-            if (WBIMainSettings.RequiresSkillCheck)
+            if (WBIResourcesSettings.RequiresSkillCheck)
             {
                 if (FlightGlobals.ActiveVessel.isEVA && Utils.IsExperienceEnabled())
                 {
@@ -130,7 +131,7 @@ namespace WildBlueIndustries
             }
 
             //If needed, pay the cost to reconfigure
-            if (WBIMainSettings.PayToReconfigure)
+            if (WBIResourcesSettings.PayToReconfigure)
             {
                 //Make sure we can afford it
                 PartResourceDefinition definition = ResourceHelper.DefinitionForResource(requiredResource);

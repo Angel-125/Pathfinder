@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyright 2016, by Michael Billard (Angel-125)
@@ -18,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    internal class SciLabOpsWindow : Window<SciLabOpsWindow>
+    internal class SciLabOpsWindow : Dialog<SciLabOpsWindow>
     {
         const string kTransmitResearch = "<color=lightBlue>Transmit research (Science)</color>";
         const string kPublishResearch = "<color=yellow>Publish research (Reputation)</color>";

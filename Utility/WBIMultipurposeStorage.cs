@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -23,6 +24,7 @@ namespace WildBlueIndustries
     public class WBIMultipurposeStorage : WBIMultiConverter, IModuleInfo
     {
         Animation anim;
+        protected bool animationStarted;
 
         [KSPField]
         public string partToolTip = string.Empty;

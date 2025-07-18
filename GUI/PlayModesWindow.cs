@@ -5,12 +5,13 @@ using System.Text;
 using System.IO;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 namespace WildBlueIndustries
 {
     public delegate void ChangePlayMode();
 
-    public class PlayModesWindow : Window<PlayModesWindow>
+    public class PlayModesWindow : Dialog<PlayModesWindow>
     {
         private const string kDefaultDescription = "The default Play Mode enables Pathfinder with all its bells and whistles. You get a default set of templates and converters for your base building needs.";
 

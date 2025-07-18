@@ -5,6 +5,8 @@ using System.Text;
 using UnityEngine;
 using KSP.IO;
 using KSP.UI.Screens;
+using WBIResources;
+using WBIScience;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -127,7 +128,7 @@ namespace WildBlueIndustries
                 Vessel vessel = FlightGlobals.ActiveVessel;
                 ProtoCrewMember astronaut = vessel.GetVesselCrew()[0];
 
-                if (astronaut.HasEffect(requiredSkill) && WBIMainSettings.RequiresSkillCheck)
+                if (astronaut.HasEffect(requiredSkill) && WBIResourcesSettings.RequiresSkillCheck)
                 {
                     ScreenMessages.PostScreenMessage(kEngineerNeeded, 5.0f, ScreenMessageStyle.UPPER_CENTER);
                     return;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -27,7 +28,7 @@ namespace WildBlueIndustries
         public Vessel vessel;
     }
 
-    public class TerainUplinkView : Window<TerainUplinkView>
+    public class TerainUplinkView : Dialog<TerainUplinkView>
     {
         private const int kWindowWidth = 300;
         private const int kWindowHeight = 310;

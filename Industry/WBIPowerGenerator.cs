@@ -102,12 +102,12 @@ namespace WildBlueIndustries
             if (ModuleIsActive())
             {
                 if (GUILayout.Button(StopActionName))
-                    StopConverter();
+                    StopResourceConverter();
             }
 
             else if (GUILayout.Button(StartActionName))
             {
-                StartConverter();
+                StartResourceConverter();
             }
 
             GUILayout.EndVertical();

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
+using WBIScience;
 
 namespace WildBlueIndustries
 {
@@ -33,7 +35,7 @@ namespace WildBlueIndustries
             experimentLab.unavailableMessage = kUnavailableMessage;
 
             //Hide the experiment lab if the
-            if (Utils.IsBiomeUnlocked(this.part.vessel) == false)
+            if (WBIResources.Utils.IsBiomeUnlocked(this.part.vessel) == false)
                 experimentLab.isAvailable = false;
         }
 
@@ -52,11 +54,6 @@ namespace WildBlueIndustries
                 terrainUplinkView.parentView = this.parentView;
                 terrainUplinkView.SetVisible(true);
             }
-        }
-
-        public override void OnGUI()
-        {
-            base.OnGUI();
 
             if (terrainUplinkView.IsVisible())
                 terrainUplinkView.DrawWindow();

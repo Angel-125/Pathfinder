@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -39,7 +40,7 @@ namespace WildBlueIndustries
         }
     }
 
-    public class PathfinderAppView : Window<PathfinderAppView>
+    public class PathfinderAppView : Dialog<PathfinderAppView>
     {
         public const string kDefaultDrillTechNode = "advConstruction";
 
@@ -77,10 +78,8 @@ namespace WildBlueIndustries
 
         public void changePlayMode()
         {
-            WBIMainSettings.PayToReconfigure = playModesView.payToRemodel;
-            WBIMainSettings.RequiresSkillCheck = playModesView.requireSkillCheck;
-            WBIMainSettings.RepairsRequireResources = playModesView.repairsRequireResources;
-            WBIMainSettings.PartsCanBreak = playModesView.partsCanBreak;
+            WBIResourcesSettings.PayToReconfigure = playModesView.payToRemodel;
+            WBIResourcesSettings.RequiresSkillCheck = playModesView.requireSkillCheck;
             playModeName = playModesView.currentPlayMode;
             playModePath = playModesView.currentPlayModeFile;
 

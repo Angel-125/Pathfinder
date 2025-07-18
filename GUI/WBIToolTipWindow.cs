@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -19,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 namespace WildBlueIndustries
 {
-    class WBIToolTipWindow : Window<WBIToolTipWindow>
+    class WBIToolTipWindow : Dialog<WBIToolTipWindow>
     {
         private Vector2 scrollPosition;
         private string message;

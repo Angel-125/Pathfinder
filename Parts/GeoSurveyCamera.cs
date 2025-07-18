@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP.IO;
+using WBIResources;
+using WBIScience;
 
 /*
 Source code copyrighgt 2015, by Michael Billard (Angel-125)
@@ -37,7 +39,6 @@ namespace WildBlueIndustries
         ModuleOrbitalSurveyor orbitalSurveyer;
         ModuleOrbitalScanner orbitalScanner;
         ModuleScienceContainer scienceContainer;
-        WBIResultsDialogSwizzler swizzler;
         bool monitorSurvey;
 
         [KSPEvent(guiActiveUnfocused = true, externalToEVAOnly = true, unfocusedRange = 3f, guiName = "Perform orbital survey", guiActiveEditor = false, guiActive = true)]
@@ -49,24 +50,6 @@ namespace WildBlueIndustries
             //We're good, perform the survey
             monitorSurvey = true;
             orbitalSurveyer.PerformSurvey();
-        }
-
-        public override void RepairLab()
-        {
-            //Do we require resources to fix the scope?
-            //If so, make sure the kerbal on EVA has enough resources.
-            if (WBIMainSettings.RepairsRequireResources)
-            {
-                base.RepairLab();
-
-                //If we couldn't repair the lab then we're done.
-                if (isBroken == true)
-                    return;
-            }
-
-            //Finally, unset broken.
-            isBroken = false;
-            SetupGUI();
         }
 
         public override void OnStart(StartState state)
@@ -87,10 +70,6 @@ namespace WildBlueIndustries
                 orbitalSurveyer.Events["PerformSurvey"].guiActiveUnfocused = false;
                 orbitalSurveyer.Events["PerformSurvey"].guiActiveEditor = false;
             }
-
-            //Create swizzler
-            swizzler = new WBIResultsDialogSwizzler();
-            swizzler.onTransmit = transmitData;
 
             //Setup the science container
             scienceContainer = this.part.FindModuleImplementing<ModuleScienceContainer>();
@@ -142,10 +121,6 @@ namespace WildBlueIndustries
         {
             string info = base.GetInfo();
 
-            if (WBIMainSettings.RepairsRequireResources)
-                info += kInfoRepairSkill + repairSkill + "\r\n";
-            info += string.Format(kInfoRepairAmount, repairAmount, repairResource);
-
             return info;
         }
 
@@ -187,7 +162,6 @@ namespace WildBlueIndustries
 
             //Review the data
             scienceContainer.ReviewData();
-            swizzler.SwizzleResultsDialog();
         }
 
         protected bool transmitData(ScienceData data)
@@ -236,25 +210,6 @@ namespace WildBlueIndustries
                 return;
 
             bool planetUnlocked = ResourceMap.Instance.IsPlanetScanned(FlightGlobals.currentMainBody.flightGlobalsIndex);
-
-            //Is the telescope broken? if so, show the repair scope button
-            //and don't allow any research
-            if (isBroken)
-            {
-                //Enable repair button
-                Events["RepairLab"].active = true;
-
-                //Cannot perform an orbital survey...
-                Events["PerformOrbitalSurvey"].active = false;
-
-                //Hide survey scanner GUI
-                if (orbitalScanner != null)
-                    orbitalScanner.DisableModule();
-
-                //No research can be performed.
-                SetGuiVisible(false);
-                return;
-            }
 
             //Show scanner GUI?
             if (planetUnlocked && orbitalScanner != null)
