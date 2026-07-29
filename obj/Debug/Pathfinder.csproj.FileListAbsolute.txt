@@ -15,8 +15,6 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\bin\Debug\UnityEngine.x
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.csprojResolveAssemblyReference.cache
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\Pathfinder\obj\Debug\Pathfinder.pdb
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\obj\Debug\Pathfinder.csproj.AssemblyReference.cache
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\obj\Debug\Pathfinder.csproj.CoreCompileInputs.cache
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\bin\Debug\Pathfinder.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\bin\Debug\Pathfinder.pdb
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\bin\Debug\Assembly-CSharp-firstpass.dll
@@ -88,6 +86,8 @@ C:\Projects\KSP\WildBlueIndustries\Pathfinder\bin\Debug\UnityEngine.XRModule.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\bin\Debug\WBIResources.pdb
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\bin\Debug\WBIScience.pdb
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\bin\Debug\KSPAssets.XmlSerializers.dll
-C:\Projects\KSP\WildBlueIndustries\Pathfinder\obj\Debug\Pathfinder.csproj.CopyComplete
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\obj\Debug\Pathfinder.csproj.AssemblyReference.cache
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\obj\Debug\Pathfinder.csproj.CoreCompileInputs.cache
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\obj\Debug\Pathfinder.dll
 C:\Projects\KSP\WildBlueIndustries\Pathfinder\obj\Debug\Pathfinder.pdb
+C:\Projects\KSP\WildBlueIndustries\Pathfinder\obj\Debug\Pathfinder.csproj.Up2Date

@@ -6,6 +6,10 @@ A KSP mod that blazes the trail for more permanent installations. Space camping 
 
 Copy the contents of the mod's GameData directory into your KSP's GameData folder.
 
+Changes
+
+- Updated converter efficiency ratings- experienced kerbals matter!
+
 ---REVISION HISTORY---
 
 1.42.2
