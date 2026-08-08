@@ -11,7 +11,9 @@ GameData/WildBlueIndustries/WBIResources
 
 ---CHANGES---
 
-- Updated converter efficiency ratings- experienced kerbals matter!
+- Bug fixes
+
+---END CHANGES---
 
 ---IMPORTANT NOTES---
 

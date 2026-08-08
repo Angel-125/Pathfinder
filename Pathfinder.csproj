@@ -16,7 +16,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\PipelineWindow.cs" />
+    <Compile Include="Parts\WBIManagedAnimation.cs" />
     <Compile Include="ResourceDistribution\DistributionView.cs" />
     <Compile Include="GUI\DrillSwitchWindow.cs" />
     <Compile Include="Science\WBIBiomeAnalysis.cs" />
@@ -161,4 +162,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y "$(TargetPath)" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"﻿
+xcopy /Y "$(TargetDir)$(TargetName).pdb" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"
+xcopy /Y "$(TargetDir)$(TargetName).dll" "C:\KSPDev\GameData\WildBlueIndustries\Pathfinder\Plugins\"
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>
