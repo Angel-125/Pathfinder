@@ -38,7 +38,7 @@ namespace WildBlueIndustries
         Texture publishIcon;
         Texture sellIcon;
         Texture scienceIcon;
-        public WBIScienceConverter converter = null;
+        public PartModule converter = null;
         protected ModuleScienceLab sciLab = null;
         public ModuleScienceContainer scienceContainer = null;
 
@@ -64,7 +64,7 @@ namespace WildBlueIndustries
         {
             if (converter == null)
             {
-                converter = this.part.FindModuleImplementing<WBIScienceConverter>();
+                converter = findModuleByName("WBIScienceConverter");
                 sciLab = this.part.FindModuleImplementing<ModuleScienceLab>();
                 scienceContainer = this.part.FindModuleImplementing<ModuleScienceContainer>();
             }
@@ -139,15 +139,15 @@ namespace WildBlueIndustries
             if (GUILayout.Button("Clean Experiments"))
                 sciLab.CleanModulesEvent();
 
-            if (converter.ModuleIsActive())
+            if (moduleIsActive())
             {
-                if (GUILayout.Button(converter.StopActionName))
-                    converter.StopResourceConverter();
+                if (GUILayout.Button(getStringMember("StopActionName", "Stop Research")))
+                    invokeConverterMethod("StopResourceConverter");
             }
             else
             {
-                if (GUILayout.Button(converter.StartActionName))
-                    converter.StartResourceConverter();
+                if (GUILayout.Button(getStringMember("StartActionName", "Start Research")))
+                    invokeConverterMethod("StartResourceConverter");
             }
 
             GUILayout.EndScrollView();
@@ -162,7 +162,7 @@ namespace WildBlueIndustries
 
             //Transmit button
             if (GUILayout.Button(scienceIcon, new GUILayoutOption[] { GUILayout.Width(64), GUILayout.Height(64) }))
-                converter.TransmitResearch();
+                invokeConverterMethod("TransmitResearch");
 
             if (Event.current.type == EventType.Repaint && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
             {
@@ -185,7 +185,7 @@ namespace WildBlueIndustries
             {
                 //Publish button
                 if (GUILayout.Button(publishIcon, new GUILayoutOption[] { GUILayout.Width(64), GUILayout.Height(64) }))
-                    converter.PublishResearch();
+                    invokeConverterMethod("PublishResearch");
 
                 if (Event.current.type == EventType.Repaint && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
                 {
@@ -206,7 +206,7 @@ namespace WildBlueIndustries
 
                 //Sell button
                 if (GUILayout.Button(sellIcon, new GUILayoutOption[] { GUILayout.Width(64), GUILayout.Height(64) }))
-                    converter.SellResearch();
+                    invokeConverterMethod("SellResearch");
 
                 if (Event.current.type == EventType.Repaint && GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
                 {
@@ -246,35 +246,162 @@ namespace WildBlueIndustries
             GUILayout.EndScrollView();
 
             GUILayout.BeginScrollView(new Vector2(0, 0));
-            GUILayout.Label("<color=white><b>" + converter.Fields["status"].guiName + "</b>: " + converter.status + "</color>");
+            GUILayout.Label("<color=white><b>" + getFieldGuiName("status", "Status") + "</b>: " + getStringMember("status", "") + "</color>");
             GUILayout.EndScrollView();
 
             GUILayout.BeginScrollView(new Vector2(0, 0));
-            GUILayout.Label("<color=white><b>Data: </b>" + converter.datString + "</color>");
+            GUILayout.Label("<color=white><b>Data: </b>" + getStringMember("datString", "") + "</color>");
             GUILayout.EndScrollView();
 
             GUILayout.BeginScrollView(new Vector2(0, 0));
-            GUILayout.Label("<color=white><b>Rate: </b>" + converter.rateString + "</color>");
+            GUILayout.Label("<color=white><b>Rate: </b>" + getStringMember("rateString", "") + "</color>");
             GUILayout.EndScrollView();
 
             GUILayout.BeginScrollView(new Vector2(0, 0));
-            GUILayout.Label(new GUIContent("<color=lightBlue><b> Science: </b>" + sciLab.storedScience * converter.reputationPerData + "</color>", scienceIconWhite),
+            GUILayout.Label(new GUIContent("<color=lightBlue><b> Science: </b>" + sciLab.storedScience * getFloatMember("reputationPerData", 0f) + "</color>", scienceIconWhite),
                 new GUILayoutOption[] { GUILayout.Height(24) });
             GUILayout.EndScrollView();
 
             if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
                 GUILayout.BeginScrollView(new Vector2(0, 0));
-                GUILayout.Label(new GUIContent("<color=yellow><b> Reputation: </b>" + sciLab.storedScience * converter.reputationPerData + "</color>", publishIconWhite),
+                GUILayout.Label(new GUIContent("<color=yellow><b> Reputation: </b>" + sciLab.storedScience * getFloatMember("reputationPerData", 0f) + "</color>", publishIconWhite),
                     new GUILayoutOption[] { GUILayout.Height(24) });
                 GUILayout.EndScrollView();
 
                 GUILayout.BeginScrollView(new Vector2(0, 0));
-                GUILayout.Label(new GUIContent("<b> Funds: </b>" + sciLab.storedScience * converter.fundsPerData, sellIconWhite), new GUILayoutOption[] { GUILayout.Height(24) });
+                GUILayout.Label(new GUIContent("<b> Funds: </b>" + sciLab.storedScience * getFloatMember("fundsPerData", 0f), sellIconWhite), new GUILayoutOption[] { GUILayout.Height(24) });
                 GUILayout.EndScrollView();
             }
 
             GUILayout.EndVertical();
+        }
+
+        /// <summary>
+        /// Finds a part module by class name without requiring the module's compile-time type.
+        /// This keeps Pathfinder buildable when optional science converter sources are absent.
+        /// </summary>
+        /// <param name="moduleName">The class name of the module to find.</param>
+        /// <returns>The matching PartModule, or null if none is installed on the part.</returns>
+        private PartModule findModuleByName(string moduleName)
+        {
+            if (part == null || part.Modules == null)
+                return null;
+
+            for (int index = 0; index < part.Modules.Count; index++)
+            {
+                PartModule module = part.Modules[index];
+                if (module != null && module.moduleName == moduleName)
+                    return module;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Invokes a parameterless method on the optional science converter, if present.
+        /// </summary>
+        /// <param name="methodName">The method to invoke.</param>
+        private void invokeConverterMethod(string methodName)
+        {
+            if (converter == null)
+                return;
+
+            System.Reflection.MethodInfo method = converter.GetType().GetMethod(methodName);
+            if (method != null)
+                method.Invoke(converter, null);
+        }
+
+        /// <summary>
+        /// Checks whether the optional science converter is active.
+        /// </summary>
+        /// <returns>True if the converter reports that it is active.</returns>
+        private bool moduleIsActive()
+        {
+            if (converter == null)
+                return false;
+
+            System.Reflection.MethodInfo method = converter.GetType().GetMethod("ModuleIsActive");
+            if (method == null)
+                return false;
+
+            object result = method.Invoke(converter, null);
+            return result is bool && (bool)result;
+        }
+
+        /// <summary>
+        /// Retrieves a string field or property from the optional science converter.
+        /// </summary>
+        /// <param name="memberName">The field or property name to read.</param>
+        /// <param name="defaultValue">The value to return when the member is unavailable.</param>
+        /// <returns>The member value as a string.</returns>
+        private string getStringMember(string memberName, string defaultValue)
+        {
+            object value = getMemberValue(memberName);
+            return value != null ? value.ToString() : defaultValue;
+        }
+
+        /// <summary>
+        /// Retrieves a float field or property from the optional science converter.
+        /// </summary>
+        /// <param name="memberName">The field or property name to read.</param>
+        /// <param name="defaultValue">The value to return when the member is unavailable.</param>
+        /// <returns>The member value as a float.</returns>
+        private float getFloatMember(string memberName, float defaultValue)
+        {
+            object value = getMemberValue(memberName);
+            if (value == null)
+                return defaultValue;
+
+            float floatValue;
+            if (float.TryParse(value.ToString(), out floatValue))
+                return floatValue;
+
+            return defaultValue;
+        }
+
+        /// <summary>
+        /// Retrieves a PAW field display name from the optional science converter.
+        /// </summary>
+        /// <param name="fieldName">The field name to query.</param>
+        /// <param name="defaultValue">The label to use when the field is unavailable.</param>
+        /// <returns>The localized field display name.</returns>
+        private string getFieldGuiName(string fieldName, string defaultValue)
+        {
+            if (converter == null || converter.Fields == null)
+                return defaultValue;
+
+            try
+            {
+                BaseField field = converter.Fields[fieldName];
+                return field != null ? field.guiName : defaultValue;
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a field or property value from the optional science converter.
+        /// </summary>
+        /// <param name="memberName">The field or property name to read.</param>
+        /// <returns>The member value, or null if it is unavailable.</returns>
+        private object getMemberValue(string memberName)
+        {
+            if (converter == null)
+                return null;
+
+            Type converterType = converter.GetType();
+            System.Reflection.FieldInfo field = converterType.GetField(memberName);
+            if (field != null)
+                return field.GetValue(converter);
+
+            System.Reflection.PropertyInfo property = converterType.GetProperty(memberName);
+            if (property != null)
+                return property.GetValue(converter, null);
+
+            return null;
         }
     }
 }

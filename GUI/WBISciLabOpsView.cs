@@ -31,23 +31,20 @@ namespace WildBlueIndustries
         {
             if (opsWindow == null)
             {
-                WBISciLabOpsView opsView = this.part.FindModuleImplementing<WBISciLabOpsView>();
-
-                if (opsView == null)
-                {
-                    ScreenMessages.PostScreenMessage("WBISciLabOpsView required in config file to show the window.", 5.0f, ScreenMessageStyle.UPPER_CENTER);
-                    opsWindow.converter.SetGuiVisible(true);
-                    Events["ShowOpsView"].guiActive = false;
-                    return;
-                }
+                ScreenMessages.PostScreenMessage("Science lab ops window is unavailable.", 5.0f, ScreenMessageStyle.UPPER_CENTER);
+                Events["ShowOpsView"].guiActive = false;
+                return;
             }
 
             opsWindow.SetVisible(true);
         }
 
+        /// <summary>
+        /// Draws the science lab ops window when it is available and visible.
+        /// </summary>
         public void OnGUI()
         {
-            if (opsWindow.IsVisible())
+            if (opsWindow != null && opsWindow.IsVisible())
                 opsWindow.DrawWindow();
         }
 
@@ -68,13 +65,25 @@ namespace WildBlueIndustries
             {
                 Events["ShowOpsView"].guiActive = true;
 
-                opsWindow.converter.Events["TransmitResearch"].guiActive = false;
-                opsWindow.converter.Events["PublishResearch"].guiActive = false;
-                opsWindow.converter.Events["SellResearch"].guiActive = false;
-                opsWindow.converter.Events["StartResourceConverter"].guiActive = false;
-                opsWindow.converter.Events["StopResourceConverter"].guiActive = false;
+                hideConverterEvent("TransmitResearch");
+                hideConverterEvent("PublishResearch");
+                hideConverterEvent("SellResearch");
+                hideConverterEvent("StartResourceConverter");
+                hideConverterEvent("StopResourceConverter");
 
             }
+        }
+
+        /// <summary>
+        /// Hides a PAW event on the optional science converter when that converter exists.
+        /// </summary>
+        /// <param name="eventName">The event to hide.</param>
+        private void hideConverterEvent(string eventName)
+        {
+            if (opsWindow == null || opsWindow.converter == null || !opsWindow.converter.Events.Contains(eventName))
+                return;
+
+            opsWindow.converter.Events[eventName].guiActive = false;
         }
 
         #region IOpsView
@@ -101,7 +110,8 @@ namespace WildBlueIndustries
 
         public void DrawOpsWindow(string buttonLabel)
         {
-            opsWindow.DrawOpsWindow();
+            if (opsWindow != null)
+                opsWindow.DrawOpsWindow();
         }
         #endregion
     }

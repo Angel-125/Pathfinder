@@ -126,63 +126,24 @@ namespace WildBlueIndustries
 
         public override void ReviewData()
         {
-            float scienceCap = WBIBiomeAnalysis.GetScienceCap(this.part);
-            float totalScience = scienceAdded;
-
-            if (totalScience < 0.001f)
-            {
-                ScreenMessages.PostScreenMessage(kNoScience, 5.0f, ScreenMessageStyle.UPPER_CENTER);
-                return;
-            }
-
-            while (totalScience > 0.001f)
-            {
-                //Set the experiment title
-                if (totalScience < scienceCap)
-                    dataAmount = totalScience;
-                else
-                    dataAmount = scienceCap;
-
-                //Generate lab data
-                ScienceData data = WBIBiomeAnalysis.CreateData(this.part, dataAmount);
-                scienceContainer.AddData(data);
-
-                //Deduct from the total
-                totalScience -= dataAmount;
-                if (totalScience <= 0.001f)
-                    scienceAdded = 0f;
-            }
-
-            //Make sure we have some science to transmit.
-            if (scienceContainer.GetScienceCount() == 0)
-            {
-                ScreenMessages.PostScreenMessage(kNoScience, 5.0f, ScreenMessageStyle.UPPER_CENTER);
-                return;
-            }
-
-            //Review the data
-            scienceContainer.ReviewData();
+            base.ReviewData();
         }
 
+        /// <summary>
+        /// Handles science data transmission callbacks. The old biome-analysis helper is
+        /// no longer part of this project, so the camera now relies on the base lab
+        /// transmission bookkeeping.
+        /// </summary>
+        /// <param name="data">The science data being transmitted.</param>
+        /// <returns>True when transmission may proceed.</returns>
         protected bool transmitData(ScienceData data)
         {
-            if (data.subjectID.Contains(WBIBiomeAnalysis.kBiomeAnalysisID))
-                WBIBiomeAnalysis.ResetScienceGains(this.part);
-
             return true;
         }
 
         public override void TransmitResults()
         {
-            if (transmitHelper.TransmitToKSC(dataAmount, 0, 0))
-            {
-                scienceAdded -= dataAmount;
-                if (scienceAdded <= 0.001)
-                    scienceAdded = 0f;
-
-                if (scienceAdded > 0.001)
-                    ReviewData();
-            }
+            base.TransmitResults();
         }
 
         protected override void onFailure()

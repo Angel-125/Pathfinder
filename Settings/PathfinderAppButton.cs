@@ -27,14 +27,32 @@ namespace WildBlueIndustries
     {
         static protected Texture2D appIcon = null;
         static protected ApplicationLauncherButton appLauncherButton = null;
-        static protected PathfinderAppView appView = new PathfinderAppView();
-        static public LocalOpsManager localOpsManager = new LocalOpsManager();
+        static protected PathfinderAppView appView = null;
+        static public LocalOpsManager localOpsManager = null;
 
+        /// <summary>
+        /// Registers the Pathfinder app launcher hook and prepares shared view state.
+        /// The app launcher can be created before GameDatabase texture lookup is safe,
+        /// so icon loading is isolated and guarded.
+        /// </summary>
         public void Awake()
         {
-            appIcon = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/PathfinderApp", false);
+            if (appView == null)
+                appView = new PathfinderAppView();
+            if (localOpsManager == null)
+                localOpsManager = new LocalOpsManager();
+
+            loadAppIcon();
             GameEvents.onGUIApplicationLauncherReady.Add(SetupGUI);
             appView.localOpsManager = localOpsManager;
+        }
+
+        /// <summary>
+        /// Removes event hooks installed by Awake.
+        /// </summary>
+        public void OnDestroy()
+        {
+            GameEvents.onGUIApplicationLauncherReady.Remove(SetupGUI);
         }
 
         public void OnGUI()
@@ -45,10 +63,15 @@ namespace WildBlueIndustries
                 appView.localOpsManager.DrawWindow();
         }
 
+        /// <summary>
+        /// Adds or removes the Pathfinder application launcher button for supported scenes.
+        /// </summary>
         private void SetupGUI()
         {
             if (HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.SPACECENTER)
             {
+                if (appIcon == null)
+                    loadAppIcon();
                 if (appLauncherButton == null)
                     appLauncherButton = ApplicationLauncher.Instance.AddModApplication(ToggleGUI, ToggleGUI, null, null, null, null, ApplicationLauncher.AppScenes.ALWAYS, appIcon);
             }
@@ -56,9 +79,33 @@ namespace WildBlueIndustries
                 ApplicationLauncher.Instance.RemoveModApplication(appLauncherButton);
         }
 
+        /// <summary>
+        /// Toggles the Pathfinder configuration window.
+        /// </summary>
         private void ToggleGUI()
         {
             appView.SetVisible(!appView.IsVisible());
+        }
+
+        /// <summary>
+        /// Safely loads the app launcher icon. Some heavily patched installs can call
+        /// this addon before texture lookup is fully ready, so failures are logged and
+        /// a harmless built-in texture is used until the icon can be resolved.
+        /// </summary>
+        private void loadAppIcon()
+        {
+            try
+            {
+                if (GameDatabase.Instance != null)
+                    appIcon = GameDatabase.Instance.GetTexture("WildBlueIndustries/Pathfinder/Icons/PathfinderApp", false);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("[Pathfinder] - Unable to load Pathfinder app icon: " + ex.Message);
+            }
+
+            if (appIcon == null)
+                appIcon = Texture2D.whiteTexture;
         }
 
     }
