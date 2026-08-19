@@ -40,6 +40,10 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\KSPDev\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="KerbalActuators">
+      <HintPath>..\..\..\..\KSPDev\GameData\WildBlueIndustries\001KerbalActuators\Plugins\KerbalActuators.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -100,10 +104,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GUI\PipelineWindow.cs" />
+    <Compile Include="Manifest\WBIManifest.cs" />
+    <Compile Include="Manifest\WBIManifestScenario.cs" />
+    <Compile Include="Manifest\WBIResourceManifest.cs" />
     <Compile Include="Parts\WBIManagedAnimation.cs" />
+    <Compile Include="Parts\WBIPackingBox.cs" />
     <Compile Include="ResourceDistribution\DistributionView.cs" />
     <Compile Include="GUI\DrillSwitchWindow.cs" />
     <Compile Include="Settings\PathfinderAppButton.cs" />
+    <Compile Include="Settings\PathfinderSettings.cs" />
     <Compile Include="GUI\SciLabOpsWindow.cs" />
     <Compile Include="GUI\WBIDrillOpsView.cs" />
     <Compile Include="Habitat\WBIGreenhouse.cs" />
