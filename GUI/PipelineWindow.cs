@@ -565,7 +565,7 @@ namespace WildBlueIndustries
                     break;
             }
 
-            if (totalGuidanceData >= totalDataCost)
+            if (totalDataCost > 0 && totalGuidanceData >= totalDataCost)
             {
                 GUILayout.Label("<color=white><b>Guidance: </b></color>GO");
             }
