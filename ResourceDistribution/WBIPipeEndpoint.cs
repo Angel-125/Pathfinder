@@ -33,6 +33,7 @@ namespace WildBlueIndustries
         public const string kNoECStatus = "Not enough ElectricCharge";
         public const string kOffStatus = "Deactivated";
         public const string kToolTipSend = "Mass drivers let you send resources to and receive resources from other mass drivers. Each delivery costs trajectory data to calculate the trajectory, ElectricCharge to launch the projectile, and LiquidFuel and Oxidizer to make course corrections. This part can generate trajectory data, but you can also obtain data from the Ranch House as well as the Doc Science Lab.";
+        public const string kToolTipSendNoGuidance = "Mass drivers let you send resources to and receive resources from other mass drivers. Each delivery costs ElectricCharge to launch the projectile, and LiquidFuel and Oxidizer to make course corrections.";
         public const string kTookTipReceive = "Mass catchers can receive resources launched from mass drivers. Each shipment's resources will be evenly distributed to all parts on the vessel that can hold the resource. Any excess will be lost. Make sure to turn the power on or you won't receive your shipments.";
         public const string kPowerOn = "Turn Power On";
         public const string kPowerOff = "Turn Power Off";
@@ -250,6 +251,12 @@ namespace WildBlueIndustries
             pipelineWidow.setGuidanceDataAmount = setGuidanceDataAmount;
             pipelineWidow.maxLaunchAzimuth = this.maxLaunchAzimuth;
 
+            //A zero or negative rate disables guidance data, including its PAW controls.
+            bool guidanceDataEnabled = dataCostPerKm > 0f;
+            Fields["accumulateData"].guiActive = guidanceDataEnabled;
+            Fields["accumulateData"].guiActiveEditor = guidanceDataEnabled;
+            Fields["totalGuidanceData"].guiActive = guidanceDataEnabled;
+
             //Get resource definition for electric charge
             if (activationCostEC > 0f)
             {
@@ -292,7 +299,8 @@ namespace WildBlueIndustries
             infoBuilder.AppendLine(" ");
             infoBuilder.AppendLine("<b>Activated:</b>");
             infoBuilder.AppendLine(string.Format("<color=white>Requires {0:f1} E.C./sec</color>", activationCostEC));
-            infoBuilder.AppendLine(string.Format("<color=white>Generates {0:f1} Mits/hr</color>", (dataGenerationRate * 3600)));
+            if (dataCostPerKm > 0f)
+                infoBuilder.AppendLine(string.Format("<color=white>Generates {0:f1} Mits/hr</color>", (dataGenerationRate * 3600)));
 
             //Requirements
             infoBuilder.AppendLine(" ");
@@ -302,15 +310,18 @@ namespace WildBlueIndustries
             infoBuilder.AppendLine(string.Format("ElectricCharge: {0:f1} E.C./t", electricityCostPerTonne));
 
             //Trajectory data
-            infoBuilder.AppendLine(string.Format("Trajectory data: {0:f3} Mits/km", dataCostPerKm));
-            infoBuilder.AppendLine("x10 for orbital shots");
+            if (dataCostPerKm > 0f)
+            {
+                infoBuilder.AppendLine(string.Format("Trajectory data: {0:f3} Mits/km", dataCostPerKm));
+                infoBuilder.AppendLine(string.Format("x{0:g} for orbital shots", orbitalCostMultiplier));
+            }
 
             return infoBuilder.ToString();
         }
 
         public void AddData(float amount)
         {
-            if (!accumulateData)
+            if (dataCostPerKm <= 0f || !accumulateData)
                 return;
 
             totalGuidanceData += amount;
@@ -341,8 +352,8 @@ namespace WildBlueIndustries
                 return;
             }
 
-            //Catchup on data generation
-            if (lastUpdateTime > 0f)
+            //Catchup on data generation when guidance data is enabled.
+            if (dataCostPerKm > 0f && lastUpdateTime > 0f)
             {
                 double elapsedTime = Planetarium.GetUniversalTime() - lastUpdateTime;
                 if (elapsedTime > 1.0f)
@@ -366,12 +377,15 @@ namespace WildBlueIndustries
                 status = Localizer.Format(kNominalStatus);
                 this.part.RequestResource(resourceDef.id, ecPerUpdate, ResourceFlowMode.ALL_VESSEL);
 
-                //Generate trajectory data
-                totalGuidanceData += dataGenerationRate * TimeWarp.deltaTime;
-                if (totalGuidanceData > maxGuidanceData)
-                    totalGuidanceData = maxGuidanceData;
-                pipelineWidow.totalGuidanceData = this.totalGuidanceData;
-                lastUpdateTime = Planetarium.GetUniversalTime();
+                //Generate trajectory data when guidance data is enabled.
+                if (dataCostPerKm > 0f)
+                {
+                    totalGuidanceData += dataGenerationRate * TimeWarp.deltaTime;
+                    if (totalGuidanceData > maxGuidanceData)
+                        totalGuidanceData = maxGuidanceData;
+                    pipelineWidow.totalGuidanceData = this.totalGuidanceData;
+                    lastUpdateTime = Planetarium.GetUniversalTime();
+                }
             }
 
             //Not enough EC to run the pipe endpoint
@@ -441,7 +455,7 @@ namespace WildBlueIndustries
             if (scenario.HasShownToolTip(this.part.partInfo.title))
                 return;
 
-            string toolTip = kToolTipSend;
+            string toolTip = dataCostPerKm > 0f ? kToolTipSend : kToolTipSendNoGuidance;
             WBIToolTipWindow toolTipWindow = new WBIToolTipWindow(this.part.partInfo.title, toolTip);
             toolTipWindow.SetVisible(true);
 

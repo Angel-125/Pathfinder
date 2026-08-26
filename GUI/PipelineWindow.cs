@@ -346,8 +346,8 @@ namespace WildBlueIndustries
                 this.part.RequestResource("LiquidFuel", liquidFuelUnits, ResourceFlowMode.ALL_VESSEL);
                 this.part.RequestResource("Oxidizer", oxidizerUnits, ResourceFlowMode.ALL_VESSEL);
 
-                //Pay guidance data cost
-                if (setGuidanceDataAmount != null)
+                //Pay guidance data cost when guidance is enabled.
+                if (totalDataCost > 0f && setGuidanceDataAmount != null)
                     setGuidanceDataAmount(totalGuidanceData - totalDataCost);
 
                 //Create the resource manifest
@@ -542,6 +542,14 @@ namespace WildBlueIndustries
 
         protected void drawTrajectoryStatus()
         {
+            //A zero or negative rate explicitly disables the guidance-data requirement.
+            if (dataCostPerKm <= 0f)
+            {
+                totalDataCost = 0f;
+                GUILayout.Label("<color=white><b>Guidance: </b></color>N/A");
+                return;
+            }
+
             if (payloadMass < 0.001f)
             {
                 GUILayout.Label("<color=white><b>Guidance: </b></color>GO");
@@ -565,7 +573,7 @@ namespace WildBlueIndustries
                     break;
             }
 
-            if (totalDataCost > 0 && totalGuidanceData >= totalDataCost)
+            if (totalGuidanceData >= totalDataCost)
             {
                 GUILayout.Label("<color=white><b>Guidance: </b></color>GO");
             }
