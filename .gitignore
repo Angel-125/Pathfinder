@@ -66,3 +66,12 @@ Temporary Items
 /Wiki/
 /Pathfinder.Wiki/
 /Notes/
+
+# Claude added
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.csproj.user
+*.slnx
