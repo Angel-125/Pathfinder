@@ -332,7 +332,7 @@ namespace WildBlueIndustries
             MonoUtilities.RefreshContextWindows(this.part);
         }
 
-        public virtual void Destroy()
+        public virtual void OnDestroy()
         {
             if (packingBox != null)
                 packingBox.onPackingStateChanged -= onPackingStateChanged;
