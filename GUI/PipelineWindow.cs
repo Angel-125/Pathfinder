@@ -41,16 +41,6 @@ namespace WildBlueIndustries
         public float density;
     }
 
-    public struct WBIPackingItem
-    {
-        public string partTitle;
-        public float mass;
-        public float volume;
-        public bool isSelected;
-        public int quantity;
-        public int slot;
-    }
-
     public enum PipelineViewPages
     {
         SelectVessel,
@@ -81,12 +71,7 @@ namespace WildBlueIndustries
         const string kSelectVessel = "<color=white>Select a destination:</color>";
         const string kBackLabel = "Back";
         const string kNextLabel = "Next";
-        const string kAddLabel = "Add";
-        const string kEditLabel = "Edit";
         const string kLaunchLabel = "LAUNCH!";
-        const string kDeleteLabel = "Remove";
-        const string kInventoryLabel = "Inventory";
-        const string kResourcesLabel = "Resources";
         const string kLFShortage = "<color=white>Insufficient LiquidFuel, {0:f2}units needed</color>";
         const string kOxShortage = "<color=white>Insufficient Oxidizer, {0:f2}units needed</color>";
         const string kECShortage = "<color=white>Insufficient ElectricCharge, {0:f2}units needed</color>";
@@ -121,15 +106,11 @@ namespace WildBlueIndustries
         PipeEndpointNode[] pipeEndpoints;
         PipelineViewPages pageID;
         PipeEndpointNode selectedPipelineNode;
-        Vector2 scrollPos = new Vector2();
         Vector2 scrollPosResources = new Vector2();
         Vector2 panelPos = new Vector2();
         Vector2 targetPanel = new Vector2();
         Vector2 targetPane = new Vector2();
-        GUILayoutOption[] vesselSelectionLayoutOption = new GUILayoutOption[] { GUILayout.Width(375) };
         GUILayoutOption[] resourcePaneOptions = new GUILayoutOption[] { GUILayout.Height(windowHeight), GUILayout.Width(250) };
-        GUILayoutOption[] inventoryButtonOptions = new GUILayoutOption[] { GUILayout.Width(250) };
-        GUILayoutOption[] buttonOptions = new GUILayoutOption[] { GUILayout.Width(80) };
         GUILayoutOption[] resourcePanelOptions = new GUILayoutOption[] { GUILayout.Height(75) };
         GUILayoutOption[] targetPanelOptions = new GUILayoutOption[] { GUILayout.Height(windowHeight), GUILayout.Width(250) };
         GUILayoutOption[] targetPaneOptions = new GUILayoutOption[] { GUILayout.Height(windowHeight), GUILayout.Width(150) };
@@ -144,10 +125,6 @@ namespace WildBlueIndustries
         int selectedIndex = 0;
         double liquidFuelUnits;
         double oxidizerUnits;
-        bool showInventory = false;
-        List<WBIPackingItem> packingList = new List<WBIPackingItem>();
-        int inventoryItemCount = 0;
-        float packingListMass = 0f;
         bool enableAzimuthRestriction;
 
         public PipelineWindow(string title = "Pipelines") :
@@ -193,49 +170,77 @@ namespace WildBlueIndustries
 
         public void FindPipeEndpoints()
         {
-            //We're only interested in vessels outside of physics range.
-            Vessel[] vessels = FlightGlobals.VesselsUnloaded.ToArray();
-//            Vessel[] vessels = FlightGlobals.VesselsLoaded.ToArray();
-            Vessel vessel;
-            PipeEndpointNode endpointNode;
             List<PipeEndpointNode> endpoints = new List<PipeEndpointNode>();
-            bool foundEndpipe;
+            HashSet<string> usedIdentifiers = new HashSet<string>();
 
-            //Find vessels that have a pipe endpoint that are on the active vessel's celestial body.
+            WBIPipeEndpoint sourceEndpoint = part.FindModuleImplementing<WBIPipeEndpoint>();
+            if (sourceEndpoint != null)
+                sourceEndpoint.EnsureUniqueIdentifier(usedIdentifiers);
+
             pipeEndpoints = null;
-            for (int index = 0; index < vessels.Length; index++)
+            vesselNames = null;
+            selectedIndex = 0;
+
+            //Search both loaded and unloaded vessels. Loaded receivers are delivered to
+            //immediately after the manifest is queued; unloaded receivers collect it on load.
+            foreach (Vessel vessel in FlightGlobals.Vessels)
             {
-                //Get the vessel
-                vessel = vessels[index];
-
-                //If the vessel is not on or orbiting the active vessel's celestial body, then we're done.
-                if (vessel.mainBody != FlightGlobals.ActiveVessel.mainBody)
-                    continue;
-                if (vessel == this.part.vessel)
+                if (vessel == null || vessel.mainBody != part.vessel.mainBody || vessel == part.vessel)
                     continue;
 
-                //See if the vessel has an active pipeline. If so, add it to the list.
-                foundEndpipe = false;
+                bool foundEndpoint = false;
+                if (vessel.loaded)
+                {
+                    foreach (Part vesselPart in vessel.parts)
+                    {
+                        WBIPipeEndpoint endpoint = vesselPart.FindModuleImplementing<WBIPipeEndpoint>();
+                        if (endpoint == null)
+                            continue;
+
+                        endpoint.EnsureUniqueIdentifier(usedIdentifiers);
+                        if (!canReceiveTransfers(vessel, endpoint))
+                            continue;
+
+                        ConfigNode moduleValues = new ConfigNode();
+                        moduleValues.AddValue("uniqueIdentifier", endpoint.uniqueIdentifier);
+                        moduleValues.AddValue("maxKineticEnergy", endpoint.maxKineticEnergy);
+                        endpoints.Add(new PipeEndpointNode
+                        {
+                            endpoint = endpoint,
+                            moduleValues = moduleValues,
+                            vessel = vessel,
+                            vesselName = vessel.vesselName
+                        });
+                        foundEndpoint = true;
+                        break;
+                    }
+                }
+
+                if (foundEndpoint || vessel.protoVessel == null)
+                    continue;
+
                 foreach (ProtoPartSnapshot protoPart in vessel.protoVessel.protoPartSnapshots)
                 {
                     foreach (ProtoPartModuleSnapshot protoModule in protoPart.modules)
                     {
-                        if (protoModule.moduleName == "WBIPipeEndpoint")
+                        if (protoModule.moduleName != "WBIPipeEndpoint")
+                            continue;
+
+                        ensureProtoEndpointIdentifier(protoPart, protoModule, usedIdentifiers);
+                        if (!canReceiveTransfers(vessel, protoModule))
+                            continue;
+
+                        endpoints.Add(new PipeEndpointNode
                         {
-                            if (canReceiveTransfers(vessel, protoModule))
-                            {
-                                endpointNode = new PipeEndpointNode();
-                                endpointNode.moduleValues = protoModule.moduleValues; //Use this to tell who connects to whom
-                                endpointNode.snapshot = protoModule;
-                                endpointNode.vessel = vessel;
-                                endpointNode.vesselName = vessel.vesselName;
-                                endpoints.Add(endpointNode);
-                                foundEndpipe = true;
-                                break;
-                            }
-                        }
+                            moduleValues = protoModule.moduleValues,
+                            snapshot = protoModule,
+                            vessel = vessel,
+                            vesselName = vessel.vesselName
+                        });
+                        foundEndpoint = true;
+                        break;
                     }
-                    if (foundEndpipe)
+                    if (foundEndpoint)
                         break;
                 }
             }
@@ -251,6 +256,26 @@ namespace WildBlueIndustries
 
                 vesselNames = vesselNameList.ToArray();
             }
+        }
+
+        void ensureProtoEndpointIdentifier(ProtoPartSnapshot protoPart, ProtoPartModuleSnapshot protoModule, HashSet<string> usedIdentifiers)
+        {
+            ConfigNode values = protoModule.moduleValues;
+            string identifier = values.GetValue("uniqueIdentifier");
+            uint ownerPartID = 0;
+            if (values.HasValue("identifierPartID"))
+                uint.TryParse(values.GetValue("identifierPartID"), out ownerPartID);
+
+            uint currentPartID = protoPart.persistentId;
+            bool missing = string.IsNullOrEmpty(identifier) || identifier == WBIPipeEndpoint.kNoIdentifier;
+            bool copiedPart = ownerPartID != 0 && currentPartID != 0 && ownerPartID != currentPartID;
+            bool duplicate = !missing && usedIdentifiers.Contains(identifier);
+            if (missing || copiedPart || duplicate)
+                identifier = Guid.NewGuid().ToString();
+
+            values.SetValue("uniqueIdentifier", identifier, true);
+            values.SetValue("identifierPartID", currentPartID.ToString(), true);
+            usedIdentifiers.Add(identifier);
         }
 
         public void DrawView()
@@ -308,24 +333,6 @@ namespace WildBlueIndustries
                 sourceVesselResources[sourceDisplayNames[index]] = resourceTotals;
             }
 
-            //Packing list
-            if (packingList.Count > 0)
-            {
-                WBIPackingItem packingItem;
-                int totalItems = packingList.Count;
-                for (int index = 0; index < totalItems; index++)
-                {
-                    //Get the packing item
-                    packingItem = packingList[index];
-
-                    //If selected list out the item
-                    if (packingItem.isSelected)
-                    {
-                        GUILayout.Label("<color=white>" + packingItem.partTitle + "(" + packingItem.quantity + ")</color>");
-                    }
-                }
-            }
-
             GUILayout.EndScrollView();
 
             //Buttons
@@ -334,52 +341,104 @@ namespace WildBlueIndustries
             if (GUILayout.Button(kBackLabel))
                 pageID = PipelineViewPages.ChooseResources;
 
-            //Launch button
-            //At this time, deduct the required resources and payload resources
             if (GUILayout.Button(kLaunchLabel))
             {
-                //Pay EC cost
-                double amountToTransfer = electricityCostPerTonne * projectileMass;
-                this.part.RequestResource("ElectricCharge", amountToTransfer, ResourceFlowMode.ALL_VESSEL);
-
-                //Pay LFO units
-                this.part.RequestResource("LiquidFuel", liquidFuelUnits, ResourceFlowMode.ALL_VESSEL);
-                this.part.RequestResource("Oxidizer", oxidizerUnits, ResourceFlowMode.ALL_VESSEL);
-
-                //Pay guidance data cost when guidance is enabled.
-                if (totalDataCost > 0f && setGuidanceDataAmount != null)
-                    setGuidanceDataAmount(totalGuidanceData - totalDataCost);
-
-                //Create the resource manifest
-                WBIResourceManifest manifest = new WBIResourceManifest();
-                manifest.destinationID = selectedPipelineNode.moduleValues.GetValue("uniqueIdentifier");
-
-                //Deduct payload resources and load them into the transfer request.
-                for (int index = 0; index < totalResources; index++)
-                {
-                    //Get the totals, skipping any that has no transfer percent
-                    resourceTotals = sourceVesselResources[sourceDisplayNames[index]];
-                    if (resourceTotals.transferPercent < 0.0001f)
-                        continue;
-
-                    //Deduct the resource amount from the vessel
-                    amountToTransfer = resourceTotals.amount * resourceTotals.transferPercent;
-                    this.part.RequestResource(resourceTotals.resourceName, amountToTransfer, ResourceFlowMode.ALL_VESSEL);
-
-                    //Add the resource to the transfer manifest.
-                    manifest.resourceAmounts.Add(resourceTotals.resourceName, amountToTransfer);
-                }
-                if (manifest.resourceAmounts.Count > 0)
-                    WBIManifestScenario.Instance.AddManifest(manifest);
-
-                //Play launch effects and inform user.
-                ScreenMessages.PostScreenMessage(kShipmentLaunched + selectedPipelineNode.vesselName, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
-
-                //Change page
-                pageID = PipelineViewPages.SelectVessel;
+                if (tryLaunchShipment())
+                    pageID = PipelineViewPages.SelectVessel;
+                else
+                    ScreenMessages.PostScreenMessage(kLaunchIssuesMsg, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
+        }
+
+        bool tryLaunchShipment()
+        {
+            if (WBIManifestScenario.Instance == null || selectedPipelineNode.moduleValues == null)
+                return false;
+            if (selectedPipelineNode.endpoint != null && !canReceiveTransfers(selectedPipelineNode.vessel, selectedPipelineNode.endpoint))
+                return false;
+            if (selectedPipelineNode.endpoint == null && selectedPipelineNode.snapshot != null &&
+                !canReceiveTransfers(selectedPipelineNode.vessel, selectedPipelineNode.snapshot))
+                return false;
+
+            string destinationID = selectedPipelineNode.moduleValues.GetValue("uniqueIdentifier");
+            if (string.IsNullOrEmpty(destinationID) || destinationID == WBIPipeEndpoint.kNoIdentifier)
+                return false;
+            if (totalDataCost > totalGuidanceData)
+                return false;
+
+            WBIResourceManifest manifest = new WBIResourceManifest();
+            manifest.destinationID = destinationID;
+            Dictionary<string, double> resourceDemands = new Dictionary<string, double>();
+
+            foreach (WBIResourceTotals resourceTotals in sourceVesselResources.Values)
+            {
+                double amount = resourceTotals.amount * resourceTotals.transferPercent;
+                if (amount <= 0.000001)
+                    continue;
+
+                manifest.resourceAmounts[resourceTotals.resourceName] = amount;
+                addResourceDemand(resourceDemands, resourceTotals.resourceName, amount);
+            }
+            if (manifest.resourceAmounts.Count == 0)
+                return false;
+
+            addResourceDemand(resourceDemands, "ElectricCharge", electricityCostPerTonne * projectileMass);
+            addResourceDemand(resourceDemands, "LiquidFuel", liquidFuelUnits);
+            addResourceDemand(resourceDemands, "Oxidizer", oxidizerUnits);
+
+            //Simulate every withdrawal first. This prevents a launch from creating cargo
+            //when any payload or propulsion resource has changed since preflight.
+            foreach (KeyValuePair<string, double> demand in resourceDemands)
+            {
+                double available = part.RequestResource(demand.Key, demand.Value, ResourceFlowMode.ALL_VESSEL, true);
+                if (available + 0.000001 < demand.Value)
+                    return false;
+            }
+
+            Dictionary<string, double> consumedResources = new Dictionary<string, double>();
+            foreach (KeyValuePair<string, double> demand in resourceDemands)
+            {
+                double consumed = part.RequestResource(demand.Key, demand.Value, ResourceFlowMode.ALL_VESSEL);
+                consumedResources[demand.Key] = consumed;
+                if (consumed + 0.000001 < demand.Value)
+                {
+                    foreach (KeyValuePair<string, double> rollback in consumedResources)
+                        part.RequestResource(rollback.Key, -rollback.Value, ResourceFlowMode.ALL_VESSEL);
+                    return false;
+                }
+            }
+
+            if (!WBIManifestScenario.Instance.AddManifest(manifest))
+            {
+                foreach (KeyValuePair<string, double> rollback in consumedResources)
+                    part.RequestResource(rollback.Key, -rollback.Value, ResourceFlowMode.ALL_VESSEL);
+                return false;
+            }
+
+            if (totalDataCost > 0f && setGuidanceDataAmount != null)
+            {
+                totalGuidanceData -= totalDataCost;
+                setGuidanceDataAmount(totalGuidanceData);
+            }
+
+            if (selectedPipelineNode.endpoint != null)
+                selectedPipelineNode.endpoint.ProcessDeliveries();
+
+            ScreenMessages.PostScreenMessage(kShipmentLaunched + selectedPipelineNode.vesselName, kMessageDuration, ScreenMessageStyle.UPPER_CENTER);
+            getVesselResources(part.vessel, sourceVesselResources);
+            return true;
+        }
+
+        void addResourceDemand(Dictionary<string, double> resourceDemands, string resourceName, double amount)
+        {
+            if (amount <= 0)
+                return;
+            if (resourceDemands.ContainsKey(resourceName))
+                resourceDemands[resourceName] += amount;
+            else
+                resourceDemands.Add(resourceName, amount);
         }
 
         protected void drawSelectResourcesPage()
@@ -703,7 +762,7 @@ namespace WildBlueIndustries
             //We don't meet or exceed orbital velocity, but the target might still be in ballistics range.
             //Get the distance to the target.
             double distanceToTarget = Utils.HaversineDistance(this.part.vessel.longitude, this.part.vessel.latitude,
-                selectedPipelineNode.vessel.longitude, selectedPipelineNode.vessel.latitude, celestialBody);
+                selectedPipelineNode.vessel.longitude, selectedPipelineNode.vessel.latitude, celestialBody) * 1000.0;
 
             //Now we need to compute the ballistic trajectory. We assume a 45 degree angle on the trajectory angle. That gives max distance.
             double distanceTraveled = (projectileVelocity * projectileVelocity) / celestialBody.GeeASL;
@@ -731,7 +790,7 @@ namespace WildBlueIndustries
             PartResourceDefinition def;
             double amountAvailable = 0f;
             double maxAmount = 0;
-            double amountRequired = electricityCostPerTonne * projectileMass;
+            double amountRequired = electricityCostPerTonne * projectileMass + getSelectedResourceAmount("ElectricCharge");
 
             def = definitions["ElectricCharge"];
             FlightGlobals.ActiveVessel.rootPart.GetConnectedResourceTotals(def.id, out amountAvailable, out maxAmount, true);
@@ -769,14 +828,15 @@ namespace WildBlueIndustries
                     break;
                 }
             }
-            if (totals.maxAmount - (totals.amount * totals.transferPercent) >= liquidFuelUnits)
+            double liquidFuelAvailable = totals.amount - (totals.amount * totals.transferPercent);
+            if (liquidFuelAvailable >= liquidFuelUnits)
             {
                 GUILayout.Label("<color=white><b>LiquidFuel: </b></color>GO");
             }
             else
             {
                 GUILayout.Label("<color=white><b>LiquidFuel: </b></color><color=red>NO GO</color>");
-                issues.AppendLine(string.Format(kLFShortage, (liquidFuelUnits - (totals.maxAmount - (totals.amount * totals.transferPercent)))));
+                issues.AppendLine(string.Format(kLFShortage, (liquidFuelUnits - liquidFuelAvailable)));
             }
 
             //Calculate the Oxidizer requirements
@@ -794,14 +854,15 @@ namespace WildBlueIndustries
                     break;
                 }
             }
-            if (totals.maxAmount - (totals.amount * totals.transferPercent) >= oxidizerUnits)
+            double oxidizerAvailable = totals.amount - (totals.amount * totals.transferPercent);
+            if (oxidizerAvailable >= oxidizerUnits)
             {
                 GUILayout.Label("<color=white><b>Oxidizer: </b></color>GO");
             }
             else
             {
                 GUILayout.Label("<color=white><b>Oxidizer: </b></color><color=red>NO GO</color>");
-                issues.AppendLine(string.Format(kOxShortage, (oxidizerUnits - (totals.maxAmount - (totals.amount * totals.transferPercent)))));
+                issues.AppendLine(string.Format(kOxShortage, (oxidizerUnits - oxidizerAvailable)));
             }
         }
 
@@ -826,7 +887,17 @@ namespace WildBlueIndustries
                 payloadMass += resourceMass;
             }
 
-            return payloadMass + packingListMass;
+            return payloadMass;
+        }
+
+        double getSelectedResourceAmount(string resourceName)
+        {
+            foreach (WBIResourceTotals totals in sourceVesselResources.Values)
+            {
+                if (totals.resourceName == resourceName)
+                    return totals.amount * totals.transferPercent;
+            }
+            return 0;
         }
 
         protected void getVesselResources(Vessel vessel, Dictionary<string, WBIResourceTotals> resourceMap)

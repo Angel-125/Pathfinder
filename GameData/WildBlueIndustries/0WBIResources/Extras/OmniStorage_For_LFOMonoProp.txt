@@ -51,3 +51,20 @@
         requiredAmount = 0
     }
 }
+
+@PART:HAS[@RESOURCE[Ore],!MODULE[WBIOmniStorage],!MODULE[ModuleCommand]]
+{
+    refVolume = #$RESOURCE[Ore]/maxAmount$
+    @refVolume *= 5 // unit conversion
+
+    MODULE
+    {
+        name = WBIOmniStorage
+        storageVolume = #$../refVolume$
+        accountForSwitcherCapacity = true
+        reconfigureSkill = ConverterSkill
+        reconfigureRank = 1
+        requiredResource = Equipment
+        requiredAmount = 0
+    }
+}

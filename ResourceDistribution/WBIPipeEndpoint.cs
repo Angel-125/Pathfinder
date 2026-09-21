@@ -37,7 +37,6 @@ namespace WildBlueIndustries
         public const string kTookTipReceive = "Mass catchers can receive resources launched from mass drivers. Each shipment's resources will be evenly distributed to all parts on the vessel that can hold the resource. Any excess will be lost. Make sure to turn the power on or you won't receive your shipments.";
         public const string kPowerOn = "Turn Power On";
         public const string kPowerOff = "Turn Power Off";
-        public const string kItemSkippedMsg = "One or more inventory items could not be delivered due to insufficient storage space.";
         public const float kMessageDuration = 5.0f;
         #endregion
 
@@ -59,6 +58,13 @@ namespace WildBlueIndustries
         /// </summary>
         [KSPField(isPersistant = true)]
         public string uniqueIdentifier = kNoIdentifier;
+
+        /// <summary>
+        /// Persistent id of the part that owns uniqueIdentifier. This lets copied vessels
+        /// receive a new endpoint id while preserving existing ids during save migration.
+        /// </summary>
+        [KSPField(isPersistant = true)]
+        public uint identifierPartID = 0;
 
         /// <summary>
         /// Amount of ec/sec required to maintain activation state.
@@ -165,6 +171,7 @@ namespace WildBlueIndustries
         PipelineWindow pipelineWidow;
         PartResourceDefinition resourceDef = null;
         WBIPackingBox packingBox;
+        WBIManagedAnimation managedAnimation;
         static GUIStyle opsWindowStyle = null;
         GUILayoutOption[] opsWindowOptions = new GUILayoutOption[] { GUILayout.Height(480) };
         Vector2 opsWindowPos = new Vector2();
@@ -202,6 +209,7 @@ namespace WildBlueIndustries
             if (IsActivated)
             {
                 Events["ToggleActivation"].guiName = kPowerOff;
+                ProcessDeliveries();
             }
 
             else
@@ -232,9 +240,10 @@ namespace WildBlueIndustries
             if (!string.IsNullOrEmpty(macTriggerName))
                 macTriggerTransform = this.part.FindModelTransform(macTriggerName);
 
-            //Generate an identifier if needed. This is used for payload transactions.
-            if (uniqueIdentifier == kNoIdentifier)
-                uniqueIdentifier = Guid.NewGuid().ToString();
+            //Generate flight identifiers only after KSP has assigned a persistent part id.
+            //Craft copies made in the editor must not inherit the same delivery address.
+            if (HighLogic.LoadedSceneIsFlight)
+                EnsureUniqueIdentifier(null);
 
             //Setup pipeline window
             pipelineWidow = new PipelineWindow();
@@ -274,6 +283,11 @@ namespace WildBlueIndustries
                 packingBox.onPackingStateChanged += onPackingStateChanged;
                 onPackingStateChanged(packingBox.isDeployed);
             }
+            else if ((managedAnimation = this.part.FindModuleImplementing<WBIManagedAnimation>()) != null)
+            {
+                managedAnimation.onDeploymentStateChanged += onPackingStateChanged;
+                onPackingStateChanged(managedAnimation.isDeployed);
+            }
             else
             {
                 this.Events["ToggleSendGUI"].active = true;
@@ -286,7 +300,7 @@ namespace WildBlueIndustries
                 Events["ToggleActivation"].guiName = kPowerOn;
 
             //If we have any deliveries then grab them and distribute the resources.
-            processDeliveries();
+            ProcessDeliveries();
         }
 
         public override string GetInfo()
@@ -332,12 +346,34 @@ namespace WildBlueIndustries
             MonoUtilities.RefreshContextWindows(this.part);
         }
 
-        public virtual void Destroy()
+        public void OnDestroy()
         {
             if (packingBox != null)
                 packingBox.onPackingStateChanged -= onPackingStateChanged;
+            if (managedAnimation != null)
+                managedAnimation.onDeploymentStateChanged -= onPackingStateChanged;
             if (pipelineWidow != null)
                 pipelineWidow.SetVisible(false);
+        }
+
+        /// <summary>
+        /// Ensures that this endpoint has an address owned by its current persistent part.
+        /// Existing saves keep their address unless a copied part or duplicate is detected.
+        /// </summary>
+        public void EnsureUniqueIdentifier(HashSet<string> usedIdentifiers)
+        {
+            uint currentPartID = part == null ? 0 : part.persistentId;
+            bool identifierMissing = string.IsNullOrEmpty(uniqueIdentifier) || uniqueIdentifier == kNoIdentifier;
+            bool copiedPart = identifierPartID != 0 && currentPartID != 0 && identifierPartID != currentPartID;
+            bool duplicateIdentifier = usedIdentifiers != null && !identifierMissing && usedIdentifiers.Contains(uniqueIdentifier);
+
+            if (identifierMissing || copiedPart || duplicateIdentifier)
+                uniqueIdentifier = Guid.NewGuid().ToString();
+
+            if (currentPartID != 0)
+                identifierPartID = currentPartID;
+            if (usedIdentifiers != null)
+                usedIdentifiers.Add(uniqueIdentifier);
         }
 
         public void FixedUpdate()
@@ -463,11 +499,13 @@ namespace WildBlueIndustries
             scenario.SetToolTipShown(this.part.partInfo.title);
         }
 
-        protected void processDeliveries()
+        public void ProcessDeliveries()
         {
             if (!HighLogic.LoadedSceneIsFlight)
                 return;
-            //We're interested in resource and inventory deliveries...
+            if (!IsActivated || WBIManifestScenario.Instance == null || string.IsNullOrEmpty(uniqueIdentifier))
+                return;
+
             List<WBIResourceManifest> resourceManifests = WBIResourceManifest.GetManifestsForDestination(this.uniqueIdentifier);
             Log("Resource manifests count: " + resourceManifests.Count);
 
@@ -496,6 +534,9 @@ namespace WildBlueIndustries
                     this.part.RequestResource(resourceName, -amount, ResourceFlowMode.ALL_VESSEL);
                     Log("Added " + amount + " units of " + resourceName);
                 }
+
+                //Acknowledge only after the manifest has been parsed and processed.
+                WBIManifestScenario.Instance.RemoveManifest(resourceManifest.sourceNode);
             }
         }
 

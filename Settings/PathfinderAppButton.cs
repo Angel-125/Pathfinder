@@ -118,7 +118,7 @@ namespace WildBlueIndustries
             GameEvents.OnGameSettingsApplied.Add(UpdateSettings);
         }
 
-        public void Destroy()
+        public void OnDestroy()
         {
             GameEvents.OnGameSettingsApplied.Remove(UpdateSettings);
         }

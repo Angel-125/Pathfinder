@@ -135,7 +135,6 @@
     <Compile Include="Scenario\WBIEfficiencyMonitor.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="ResourceDistribution\WBIDistributionManager.cs" />
-    <Compile Include="Utility\WBIMultipurposeStorage.cs" />
     <Compile Include="Habitat\WBIHabitat.cs" />
     <Compile Include="Industry\WBIBreakableResourceConverter.cs" />
     <Compile Include="Industry\WBIGeoThermalPlant.cs" />
@@ -156,6 +155,9 @@
       <Project>{cca4cc8e-adb8-4572-8b65-ad67ecf48e5f}</Project>
       <Name>WBIScience</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utility\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

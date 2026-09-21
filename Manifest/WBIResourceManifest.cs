@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -35,17 +36,23 @@ namespace WildBlueIndustries
 
         public Dictionary<string, double> resourceAmounts = new Dictionary<string, double>();
 
+        internal ConfigNode sourceNode;
+
         public static List<WBIResourceManifest> GetManifestsForDestination(string destinationID)
         {
             List<WBIResourceManifest> manifestList = new List<WBIResourceManifest>();
 
             //Find all the resource manifests that match the desired destination.
+            if (WBIManifestScenario.Instance == null || string.IsNullOrEmpty(destinationID))
+                return manifestList;
+
             WBIResourceManifest resourceManifest;
-            List<ConfigNode> nodes = WBIManifestScenario.Instance.GetManifestConfigs(destinationID, WBIResourceManifest.kResourceManifestType);
+            List<ConfigNode> nodes = WBIManifestScenario.Instance.GetManifestConfigs(destinationID, WBIResourceManifest.kResourceManifestType, false);
             foreach (ConfigNode node in nodes)
             {
                 resourceManifest = new WBIResourceManifest();
                 resourceManifest.Load(node);
+                resourceManifest.sourceNode = node;
                 manifestList.Add(resourceManifest);
             }
 
@@ -68,8 +75,14 @@ namespace WildBlueIndustries
             foreach (ConfigNode resource in resources)
             {
                 resourceName = resource.GetValue(kResourceName);
-                amount = double.Parse(resource.GetValue(kAmount));
-                resourceAmounts.Add(resourceName, amount);
+                amount = parseDouble(resource.GetValue(kAmount), 0);
+                if (string.IsNullOrEmpty(resourceName) || amount <= 0 || PartResourceLibrary.Instance.GetDefinition(resourceName) == null)
+                    continue;
+
+                if (resourceAmounts.ContainsKey(resourceName))
+                    resourceAmounts[resourceName] += amount;
+                else
+                    resourceAmounts.Add(resourceName, amount);
             }
         }
 
@@ -84,7 +97,7 @@ namespace WildBlueIndustries
             {
                 resourceNode = new ConfigNode(kResourceNode);
                 resourceNode.AddValue(kResourceName, resourceName);
-                resourceNode.AddValue(kAmount, resourceAmounts[resourceName]);
+                resourceNode.AddValue(kAmount, resourceAmounts[resourceName].ToString("R", CultureInfo.InvariantCulture));
                 node.AddNode(resourceNode);
             }
         }

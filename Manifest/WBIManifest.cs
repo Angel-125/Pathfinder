@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -63,23 +64,28 @@ namespace WildBlueIndustries
 
         public virtual void Load(ConfigNode node)
         {
-            string value;
             destinationID = node.GetValue(kDestinationID);
             manifestType = node.GetValue(kManifestType);
-
-            value = node.GetValue(kCreationDate);
-            creationDate = double.Parse(value);
-
-            value = node.GetValue(kDeliveryTime);
-            deliveryTime = double.Parse(value);
+            creationDate = parseDouble(node.GetValue(kCreationDate), 0);
+            deliveryTime = parseDouble(node.GetValue(kDeliveryTime), 0);
         }
 
         public virtual void Save(ConfigNode node)
         {
             node.AddValue(kDestinationID, destinationID);
             node.AddValue(kManifestType, manifestType);
-            node.AddValue(kCreationDate, creationDate);
-            node.AddValue(kDeliveryTime, deliveryTime);
+            node.AddValue(kCreationDate, creationDate.ToString("R", CultureInfo.InvariantCulture));
+            node.AddValue(kDeliveryTime, deliveryTime.ToString("R", CultureInfo.InvariantCulture));
+        }
+
+        protected static double parseDouble(string value, double defaultValue)
+        {
+            double result;
+            if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
+                return result;
+            if (double.TryParse(value, out result))
+                return result;
+            return defaultValue;
         }
     }
 }

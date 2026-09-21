@@ -9,6 +9,12 @@ It should look like:
 
 GameData/WildBlueIndustries/WBIWidgets
 
+---CHANGES---
+
+- Bug fixes
+
+---END CHANGES---
+
 ---LICENSE---
 Some resource definitions courtesy of Community Resource Pack. License: CC-BY-NC-SA 4.0
 

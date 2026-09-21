@@ -1,6 +1,6 @@
 {
     "NAME":"WBIWidgets",
-    "URL":"https://raw.githubusercontent.com/Angel-125/WBIProps/main/ReleaseFolder/GameData/WildBlueIndustries/WBIWidgets/WBIWidgets.version",
+    "URL":"https://raw.githubusercontent.com/Angel-125/WBIScience/main/ReleaseFolder/GameData/WildBlueIndustries/0WBIScience/WBIScience.version",
     "DOWNLOAD":"https://github.com/Angel-125/WBIWidgets/releases",
     "GITHUB":
     {
@@ -11,8 +11,8 @@
     "VERSION":
     {
 	"MAJOR":1,
-	"MINOR":0,
-	"PATCH":2
+	"MINOR":5,
+	"PATCH":0
     },
     "KSP_VERSION_MIN":
     {

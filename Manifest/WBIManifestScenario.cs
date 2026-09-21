@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -46,9 +47,20 @@ namespace WildBlueIndustries
         {
             base.OnLoad(node);
 
+            manifestNodes.Clear();
             ConfigNode[] manifests = node.GetNodes(WBIManifest.kManifest);
             foreach (ConfigNode manifestNode in manifests)
-                manifestNodes.Add(manifestNode);
+            {
+                double creationDate;
+                double deliveryTime;
+                if (!string.IsNullOrEmpty(manifestNode.GetValue(WBIManifest.kDestinationID)) &&
+                    !string.IsNullOrEmpty(manifestNode.GetValue(WBIManifest.kManifestType)) &&
+                    tryParseDouble(manifestNode.GetValue(WBIManifest.kCreationDate), out creationDate) &&
+                    tryParseDouble(manifestNode.GetValue(WBIManifest.kDeliveryTime), out deliveryTime))
+                    manifestNodes.Add(manifestNode);
+                else
+                    Log("Discarding malformed manifest while loading the save.");
+            }
         }
 
         public override void OnSave(ConfigNode node)
@@ -61,14 +73,23 @@ namespace WildBlueIndustries
         #endregion
 
         #region API
-        public void AddManifest(WBIManifest manifest)
+        public bool AddManifest(WBIManifest manifest)
         {
+            if (manifest == null || string.IsNullOrEmpty(manifest.destinationID) || manifest.manifestType == WBIManifest.kNoType)
+                return false;
+
             //Get the config node
             ConfigNode manifestNode = new ConfigNode(WBIManifest.kManifest);
             manifest.Save(manifestNode);
 
             //Add the config node to the list.
             manifestNodes.Add(manifestNode);
+            return true;
+        }
+
+        public bool RemoveManifest(ConfigNode manifestNode)
+        {
+            return manifestNode != null && manifestNodes.Remove(manifestNode);
         }
 
         public List<ConfigNode> GetManifestConfigs(string destinationID, string manifestType, bool removeFromList = true)
@@ -86,8 +107,12 @@ namespace WildBlueIndustries
                 {
                     //Ok, we found a match. Has it completed its flight time?
                     //Get the creation date and delivery time
-                    creationDate = double.Parse(manifestNode.GetValue(WBIManifest.kCreationDate));
-                    deliveryTime = double.Parse(manifestNode.GetValue(WBIManifest.kDeliveryTime));
+                    if (!tryParseDouble(manifestNode.GetValue(WBIManifest.kCreationDate), out creationDate) ||
+                        !tryParseDouble(manifestNode.GetValue(WBIManifest.kDeliveryTime), out deliveryTime))
+                    {
+                        Log("Skipping malformed manifest for " + destinationID);
+                        continue;
+                    }
 
                     //If there's no delivery time, then we're done.
                     if (deliveryTime < 0.00001)
@@ -107,6 +132,13 @@ namespace WildBlueIndustries
             }
 
             return manifestConfigs;
+        }
+
+        bool tryParseDouble(string value, out double result)
+        {
+            if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
+                return true;
+            return double.TryParse(value, out result);
         }
         #endregion
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Text;
 using KSP.Localization;
 using UnityEngine;
@@ -150,6 +151,11 @@ namespace WildBlueIndustries
         /// Flag indicating if the animation is deployed.
         /// </summary>
         public bool isDeployed = false;
+
+        /// <summary>
+        /// Raised after the deployed state has been applied to the managed modules.
+        /// </summary>
+        public event Action<bool> onDeploymentStateChanged;
         #endregion
 
         #endregion
@@ -225,7 +231,7 @@ namespace WildBlueIndustries
 
             // Clear resources if we haven't completed the animation.
             updateManagedResources();
-
+            notifyDeploymentStateChanged();
         }
 
         /// <summary>
@@ -255,6 +261,7 @@ namespace WildBlueIndustries
             {
                 updateManagedModules();
                 updateManagedResources();
+                notifyDeploymentStateChanged();
             }
 
             base.Toggle();
@@ -393,6 +400,7 @@ namespace WildBlueIndustries
                 isDeployed = Events["Toggle"].guiName == endEventGUIName;
                 updateManagedModules();
                 updateManagedResources();
+                notifyDeploymentStateChanged();
             }
         }
 
@@ -712,6 +720,13 @@ namespace WildBlueIndustries
             MonoUtilities.RefreshContextWindows(part);
         }
 
+        void notifyDeploymentStateChanged()
+        {
+            isDeployed = Events["Toggle"].guiName == endEventGUIName;
+            if (onDeploymentStateChanged != null)
+                onDeploymentStateChanged(isDeployed);
+        }
+
         void updateManagedModules()
         {
             ConfigNode node = getPartConfigNode();
@@ -896,6 +911,7 @@ namespace WildBlueIndustries
             PlayEndSound();
             updateManagedModules();
             updateManagedResources();
+            notifyDeploymentStateChanged();
         }
 
         string getResourceInfo(ModuleResource resource)
