@@ -12,6 +12,7 @@ Changes
 
 - Removed deprecated parts
 - Removed old configuration templates
+- Dependencies update
 
 ---END CHANGES---
 
